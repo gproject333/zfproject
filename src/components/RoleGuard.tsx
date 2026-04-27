@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { useQuery, useConvexAuth } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -19,18 +19,26 @@ function isAllowedRole(role: string | undefined, allowedRoles: Role[]): role is 
 }
 
 export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
-  const user = useQuery(api.users.shared.currentUser);
+  const { isLoading: authLoading, isAuthenticated } = useConvexAuth();
+  // Skip the query until Convex has received the Clerk JWT to avoid a false null on refresh
+  const user = useQuery(
+    api.users.shared.currentUser,
+    authLoading || !isAuthenticated ? "skip" : undefined
+  );
   const router = useRouter();
 
   useEffect(() => {
+    if (authLoading) return;
+
+    if (!isAuthenticated) {
+      router.push("/login");
+      return;
+    }
+
     if (user !== undefined) {
       if (user === null) {
-        // إذا لم يكن هناك مستخدم مسجل دخول، سيقوم الـ middleware بمعالجة تحويله لصفحة الدخول لاحقاً
-        // لكن احتياطياً:
         router.push("/login");
       } else if (!isAllowedRole(user.role, allowedRoles)) {
-        // إذا لم تكن صلاحيته من ضمن الصلاحيات المسموحة لهذه الواجهة
-        // سيتم تحويله للوحة الخاصة بصلاحيته
         const effectiveRole: string = user.role || "student";
         if (effectiveRole === "admin") router.push("/admin");
         else if (effectiveRole === "sponsor") router.push("/sponsor");
@@ -39,10 +47,9 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
         else router.push("/");
       }
     }
-  }, [user, allowedRoles, router]);
+  }, [authLoading, isAuthenticated, user, allowedRoles, router]);
 
-  // أثناء عملية فحص الصلاحية، نعرض شاشة تحميل لكي لا تظهر الواجهة الخاطئة وتختفي
-  if (user === undefined) {
+  if (authLoading || user === undefined) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
         <Loader2 className="w-10 h-10 animate-spin text-primary" />
@@ -50,7 +57,6 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
     );
   }
 
-  // إذا لم يكن مصرح له، لا تظهر المكونات الفرعية إلى أن يتم التحويل
   if (user === null || !isAllowedRole(user.role, allowedRoles)) {
     return null;
   }
