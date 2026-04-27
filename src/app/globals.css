@@ -1,0 +1,507 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* ============================================
+   ZUJ Incubator — Neobrutalism Design System
+   ============================================ */
+
+/* --- CSS Variables (Light) — ألوان جامعة الزيتونة --- */
+:root {
+  --background: #F5F9F5;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+
+  --primary: #1F5C2E;
+  --primary-foreground: #FFFFFF;
+  --secondary: #C9A227;
+  --secondary-foreground: #1A1A1A;
+  --accent: #2D7A3E;
+  --accent-foreground: #FFFFFF;
+
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --success: #16A34A;
+  --success-foreground: #FFFFFF;
+  --warning: #EAB308;
+  --warning-foreground: #1A1A1A;
+  --info: #2563EB;
+  --info-foreground: #FFFFFF;
+
+  --status-pending: #EAB308;
+  --status-review: #2563EB;
+  --status-accepted: #16A34A;
+  --status-rejected: #DC2626;
+  --status-modification: #EA580C;
+
+  --muted: #E8F0E8;
+  --muted-foreground: #6B7280;
+  --border: #1A1A1A;
+  --input: #FFFFFF;
+  --ring: #1F5C2E;
+
+  --shadow-offset: 4px;
+  --shadow-color: #1F5C2E;
+  --border-width: 2px;
+  --radius: 5px;
+}
+
+/* --- CSS Variables (Dark) --- */
+.dark {
+  --background: #0F1A12;
+  --foreground: #E8F0E8;
+  --card: #1A2E1F;
+  --card-foreground: #E8F0E8;
+
+  --primary: #4CAF50;
+  --primary-foreground: #0F1A12;
+  --secondary: #D4AF37;
+  --secondary-foreground: #0F1A12;
+  --accent: #66BB6A;
+  --accent-foreground: #0F1A12;
+
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --success: #22C55E;
+  --success-foreground: #0F1A12;
+  --warning: #FACC15;
+  --warning-foreground: #0F1A12;
+  --info: #60A5FA;
+  --info-foreground: #0F1A12;
+
+  --status-pending: #FACC15;
+  --status-review: #60A5FA;
+  --status-accepted: #22C55E;
+  --status-rejected: #EF4444;
+  --status-modification: #FB923C;
+
+  --muted: #1A2E1F;
+  --muted-foreground: #B8C4BA;
+  --border: #2A3F2F;
+  --input: #1A2E1F;
+  --ring: #4CAF50;
+
+  --shadow-offset: 4px;
+  --shadow-color: #4CAF50;
+  --border-width: 2px;
+  --radius: 5px;
+}
+
+/* --- Tailwind v4 Theme --- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-status-pending: var(--status-pending);
+  --color-status-review: var(--status-review);
+  --color-status-accepted: var(--status-accepted);
+  --color-status-rejected: var(--status-rejected);
+  --color-status-modification: var(--status-modification);
+  --font-sans: 'Tajawal', sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+* {
+  border-color: var(--border);
+}
+
+html {
+  direction: rtl;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
+  letter-spacing: 0.005em;
+}
+
+/* ============================================
+   Neobrutalism Utility Classes
+   ============================================ */
+
+/* --- Shadows --- */
+.nb-shadow {
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+}
+
+.nb-shadow-sm {
+  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+}
+
+.nb-shadow-lg {
+  box-shadow: 6px 6px 0px 0px var(--shadow-color);
+}
+
+.nb-shadow-xl {
+  box-shadow: 8px 8px 0px 0px var(--shadow-color);
+}
+
+.nb-shadow-hover {
+  transition: all 0.15s ease;
+}
+
+.nb-shadow-hover:hover {
+  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+  transform: translate(2px, 2px);
+}
+
+.nb-shadow-hover:active {
+  box-shadow: 0px 0px 0px 0px var(--shadow-color);
+  transform: translate(4px, 4px);
+}
+
+/* --- Borders --- */
+.nb-border {
+  border: var(--border-width) solid var(--border);
+}
+
+.nb-border-thick {
+  border: 3px solid var(--border);
+}
+
+/* --- Cards --- */
+.nb-card {
+  background: var(--card);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  border-radius: var(--radius);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+/* Interactive card — lifts on hover, presses on click */
+.nb-card-interactive {
+  background: var(--card);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  border-radius: var(--radius);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  cursor: pointer;
+}
+
+.nb-card-interactive:hover {
+  box-shadow: 6px 6px 0px 0px var(--shadow-color);
+  transform: translate(-2px, -2px);
+}
+
+.nb-card-interactive:active {
+  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+  transform: translate(2px, 2px);
+}
+
+/* --- Buttons --- */
+.nb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-family: 'Tajawal', sans-serif;
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  border-radius: var(--radius);
+  padding: 0.625rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  position: relative;
+  overflow: hidden;
+}
+
+.nb-btn:hover {
+  box-shadow: none;
+  transform: translate(var(--shadow-offset), var(--shadow-offset));
+}
+
+.nb-btn:active {
+  box-shadow: none;
+  transform: translate(var(--shadow-offset), var(--shadow-offset));
+}
+
+.nb-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.nb-btn:focus-visible {
+  outline: 2px solid var(--border);
+  outline-offset: 2px;
+}
+
+.nb-btn-primary  { background: var(--primary);     color: var(--primary-foreground); }
+.nb-btn-secondary{ background: var(--secondary);   color: var(--secondary-foreground); }
+.nb-btn-accent   { background: var(--accent);      color: var(--accent-foreground); }
+.nb-btn-destructive { background: var(--destructive); color: var(--destructive-foreground); }
+.nb-btn-outline  { background: var(--card);        color: var(--card-foreground); }
+
+/* Reverse variant — shadow appears on hover instead of disappearing */
+.nb-btn-reverse {
+  box-shadow: none;
+}
+.nb-btn-reverse:hover {
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  transform: translate(calc(var(--shadow-offset) * -1), calc(var(--shadow-offset) * -1));
+}
+
+/* No-shadow variant */
+.nb-btn-flat {
+  box-shadow: none;
+}
+.nb-btn-flat:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+/* --- Inputs --- */
+.nb-input {
+  font-family: 'Tajawal', sans-serif;
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.625rem 1rem;
+  background: var(--input);
+  color: var(--foreground);
+  font-size: 0.95rem;
+  width: 100%;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  outline: none;
+}
+
+.nb-input:focus {
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  border-color: var(--primary);
+}
+
+.nb-input::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* --- Badges --- */
+.nb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border: var(--border-width) solid var(--border);
+  border-radius: 9999px;
+  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+  white-space: nowrap;
+}
+
+/* Soft badge variant — lighter border + subtle shadow for a modern
+   soft-UI look. Preserves the same padding/size so it slots in for
+   .nb-badge without layout shift. */
+.nb-badge-soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+/* --- Tags (compact uppercase labels) --- */
+.nb-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulseBorder {
+  0%, 100% { box-shadow: 4px 4px 0 0 var(--shadow-color); }
+  50%       { box-shadow: 7px 7px 0 0 var(--shadow-color); transform: translate(-1px,-1px); }
+}
+
+/* Marquee — items slide to the left (logical RTL: content scrolls leftward visually) */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marqueeReverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%       { transform: rotate(-4deg); }
+  75%       { transform: rotate(4deg); }
+}
+
+@keyframes bounceX {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(-5px); }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-80px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(80px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 0.7; transform: scale(1.05); }
+}
+
+.animate-float        { animation: float       3s   ease-in-out infinite; }
+.animate-pulse-slow   { animation: pulseSlow   4s   ease-in-out infinite; }
+.animate-shake        { animation: shake       0.5s ease-in-out; }
+.animate-slide-up     { animation: slideUp     0.5s ease-out forwards; }
+.animate-fade-in      { animation: fadeIn      0.3s ease-out forwards; }
+.animate-scale-in     { animation: scaleIn     0.3s ease-out forwards; }
+.animate-slide-right  { animation: slideRight  0.7s ease-out forwards; }
+.animate-slide-left   { animation: slideLeft   0.7s ease-out forwards; }
+.animate-pulse-border { animation: pulseBorder 2s   ease-in-out infinite; }
+.animate-wiggle       { animation: wiggle      0.5s ease-in-out; }
+.animate-bounce-x     { animation: bounceX     1s   ease-in-out infinite; }
+
+/* Marquee track — must be twice the content width */
+.animate-marquee {
+  display: flex;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  animation: marqueeReverse 36s linear infinite;
+}
+
+/* Pause on hover */
+.nb-marquee-track:hover .animate-marquee,
+.nb-marquee-track:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/* Staggered animation delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* ============================================
+   Backgrounds
+   ============================================ */
+.bg-pattern {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(31,92,46,0.10)  0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(201,162,39,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 60% 80%, rgba(45,122,62,0.06)  0%, transparent 50%);
+}
+
+.dark .bg-pattern {
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(76,175,80,0.06)  0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212,175,55,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 60% 80%, rgba(102,187,106,0.03) 0%, transparent 50%);
+}
+
+.bg-dots {
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-checker {
+  background-image:
+    linear-gradient(45deg,  rgba(26,26,46,0.04) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(26,26,46,0.04) 25%, transparent 25%),
+    linear-gradient(45deg,  transparent 75%, rgba(26,26,46,0.04) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(26,26,46,0.04) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+::-webkit-scrollbar        { width: 8px; }
+::-webkit-scrollbar-track  { background: var(--muted); }
+::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+/* ============================================
+   Selection
+   ============================================ */
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}

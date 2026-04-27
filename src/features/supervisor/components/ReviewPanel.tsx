@@ -1,0 +1,137 @@
+"use client";
+
+import { useRef } from "react";
+import { ShieldCheck, Send, Loader2 } from "lucide-react";
+import type { useReview, SupervisorStatus, SupervisorRating } from "@/features/supervisor/hooks/useReview";
+import {
+  SUPERVISOR_STATUS_KEYS,
+  STATUS_LABELS,
+} from "../../../../convex/lib/statuses";
+import { RATING_CONFIG, RATING_KEYS } from "@/lib/configs/application";
+import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
+
+type ReviewState = ReturnType<typeof useReview>;
+
+interface ReviewPanelProps {
+  review: ReviewState;
+  onSaved: () => void;
+}
+
+const STATUS_EMOJI: Record<SupervisorStatus, string> = {
+  under_review: "👀",
+  needs_modification: "⚠️",
+  accepted: "✅",
+  rejected: "❌",
+};
+
+/**
+ * Right-column "لوحة التقييم" card. Status / supervisor rating / notes inputs
+ * plus the save button. Stateless — all state lives in the useReview hook.
+ */
+export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
+  const {
+    status,
+    setStatus,
+    rating,
+    setRating,
+    notes,
+    setNotes,
+    isSubmitting,
+    isDirty,
+    handleUpdate,
+  } = review;
+
+  const notesRef = useRef<HTMLTextAreaElement>(null);
+
+  return (
+    <div className="nb-card p-5 border-accent border-[3px] bg-accent/5">
+      <h3 className="font-bold text-base mb-4 flex items-center gap-2 text-accent-foreground">
+        <ShieldCheck className="w-5 h-5 text-accent" />
+        لوحة التقييم
+      </h3>
+
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="review-status" className="block text-sm font-bold mb-2">
+            حالة الطلب
+          </label>
+          <select
+            id="review-status"
+            className="nb-input w-full bg-card"
+            value={status ?? ""}
+            onChange={(e) => setStatus((e.target.value as SupervisorStatus) || null)}
+          >
+            <option value="" disabled hidden>
+              اختر الحركة...
+            </option>
+            {SUPERVISOR_STATUS_KEYS.map((key) => (
+              <option key={key} value={key}>
+                {STATUS_LABELS[key]} {STATUS_EMOJI[key]}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="review-rating" className="block text-sm font-bold mb-2">
+            تقييم المشرف
+          </label>
+          <select
+            id="review-rating"
+            className="nb-input w-full bg-card"
+            value={rating ?? ""}
+            onChange={(e) => setRating((e.target.value as SupervisorRating) || null)}
+          >
+            <option value="">بدون تقييم</option>
+            {RATING_KEYS.map((key) => (
+              <option key={key} value={key}>
+                {RATING_CONFIG[key].selectLabel}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="review-notes" className="block text-sm font-bold mb-2">
+            ملاحظات لفريق العمل
+          </label>
+          <MarkdownToolbar
+            textareaRef={notesRef}
+            value={notes}
+            onChange={setNotes}
+          />
+          <textarea
+            ref={notesRef}
+            id="review-notes"
+            className="nb-input w-full min-h-[120px] bg-card"
+            placeholder="اكتب ملاحظاتك للطالب (ستظهر له في تفاصيل الطلب)..."
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            maxLength={2000}
+            aria-describedby="review-notes-count review-notes-help"
+          />
+          <p id="review-notes-help" className="text-xs text-muted-foreground mt-1">
+            يدعم Markdown — استخدم الأزرار أعلاه أو اكتب الصياغة مباشرة
+          </p>
+          <p
+            id="review-notes-count"
+            className="text-xs text-muted-foreground mt-1 text-left"
+            aria-live="polite"
+          >
+            {notes.length} / 2000
+          </p>
+        </div>
+
+        <button
+          className="nb-btn nb-btn-accent w-full"
+          onClick={() => void handleUpdate(onSaved)}
+          disabled={isSubmitting || !status || !isDirty}
+          title={!isDirty ? "لا تغييرات للحفظ" : undefined}
+        >
+          {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+          حفظ وإرسال إشعار
+        </button>
+      </div>
+    </div>
+  );
+}
