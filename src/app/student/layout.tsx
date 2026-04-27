@@ -12,9 +12,9 @@ import {
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 const OliveLogo = () => (
-  <svg viewBox="0 0 300 300" className="w-6 h-6">
+  <svg viewBox="0 0 300 300" className="w-full h-full">
     <g transform="translate(150 150)">
-      <g fill="#ffffff" stroke="#1A1A1A" strokeWidth="10" strokeLinejoin="round">
+      <g fill="var(--primary)" stroke="#1A1A1A" strokeWidth="10" strokeLinejoin="round">
         <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z"/>
         <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(60)"/>
         <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(120)"/>
@@ -31,7 +31,6 @@ const studentConfig = {
   roles: ["student"] as const,
   brand: {
     icon: <OliveLogo />,
-    iconBgClass: "bg-primary",
     homeHref: "/student",
     subtitle: "لوحة الطالب",
   },

@@ -83,7 +83,11 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
               </button>
               <Link href={config.brand.homeHref} className="flex items-center gap-3">
                 <div
-                  className={`w-10 h-10 nb-border rounded-lg flex items-center justify-center ${config.brand.iconBgClass ?? ""}`}
+                  className={`w-12 h-12 flex items-center justify-center ${
+                    config.brand.iconBgClass || config.brand.iconBgStyle
+                      ? `nb-border rounded-lg ${config.brand.iconBgClass ?? ""}`
+                      : ""
+                  }`}
                   style={config.brand.iconBgStyle}
                 >
                   {config.brand.icon}
