@@ -14,19 +14,17 @@ Convex agent skills for common tasks can be installed by running `npx convex ai-
 
 ```bash
 # Start development (runs Convex backend + Next.js frontend concurrently)
-npm run dev
+pnpm dev
 
 # Production build
-npm run build
+pnpm build
 
 # Lint
-npm run lint
+pnpm lint
 
 # Run Convex backend tests (requires vitest + convex-test setup)
 npx vitest --environment edge-runtime
 ```
-
-Use `pnpm` instead of `npm` if a `pnpm-lock.yaml` is present (it is here).
 
 ## Architecture
 
