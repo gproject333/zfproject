@@ -71,8 +71,8 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
     <RoleGuard allowedRoles={[...config.roles]}>
       <div className={`min-h-screen ${backgroundClass} flex flex-col`}>
         {/* Top Navbar */}
-        <nav className="sticky top-0 z-50 bg-card nb-border-thick border-t-0 border-x-0 px-4 py-3">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <nav className="sticky top-0 z-50 bg-card nb-border-thick border-t-0 border-x-0">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             {/* Right Side: hamburger + brand */}
             <div className="flex items-center gap-3">
               <button
@@ -135,19 +135,11 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
               />
             </div>
           </div>
-        </nav>
 
-        <ScrollingAnnouncementBar audience="student" />
-
-        {/* Mobile Sidebar */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 z-40 md:hidden" onClick={() => setSidebarOpen(false)}>
-            <div className="absolute inset-0 bg-foreground/20" />
-            <div
-              className="absolute right-0 top-0 bottom-0 w-72 bg-card nb-border-thick border-r-0 border-t-0 border-b-0 p-6 pt-20 animate-slide-up"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="space-y-2">
+          {/* Collapsible mobile menu — push-down at top, overlay when sticky */}
+          {sidebarOpen && (
+            <div className="md:hidden border-t border-border/50">
+              <div className="px-3 py-2 space-y-1">
                 {config.navItems.map((item) => {
                   const isActive = pathname === item.href;
                   return (
@@ -170,8 +162,10 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
                 })}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </nav>
+
+        <ScrollingAnnouncementBar audience="student" />
 
         {/* Content */}
         <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-6">

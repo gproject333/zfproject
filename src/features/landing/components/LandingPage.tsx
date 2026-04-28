@@ -75,13 +75,13 @@ export default function LandingPage() {
     <div className="min-h-screen bg-pattern flex flex-col overflow-x-hidden" dir="rtl">
       {/* Navbar */}
       <nav
-        className={`fixed top-0 w-full z-50 px-4 py-3 transition-colors duration-300 ${
+        className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
           isScrolled
             ? "bg-card/95 backdrop-blur-md nb-border-thick border-t-0 border-x-0 text-card-foreground"
             : "bg-transparent border-transparent text-foreground"
         }`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           {/* Brand */}
           <div className="flex items-center gap-3">
             {showAuthNav && (
@@ -156,24 +156,18 @@ export default function LandingPage() {
             )}
           </div>
         </div>
-      </nav>
 
-      {/* Mobile Sidebar — authenticated users only */}
-      {showAuthNav && sidebarOpen && (
-        <div className="fixed inset-0 z-40 md:hidden" onClick={() => setSidebarOpen(false)}>
-          <div className="absolute inset-0 bg-foreground/20" />
-          <div
-            className="absolute right-0 top-0 bottom-0 w-72 bg-card nb-border-thick border-r-0 border-t-0 border-b-0 p-6 pt-20 animate-slide-up"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="space-y-2">
+        {/* Collapsible mobile menu — overlay since navbar is fixed */}
+        {showAuthNav && sidebarOpen && (
+          <div className="md:hidden border-t border-border/50 bg-card/95 backdrop-blur-md">
+            <div className="px-3 py-2 space-y-1">
               {[
-                { label: "الصفحة الرئيسية", href: "/",                       icon: Home },
-                { label: "لوحة التحكم",     href: dashboardHref,             icon: LayoutDashboard },
-                { label: "طلب جديد",        href: "/student/new",            icon: Plus },
-                { label: "طلباتي",          href: "/student/applications",   icon: FileText },
-                { label: "المقالات",         href: "/student/articles",       icon: BookOpen },
-                { label: "دليل التقديم",    href: "/student/guide",          icon: HelpCircle },
+                { label: "الصفحة الرئيسية", href: "/",                     icon: Home },
+                { label: "لوحة التحكم",     href: dashboardHref,           icon: LayoutDashboard },
+                { label: "طلب جديد",        href: "/student/new",          icon: Plus },
+                { label: "طلباتي",          href: "/student/applications", icon: FileText },
+                { label: "المقالات",         href: "/student/articles",     icon: BookOpen },
+                { label: "دليل التقديم",    href: "/student/guide",        icon: HelpCircle },
               ].map(({ label, href, icon: Icon }) => (
                 <Link
                   key={href}
@@ -187,8 +181,8 @@ export default function LandingPage() {
               ))}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </nav>
 
       <ScrollingAnnouncementBar audience="landing" variant="fixed" />
       <Hero
