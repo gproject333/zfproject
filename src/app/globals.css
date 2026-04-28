@@ -40,10 +40,12 @@
   --input: #FFFFFF;
   --ring: #1F5C2E;
 
-  --shadow-offset: 4px;
-  --shadow-color: #1F5C2E;
-  --border-width: 2px;
-  --radius: 5px;
+  --shadow-offset: 3px;
+  --shadow-color: rgba(31, 92, 46, 0.55);
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.07);
+  --border-width: 1.5px;
+  --border: #2A3530;
+  --radius: 10px;
 }
 
 /* --- CSS Variables (Dark) --- */
@@ -81,10 +83,11 @@
   --input: #1A2E1F;
   --ring: #4CAF50;
 
-  --shadow-offset: 4px;
-  --shadow-color: #4CAF50;
-  --border-width: 2px;
-  --radius: 5px;
+  --shadow-offset: 3px;
+  --shadow-color: rgba(76, 175, 80, 0.5);
+  --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.18);
+  --border-width: 1.5px;
+  --radius: 10px;
 }
 
 /* --- Tailwind v4 Theme --- */
@@ -150,33 +153,33 @@ body {
 
 /* --- Shadows --- */
 .nb-shadow {
-  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--shadow-color), var(--shadow-soft);
 }
 
 .nb-shadow-sm {
-  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+  box-shadow: 2px 2px 0px var(--shadow-color), 0 1px 4px rgba(0,0,0,0.06);
 }
 
 .nb-shadow-lg {
-  box-shadow: 6px 6px 0px 0px var(--shadow-color);
+  box-shadow: 5px 5px 0px var(--shadow-color), 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .nb-shadow-xl {
-  box-shadow: 8px 8px 0px 0px var(--shadow-color);
+  box-shadow: 7px 7px 0px var(--shadow-color), 0 6px 16px rgba(0,0,0,0.1);
 }
 
 .nb-shadow-hover {
-  transition: all 0.15s ease;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .nb-shadow-hover:hover {
-  box-shadow: 2px 2px 0px 0px var(--shadow-color);
-  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--shadow-color), 0 1px 4px rgba(0,0,0,0.06);
+  transform: translate(1px, 1px);
 }
 
 .nb-shadow-hover:active {
-  box-shadow: 0px 0px 0px 0px var(--shadow-color);
-  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--shadow-color);
+  transform: translate(3px, 3px);
 }
 
 /* --- Borders --- */
@@ -192,29 +195,29 @@ body {
 .nb-card {
   background: var(--card);
   border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--shadow-color), var(--shadow-soft);
   border-radius: var(--radius);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
 }
 
 /* Interactive card — lifts on hover, presses on click */
 .nb-card-interactive {
   background: var(--card);
   border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--shadow-color), var(--shadow-soft);
   border-radius: var(--radius);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
   cursor: pointer;
 }
 
 .nb-card-interactive:hover {
-  box-shadow: 6px 6px 0px 0px var(--shadow-color);
-  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px var(--shadow-color), 0 6px 18px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
 }
 
 .nb-card-interactive:active {
-  box-shadow: 2px 2px 0px 0px var(--shadow-color);
-  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--shadow-color), 0 1px 3px rgba(0,0,0,0.06);
+  transform: translateY(1px);
 }
 
 /* --- Buttons --- */
@@ -226,11 +229,11 @@ body {
   font-weight: 700;
   font-family: 'Tajawal', sans-serif;
   border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--shadow-color), var(--shadow-soft);
   border-radius: var(--radius);
   padding: 0.625rem 1.5rem;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: box-shadow 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
   font-size: 0.95rem;
   line-height: 1.5;
   position: relative;
@@ -238,24 +241,24 @@ body {
 }
 
 .nb-btn:hover {
-  box-shadow: none;
-  transform: translate(var(--shadow-offset), var(--shadow-offset));
+  box-shadow: 1px 1px 0px var(--shadow-color);
+  transform: translate(2px, 2px);
 }
 
 .nb-btn:active {
   box-shadow: none;
-  transform: translate(var(--shadow-offset), var(--shadow-offset));
+  transform: translate(var(--shadow-offset), var(--shadow-offset)) scale(0.97);
 }
 
 .nb-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .nb-btn:focus-visible {
-  outline: 2px solid var(--border);
-  outline-offset: 2px;
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
 }
 
 .nb-btn-primary  { background: var(--primary);     color: var(--primary-foreground); }
@@ -292,12 +295,13 @@ body {
   color: var(--foreground);
   font-size: 0.95rem;
   width: 100%;
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   outline: none;
 }
 
 .nb-input:focus {
-  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--shadow-color);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--shadow-color),
+              0 0 0 3px rgba(31, 92, 46, 0.12);
   border-color: var(--primary);
 }
 
@@ -315,8 +319,13 @@ body {
   padding: 0.2rem 0.65rem;
   border: var(--border-width) solid var(--border);
   border-radius: 9999px;
-  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+  box-shadow: 2px 2px 0px var(--shadow-color), 0 1px 3px rgba(0,0,0,0.06);
   white-space: nowrap;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.nb-badge:hover {
+  transform: scale(1.04);
 }
 
 /* Soft badge variant — lighter border + subtle shadow for a modern
@@ -344,11 +353,16 @@ body {
   font-size: 0.7rem;
   font-weight: 800;
   padding: 0.15rem 0.5rem;
-  border: 2px solid var(--border);
-  border-radius: 4px;
-  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0px var(--shadow-color), 0 1px 3px rgba(0,0,0,0.05);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  transition: transform 0.18s ease;
+}
+
+.nb-tag:hover {
+  transform: scale(1.03);
 }
 
 /* ============================================
@@ -381,8 +395,8 @@ body {
 }
 
 @keyframes pulseBorder {
-  0%, 100% { box-shadow: 4px 4px 0 0 var(--shadow-color); }
-  50%       { box-shadow: 7px 7px 0 0 var(--shadow-color); transform: translate(-1px,-1px); }
+  0%, 100% { box-shadow: 3px 3px 0 var(--shadow-color), 0 2px 8px rgba(0,0,0,0.07); }
+  50%       { box-shadow: 6px 6px 0 var(--shadow-color), 0 4px 14px rgba(0,0,0,0.1); transform: translate(-1px,-1px); }
 }
 
 /* Marquee — items slide to the left (logical RTL: content scrolls leftward visually) */
