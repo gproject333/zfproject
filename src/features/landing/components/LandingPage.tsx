@@ -4,15 +4,15 @@ import { useConvexAuth, useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  Sparkles, LogIn, LogOut, Menu, X,
+  Sparkles, LogIn, Menu, X,
   Home, LayoutDashboard, Plus, FileText, BookOpen, HelpCircle,
 } from "lucide-react";
 import OliveLogo from "@/components/OliveLogo";
-import { useClerk, useAuth } from "@clerk/nextjs";
+import SettingsMenu from "@/components/SettingsMenu";
+import { useAuth } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 import AppFooter from "@/components/AppFooter";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import Hero from "./Hero";
 import FeaturesSection from "./FeaturesSection";
 import HeroCarousel from "@/features/banners/components/HeroCarousel";
@@ -22,7 +22,6 @@ import Testimonials from "./Testimonials";
 import FAQ from "./FAQ";
 import Partners from "./Partners";
 import FinalCTA from "./FinalCTA";
-import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnnouncementBar";
 
 /** Map a user role to the landing page of their role-specific
@@ -30,15 +29,16 @@ import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnn
 function dashboardHrefFor(user: Doc<"users"> | null | undefined): string {
   if (!user) return "/student";
   switch (user.role) {
-    case "admin":
-      return "/admin";
-    case "sponsor":
-      return "/sponsor";
-    case "supervisor":
-      return "/supervisor";
-    default:
-      return "/student";
+    case "admin":     return "/admin";
+    case "sponsor":   return "/sponsor";
+    case "supervisor":return "/supervisor";
+    default:          return "/student";
   }
+}
+
+function profileHrefFor(user: Doc<"users"> | null | undefined): string {
+  if (!user || user.role === "student" || !user.role) return "/student/profile";
+  return dashboardHrefFor(user);
 }
 
 /**
@@ -50,25 +50,12 @@ function dashboardHrefFor(user: Doc<"users"> | null | undefined): string {
 export default function LandingPage() {
   const { isAuthenticated } = useConvexAuth();
   const { isLoaded: clerkLoaded, isSignedIn } = useAuth();
-  const { signOut } = useClerk();
   const user = useQuery(api.users.shared.currentUser);
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
-
-  const handleLogout = async () => {
-    setIsLoggingOut(true);
-    try {
-      await signOut();
-    } finally {
-      setIsLoggingOut(false);
-      setShowLogoutConfirm(false);
-    }
-  };
 
   // Scroll-triggered navbar background
   useEffect(() => {
@@ -142,22 +129,13 @@ export default function LandingPage() {
 
           {/* Right actions */}
           <div className="flex items-center gap-2 shrink-0">
-            <ThemeToggle />
             {!authReady ? (
-              /* Skeleton أثناء تحميل الجلسة */
               <div className="flex items-center gap-2">
                 <div className="w-24 h-8 rounded-lg bg-foreground/10 animate-pulse" />
                 <div className="w-20 h-8 rounded-lg bg-foreground/10 animate-pulse" />
               </div>
             ) : showAuthNav ? (
-              <button
-                onClick={() => setShowLogoutConfirm(true)}
-                className="nb-btn nb-btn-outline text-sm py-2 px-3 sm:px-4 whitespace-nowrap shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">تسجيل الخروج</span>
-                <span className="sm:hidden">خروج</span>
-              </button>
+              <SettingsMenu profileHref={profileHrefFor(user)} logoutHref="/login" />
             ) : (
               showGuestCtas && (
                 <>
@@ -233,20 +211,6 @@ export default function LandingPage() {
       <FinalCTA />
       <AppFooter />
 
-      <ConfirmDialog
-        open={showLogoutConfirm}
-        onOpenChange={(open) => {
-          if (!isLoggingOut) setShowLogoutConfirm(open);
-        }}
-        title="تسجيل الخروج"
-        description="هل أنت متأكد من رغبتك في تسجيل الخروج من الحساب؟"
-        icon={<LogOut className="w-6 h-6 text-destructive" />}
-        destructive
-        confirmLabel="تسجيل الخروج"
-        cancelLabel="إلغاء"
-        isSubmitting={isLoggingOut}
-        onConfirm={() => void handleLogout()}
-      />
     </div>
   );
 }
