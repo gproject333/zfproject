@@ -16,7 +16,7 @@ interface HeroProps {
  */
 export default function Hero({ dashboardHref = "/student", userName, authReady = false, isSignedIn = false }: HeroProps) {
   return (
-    <section className="relative flex-1 min-h-[85vh] flex items-center px-4 pt-32 pb-12 overflow-hidden">
+    <section className="relative flex-1 min-h-[85vh] flex items-center px-4 pt-10 pb-12 overflow-hidden">
       <div className="absolute inset-0 bg-dots opacity-[0.04] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto w-full">

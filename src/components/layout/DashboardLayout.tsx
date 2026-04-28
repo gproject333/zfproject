@@ -138,7 +138,7 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
 
           {/* Collapsible mobile menu — push-down at top, overlay when sticky */}
           {sidebarOpen && (
-            <div className="md:hidden border-t border-border/50">
+            <div className="md:hidden border-t border-border/50 animate-slide-down">
               <div className="px-3 py-2 space-y-1">
                 {config.navItems.map((item) => {
                   const isActive = pathname === item.href;

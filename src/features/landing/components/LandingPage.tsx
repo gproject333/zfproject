@@ -75,7 +75,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-pattern flex flex-col overflow-x-hidden" dir="rtl">
       {/* Navbar */}
       <nav
-        className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
+        className={`sticky top-0 w-full z-50 transition-colors duration-300 ${
           isScrolled
             ? "bg-card/95 backdrop-blur-md nb-border-thick border-t-0 border-x-0 text-card-foreground"
             : "bg-transparent border-transparent text-foreground"
@@ -157,9 +157,9 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Collapsible mobile menu — overlay since navbar is fixed */}
+        {/* Collapsible mobile menu */}
         {showAuthNav && sidebarOpen && (
-          <div className="md:hidden border-t border-border/50 bg-card/95 backdrop-blur-md">
+          <div className="md:hidden border-t border-border/50 bg-card/95 backdrop-blur-md animate-slide-down">
             <div className="px-3 py-2 space-y-1">
               {[
                 { label: "الصفحة الرئيسية", href: "/",                     icon: Home },
