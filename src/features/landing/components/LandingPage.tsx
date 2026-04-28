@@ -77,7 +77,7 @@ export default function LandingPage() {
       <nav
         className={`sticky top-0 w-full z-50 transition-colors duration-300 ${
           isScrolled
-            ? "bg-card/95 backdrop-blur-md nb-border-thick border-t-0 border-x-0 text-card-foreground"
+            ? "glass border-b border-white/20 dark:border-white/5 text-foreground"
             : "bg-transparent border-transparent text-foreground"
         }`}
       >
@@ -160,7 +160,7 @@ export default function LandingPage() {
         {/* Collapsible mobile menu */}
         {showAuthNav && (
           <div
-            className="md:hidden overflow-hidden bg-card/95 backdrop-blur-md"
+            className="md:hidden overflow-hidden glass"
             style={{
               maxHeight: sidebarOpen ? '400px' : '0px',
               opacity: sidebarOpen ? 1 : 0,

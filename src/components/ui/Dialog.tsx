@@ -25,10 +25,10 @@ export function DialogContent({
 }: DialogContentProps) {
   return (
     <RDialog.Portal>
-      <RDialog.Overlay className="fixed inset-0 bg-black/60 z-50 animate-in fade-in duration-150" />
+      <RDialog.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 animate-in fade-in duration-200" />
       <RDialog.Content
         dir="rtl"
-        className={`nb-card fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 p-6 max-w-md w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] overflow-y-auto animate-in fade-in zoom-in-95 duration-150 ${className}`}
+        className={`glass fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 p-6 rounded-2xl max-w-md w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] overflow-y-auto animate-in fade-in zoom-in-95 duration-200 ${className}`}
       >
         {!title && <RDialog.Title className="sr-only">مربع حوار</RDialog.Title>}
         {!description && <RDialog.Description className="sr-only">محتوى مربع الحوار</RDialog.Description>}

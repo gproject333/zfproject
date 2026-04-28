@@ -27,7 +27,7 @@ export function DropdownMenuContent({
       <RDropdown.Content
         align={align}
         sideOffset={6}
-        className={`nb-card nb-shadow min-w-[12rem] p-1 z-50 animate-in fade-in zoom-in-95 duration-100 ${className}`}
+        className={`glass-subtle rounded-xl min-w-[12rem] p-1 z-50 animate-in fade-in zoom-in-95 duration-150 ${className}`}
       >
         {children}
       </RDropdown.Content>
