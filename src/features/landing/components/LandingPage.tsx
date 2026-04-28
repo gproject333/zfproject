@@ -158,9 +158,16 @@ export default function LandingPage() {
         </div>
 
         {/* Collapsible mobile menu */}
-        {showAuthNav && sidebarOpen && (
-          <div className="md:hidden border-t border-border/50 bg-card/95 backdrop-blur-md animate-slide-down">
-            <div className="px-3 py-2 space-y-1">
+        {showAuthNav && (
+          <div
+            className="md:hidden overflow-hidden bg-card/95 backdrop-blur-md"
+            style={{
+              maxHeight: sidebarOpen ? '400px' : '0px',
+              opacity: sidebarOpen ? 1 : 0,
+              transition: 'max-height 0.35s ease-in-out, opacity 0.25s ease-in-out',
+            }}
+          >
+            <div className="border-t border-border/50 px-3 py-2 space-y-1">
               {[
                 { label: "الصفحة الرئيسية", href: "/",                     icon: Home },
                 { label: "لوحة التحكم",     href: dashboardHref,           icon: LayoutDashboard },

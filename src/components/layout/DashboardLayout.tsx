@@ -137,32 +137,37 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
           </div>
 
           {/* Collapsible mobile menu — push-down at top, overlay when sticky */}
-          {sidebarOpen && (
-            <div className="md:hidden border-t border-border/50 animate-slide-down">
-              <div className="px-3 py-2 space-y-1">
-                {config.navItems.map((item) => {
-                  const isActive = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setSidebarOpen(false)}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all nb-border ${
-                        isActive
-                          ? config.active.className ?? ""
-                          : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
-                      }`}
-                      style={isActive ? config.active.style : undefined}
-                    >
-                      <item.icon className="w-5 h-5" />
-                      {item.label}
-                      {isActive && <ChevronLeft className="w-4 h-4 mr-auto" />}
-                    </Link>
-                  );
-                })}
-              </div>
+          <div
+            className="md:hidden overflow-hidden"
+            style={{
+              maxHeight: sidebarOpen ? '400px' : '0px',
+              opacity: sidebarOpen ? 1 : 0,
+              transition: 'max-height 0.35s ease-in-out, opacity 0.25s ease-in-out',
+            }}
+          >
+            <div className="border-t border-border/50 px-3 py-2 space-y-1">
+              {config.navItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all nb-border ${
+                      isActive
+                        ? config.active.className ?? ""
+                        : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
+                    }`}
+                    style={isActive ? config.active.style : undefined}
+                  >
+                    <item.icon className="w-5 h-5" />
+                    {item.label}
+                    {isActive && <ChevronLeft className="w-4 h-4 mr-auto" />}
+                  </Link>
+                );
+              })}
             </div>
-          )}
+          </div>
         </nav>
 
         <ScrollingAnnouncementBar audience="student" />
