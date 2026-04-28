@@ -4,9 +4,10 @@ import { useConvexAuth, useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  GraduationCap, Sparkles, LogIn, LogOut,
+  Sparkles, LogIn, LogOut, Menu, X,
   Home, LayoutDashboard, Plus, FileText, BookOpen, HelpCircle,
 } from "lucide-react";
+import OliveLogo from "@/components/OliveLogo";
 import { useClerk, useAuth } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc } from "../../../../convex/_generated/dataModel";
@@ -53,6 +54,7 @@ export default function LandingPage() {
   const user = useQuery(api.users.shared.currentUser);
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -94,31 +96,26 @@ export default function LandingPage() {
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           {/* Brand */}
-          <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="الصفحة الرئيسية">
-            <div className="w-10 h-10 bg-primary nb-border rounded-xl flex items-center justify-center nb-shadow-sm">
-              {showAuthNav ? (
-                <svg viewBox="0 0 300 300" className="w-6 h-6">
-                  <g transform="translate(150 150)">
-                    <g fill="#ffffff" stroke="#1A1A1A" strokeWidth="10" strokeLinejoin="round">
-                      <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z"/>
-                      <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(60)"/>
-                      <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(120)"/>
-                      <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(180)"/>
-                      <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(240)"/>
-                      <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(300)"/>
-                    </g>
-                    <ellipse cx="0" cy="0" rx="13" ry="17" fill="#2B1F3A" stroke="#1A1A1A" strokeWidth="6"/>
-                  </g>
-                </svg>
-              ) : (
-                <GraduationCap className="w-5 h-5" />
-              )}
-            </div>
-            <div className="hidden sm:block">
-              <p className="font-extrabold text-base leading-tight">حاضنة الزيتونة</p>
-              <p className="text-[10px] text-muted-foreground font-bold">ZUJ Incubator</p>
-            </div>
-          </Link>
+          <div className="flex items-center gap-3">
+            {showAuthNav && (
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="md:hidden w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover"
+                aria-label="القائمة"
+              >
+                {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            )}
+            <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="الصفحة الرئيسية">
+              <div className="w-12 h-12 flex items-center justify-center">
+                <OliveLogo />
+              </div>
+              <div className="hidden sm:block">
+                <p className="font-extrabold text-base leading-tight">حاضنة الزيتونة</p>
+                <p className="text-[10px] text-muted-foreground font-bold">ZUJ Incubator</p>
+              </div>
+            </Link>
+          </div>
 
           {/* Nav links — only when authenticated */}
           {showAuthNav && (
@@ -182,6 +179,38 @@ export default function LandingPage() {
           </div>
         </div>
       </nav>
+
+      {/* Mobile Sidebar — authenticated users only */}
+      {showAuthNav && sidebarOpen && (
+        <div className="fixed inset-0 z-40 md:hidden" onClick={() => setSidebarOpen(false)}>
+          <div className="absolute inset-0 bg-foreground/20" />
+          <div
+            className="absolute right-0 top-0 bottom-0 w-72 bg-card nb-border-thick border-r-0 border-t-0 border-b-0 p-6 pt-20 animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="space-y-2">
+              {[
+                { label: "الصفحة الرئيسية", href: "/",                       icon: Home },
+                { label: "لوحة التحكم",     href: dashboardHref,             icon: LayoutDashboard },
+                { label: "طلب جديد",        href: "/student/new",            icon: Plus },
+                { label: "طلباتي",          href: "/student/applications",   icon: FileText },
+                { label: "المقالات",         href: "/student/articles",       icon: BookOpen },
+                { label: "دليل التقديم",    href: "/student/guide",          icon: HelpCircle },
+              ].map(({ label, href, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all nb-border bg-transparent border-transparent hover:bg-muted hover:border-foreground"
+                >
+                  <Icon className="w-5 h-5" />
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <ScrollingAnnouncementBar audience="landing" variant="fixed" />
       <Hero
