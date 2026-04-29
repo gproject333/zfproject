@@ -33,9 +33,11 @@ export default function LoginForm({ variant }: LoginFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await auth.signInWithPassword(async () => {
-      router.push(config.redirectTo);
-    });
+    if (auth.needsSecondFactor) {
+      await auth.verifySecondFactor(async () => { router.push(config.redirectTo); });
+    } else {
+      await auth.signInWithPassword(async () => { router.push(config.redirectTo); });
+    }
   };
 
   const isLight = config.theme === "light";
@@ -119,30 +121,54 @@ export default function LoginForm({ variant }: LoginFormProps) {
           <form onSubmit={handleSubmit} className="space-y-5">
             {auth.error && <ErrorBanner message={auth.error} dark={!isLight} />}
 
-            <FloatingEmailInput
-              id={`${variant}-email`}
-              label="البريد الإلكتروني"
-              value={auth.email}
-              onChange={auth.setEmail}
-              config={config}
-            />
-
-            <FloatingPasswordInput
-              id={`${variant}-password`}
-              label="كلمة المرور"
-              value={auth.password}
-              onChange={auth.setPassword}
-              showPassword={auth.showPassword}
-              onToggleVisibility={auth.togglePasswordVisibility}
-              config={config}
-            />
-
-            {variant === "student" && (
-              <div className="flex justify-start">
-                <Link href="/forgot-password" className="text-xs font-bold text-primary hover:underline underline-offset-4">
-                  نسيت كلمة المرور؟
-                </Link>
-              </div>
+            {auth.needsSecondFactor ? (
+              <>
+                <div className="text-center py-2">
+                  <p className="text-sm font-bold" style={isLight ? {} : { color: "#86efac" }}>
+                    تم إرسال رمز التحقق إلى بريدك الإلكتروني
+                  </p>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={auth.otp}
+                    onChange={(e) => auth.setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    placeholder="أدخل رمز التحقق"
+                    className={config.inputClassName ?? "nb-input"}
+                    style={config.inputStyle ? { ...config.inputStyle, textAlign: "center", letterSpacing: "0.3em" } : { textAlign: "center", letterSpacing: "0.3em" }}
+                    required
+                    autoComplete="one-time-code"
+                    dir="ltr"
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <FloatingEmailInput
+                  id={`${variant}-email`}
+                  label="البريد الإلكتروني"
+                  value={auth.email}
+                  onChange={auth.setEmail}
+                  config={config}
+                />
+                <FloatingPasswordInput
+                  id={`${variant}-password`}
+                  label="كلمة المرور"
+                  value={auth.password}
+                  onChange={auth.setPassword}
+                  showPassword={auth.showPassword}
+                  onToggleVisibility={auth.togglePasswordVisibility}
+                  config={config}
+                />
+                {variant === "student" && (
+                  <div className="flex justify-start">
+                    <Link href="/forgot-password" className="text-xs font-bold text-primary hover:underline underline-offset-4">
+                      نسيت كلمة المرور؟
+                    </Link>
+                  </div>
+                )}
+              </>
             )}
 
             <SubmitButton
