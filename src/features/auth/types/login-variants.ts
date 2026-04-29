@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 
-export type LoginVariant = "student" | "admin" | "sponsor";
+export type LoginVariant = "student" | "admin" | "sponsor" | "supervisor";
 
 export interface LoginVariantConfig {
   theme: "light" | "dark";

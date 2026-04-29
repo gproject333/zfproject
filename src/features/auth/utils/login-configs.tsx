@@ -5,6 +5,7 @@ import {
   Building2,
   Star,
   Sparkles,
+  BookUser,
 } from "lucide-react";
 import type { LoginVariant, LoginVariantConfig } from "../types/login-variants";
 
@@ -63,7 +64,7 @@ const STUDENT_CONFIG: LoginVariantConfig = {
 
 const ADMIN_CONFIG: LoginVariantConfig = {
   theme: "dark",
-  redirectTo: "/admin",
+  redirectTo: "/login-redirect",
   brand: {
     icon: <ShieldAlert className="w-10 h-10 text-white" />,
     iconBoxStyle: { background: "#DC2626", border: "3px solid #991B1B", boxShadow: "6px 6px 0 #7F1D1D" },
@@ -109,7 +110,7 @@ const ADMIN_CONFIG: LoginVariantConfig = {
 
 const SPONSOR_CONFIG: LoginVariantConfig = {
   theme: "dark",
-  redirectTo: "/sponsor",
+  redirectTo: "/login-redirect",
   brand: {
     icon: (
       <div className="relative">
@@ -160,8 +161,55 @@ const SPONSOR_CONFIG: LoginVariantConfig = {
   footerNode: <p className="text-center mt-4 text-xs" style={{ color: "#6B7280" }}>حسابك أنشأه فريق حاضنة الزيتونة — تواصل معهم لأي مساعدة</p>,
 };
 
+const SUPERVISOR_CONFIG: LoginVariantConfig = {
+  theme: "dark",
+  redirectTo: "/login-redirect",
+  brand: {
+    icon: <BookUser className="w-10 h-10 text-white" />,
+    iconBoxStyle: { background: "#1F5C2E", border: "3px solid #164520", boxShadow: "6px 6px 0 #0d2e16" },
+    title: "بوابة المشرفين",
+    subtitle: "دخول المشرفين الأكاديميين",
+    subtitleColor: "#86efac",
+    titleColor: "white",
+  },
+  pageStyle: { background: "linear-gradient(135deg, #0a0d0a 0%, #0a150a 50%, #0a0d0a 100%)" },
+  pageClassName: "min-h-screen flex items-center justify-center p-4 relative overflow-hidden",
+  decorations: (
+    <>
+      <div className="absolute inset-0 bg-dots opacity-[0.04]" />
+      <div className="absolute top-10 left-10 w-24 h-24 rounded-lg rotate-12 animate-float opacity-20" style={{ background: "#1F5C2E", border: "2px solid #164520" }} />
+      <div className="absolute bottom-16 right-16 w-16 h-16 rounded-full animate-float opacity-15" style={{ background: "#14532D", border: "2px solid #0d2e16", animationDelay: "1.2s" }} />
+      <div className="absolute top-1/2 right-12 w-10 h-10 rotate-45 animate-float opacity-10" style={{ background: "#166534", border: "2px solid #14532D", animationDelay: "0.6s" }} />
+    </>
+  ),
+  cardStyle: { background: "#111a11", border: "3px solid #1F5C2E", boxShadow: "6px 6px 0 #0d2e16" },
+  cardClassName: "p-8 rounded-lg",
+  cardBorderStyle: { borderBottom: "2px solid #1a2a1a" },
+  titleBarLabel: "تسجيل دخول — Supervisor",
+  titleBarLabelColor: "white",
+  titleBarDots: [
+    { background: "#DC2626", border: "1px solid #991B1B" },
+    { background: "#B45309", border: "1px solid #92400E" },
+    { background: "#1F5C2E", border: "1px solid #14532D" },
+  ],
+  inputStyle: { background: "#0d0d0d", border: "2px solid #1a2a1a", color: "white", borderRadius: "5px", padding: "0.75rem 3rem 0.75rem 1rem", width: "100%", fontFamily: "Tajawal, sans-serif" },
+  inputIconColor: "#9CA3AF",
+  labelClassName: "block text-sm font-bold text-white",
+  emailPlaceholder: "supervisor@zuj.edu.jo",
+  passwordPlaceholder: "كلمة مرور المشرف",
+  floatLabelBg: "#111a11",
+  floatLabelRestColor: "#9CA3AF",
+  floatLabelActiveColor: "#86efac",
+  submitButtonStyle: { background: "#1F5C2E", color: "white", border: "2px solid #164520", boxShadow: "4px 4px 0 #0d2e16", fontFamily: "Tajawal, sans-serif" },
+  submitButtonClassName: "w-full flex items-center justify-center gap-2 font-bold text-base py-3 rounded-lg transition-all",
+  submitText: "دخول لوحة المشرف",
+  submitHoverShadow: { from: "4px 4px 0 #0d2e16", to: "2px 2px 0 #0d2e16" },
+  footerNode: <p className="text-center mt-4 text-xs" style={{ color: "#6B7280" }}>حسابك أنشأه فريق حاضنة الزيتونة — تواصل معهم لأي مساعدة</p>,
+};
+
 export const LOGIN_VARIANTS: Record<LoginVariant, LoginVariantConfig> = {
   student: STUDENT_CONFIG,
   admin: ADMIN_CONFIG,
   sponsor: SPONSOR_CONFIG,
+  supervisor: SUPERVISOR_CONFIG,
 };
