@@ -7,7 +7,7 @@ import {
   Compass,
   Loader2,
   ExternalLink,
-  Youtube,
+  Video,
   GraduationCap,
   Link2,
 } from "lucide-react";
@@ -23,7 +23,7 @@ const FILTERS: { value: FilterType; label: string }[] = [
 ];
 
 const TYPE_ICON = {
-  video: Youtube,
+  video: Video,
   course: GraduationCap,
   link: Link2,
 } as const;

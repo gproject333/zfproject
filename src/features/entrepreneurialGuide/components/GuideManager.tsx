@@ -7,7 +7,7 @@ import {
   Edit3,
   Trash2,
   ExternalLink,
-  Youtube,
+  Video,
   GraduationCap,
   Link2,
 } from "lucide-react";
@@ -32,7 +32,7 @@ const TYPE_LABEL = {
 } as const;
 
 const TYPE_ICON = {
-  video: Youtube,
+  video: Video,
   course: GraduationCap,
   link: Link2,
 } as const;
