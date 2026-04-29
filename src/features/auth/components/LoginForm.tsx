@@ -115,6 +115,7 @@ export default function LoginForm({ variant }: LoginFormProps) {
             </div>
           )}
 
+          <div id="clerk-captcha" />
           <form onSubmit={handleSubmit} className="space-y-5">
             {auth.error && <ErrorBanner message={auth.error} dark={!isLight} />}
 
