@@ -45,6 +45,7 @@ export function useAuthForm(): UseAuthFormResult {
           await setActive!({ session: result.createdSessionId });
           await onSuccess();
         } else if (result.status === "needs_second_factor") {
+          await result.prepareSecondFactor({ strategy: "email_code" });
           setNeedsSecondFactor(true);
         } else {
           setError("حدث خطأ غير متوقع. حاول مجدداً.");
