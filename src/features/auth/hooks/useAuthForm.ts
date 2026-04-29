@@ -39,11 +39,13 @@ export function useAuthForm(): UseAuthFormResult {
           await setActive!({ session: result.createdSessionId });
           await onSuccess();
         } else {
+          console.error("Clerk sign-in unexpected status:", result.status, JSON.stringify(result));
           setError("حدث خطأ غير متوقع. حاول مجدداً.");
         }
       } catch (err: unknown) {
-        const clerkErr = err as { errors?: { code?: string }[] };
+        const clerkErr = err as { errors?: { code?: string; message?: string }[] };
         const code = clerkErr?.errors?.[0]?.code ?? "";
+        console.error("Clerk login error:", code, JSON.stringify(clerkErr?.errors));
         if (code === "form_password_incorrect" || code === "form_identifier_not_found") {
           setError("البريد الإلكتروني أو كلمة المرور غير صحيحة.");
         } else if (code === "too_many_requests") {
