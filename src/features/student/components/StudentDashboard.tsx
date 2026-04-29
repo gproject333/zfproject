@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Plus, TrendingUp, HelpCircle, BookOpen } from "lucide-react";
+import { Plus, TrendingUp, HelpCircle, BookOpen, Compass } from "lucide-react";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
 import { useStudentDashboardStats } from "@/features/student/hooks/useStudentDashboardStats";
 import StudentAvatar from "./StudentAvatar";
@@ -128,6 +128,23 @@ export default function StudentDashboard() {
               <h3 className="text-lg font-bold mb-1">المقالات</h3>
               <p className="text-sm text-muted-foreground font-medium">
                 اقرأ المقالات التي يكتبها المشرفون
+              </p>
+            </div>
+          </div>
+        </button>
+
+        <button
+          onClick={() => router.push("/student/entrepreneurial-guide")}
+          className="nb-card-interactive p-6 text-right group w-full"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-secondary/15 nb-border rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform">
+              <Compass className="w-7 h-7 text-secondary" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-1">دليلك الريادي</h3>
+              <p className="text-sm text-muted-foreground font-medium">
+                فيديوهات ودورات وروابط ريادية
               </p>
             </div>
           </div>

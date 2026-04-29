@@ -7,6 +7,7 @@ import {
   FileText,
   Megaphone,
   BookOpen,
+  Compass,
 } from "lucide-react";
 import SupervisorSidebarLayout from "@/components/layout/SupervisorSidebarLayout";
 
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
   { label: "إدارة الطلبات", href: "/supervisor/applications", icon: FileText },
   { label: "الإعلانات", href: "/supervisor/banners", icon: Megaphone },
   { label: "المقالات", href: "/supervisor/articles", icon: BookOpen },
+  { label: "الدليل الريادي", href: "/supervisor/entrepreneurial-guide", icon: Compass },
 ];
 
 export default function SupervisorLayout({ children }: { children: ReactNode }) {

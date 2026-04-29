@@ -299,6 +299,26 @@ export default defineSchema({
   }).index("by_user", ["userId"]),
 
   // ============================================
+  // الدليل الريادي
+  // ============================================
+  // Supervisor-managed educational resources (videos, courses, links)
+  // visible to all students via /student/entrepreneurial-guide.
+  entrepreneurialGuide: defineTable({
+    title: v.string(),
+    type: v.union(
+      v.literal("video"),
+      v.literal("course"),
+      v.literal("link"),
+    ),
+    url: v.string(),
+    createdBy: v.id("users"),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_type", ["type"])
+    .index("by_createdAt", ["createdAt"]),
+
+  // ============================================
   // المقالات
   // ============================================
   // Supervisor-authored articles rendered in a dedicated page for the
