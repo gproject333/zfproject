@@ -1,5 +1,6 @@
 "use client";
 
+import type { Doc } from "../../../../convex/_generated/dataModel";
 import {
   Compass,
   Plus,
@@ -94,7 +95,7 @@ export default function GuideManager() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {admin.resources.map((r) => {
+            {admin.resources.map((r: Doc<"entrepreneurialGuide">) => {
               const Icon = TYPE_ICON[r.type];
               return (
                 <TableRow key={r._id}>
