@@ -39,7 +39,6 @@ export function useAuthForm(): UseAuthFormResult {
           await setActive!({ session: result.createdSessionId });
           await onSuccess();
         } else {
-          console.error("Clerk sign-in status:", result.status, result);
           setError("حدث خطأ غير متوقع. حاول مجدداً.");
         }
       } catch (err: unknown) {
