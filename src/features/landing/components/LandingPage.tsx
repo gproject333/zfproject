@@ -3,6 +3,7 @@
 import { useConvexAuth, useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Sparkles, LogIn, Menu, X,
   Home, LayoutDashboard, Plus, FileText, BookOpen, HelpCircle,
@@ -48,19 +49,20 @@ function profileHrefFor(user: Doc<"users"> | null | undefined): string {
  * "login / register" to "go to my dashboard" based on auth state.
  */
 export default function LandingPage() {
-  const { isAuthenticated } = useConvexAuth();
+  useConvexAuth();
   const { isLoaded: clerkLoaded, isSignedIn } = useAuth();
   const user = useQuery(api.users.shared.currentUser);
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => { setMounted(true); }, []);
 
   // Scroll-triggered navbar background
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -72,10 +74,10 @@ export default function LandingPage() {
   const showAuthNav   = authReady && !!isSignedIn;
 
   return (
-    <div className="min-h-screen bg-pattern flex flex-col overflow-x-hidden" dir="rtl">
+    <div className="min-h-screen bg-pattern flex flex-col overflow-x-hidden pt-[68px]" dir="rtl">
       {/* Navbar */}
       <nav
-        className={`sticky top-0 w-full z-50 transition-colors duration-300 ${
+        className={`fixed top-0 right-0 left-0 w-full z-50 transition-colors duration-300 ${
           isScrolled
             ? "glass border-b border-white/20 dark:border-white/5 text-foreground"
             : "bg-transparent border-transparent text-foreground"
@@ -114,16 +116,23 @@ export default function LandingPage() {
                 { label: "طلباتي",          href: "/student/applications", icon: FileText },
                 { label: "المقالات",         href: "/student/articles", icon: BookOpen },
                 { label: "دليل التقديم",    href: "/student/guide", icon: HelpCircle },
-              ].map(({ label, href, icon: Icon }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="flex items-center gap-1.5 px-3 py-1.5 nb-border rounded-lg text-sm font-bold transition-all hover:bg-primary hover:text-primary-foreground hover:nb-shadow-sm whitespace-nowrap"
-                >
-                  <Icon className="w-4 h-4" />
-                  {label}
-                </Link>
-              ))}
+              ].map(({ label, href, icon: Icon }) => {
+                const isActive = pathname === href;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 nb-border rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
+                      isActive
+                        ? "bg-primary text-primary-foreground nb-shadow-sm"
+                        : "hover:bg-primary hover:text-primary-foreground hover:nb-shadow-sm"
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    {label}
+                  </Link>
+                );
+              })}
             </div>
           )}
 
@@ -175,17 +184,24 @@ export default function LandingPage() {
                 { label: "طلباتي",          href: "/student/applications", icon: FileText },
                 { label: "المقالات",         href: "/student/articles",     icon: BookOpen },
                 { label: "دليل التقديم",    href: "/student/guide",        icon: HelpCircle },
-              ].map(({ label, href, icon: Icon }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setSidebarOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all nb-border bg-transparent border-transparent hover:bg-muted hover:border-foreground"
-                >
-                  <Icon className="w-5 h-5" />
-                  {label}
-                </Link>
-              ))}
+              ].map(({ label, href, icon: Icon }) => {
+                const isActive = pathname === href;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all nb-border ${
+                      isActive
+                        ? "bg-primary text-primary-foreground nb-shadow-sm border-foreground"
+                        : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    {label}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}

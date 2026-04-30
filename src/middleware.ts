@@ -3,8 +3,8 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 const isProtectedRoute = createRouteMatcher([
   "/student(.*)",
   "/supervisor(.*)",
-  "/admin(.*)",
-  "/sponsor(.*)",
+  "/admin/((?!login).*)",
+  "/sponsor/((?!login).*)",
   "/login-redirect(.*)",
 ]);
 

@@ -7,6 +7,7 @@ import {
   Info,
   Star,
   Megaphone,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 import type { Doc } from "../../convex/_generated/dataModel";
@@ -22,6 +23,7 @@ export const NOTIFICATION_TYPE_ICONS: Record<
   ai_evaluation: Brain,
   announcement: Megaphone,
   system: Info,
+  upgrade_request: TrendingUp,
 };
 
 export function notificationTimeAgo(ts: number): string {

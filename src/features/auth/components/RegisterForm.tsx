@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -13,6 +14,7 @@ import {
   Loader2,
   CheckCircle2,
   Sparkles,
+  ShieldCheck,
 } from "lucide-react";
 import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
 import {
@@ -21,19 +23,33 @@ import {
   FloatingPasswordInput,
   FloatingSelectInput,
 } from "./FloatingFields";
-import { COLLEGES, DEPARTMENTS } from "@/lib/configs/university";
+import { useQuery } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 export default function RegisterForm() {
   const router = useRouter();
   const form = useRegisterForm();
-  const { formData, errors, loading, step } = form;
+  const { formData, errors, loading, step, isStudent } = form;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await form.submit((email) => {
-      router.push(`/verify-email?email=${encodeURIComponent(email)}`);
-    });
-  };
+  const [otpCode, setOtpCode] = useState("");
+
+  // كليات وتخصصات من DB
+  const colleges = useQuery(api.colleges.list, {});
+  const selectedCollege = colleges?.find((c) => c.name === formData.college);
+  const departments = useQuery(
+    api.colleges.getDepartmentsByCollege,
+    selectedCollege ? { collegeId: selectedCollege._id as Id<"colleges"> } : "skip",
+  );
+
+  const collegeNames = colleges?.map((c) => c.name) ?? [];
+  const departmentNames = departments?.map((d) => d.name) ?? [];
+
+  const stepLabels = [
+    { num: 1, label: "البيانات" },
+    { num: 2, label: "التحقق" },
+    { num: 3, label: "الأمان" + (isStudent ? " والقسم" : "") },
+  ];
 
   return (
     <div className="min-h-screen bg-pattern flex items-center justify-center p-4 relative overflow-hidden">
@@ -52,20 +68,30 @@ export default function RegisterForm() {
         </div>
 
         {/* Progress */}
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className={`flex items-center gap-2 px-3 py-1.5 nb-border rounded-full text-xs font-bold ${step === 1 ? "bg-primary nb-shadow-sm" : "bg-success/20"}`}>
-            {step > 1 ? (
-              <CheckCircle2 className="w-3.5 h-3.5 text-success" />
-            ) : (
-              <span className="w-4 h-4 rounded-full bg-foreground text-card flex items-center justify-center text-[10px]">1</span>
-            )}
-            البيانات
-          </div>
-          <div className="w-8 h-0.5 bg-foreground/20" />
-          <div className={`flex items-center gap-2 px-3 py-1.5 nb-border rounded-full text-xs font-bold ${step === 2 ? "bg-primary nb-shadow-sm" : "bg-muted"}`}>
-            <span className="w-4 h-4 rounded-full bg-foreground text-card flex items-center justify-center text-[10px]">2</span>
-            الأمان والقسم
-          </div>
+        <div className="flex items-center justify-center gap-2 mb-6">
+          {stepLabels.map((s, idx) => (
+            <div key={s.num} className="flex items-center gap-2">
+              <div
+                className={`flex items-center gap-2 px-3 py-1.5 nb-border rounded-full text-xs font-bold transition-all ${
+                  step === s.num
+                    ? "bg-primary text-primary-foreground nb-shadow-sm"
+                    : step > s.num
+                    ? "bg-success/20 text-success"
+                    : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {step > s.num ? (
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                ) : (
+                  <span className="w-4 h-4 rounded-full bg-current/20 flex items-center justify-center text-[10px]">{s.num}</span>
+                )}
+                {s.label}
+              </div>
+              {idx < stepLabels.length - 1 && (
+                <div className="w-6 h-0.5 bg-foreground/20" />
+              )}
+            </div>
+          ))}
         </div>
 
         <div className="nb-card p-8">
@@ -75,7 +101,9 @@ export default function RegisterForm() {
               <span className="w-3 h-3 rounded-full bg-warning nb-border" />
               <span className="w-3 h-3 rounded-full bg-success nb-border" />
             </div>
-            <span className="font-bold text-sm mr-2">{step === 1 ? "البيانات الأساسية" : "الأمان والقسم"}</span>
+            <span className="font-bold text-sm mr-2">
+              {step === 1 ? "البيانات الأساسية" : step === 2 ? "التحقق من البريد الإلكتروني" : "الأمان" + (isStudent ? " والقسم الأكاديمي" : "")}
+            </span>
           </div>
 
           {errors.form && (
@@ -86,117 +114,196 @@ export default function RegisterForm() {
           )}
 
           <div id="clerk-captcha" />
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {step === 1 && (
-              <>
-                <FloatingTextInput
-                  id="register-name"
-                  label="الاسم الكامل"
-                  value={formData.name}
-                  onChange={(val) => form.updateField("name", val)}
-                  error={errors.name}
-                  icon={<User className="w-5 h-5" />}
-                  required
-                  autoComplete="name"
-                />
 
-                <FloatingEmailInput
-                  id="register-email"
-                  label="البريد الإلكتروني الجامعي"
-                  value={formData.email}
-                  onChange={(val) => form.updateField("email", val)}
-                  error={errors.email}
-                  required
-                />
+          {/* Step 1 — البيانات الأساسية */}
+          {step === 1 && (
+            <div className="space-y-5">
+              <FloatingTextInput
+                id="register-name"
+                label="الاسم الكامل"
+                value={formData.name}
+                onChange={(val) => form.updateField("name", val)}
+                error={errors.name}
+                icon={<User className="w-5 h-5" />}
+                required
+                autoComplete="name"
+              />
+              <FloatingEmailInput
+                id="register-email"
+                label="البريد الإلكتروني الجامعي"
+                value={formData.email}
+                onChange={(val) => form.updateField("email", val)}
+                error={errors.email}
+                required
+              />
+              <FloatingTextInput
+                id="register-studentId"
+                label="الرقم الجامعي"
+                value={formData.studentId}
+                onChange={(val) => form.updateField("studentId", val)}
+                error={errors.studentId}
+                icon={<Hash className="w-5 h-5" />}
+                required
+                maxLength={9}
+                inputMode="numeric"
+                dir="ltr"
+                autoComplete="off"
+              />
+              <button
+                type="button"
+                disabled={loading}
+                onClick={form.submitStep1}
+                className="nb-btn nb-btn-primary w-full text-base"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    جاري الإرسال...
+                  </>
+                ) : (
+                  <>
+                    التالي <ArrowRight className="w-5 h-5 rotate-180" />
+                  </>
+                )}
+              </button>
+            </div>
+          )}
 
-                <FloatingTextInput
-                  id="register-studentId"
-                  label="الرقم الجامعي"
-                  value={formData.studentId}
-                  onChange={(val) => form.updateField("studentId", val)}
-                  error={errors.studentId}
-                  icon={<Hash className="w-5 h-5" />}
-                  required
-                  maxLength={9}
-                  inputMode="numeric"
+          {/* Step 2 — التحقق من البريد OTP */}
+          {step === 2 && (
+            <div className="space-y-5">
+              <div className="text-center py-2">
+                <ShieldCheck className="w-12 h-12 mx-auto mb-3 text-primary" />
+                <p className="font-bold text-base mb-1">أدخل كود التحقق</p>
+                <p className="text-sm text-muted-foreground">
+                  تم إرسال كود مكون من 6 أرقام إلى{" "}
+                  <span className="font-bold text-foreground" dir="ltr">{formData.email}</span>
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-sm font-bold">كود التحقق *</label>
+                <input
+                  value={otpCode}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+                    setOtpCode(val);
+                    if (errors.otp) form.updateField("name", formData.name); // clear errors side effect
+                  }}
+                  placeholder="000000"
+                  className={`nb-input w-full text-center text-2xl tracking-[0.5em] font-mono ${errors.otp ? "border-destructive" : ""}`}
                   dir="ltr"
-                  autoComplete="off"
+                  maxLength={6}
+                  inputMode="numeric"
+                  autoFocus
                 />
+                {errors.otp && (
+                  <p className="text-xs text-destructive font-semibold">{errors.otp}</p>
+                )}
+              </div>
 
-                <button type="button" onClick={form.goToStep2IfValid} className="nb-btn nb-btn-primary w-full text-base">
-                  التالي <ArrowRight className="w-5 h-5 rotate-180" />
+              <button
+                type="button"
+                disabled={loading || otpCode.length < 6}
+                onClick={() => form.submitOtp(otpCode)}
+                className="nb-btn nb-btn-primary w-full text-base disabled:opacity-60"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    جاري التحقق...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-5 h-5" />
+                    تحقق
+                  </>
+                )}
+              </button>
+
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={form.goToStep1}
+                  className="text-sm text-muted-foreground hover:text-foreground font-medium underline-offset-4 hover:underline flex items-center gap-1 mx-auto"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                  تغيير البريد الإلكتروني
                 </button>
-              </>
-            )}
+              </div>
+            </div>
+          )}
 
-            {step === 2 && (
-              <>
-                <FloatingSelectInput
-                  id="register-college"
-                  label="الكلية"
-                  value={formData.college}
-                  onChange={(val) => form.updateField("college", val)}
-                  error={errors.college}
-                  icon={<Building2 className="w-5 h-5" />}
-                  options={[...COLLEGES]}
-                  placeholderOption="اختر الكلية..."
-                  required
-                />
+          {/* Step 3 — الأمان والقسم */}
+          {step === 3 && (
+            <div className="space-y-5">
+              {isStudent && (
+                <>
+                  <FloatingSelectInput
+                    id="register-college"
+                    label="الكلية"
+                    value={formData.college}
+                    onChange={(val) => form.updateField("college", val)}
+                    error={errors.college}
+                    icon={<Building2 className="w-5 h-5" />}
+                    options={collegeNames}
+                    placeholderOption="اختر الكلية..."
+                    required
+                  />
+                  <FloatingSelectInput
+                    id="register-department"
+                    label="التخصص"
+                    value={formData.department}
+                    onChange={(val) => form.updateField("department", val)}
+                    error={errors.department}
+                    icon={<Building2 className="w-5 h-5" />}
+                    options={departmentNames}
+                    placeholderOption={formData.college ? "اختر التخصص..." : "اختر الكلية أولاً"}
+                    required
+                  />
+                </>
+              )}
 
-                <FloatingSelectInput
-                  id="register-department"
-                  label="التخصص"
-                  value={formData.department}
-                  onChange={(val) => form.updateField("department", val)}
-                  error={errors.department}
-                  icon={<Building2 className="w-5 h-5" />}
-                  options={formData.college ? (DEPARTMENTS[formData.college] ?? []) : []}
-                  placeholderOption={formData.college ? "اختر التخصص..." : "اختر الكلية أولاً"}
-                  required
-                />
+              <FloatingPasswordInput
+                id="register-password"
+                label="كلمة المرور"
+                value={formData.password}
+                onChange={(val) => form.updateField("password", val)}
+                error={errors.password}
+                required
+                autoComplete="new-password"
+              />
+              <FloatingPasswordInput
+                id="register-confirmPassword"
+                label="تأكيد كلمة المرور"
+                value={formData.confirmPassword}
+                onChange={(val) => form.updateField("confirmPassword", val)}
+                error={errors.confirmPassword}
+                required
+                autoComplete="new-password"
+                showEye={false}
+              />
 
-                <FloatingPasswordInput
-                  id="register-password"
-                  label="كلمة المرور"
-                  value={formData.password}
-                  onChange={(val) => form.updateField("password", val)}
-                  error={errors.password}
-                  required
-                  autoComplete="new-password"
-                />
-
-                <FloatingPasswordInput
-                  id="register-confirmPassword"
-                  label="تأكيد كلمة المرور"
-                  value={formData.confirmPassword}
-                  onChange={(val) => form.updateField("confirmPassword", val)}
-                  error={errors.confirmPassword}
-                  required
-                  autoComplete="new-password"
-                  showEye={false}
-                />
-
-                <div className="flex gap-3">
-                  <button type="button" onClick={form.goToStep1} className="nb-btn nb-btn-outline flex-1">
-                    <ArrowRight className="w-5 h-5" /> رجوع
-                  </button>
-                  <button type="submit" disabled={loading} className="nb-btn nb-btn-primary flex-[2] text-base">
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        جاري الإنشاء...
-                      </>
-                    ) : (
-                      <>
-                        <UserPlus className="w-5 h-5" />
-                        إنشاء الحساب
-                      </>
-                    )}
-                  </button>
-                </div>
-              </>
-            )}
-          </form>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={() => form.submitStep3(() => router.push("/login-redirect"))}
+                className="nb-btn nb-btn-primary w-full text-base"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    جاري الإنشاء...
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="w-5 h-5" />
+                    إنشاء الحساب
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="mt-6 text-center">

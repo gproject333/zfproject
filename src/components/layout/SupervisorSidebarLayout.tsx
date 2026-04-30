@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
+  PanelRightOpen,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
@@ -45,31 +46,23 @@ export default function SupervisorSidebarLayout({ navItems, children }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
+  const [hidden, setHidden] = useState(false);
 
-  // Hydrate collapsed preference from localStorage after mount so we don't
-  // mismatch SSR markup. Initial render = collapsed (the default).
   useEffect(() => {
     try {
-      const saved = window.localStorage.getItem(COLLAPSED_KEY);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (saved === "0") setCollapsed(false);
-    } catch {
-      /* ignore storage errors */
-    }
+      if (window.localStorage.getItem(COLLAPSED_KEY) === "0") setCollapsed(false);
+    } catch { /* ignore */ }
   }, []);
 
   const toggleCollapsed = () => {
     setCollapsed((prev) => {
       const next = !prev;
-      try {
-        // "0" = expanded (non-default), "1" = collapsed (default — omit to always start collapsed)
-        window.localStorage.setItem(COLLAPSED_KEY, next ? "1" : "0");
-      } catch {
-        /* ignore */
-      }
+      try { window.localStorage.setItem(COLLAPSED_KEY, next ? "1" : "0"); } catch { /* ignore */ }
       return next;
     });
   };
+
+  const toggleHidden = () => setHidden(p => !p);
 
   return (
     <RoleGuard allowedRoles={["supervisor"]}>
@@ -80,7 +73,7 @@ export default function SupervisorSidebarLayout({ navItems, children }: Props) {
             open
               ? "fixed inset-0 z-50 md:static md:inset-auto"
               : "hidden md:flex"
-          } ${collapsed ? "md:w-20" : "md:w-64"} md:shrink-0 transition-[width] duration-200`}
+          } ${hidden ? "md:hidden" : collapsed ? "md:w-20" : "md:w-64"} md:shrink-0 transition-[width] duration-200`}
         >
           {/* Mobile overlay */}
           {open && (
@@ -108,22 +101,21 @@ export default function SupervisorSidebarLayout({ navItems, children }: Props) {
               </button>
             )}
 
-            {/* Desktop collapse toggle — placed at bottom of sidebar, full-width */}
-            <button
-              onClick={toggleCollapsed}
-              className={`hidden md:flex mt-auto items-center gap-2 w-full px-3 py-2.5 rounded-lg nb-border nb-shadow-sm bg-muted hover:bg-muted/80 transition-colors font-bold text-sm text-muted-foreground hover:text-foreground ${
-                collapsed ? "justify-center" : "justify-between"
-              }`}
-              aria-label={collapsed ? "توسيع الشريط الجانبي" : "تصغير الشريط الجانبي"}
-              title={collapsed ? "توسيع" : "تصغير"}
-            >
-              {!collapsed && <span className="text-xs">تصغير</span>}
-              {collapsed ? (
-                <ChevronLeft className="w-4 h-4 shrink-0" />
-              ) : (
-                <ChevronRight className="w-4 h-4 shrink-0" />
-              )}
-            </button>
+            {/* Desktop bottom buttons */}
+            <div className={`hidden md:flex mt-auto flex-col gap-1`}>
+              {/* Collapse toggle */}
+              <button
+                onClick={toggleCollapsed}
+                className={`flex items-center gap-2 w-full px-3 py-2.5 rounded-lg nb-border nb-shadow-sm bg-muted hover:bg-muted/80 transition-colors font-bold text-sm text-muted-foreground hover:text-foreground ${
+                  collapsed ? "justify-center" : "justify-between"
+                }`}
+                aria-label={collapsed ? "توسيع" : "تصغير"}
+                title={collapsed ? "توسيع" : "تصغير"}
+              >
+                {!collapsed && <span className="text-xs">تصغير</span>}
+                {collapsed ? <ChevronLeft className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
+              </button>
+            </div>
 
             {/* Brand */}
             <Link
@@ -203,6 +195,16 @@ export default function SupervisorSidebarLayout({ navItems, children }: Props) {
 
             {/* Action cluster pinned to the physical left edge */}
             <div className="mr-auto flex items-center gap-2">
+              {/* Show sidebar button — only visible on desktop when sidebar is hidden */}
+              {hidden && (
+                <button
+                  onClick={toggleHidden}
+                  className="hidden md:flex w-9 h-9 nb-border rounded-lg items-center justify-center bg-card hover:bg-muted"
+                  title="إظهار الشريط الجانبي"
+                >
+                  <PanelRightOpen className="w-4 h-4" />
+                </button>
+              )}
               <NotificationBell />
               <SettingsMenu profileHref="/supervisor/profile" />
             </div>

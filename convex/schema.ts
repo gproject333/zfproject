@@ -267,7 +267,8 @@ export default defineSchema({
       v.literal("new_application"),   // طلب جديد
       v.literal("assignment"),        // تعيين مشروع
       v.literal("announcement"),     // إعلان جديد
-      v.literal("system")            // نظام
+      v.literal("system"),           // نظام
+      v.literal("upgrade_request")   // طلب ترقية
     ),
     applicationId: v.optional(v.id("applications")),
     read: v.boolean(),
@@ -317,6 +318,53 @@ export default defineSchema({
   })
     .index("by_type", ["type"])
     .index("by_createdAt", ["createdAt"]),
+
+  // ============================================
+  // الكليات
+  // ============================================
+  colleges: defineTable({
+    name: v.string(),
+    createdAt: v.number(),
+  }),
+
+  // ============================================
+  // التخصصات
+  // ============================================
+  departments: defineTable({
+    name: v.string(),
+    collegeId: v.id("colleges"),
+    createdAt: v.number(),
+  }).index("by_college", ["collegeId"]),
+
+  // ============================================
+  // طلبات ترقية المشرف
+  // ============================================
+  supervisorUpgradeRequests: defineTable({
+    studentId: v.id("users"),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("approved"),
+      v.literal("rejected"),
+    ),
+    reviewedBy: v.optional(v.id("users")),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_student", ["studentId"])
+    .index("by_status", ["status"]),
+
+  // ============================================
+  // سجل النشاطات
+  // ============================================
+  activityLogs: defineTable({
+    actorId: v.id("users"),
+    actorName: v.string(),
+    actorRole: v.string(),
+    action: v.string(),
+    entityType: v.string(),
+    entityId: v.optional(v.string()),
+    createdAt: v.number(),
+  }).index("by_created", ["createdAt"]),
 
   // ============================================
   // المقالات

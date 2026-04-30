@@ -14,7 +14,9 @@ import {
 import { useStudentProfile } from "../hooks/useStudentProfile";
 import { usePasswordChange } from "../hooks/usePasswordChange";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
-import { COLLEGES, DEPARTMENTS } from "@/lib/configs/university";
+import { useQuery } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 interface StudentProfileProps {
   /** Show college & department dropdowns. Default: true. */
@@ -30,16 +32,22 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
     newPassword: "",
   });
 
+  // hooks must be called before any conditional return
+  const colleges = useQuery(api.colleges.list, {});
+  const selectedCollege = colleges?.find((c) => c.name === profile.form.college);
+  const departments = useQuery(
+    api.colleges.getDepartmentsByCollege,
+    selectedCollege ? { collegeId: selectedCollege._id as Id<"colleges"> } : "skip",
+  );
+  const collegeNames = colleges?.map((c) => c.name) ?? [];
+  const collegeDepartments = departments?.map((d) => d.name) ?? [];
+
   if (profile.loading) return <SkeletonDashboard />;
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) profile.setField("avatarFile", file);
   };
-
-  const collegeDepartments = profile.form.college
-    ? DEPARTMENTS[profile.form.college] ?? []
-    : [];
 
   return (
     <div className="animate-fade-in flex justify-center">
@@ -135,7 +143,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                     }}
                   >
                     <option value="">اختر الكلية</option>
-                    {COLLEGES.map((c) => (
+                    {collegeNames.map((c) => (
                       <option key={c} value={c}>
                         {c}
                       </option>

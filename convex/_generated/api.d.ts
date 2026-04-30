@@ -8,12 +8,14 @@
  * @module
  */
 
+import type * as activityLogs from "../activityLogs.js";
 import type * as applications_shared from "../applications/shared.js";
 import type * as applications_sponsor from "../applications/sponsor.js";
 import type * as applications_student from "../applications/student.js";
 import type * as applications_supervisor from "../applications/supervisor.js";
 import type * as articles from "../articles.js";
 import type * as banners from "../banners.js";
+import type * as colleges from "../colleges.js";
 import type * as entrepreneurialGuide from "../entrepreneurialGuide.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
@@ -26,8 +28,10 @@ import type * as notifications from "../notifications.js";
 import type * as presence from "../presence.js";
 import type * as socialLinks from "../socialLinks.js";
 import type * as studentNotes from "../studentNotes.js";
+import type * as supervisorUpgradeRequests from "../supervisorUpgradeRequests.js";
 import type * as users from "../users.js";
 import type * as users_admin from "../users/admin.js";
+import type * as users_adminActions from "../users/adminActions.js";
 import type * as users_dev from "../users/dev.js";
 import type * as users_shared from "../users/shared.js";
 
@@ -38,12 +42,14 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  activityLogs: typeof activityLogs;
   "applications/shared": typeof applications_shared;
   "applications/sponsor": typeof applications_sponsor;
   "applications/student": typeof applications_student;
   "applications/supervisor": typeof applications_supervisor;
   articles: typeof articles;
   banners: typeof banners;
+  colleges: typeof colleges;
   entrepreneurialGuide: typeof entrepreneurialGuide;
   files: typeof files;
   http: typeof http;
@@ -56,8 +62,10 @@ declare const fullApi: ApiFromModules<{
   presence: typeof presence;
   socialLinks: typeof socialLinks;
   studentNotes: typeof studentNotes;
+  supervisorUpgradeRequests: typeof supervisorUpgradeRequests;
   users: typeof users;
   "users/admin": typeof users_admin;
+  "users/adminActions": typeof users_adminActions;
   "users/dev": typeof users_dev;
   "users/shared": typeof users_shared;
 }>;

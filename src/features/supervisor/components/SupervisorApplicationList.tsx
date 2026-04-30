@@ -11,7 +11,6 @@ import {
   Search,
   Loader2,
   X as XIcon,
-  Download,
   CheckCircle2,
   XCircle,
   AlertTriangle,
@@ -28,7 +27,6 @@ import {
   SUPERVISOR_STATUS_KEYS,
   SUPERVISOR_TYPE_KEYS,
 } from "@/features/supervisor/hooks/useSupervisorListFilters";
-import { useApplicationCsvExport } from "@/features/supervisor/hooks/useApplicationCsvExport";
 import {
   Select,
   SelectTrigger,
@@ -82,7 +80,6 @@ export default function SupervisorApplicationList() {
 
   const quickAction = useQuickAction();
   const bulkAction = useBulkAction(() => setRowSelection({}));
-  const exportToCsv = useApplicationCsvExport();
   const columns = useApplicationListColumns(quickAction);
 
   const table = useReactTable({
@@ -110,16 +107,6 @@ export default function SupervisorApplicationList() {
             </span>
           )}
         </h2>
-        <button
-          type="button"
-          onClick={() => exportToCsv(filtered)}
-          disabled={loading || filtered.length === 0}
-          className="nb-btn nb-btn-outline text-xs py-2 px-3 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="تصدير القائمة إلى ملف CSV"
-        >
-          <Download className="w-4 h-4" />
-          تصدير CSV
-        </button>
       </div>
 
       {selectedIds.length > 0 && (

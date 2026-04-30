@@ -10,8 +10,10 @@ import {
   Video,
   GraduationCap,
   Link2,
+  Calendar,
 } from "lucide-react";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { formatArabicDate } from "@/lib/formatters";
 
 type FilterType = "all" | "video" | "course" | "link";
 
@@ -28,10 +30,16 @@ const TYPE_ICON = {
   link: Link2,
 } as const;
 
+const TYPE_BG = {
+  video: "bg-red-500/15",
+  course: "bg-blue-500/15",
+  link: "bg-secondary/15",
+} as const;
+
 const TYPE_COLOR = {
-  video: "bg-red-500/15 text-red-600 dark:text-red-400",
-  course: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
-  link: "bg-secondary/15 text-secondary",
+  video: "text-red-600 dark:text-red-400",
+  course: "text-blue-600 dark:text-blue-400",
+  link: "text-secondary",
 } as const;
 
 const TYPE_LABEL = {
@@ -83,7 +91,7 @@ export default function GuideView() {
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((r) => {
+          {filtered.map((r, index) => {
             const Icon = TYPE_ICON[r.type];
             return (
               <a
@@ -91,24 +99,29 @@ export default function GuideView() {
                 href={r.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="nb-card-interactive p-5 flex items-start gap-4 group"
+                className="nb-card-interactive overflow-hidden flex flex-col animate-slide-up"
+                style={{ opacity: 0, animationDelay: `${(index + 1) * 0.08}s` }}
               >
                 <div
-                  className={`w-12 h-12 rounded-xl nb-border flex items-center justify-center shrink-0 ${TYPE_COLOR[r.type]}`}
+                  className={`h-36 flex items-center justify-center border-b-2 border-foreground ${TYPE_BG[r.type]}`}
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon className={`w-10 h-10 ${TYPE_COLOR[r.type]}`} />
                 </div>
-                <div className="flex-1 min-w-0 text-right">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="nb-badge-soft !bg-muted text-xs">
-                      {TYPE_LABEL[r.type]}
-                    </span>
-                  </div>
-                  <h3 className="font-extrabold text-sm leading-snug line-clamp-2">
+                <div className="p-4 flex-1 flex flex-col">
+                  <span className="nb-badge-soft !bg-muted text-xs mb-2 self-start">
+                    {TYPE_LABEL[r.type]}
+                  </span>
+                  <h3 className="font-extrabold text-base leading-snug line-clamp-2 flex-1">
                     {r.title}
                   </h3>
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-foreground/10 text-xs text-muted-foreground font-bold">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {formatArabicDate(r.createdAt)}
+                    </span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </div>
                 </div>
-                <ExternalLink className="w-4 h-4 shrink-0 text-muted-foreground group-hover:text-primary transition-colors mt-1" />
               </a>
             );
           })}
