@@ -87,28 +87,29 @@ const SUPERVISOR_CONFIG: UserManagementConfig = {
 
 const SPONSOR_CONFIG: UserManagementConfig = {
   role: "sponsor",
-  pageTitle: "إدارة الرعاة",
+  pageTitle: "إدارة الداعمين",
   pageIcon: Building2,
   formIcon: Star,
-  countLabel: (n) => `${n} راعٍ مسجل`,
-  emptyTitle: "لا يوجد رعاة",
-  emptyDescription: "ابدأ بإضافة أول راعٍ للمنصة",
-  addButtonLabel: "إضافة راعٍ جديد",
-  formTitle: "بيانات الراعي الجديد",
+  countLabel: (n) => `${n} داعم مسجل`,
+  emptyTitle: "لا يوجد داعمون",
+  emptyDescription: "ابدأ بإضافة أول داعم للمنصة",
+  addButtonLabel: "إضافة داعم جديد",
+  formTitle: "بيانات الداعم الجديد",
   color: { primary: "#C9A227", border: "#B7891A", textOnPrimary: "#111" },
-  nameField: { label: "اسم الجهة الراعية *", placeholder: "شركة التقنية الأردنية" },
+  nameField: { label: "الاسم *", placeholder: "شركة التقنية الأردنية" },
   emailPlaceholder: "sponsor@company.com",
-  phoneLabel: "رقم التواصل",
-  phonePlaceholder: "06-XXX-XXXX",
+  phoneLabel: "رقم الهاتف *",
+  phonePlaceholder: "07XXXXXXXX",
   showDepartment: false,
+  showPasswordField: true,
   formHint: {
-    text: "💡 سيتلقى الراعي بريداً إلكترونياً لإعداد كلمة مروره، ويمكنه الدخول عبر /sponsor/login",
+    text: "💡 سيستخدم الداعم هذا البريد وكلمة المرور لتسجيل الدخول عبر صفحة /login",
     bg: "bg-warning/10",
     border: "border-warning/30",
     color: "text-warning",
   },
-  successMessage: "تم إنشاء حساب الراعي بنجاح!",
-  fallbackInitial: "ر",
+  successMessage: "تم إنشاء حساب الداعم بنجاح!",
+  fallbackInitial: "د",
 };
 
 const ROLE_CONFIGS = {
@@ -180,6 +181,7 @@ export default function UserManagement({ role }: UserManagementProps) {
   const users = useQuery(api.users.admin.getAllUsers, { role });
   const createUser = useMutation(api.users.admin.createUserByAdmin);
   const createSupervisor = useAction(api.users.adminActions.createSupervisor);
+  const createSponsor = useAction(api.users.adminActions.createSponsor);
   const toggleActive = useMutation(api.users.admin.toggleUserActive);
 
   const [showForm, setShowForm] = useState(false);
@@ -208,6 +210,16 @@ export default function UserManagement({ role }: UserManagementProps) {
       setError("كلمة المرور مطلوبة");
       return;
     }
+    if (role === "sponsor") {
+      if (!formData.phone.trim()) {
+        setError("رقم الهاتف مطلوب");
+        return;
+      }
+      if (!/^07\d{8}$/.test(formData.phone.trim())) {
+        setError("رقم الهاتف يجب أن يكون 10 أرقام ويبدأ بـ 07");
+        return;
+      }
+    }
     setLoading(true);
     try {
       if (role === "supervisor") {
@@ -216,6 +228,13 @@ export default function UserManagement({ role }: UserManagementProps) {
           email: formData.email,
           password: formData.password,
           department: formData.department || undefined,
+          phone: formData.phone || undefined,
+        });
+      } else if (role === "sponsor") {
+        await createSponsor({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
           phone: formData.phone || undefined,
         });
       } else {

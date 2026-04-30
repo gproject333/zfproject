@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
-import { Menu, X, ChevronLeft, LogOut, PanelRightClose, PanelRightOpen } from "lucide-react";
+import { Menu, X, ChevronLeft, ChevronRight, LogOut, PanelRightClose, PanelRightOpen } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
 import AppFooter from "@/components/AppFooter";
