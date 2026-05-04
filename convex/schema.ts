@@ -1,12 +1,31 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
+/**
+ * Smart-ZUJ Convex schema.
+ *
+ * Conventions:
+ *  - Every cross-table reference uses `v.id("tableName")` instead of a bare
+ *    string so the type system catches stale or wrong-table IDs at compile time.
+ *  - Every index lists the columns it covers in its name (snake_case, in field
+ *    order) so call sites can be grep'd quickly.
+ *  - Optional fields default to `v.optional(...)` — never use empty strings or
+ *    sentinel values to represent "missing".
+ *
+ * Application status state machine
+ *  draft ──submit──▶ under_review
+ *  under_review ──supervisor decision──▶ needs_modification | accepted | rejected
+ *  needs_modification ──student edits & resubmits──▶ under_review
+ *  accepted / rejected: terminal states (kept for audit; no further transitions).
+ */
 export default defineSchema({
   // ============================================
-  // المستخدمون
+  // Users
   // ============================================
+  // One row per Clerk identity. Roles drive both authorization (see
+  // convex/lib/auth.ts) and which dashboard the client routes the user to.
   users: defineTable({
-    // بيانات أساسية
+    // Identity & contact
     clerkId: v.string(),
     email: v.string(),
     name: v.optional(v.string()),
@@ -17,20 +36,20 @@ export default defineSchema({
       v.literal("sponsor")
     )),
 
-    // بيانات الطالب
+    // Student-specific profile
     studentId: v.optional(v.string()),
     college: v.optional(v.string()),
     department: v.optional(v.string()),
 
-    // بيانات إضافية
+    // Optional profile extras
     phone: v.optional(v.string()),
     avatar: v.optional(v.id("_storage")),
     linkedinUrl: v.optional(v.string()),
 
-    // معلومات النظام
+    // System flags
     isActive: v.optional(v.boolean()),
     emailVerified: v.optional(v.boolean()),
-    // حقول مطلوبة من @convex-dev/auth
+    // Auth-provider bookkeeping (kept for compatibility with @convex-dev/auth)
     emailVerificationTime: v.optional(v.number()),
     phoneVerificationTime: v.optional(v.number()),
     isAnonymous: v.optional(v.boolean()),
@@ -44,29 +63,32 @@ export default defineSchema({
     .index("by_studentId", ["studentId"]),
 
   // ============================================
-  // الطلبات / المشاريع
+  // Applications (incubation requests / projects)
   // ============================================
+  // See the state machine comment at the top of this file for the allowed
+  // status transitions. Edits to status MUST also append an `applicationReviews`
+  // row so the audit trail stays consistent.
   applications: defineTable({
-    // مقدم الطلب
+    // Owner of the application
     studentId: v.id("users"),
 
-    // نوع الاحتضان
+    // Incubation track
     type: v.union(
-      v.literal("entrepreneurial_idea"), // فكرة ريادية
-      v.literal("it_graduation"),        // مشروع تخرج IT
-      v.literal("university_entrepreneurial") // مشروع ريادي للجامعة
+      v.literal("entrepreneurial_idea"),       // Entrepreneurial idea
+      v.literal("it_graduation"),              // IT graduation project
+      v.literal("university_entrepreneurial"), // Entrepreneurial project for the university
     ),
 
-    // حالة الطلب
+    // Lifecycle status — see the state machine comment at the top of the file
     status: v.union(
-      v.literal("draft"),              // مسودة — student-only
-      v.literal("under_review"),       // قيد المراجعة
-      v.literal("needs_modification"), // يحتاج تعديل
-      v.literal("accepted"),           // مقبول
-      v.literal("rejected")            // مرفوض
+      v.literal("draft"),               // student-only, never visible to supervisors
+      v.literal("under_review"),        // submitted, awaiting supervisor decision
+      v.literal("needs_modification"),  // supervisor asked for edits
+      v.literal("accepted"),            // terminal — approved
+      v.literal("rejected")             // terminal — declined
     ),
 
-    // === بيانات النموذج المشتركة ===
+    // === Shared form fields ===
     projectName: v.string(),
     description: v.string(),
     problemStatement: v.string(),
@@ -80,23 +102,23 @@ export default defineSchema({
       )
     ),
 
-    // === حقول جديدة مشتركة (تُعرض بحسب النوع في الواجهة) ===
-    phone: v.optional(v.string()),            // رقم الهاتف — الثلاثة أنواع
-    projectGoals: v.optional(v.string()),     // أهداف المشروع — entrepreneurial_idea + it_graduation
-    projectCategory: v.optional(v.array(v.string())),  // نوع المشروع — مصفوفة (IT متعدد، الباقي واحد)
-    targetLocation: v.optional(v.string()),   // المكان المستهدف — university_entrepreneurial
+    // === Shared optional fields (UI shows them per-type) ===
+    phone: v.optional(v.string()),                     // Phone number — all three types
+    projectGoals: v.optional(v.string()),              // Project goals — entrepreneurial_idea + it_graduation
+    projectCategory: v.optional(v.array(v.string())),  // Project category — multi-select for IT, single-select for others
+    targetLocation: v.optional(v.string()),            // Target location — university_entrepreneurial only
 
-    // === حقول خاصة بمشروع IT ===
-    supervisor: v.optional(v.string()),         // اسم المشرف الأكاديمي
+    // === IT-graduation-specific ===
+    supervisor: v.optional(v.string()),                // Academic supervisor's name (free-text)
 
-    // === حقول خاصة بمشروع ريادي للجامعة ===
-    universityBenefit: v.optional(v.string()),   // الفائدة للجامعة
+    // === University-entrepreneurial-specific ===
+    universityBenefit: v.optional(v.string()),         // Stated benefit to the university
 
-    // === الملفات المرفقة ===
+    // === Attachments ===
     pdfFileId: v.optional(v.id("_storage")),
     videoFileId: v.optional(v.id("_storage")),
 
-    // === مراجعة المشرف ===
+    // === Supervisor review (latest decision; full history in applicationReviews) ===
     reviewerId: v.optional(v.id("users")),
     supervisorNotes: v.optional(v.string()),
     supervisorRating: v.optional(
@@ -109,7 +131,7 @@ export default defineSchema({
     ),
     reviewedAt: v.optional(v.number()),
 
-    // === الطوابع الزمنية ===
+    // === Timestamps ===
     createdAt: v.number(),
     updatedAt: v.number(),
     submittedAt: v.optional(v.number()),
@@ -122,7 +144,7 @@ export default defineSchema({
     .index("by_type_status", ["type", "status"]),
 
   // ============================================
-  // سجل المراجعات (audit log)
+  // Application reviews (immutable audit log)
   // ============================================
   // Immutable history of every status transition performed by a supervisor
   // or admin on an application. Lets us reconstruct "who decided what and
@@ -159,7 +181,7 @@ export default defineSchema({
     .index("by_reviewer", ["reviewerId"]),
 
   // ============================================
-  // حضور المستخدمين على الطلب (presence)
+  // Application presence (live viewers)
   // ============================================
   // Lightweight heartbeat-based presence — every user viewing an
   // application page upserts a row with `lastSeenAt = Date.now()` on
@@ -177,7 +199,7 @@ export default defineSchema({
     .index("by_user_application", ["userId", "applicationId"]),
 
   // ============================================
-  // روابط التواصل الاجتماعي
+  // Social links (footer)
   // ============================================
   // Admin-managed social media links rendered in the global footer.
   // `platform` is stored as a free-form string (e.g. "facebook",
@@ -197,7 +219,7 @@ export default defineSchema({
     .index("by_order", ["order"]),
 
   // ============================================
-  // البنرات الإعلانية (announcements)
+  // Banners (announcements)
   // ============================================
   // Supervisor-managed banners shown on the student dashboard and/or the
   // landing page. Each banner has a visual variant (info/success/warning),
@@ -252,23 +274,26 @@ export default defineSchema({
   })
     .index("by_active", ["isActive"])
     .index("by_audience_active", ["audience", "isActive"])
-    .index("by_type_active", ["bannerType", "isActive"]),
+    .index("by_type_active", ["bannerType", "isActive"])
+    .index("by_audience_active_expires", ["audience", "isActive", "expiresAt"]),
 
   // ============================================
-  // الإشعارات
+  // Notifications
   // ============================================
+  // Per-user inbox surfaced by the NotificationBell. The `type` enum drives
+  // both the icon and the deep-link target on the client.
   notifications: defineTable({
     userId: v.id("users"),
     title: v.string(),
     message: v.string(),
     type: v.union(
-      v.literal("status_change"),     // تغيير حالة
-      v.literal("new_note"),          // ملاحظة جديدة
-      v.literal("new_application"),   // طلب جديد
-      v.literal("assignment"),        // تعيين مشروع
-      v.literal("announcement"),     // إعلان جديد
-      v.literal("system"),           // نظام
-      v.literal("upgrade_request")   // طلب ترقية
+      v.literal("status_change"),     // Application status changed
+      v.literal("new_note"),          // Supervisor left a note
+      v.literal("new_application"),   // New application landed in a supervisor's queue
+      v.literal("assignment"),        // Sponsor assigned to a project
+      v.literal("announcement"),      // Broadcast announcement
+      v.literal("system"),            // System notice
+      v.literal("upgrade_request")    // Supervisor-upgrade request update
     ),
     applicationId: v.optional(v.id("applications")),
     read: v.boolean(),
@@ -279,8 +304,11 @@ export default defineSchema({
     .index("by_user_created", ["userId", "createdAt"]),
 
   // ============================================
-  // ربط السبونسر بالمشاريع
+  // Sponsor ↔ application assignments
   // ============================================
+  // Many-to-many: a sponsor can be linked to multiple applications and an
+  // application can be shown to multiple sponsors. `isInterested` lets the
+  // sponsor record their intent without committing.
   sponsorAssignments: defineTable({
     sponsorId: v.id("users"),
     applicationId: v.id("applications"),
@@ -293,6 +321,9 @@ export default defineSchema({
     .index("by_application", ["applicationId"])
     .index("by_sponsor_application", ["sponsorId", "applicationId"]),
 
+  // ============================================
+  // Student notes (private scratchpad)
+  // ============================================
   studentNotes: defineTable({
     userId: v.id("users"),
     content: v.string(),
@@ -300,7 +331,7 @@ export default defineSchema({
   }).index("by_user", ["userId"]),
 
   // ============================================
-  // الدليل الريادي
+  // Entrepreneurial guide (resources for students)
   // ============================================
   // Supervisor-managed educational resources (videos, courses, links)
   // visible to all students via /student/entrepreneurial-guide.
@@ -320,7 +351,7 @@ export default defineSchema({
     .index("by_createdAt", ["createdAt"]),
 
   // ============================================
-  // الكليات
+  // Colleges
   // ============================================
   colleges: defineTable({
     name: v.string(),
@@ -328,7 +359,7 @@ export default defineSchema({
   }),
 
   // ============================================
-  // التخصصات
+  // Departments (belong to a college)
   // ============================================
   departments: defineTable({
     name: v.string(),
@@ -337,8 +368,10 @@ export default defineSchema({
   }).index("by_college", ["collegeId"]),
 
   // ============================================
-  // طلبات ترقية المشرف
+  // Supervisor upgrade requests
   // ============================================
+  // A student requesting to be promoted to a supervisor role. Reviewed by
+  // an admin; outcome lands in `status`. Timeline queries use by_createdAt.
   supervisorUpgradeRequests: defineTable({
     studentId: v.id("users"),
     status: v.union(
@@ -351,11 +384,15 @@ export default defineSchema({
     updatedAt: v.number(),
   })
     .index("by_student", ["studentId"])
-    .index("by_status", ["status"]),
+    .index("by_status", ["status"])
+    .index("by_createdAt", ["createdAt"]),
 
   // ============================================
-  // سجل النشاطات
+  // Activity log
   // ============================================
+  // Append-only feed of meaningful actions across the app, surfaced to admins
+  // for traceability. `entityId` is a free-form string because actors may
+  // refer to entities from any table.
   activityLogs: defineTable({
     actorId: v.id("users"),
     actorName: v.string(),
@@ -367,7 +404,7 @@ export default defineSchema({
   }).index("by_created", ["createdAt"]),
 
   // ============================================
-  // المقالات
+  // Articles
   // ============================================
   // Supervisor-authored articles rendered in a dedicated page for the
   // students. Each article has a markdown body, optional cover image
@@ -392,5 +429,6 @@ export default defineSchema({
   })
     .index("by_published", ["isPublished"])
     .index("by_audience_published", ["audience", "isPublished"])
-    .index("by_author", ["createdBy"]),
+    .index("by_author", ["createdBy"])
+    .index("by_createdAt", ["createdAt"]),
 });
