@@ -56,16 +56,20 @@ export default function GuideView() {
           دليلك الريادي
         </h2>
         <Tabs
+          variant="secondary"
           selectedKey={filter}
           onSelectionChange={(k) => setFilter(k as FilterType)}
         >
-          <Tabs.List className="overflow-x-auto flex-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {FILTERS.map((f) => (
-              <Tabs.Tab key={f.value} id={f.value}>
-                {f.label}
-              </Tabs.Tab>
-            ))}
-          </Tabs.List>
+          <Tabs.ListContainer>
+            <Tabs.List>
+              {FILTERS.map((f) => (
+                <Tabs.Tab key={f.value} id={f.value}>
+                  {f.label}
+                </Tabs.Tab>
+              ))}
+              <Tabs.Indicator />
+            </Tabs.List>
+          </Tabs.ListContainer>
         </Tabs>
       </div>
 

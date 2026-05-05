@@ -72,23 +72,27 @@ export default function StudentApplicationList() {
       </div>
 
       <Tabs
+        variant="secondary"
         selectedKey={statusFilter}
         onSelectionChange={(k) => setStatusFilter(k as typeof statusFilter)}
         className="mb-6"
       >
-        <Tabs.List className="overflow-x-auto flex-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <Tabs.Tab id="all">الكل</Tabs.Tab>
-          {STATUS_KEYS.map((key) => {
-            const cfg = STATUS_CONFIG[key];
-            const Icon = cfg.icon;
-            return (
-              <Tabs.Tab key={key} id={key}>
-                <Icon className="w-3.5 h-3.5" />
-                {cfg.label}
-              </Tabs.Tab>
-            );
-          })}
-        </Tabs.List>
+        <Tabs.ListContainer>
+          <Tabs.List>
+            <Tabs.Tab id="all">الكل</Tabs.Tab>
+            {STATUS_KEYS.map((key) => {
+              const cfg = STATUS_CONFIG[key];
+              const Icon = cfg.icon;
+              return (
+                <Tabs.Tab key={key} id={key}>
+                  <Icon className="w-3.5 h-3.5" />
+                  {cfg.label}
+                </Tabs.Tab>
+              );
+            })}
+            <Tabs.Indicator />
+          </Tabs.List>
+        </Tabs.ListContainer>
       </Tabs>
 
       {filteredApps.length === 0 ? (

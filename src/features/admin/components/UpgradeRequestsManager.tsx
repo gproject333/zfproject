@@ -61,15 +61,19 @@ export default function UpgradeRequestsManager() {
 
       {/* Filter Tabs */}
       <Tabs
+        variant="secondary"
         selectedKey={filter}
         onSelectionChange={(k) => setFilter(k as typeof filter)}
       >
-        <Tabs.List className="overflow-x-auto flex-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <Tabs.Tab id="all">الكل</Tabs.Tab>
-          <Tabs.Tab id="pending">{STATUS_LABELS.pending.label}</Tabs.Tab>
-          <Tabs.Tab id="approved">{STATUS_LABELS.approved.label}</Tabs.Tab>
-          <Tabs.Tab id="rejected">{STATUS_LABELS.rejected.label}</Tabs.Tab>
-        </Tabs.List>
+        <Tabs.ListContainer>
+          <Tabs.List>
+            <Tabs.Tab id="all">الكل</Tabs.Tab>
+            <Tabs.Tab id="pending">{STATUS_LABELS.pending.label}</Tabs.Tab>
+            <Tabs.Tab id="approved">{STATUS_LABELS.approved.label}</Tabs.Tab>
+            <Tabs.Tab id="rejected">{STATUS_LABELS.rejected.label}</Tabs.Tab>
+            <Tabs.Indicator />
+          </Tabs.List>
+        </Tabs.ListContainer>
       </Tabs>
 
       {/* Table */}
