@@ -1,9 +1,21 @@
 "use client";
 
-import * as RTooltip from "@radix-ui/react-tooltip";
+import { Tooltip as HTooltip } from "@heroui/react";
 import type { ReactNode } from "react";
 
-export const TooltipProvider = RTooltip.Provider;
+/**
+ * No-op compatibility shim. React-aria handles tooltip delays per-instance
+ * (no global provider needed), but we keep this export so existing
+ * `<TooltipProvider>` callers don't break.
+ */
+export function TooltipProvider({
+  children,
+}: {
+  children: ReactNode;
+  delayDuration?: number;
+}) {
+  return <>{children}</>;
+}
 
 interface TooltipProps {
   content: ReactNode;
@@ -13,19 +25,9 @@ interface TooltipProps {
 
 export function Tooltip({ content, children, side = "top" }: TooltipProps) {
   return (
-    <RTooltip.Root delayDuration={150}>
-      <RTooltip.Trigger asChild>{children}</RTooltip.Trigger>
-      <RTooltip.Portal>
-        <RTooltip.Content
-          dir="rtl"
-          side={side}
-          sideOffset={6}
-          className="nb-card nb-shadow px-3 py-2 text-xs font-bold max-w-xs z-50 animate-in fade-in zoom-in-95 duration-100"
-        >
-          {content}
-          <RTooltip.Arrow className="fill-foreground" width={12} height={6} />
-        </RTooltip.Content>
-      </RTooltip.Portal>
-    </RTooltip.Root>
+    <HTooltip>
+      <HTooltip.Trigger>{children}</HTooltip.Trigger>
+      <HTooltip.Content placement={side}>{content}</HTooltip.Content>
+    </HTooltip>
   );
 }
