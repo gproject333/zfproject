@@ -11,6 +11,7 @@
  * be added phase-by-phase as the old wrappers are deleted.
  */
 export {
+  Avatar,
   Button,
   buttonVariants,
   Card,
