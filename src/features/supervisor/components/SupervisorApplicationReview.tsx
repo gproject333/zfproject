@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Spinner } from "@/components/ui";
+import { Breadcrumbs, Spinner } from "@/components/ui";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import PdfViewer from "@/components/PdfViewerLazy";
 import ApplicationDetailsView from "@/features/applications/components/ApplicationDetailsView";
@@ -47,6 +47,12 @@ export default function SupervisorApplicationReview() {
       {showPdf && pdfUrl && (
         <PdfViewer url={pdfUrl} title={app.projectName} onClose={() => setShowPdf(false)} />
       )}
+
+      <Breadcrumbs>
+        <Breadcrumbs.Item href="/supervisor">الرئيسية</Breadcrumbs.Item>
+        <Breadcrumbs.Item href="/supervisor/applications">الطلبات</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{app.projectName}</Breadcrumbs.Item>
+      </Breadcrumbs>
 
       <ApplicationHeader
         app={app}

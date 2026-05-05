@@ -10,7 +10,7 @@ import StatusStepper from "@/features/applications/components/StatusStepper";
 import { useStudentApplicationDetails } from "@/features/student/hooks/useStudentApplicationDetails";
 import ApplicationEditForm from "./ApplicationEditForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
-import { Button, Spinner} from "@/components/ui";
+import { Breadcrumbs, Button, Spinner } from "@/components/ui";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 /**
@@ -53,6 +53,12 @@ export default function StudentApplicationDetails() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
+      <Breadcrumbs>
+        <Breadcrumbs.Item href="/student">الرئيسية</Breadcrumbs.Item>
+        <Breadcrumbs.Item href="/student/applications">الطلبات</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{app.projectName}</Breadcrumbs.Item>
+      </Breadcrumbs>
+
       <DeleteConfirmModal
         open={showDeleteConfirm}
         onOpenChange={setShowDeleteConfirm}

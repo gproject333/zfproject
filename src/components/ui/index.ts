@@ -13,6 +13,7 @@
 export {
   Accordion,
   Avatar,
+  Breadcrumbs,
   Button,
   buttonVariants,
   Card,

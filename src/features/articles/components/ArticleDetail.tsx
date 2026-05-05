@@ -6,7 +6,7 @@ import Link from "next/link";
 import {UserCircle, Calendar, ChevronRight} from "lucide-react";
 import { formatArabicDate } from "@/lib/formatters";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { buttonVariants, Spinner} from "@/components/ui";
+import { Breadcrumbs, buttonVariants, Spinner } from "@/components/ui";
 import { useArticleDetail } from "../hooks/useArticlesList";
 import type { Id } from "../../../../convex/_generated/dataModel";
 
@@ -58,13 +58,13 @@ export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {
 
   return (
     <article className="animate-fade-in max-w-3xl mx-auto">
-      <Link
-        href={backHref}
-        className="inline-flex items-center gap-1.5 text-sm font-bold text-muted-foreground hover:text-foreground mb-4"
-      >
-        <ChevronRight className="w-4 h-4" />
-        العودة للمقالات
-      </Link>
+      <Breadcrumbs className="mb-4">
+        <Breadcrumbs.Item href={backHref.startsWith("/supervisor") ? "/supervisor" : "/student"}>
+          الرئيسية
+        </Breadcrumbs.Item>
+        <Breadcrumbs.Item href={backHref}>المقالات</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{article.title}</Breadcrumbs.Item>
+      </Breadcrumbs>
 
       {article.coverUrl && (
         <div className="nb-card p-0 overflow-hidden mb-6">
