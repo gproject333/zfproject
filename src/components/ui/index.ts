@@ -26,6 +26,7 @@ export {
   InputOTP,
   ListBox,
   ListBoxItem,
+  Popover,
   TextArea,
   Skeleton,
   Spinner,
