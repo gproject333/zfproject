@@ -32,6 +32,8 @@ export {
   Spinner,
   Switch,
   Tabs,
+  Tag,
+  TagGroup,
   Toast,
 } from "@heroui/react";
 

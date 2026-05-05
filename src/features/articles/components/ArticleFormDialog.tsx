@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Upload, X } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import {
@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/Select";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
-import { Button, buttonVariants, Input, TextArea } from "@/components/ui";
+import { Button, buttonVariants, Input, Tag, TagGroup, TextArea } from "@/components/ui";
 import type { ArticleAudience, ArticleFormState } from "../hooks/useArticleAdmin";
 
 interface ArticleFormDialogProps {
@@ -43,6 +43,14 @@ export default function ArticleFormDialog({
   onSubmit,
 }: ArticleFormDialogProps) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [tagInput, setTagInput] = useState("");
+
+  const addTag = (raw: string) => {
+    const t = raw.trim();
+    if (!t || formState.tags.includes(t)) return;
+    setFormField("tags", [...formState.tags, t]);
+    setTagInput("");
+  };
 
   const previewSrc =
     (formState.coverFile &&
@@ -158,16 +166,48 @@ export default function ArticleFormDialog({
           {/* Tags */}
           <div>
             <label className="text-xs font-extrabold mb-1 block">
-              الوسوم (افصل بفاصلة)
+              الوسوم
             </label>
             <Input
               type="text"
-              value={formState.tagsInput}
-              onChange={(e) => setFormField("tagsInput", e.target.value)}
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addTag(tagInput);
+                } else if (e.key === "Backspace" && !tagInput && formState.tags.length > 0) {
+                  setFormField("tags", formState.tags.slice(0, -1));
+                }
+              }}
               className="text-sm"
-              placeholder="ريادة, تقنية, دليل"
+              placeholder="اكتب وسماً ثم Enter"
               fullWidth
             />
+            {formState.tags.length > 0 && (
+              <TagGroup
+                aria-label="الوسوم المضافة"
+                className="mt-2"
+                onRemove={(keys) => {
+                  const removed = new Set(keys);
+                  setFormField(
+                    "tags",
+                    formState.tags.filter((t) => !removed.has(t)),
+                  );
+                }}
+              >
+                <TagGroup.List items={formState.tags.map((t) => ({ id: t }))}>
+                  {(item) => (
+                    <Tag id={item.id} textValue={item.id}>
+                      {item.id}
+                      <Tag.RemoveButton aria-label={`إزالة ${item.id}`}>
+                        <X className="w-3 h-3" />
+                      </Tag.RemoveButton>
+                    </Tag>
+                  )}
+                </TagGroup.List>
+              </TagGroup>
+            )}
           </div>
 
           {/* Audience + Publish */}

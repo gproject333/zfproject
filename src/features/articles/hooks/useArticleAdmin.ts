@@ -11,7 +11,7 @@ export interface ArticleFormState {
   title: string;
   summary: string;
   body: string;
-  tagsInput: string;        // comma-separated raw input
+  tags: string[];
   audience: ArticleAudience;
   isPublished: boolean;
   coverStorageId?: Id<"_storage">;
@@ -24,21 +24,13 @@ const EMPTY: ArticleFormState = {
   title: "",
   summary: "",
   body: "",
-  tagsInput: "",
+  tags: [],
   audience: "student",
   isPublished: true,
   coverStorageId: undefined,
   coverFile: null,
   existingCoverUrl: undefined,
 };
-
-function parseTags(raw: string): string[] | undefined {
-  const list = raw
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
-  return list.length > 0 ? list : undefined;
-}
 
 /**
  * All state + mutations for the supervisor article management page.
@@ -85,7 +77,7 @@ export function useArticleAdmin() {
         title: article.title,
         summary: article.summary ?? "",
         body: article.body,
-        tagsInput: (article.tags ?? []).join(", "),
+        tags: article.tags ?? [],
         audience: article.audience,
         isPublished: article.isPublished,
         coverStorageId: article.coverStorageId,
@@ -133,7 +125,7 @@ export function useArticleAdmin() {
         summary: formState.summary.trim() || undefined,
         body: formState.body,
         coverStorageId,
-        tags: parseTags(formState.tagsInput),
+        tags: formState.tags.length > 0 ? formState.tags : undefined,
         audience: formState.audience,
         isPublished: formState.isPublished,
       };
