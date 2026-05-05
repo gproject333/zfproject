@@ -3,8 +3,9 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
-import { Menu, X, ChevronLeft, ChevronRight, LogOut, PanelRightClose, PanelRightOpen } from "lucide-react";
+import { Menu, X, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { Button } from "@/components/ui";
 import NotificationBell from "@/components/NotificationBell";
 import AppFooter from "@/components/AppFooter";
 import SettingsMenu from "@/components/SettingsMenu";
@@ -148,25 +149,29 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
             {/* Bottom buttons */}
             <div className={`border-t border-border/60 space-y-1 ${sidebarCollapsed ? "md:p-2 p-3" : "p-3"}`}>
               {/* Collapse toggle */}
-              <button
-                onClick={() => setSidebarCollapsed(p => !p)}
-                title={sidebarCollapsed ? "توسيع" : "تصغير"}
-                className={`hidden md:flex items-center gap-3 rounded-lg text-sm font-bold w-full nb-border bg-muted hover:bg-muted/70 text-muted-foreground transition-all
-                  ${sidebarCollapsed ? "justify-center px-2 py-3" : "px-3 py-2.5 justify-between"}`}
+              <Button
+                onPress={() => setSidebarCollapsed(p => !p)}
+                aria-label={sidebarCollapsed ? "توسيع" : "تصغير"}
+                variant="ghost"
+                size="sm"
+                fullWidth
+                className={`hidden md:flex ${sidebarCollapsed ? "justify-center" : "justify-between"}`}
               >
                 {!sidebarCollapsed && <span className="text-xs">تصغير</span>}
                 {sidebarCollapsed ? <ChevronLeft className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
-              </button>
+              </Button>
               {/* Logout */}
-              <button
-                onClick={() => void handleLogout()}
-                title="تسجيل الخروج"
-                className={`flex items-center gap-3 rounded-lg text-sm font-bold w-full nb-border bg-transparent border-transparent hover:bg-destructive/10 hover:border-destructive/30 text-destructive transition-all
-                  ${sidebarCollapsed ? "md:justify-center md:px-2 md:py-3 px-3 py-2.5" : "px-3 py-2.5"}`}
+              <Button
+                onPress={() => void handleLogout()}
+                aria-label="تسجيل الخروج"
+                variant="ghost"
+                size="sm"
+                fullWidth
+                className={`text-destructive hover:bg-destructive/10 ${sidebarCollapsed ? "md:justify-center" : "justify-start"}`}
               >
                 <LogOut className="w-4 h-4 shrink-0" />
                 <span className={sidebarCollapsed ? "md:hidden" : ""}>تسجيل الخروج</span>
-              </button>
+              </Button>
             </div>
           </aside>
 
@@ -176,12 +181,16 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
             <header className="sticky top-0 z-20 bg-card nb-border border-t-0 border-x-0 px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {/* Mobile hamburger */}
-                <button
-                  onClick={() => setSidebarOpen(true)}
-                  className="md:hidden w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card"
+                <Button
+                  onPress={() => setSidebarOpen(true)}
+                  variant="outline"
+                  size="sm"
+                  isIconOnly
+                  className="md:hidden"
+                  aria-label="فتح القائمة"
                 >
                   <Menu className="w-5 h-5" />
-                </button>
+                </Button>
               </div>
               <div className="flex items-center gap-2">
                 {config.showNotifications && <NotificationBell />}
@@ -210,12 +219,16 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             {/* Right Side: hamburger + brand */}
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="md:hidden w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover"
+              <Button
+                onPress={() => setSidebarOpen(!sidebarOpen)}
+                variant="outline"
+                size="sm"
+                isIconOnly
+                className="md:hidden"
+                aria-label={sidebarOpen ? "إغلاق القائمة" : "فتح القائمة"}
               >
                 {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
+              </Button>
               <Link href={config.brand.homeHref} className="flex items-center gap-3">
                 <div
                   className={`w-12 h-12 flex items-center justify-center ${

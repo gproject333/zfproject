@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import OliveLogo from "@/components/OliveLogo";
 import SettingsMenu from "@/components/SettingsMenu";
-import { buttonVariants } from "@/components/ui";
+import { Button, buttonVariants } from "@/components/ui";
 import { useAuth } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc } from "../../../../convex/_generated/dataModel";
@@ -88,13 +88,16 @@ export default function LandingPage() {
           {/* Brand */}
           <div className="flex items-center gap-3">
             {showAuthNav && (
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="md:hidden w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover"
+              <Button
+                onPress={() => setSidebarOpen(!sidebarOpen)}
+                variant="outline"
+                size="sm"
+                isIconOnly
+                className="md:hidden"
                 aria-label="القائمة"
               >
                 {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
+              </Button>
             )}
             <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="الصفحة الرئيسية">
               <div className="w-12 h-12 flex items-center justify-center">

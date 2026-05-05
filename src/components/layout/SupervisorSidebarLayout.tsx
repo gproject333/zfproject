@@ -14,6 +14,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
 import SettingsMenu from "@/components/SettingsMenu";
+import { Button } from "@/components/ui";
 import { Tooltip } from "@/components/ui/Tooltip";
 import RoleGuard from "@/components/RoleGuard";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -92,29 +93,32 @@ export default function SupervisorSidebarLayout({ navItems, children }: Props) {
           >
             {/* Mobile close */}
             {open && (
-              <button
-                onClick={() => setOpen(false)}
-                className="md:hidden absolute top-4 left-4 w-9 h-9 nb-border rounded-lg flex items-center justify-center bg-card"
+              <Button
+                onPress={() => setOpen(false)}
+                variant="outline"
+                size="sm"
+                isIconOnly
+                className="md:hidden absolute top-4 left-4"
                 aria-label="إغلاق"
               >
                 <X className="w-4 h-4" />
-              </button>
+              </Button>
             )}
 
             {/* Desktop bottom buttons */}
             <div className={`hidden md:flex mt-auto flex-col gap-1`}>
               {/* Collapse toggle */}
-              <button
-                onClick={toggleCollapsed}
-                className={`flex items-center gap-2 w-full px-3 py-2.5 rounded-lg nb-border nb-shadow-sm bg-muted hover:bg-muted/80 transition-colors font-bold text-sm text-muted-foreground hover:text-foreground ${
-                  collapsed ? "justify-center" : "justify-between"
-                }`}
+              <Button
+                onPress={toggleCollapsed}
+                variant="ghost"
+                size="sm"
+                fullWidth
+                className={collapsed ? "justify-center" : "justify-between"}
                 aria-label={collapsed ? "توسيع" : "تصغير"}
-                title={collapsed ? "توسيع" : "تصغير"}
               >
                 {!collapsed && <span className="text-xs">تصغير</span>}
                 {collapsed ? <ChevronLeft className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
-              </button>
+              </Button>
             </div>
 
             {/* Brand */}
@@ -177,13 +181,16 @@ export default function SupervisorSidebarLayout({ navItems, children }: Props) {
           {/* Slim top bar with action buttons pinned to the left edge */}
           <header className="sticky top-0 z-30 bg-card nb-border-thick border-t-0 border-x-0 px-4 py-2.5 flex items-center gap-3">
             {/* Mobile hamburger — opens sidebar drawer */}
-            <button
-              onClick={() => setOpen(true)}
-              className="md:hidden w-9 h-9 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+            <Button
+              onPress={() => setOpen(true)}
+              variant="outline"
+              size="sm"
+              isIconOnly
+              className="md:hidden"
               aria-label="فتح القائمة"
             >
               <Menu className="w-5 h-5" />
-            </button>
+            </Button>
 
             {/* Mobile brand — desktop has it inside the sidebar */}
             <div className="md:hidden flex items-center gap-2">
@@ -197,13 +204,16 @@ export default function SupervisorSidebarLayout({ navItems, children }: Props) {
             <div className="mr-auto flex items-center gap-2">
               {/* Show sidebar button — only visible on desktop when sidebar is hidden */}
               {hidden && (
-                <button
-                  onClick={toggleHidden}
-                  className="hidden md:flex w-9 h-9 nb-border rounded-lg items-center justify-center bg-card hover:bg-muted"
-                  title="إظهار الشريط الجانبي"
+                <Button
+                  onPress={toggleHidden}
+                  variant="outline"
+                  size="sm"
+                  isIconOnly
+                  className="hidden md:flex"
+                  aria-label="إظهار الشريط الجانبي"
                 >
                   <PanelRightOpen className="w-4 h-4" />
-                </button>
+                </Button>
               )}
               <NotificationBell />
               <SettingsMenu profileHref="/supervisor/profile" />
