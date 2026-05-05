@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Plus, TrendingUp, HelpCircle, BookOpen, Compass, ArrowUpCircle, Clock, XCircle } from "lucide-react";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
-import { Button } from "@/components/ui";
+import { Button, Card } from "@/components/ui";
 import { useStudentDashboardStats } from "@/features/student/hooks/useStudentDashboardStats";
 import StudentAvatar from "./StudentAvatar";
 import RecentApplicationsCard from "./RecentApplicationsCard";
@@ -170,7 +170,7 @@ export default function StudentDashboard() {
 
       {/* Supervisor Upgrade Banner — for @zuj.edu.jo emails only */}
       {isZujStaff && (
-        <div className="nb-card p-5 mb-8 border-[2px] border-primary/30 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <Card className="p-5 mb-8 border-[2px] border-primary/30 flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-primary/10 nb-border flex items-center justify-center shrink-0">
             <ArrowUpCircle className="w-6 h-6 text-primary" />
           </div>
@@ -204,7 +204,7 @@ export default function StudentDashboard() {
               طلب الترقية
             </Button>
           )}
-        </div>
+        </Card>
       )}
 
       {/* Recent activity widgets */}

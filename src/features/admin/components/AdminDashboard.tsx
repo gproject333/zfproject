@@ -31,6 +31,7 @@ import {
 } from "recharts";
 import { api } from "../../../../convex/_generated/api";
 import { SkeletonStatCards } from "@/components/ui/Skeleton";
+import { Card } from "@/components/ui";
 
 const PIE_COLORS = ["#F59E0B", "#22C55E", "#EF4444", "#6B7280"];
 
@@ -214,7 +215,7 @@ export default function AdminDashboard() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Bar Chart — توزيع الطلاب */}
-        <div className="nb-card p-5 lg:col-span-1">
+        <Card className="p-5 lg:col-span-1">
           <h3 className="font-extrabold text-base mb-4 flex items-center gap-2">
             <GraduationCap className="w-5 h-5 text-info" />
             توزيع الطلاب حسب الكلية
@@ -231,10 +232,10 @@ export default function AdminDashboard() {
           ) : (
             <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">لا توجد بيانات</div>
           )}
-        </div>
+        </Card>
 
         {/* Line Chart — معدل التسجيل الشهري */}
-        <div className="nb-card p-5 lg:col-span-1">
+        <Card className="p-5 lg:col-span-1">
           <h3 className="font-extrabold text-base mb-4 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-success" />
             معدل التسجيل الشهري
@@ -252,10 +253,10 @@ export default function AdminDashboard() {
           ) : (
             <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">لا توجد بيانات</div>
           )}
-        </div>
+        </Card>
 
         {/* Pie Chart — حالة المشاريع */}
-        <div className="nb-card p-5 lg:col-span-1">
+        <Card className="p-5 lg:col-span-1">
           <h3 className="font-extrabold text-base mb-4 flex items-center gap-2">
             <FileText className="w-5 h-5 text-warning" />
             حالة المشاريع
@@ -298,12 +299,12 @@ export default function AdminDashboard() {
           ) : (
             <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">لا توجد بيانات</div>
           )}
-        </div>
+        </Card>
       </div>
 
       {/* Acceptance Rate */}
       {stats.totalApplications > 0 && (
-        <div className="nb-card p-6">
+        <Card className="p-6">
           <h3 className="font-extrabold text-lg mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-success" />
             معدل القبول
@@ -313,11 +314,11 @@ export default function AdminDashboard() {
             <RateBar label="مرفوض" labelColor="text-destructive" barColor="bg-destructive" value={stats.rejectedApplications} total={stats.totalApplications} />
             <RateBar label="قيد المراجعة" labelColor="text-warning" barColor="bg-status-pending" value={stats.underReviewApplications} total={stats.totalApplications} />
           </div>
-        </div>
+        </Card>
       )}
 
       {/* Activity Log */}
-      <div className="nb-card p-6">
+      <Card className="p-6">
         <h3 className="font-extrabold text-lg mb-4 flex items-center gap-2">
           <Activity className="w-5 h-5" style={{ color: "#DC2626" }} />
           آخر النشاطات
@@ -349,7 +350,7 @@ export default function AdminDashboard() {
             ))}
           </div>
         )}
-      </div>
+      </Card>
 
       {/* Quick Links */}
       <div>
