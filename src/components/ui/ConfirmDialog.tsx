@@ -3,6 +3,7 @@
 import { type ReactNode, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/Dialog";
+import { Button } from "@/components/ui";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -160,16 +161,15 @@ function ConfirmDialogBody({
               {cancelLabel}
             </button>
           </DialogClose>
-          <button
-            onClick={() => onConfirm(withNotes ? notes : undefined)}
-            disabled={!canConfirm}
-            className={`nb-btn flex-1 ${
-              destructive ? "bg-destructive text-white" : "nb-btn-accent"
-            }`}
+          <Button
+            onPress={() => onConfirm(withNotes ? notes : undefined)}
+            isDisabled={!canConfirm}
+            variant={destructive ? "danger" : "primary"}
+            className="flex-1"
           >
             {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
             {confirmLabel}
-          </button>
+          </Button>
         </div>
       </DialogContent>
   );

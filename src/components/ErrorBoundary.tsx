@@ -2,6 +2,7 @@
 
 import { Component, type ReactNode } from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -59,13 +60,10 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
                 {this.state.error.message}
               </pre>
             )}
-            <button
-              onClick={this.handleReset}
-              className="nb-btn nb-btn-primary w-full"
-            >
+            <Button onPress={this.handleReset} variant="primary" fullWidth>
               <RefreshCw className="w-4 h-4" />
               المحاولة مرة أخرى
-            </button>
+            </Button>
           </div>
         </div>
       );
