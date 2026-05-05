@@ -4,9 +4,12 @@ import { getOptionalUser, requireAdmin } from "../lib/auth";
 
 /**
  * Returns every application a sponsor is allowed to see — i.e. anything past
- * the `draft` stage and not `rejected`. No admin assignment required:
- * applications become visible to all sponsors the moment the student submits
- * (status moves to `under_review`).
+ * the `draft` stage and not `rejected` — together with a signed video URL
+ * so the dashboard can render an Instagram-style reels feed without a
+ * second round-trip per project.
+ *
+ * Applications without a videoFileId are omitted (the dashboard only shows
+ * reels). The list is sorted newest-submitted first.
  */
 export const mySponsoredApplications = query({
   args: {},
@@ -29,8 +32,28 @@ export const mySponsoredApplications = query({
       ),
     );
     const apps = groups.flat();
-    apps.sort((a, b) => (b.submittedAt ?? b.createdAt) - (a.submittedAt ?? a.createdAt));
-    return apps;
+
+    // Per-sponsor "interest" lookup so we can render the heart pre-filled.
+    const interests = await ctx.db
+      .query("sponsorAssignments")
+      .withIndex("by_sponsor", (q) => q.eq("sponsorId", user._id))
+      .collect();
+    const interestMap = new Map(
+      interests.map((a) => [a.applicationId, a.isInterested ?? false]),
+    );
+
+    const withVideo = apps.filter((a) => !!a.videoFileId);
+    const reels = await Promise.all(
+      withVideo.map(async (a) => ({
+        ...a,
+        videoUrl: a.videoFileId ? await ctx.storage.getUrl(a.videoFileId) : null,
+        isInterested: interestMap.get(a._id) ?? false,
+      })),
+    );
+    reels.sort(
+      (a, b) => (b.submittedAt ?? b.createdAt) - (a.submittedAt ?? a.createdAt),
+    );
+    return reels;
   },
 });
 
