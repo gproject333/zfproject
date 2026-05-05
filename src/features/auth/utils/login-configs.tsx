@@ -7,6 +7,7 @@ import {
   Sparkles,
   BookUser,
 } from "lucide-react";
+import { buttonVariants } from "@/components/ui";
 import type { LoginVariant, LoginVariantConfig } from "../types/login-variants";
 
 export const EMAIL_DOMAIN_SUGGESTIONS = ["std-zuj.edu.jo", "zuj.edu.jo"];
@@ -45,7 +46,7 @@ const STUDENT_CONFIG: LoginVariantConfig = {
   floatLabelBg: "var(--card)",
   floatLabelRestColor: "var(--muted-foreground)",
   floatLabelActiveColor: "var(--primary)",
-  submitButtonClassName: "nb-btn nb-btn-primary w-full text-base",
+  submitButtonClassName: buttonVariants({ variant: "primary", fullWidth: true }),
   submitText: "تسجيل الدخول",
   footerNode: (
     <>
@@ -54,7 +55,7 @@ const STUDENT_CONFIG: LoginVariantConfig = {
         <span className="text-xs font-bold text-muted-foreground">أو</span>
         <div className="flex-1 h-0.5 bg-foreground/10" />
       </div>
-      <Link href="/register" className="nb-btn nb-btn-outline w-full text-base">
+      <Link href="/register" className={buttonVariants({ variant: "outline", fullWidth: true })}>
         <Sparkles className="w-5 h-5" />
         إنشاء حساب جديد
       </Link>

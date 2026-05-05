@@ -25,6 +25,7 @@ import type { LucideIcon } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
+import { Button } from "@/components/ui";
 import { toast } from "sonner";
 
 interface ColorScheme {
@@ -281,14 +282,14 @@ export default function UserManagement({ role }: UserManagementProps) {
           </p>
         </div>
         {!config.hideAddForm && (
-          <button
-            onClick={() => { setShowForm(!showForm); setError(""); setSuccess(""); }}
-            className="nb-btn font-bold"
+          <Button
+            onPress={() => { setShowForm(!showForm); setError(""); setSuccess(""); }}
+            variant="primary"
             style={{ background: config.color.primary, color: config.color.textOnPrimary, borderColor: config.color.border }}
           >
             {showForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             {showForm ? "إلغاء" : config.addButtonLabel}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -365,10 +366,10 @@ export default function UserManagement({ role }: UserManagementProps) {
               <div className={`p-3 rounded-lg ${config.formHint.bg} nb-border ${config.formHint.border} text-sm font-medium ${config.formHint.color} mb-4`}>
                 {config.formHint.text}
               </div>
-              <button type="submit" disabled={loading} className="nb-btn font-bold w-full md:w-auto" style={{ background: config.color.primary, color: config.color.textOnPrimary, borderColor: config.color.border }}>
+              <Button type="submit" isDisabled={loading} variant="primary" className="w-full md:w-auto" style={{ background: config.color.primary, color: config.color.textOnPrimary, borderColor: config.color.border }}>
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                 {loading ? "جاري الإنشاء..." : "إنشاء الحساب"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>
