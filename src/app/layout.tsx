@@ -7,7 +7,6 @@ import { arSA } from "@clerk/localizations";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Providers } from "./Providers";
 import { TooltipProvider } from "@/components/ui/Tooltip";
-import { Toast } from "@/components/ui";
 
 const tajawal = Tajawal({
   subsets: ["arabic", "latin"],
@@ -48,7 +47,6 @@ export default function RootLayout({
                 <ConvexClientProvider>{children}</ConvexClientProvider>
               </TooltipProvider>
             </Providers>
-            <Toast.Provider placement="top" />
           </ThemeProvider>
         </body>
       </html>
