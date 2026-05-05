@@ -1,17 +1,10 @@
 "use client";
 
+import { Skeleton as HSkeleton } from "@heroui/react";
 import { cn } from "@/lib/utils";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      className={cn(
-        "animate-pulse rounded-[5px] bg-muted nb-border border-border/30",
-        className
-      )}
-      {...props}
-    />
-  );
+  return <HSkeleton className={cn("rounded-md", className)} {...props} />;
 }
 
 /** Skeleton for stat cards (dashboard) */
