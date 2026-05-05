@@ -42,8 +42,8 @@ export function DialogContent({
   return (
     <>
       <Modal.Backdrop />
-      <Modal.Container placement="center">
-        <Modal.Dialog className={className} dir="rtl">
+      <Modal.Container placement="center" className="justify-center">
+        <Modal.Dialog className={`my-auto ${className ?? ""}`} dir="rtl">
           {title || description || showClose ? (
             <Modal.Header className="flex items-start justify-between gap-3 mb-4">
               <div className="flex-1">
