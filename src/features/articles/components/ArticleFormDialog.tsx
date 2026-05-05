@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/Select";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
-import { Button, buttonVariants } from "@/components/ui";
+import { Button, buttonVariants, Input, TextArea } from "@/components/ui";
 import type { ArticleAudience, ArticleFormState } from "../hooks/useArticleAdmin";
 
 interface ArticleFormDialogProps {
@@ -67,12 +67,13 @@ export default function ArticleFormDialog({
           {/* Title */}
           <div>
             <label className="text-xs font-extrabold mb-1 block">العنوان *</label>
-            <input
+            <Input
               type="text"
               value={formState.title}
               onChange={(e) => setFormField("title", e.target.value)}
-              className="nb-input text-sm"
+              className="text-sm"
               placeholder="عنوان المقالة"
+              fullWidth
               required
             />
           </div>
@@ -82,12 +83,13 @@ export default function ArticleFormDialog({
             <label className="text-xs font-extrabold mb-1 block">
               الملخص (اختياري)
             </label>
-            <input
+            <Input
               type="text"
               value={formState.summary}
               onChange={(e) => setFormField("summary", e.target.value)}
-              className="nb-input text-sm"
+              className="text-sm"
               placeholder="جملة مختصرة تظهر في بطاقة المعاينة"
+              fullWidth
             />
           </div>
 
@@ -101,12 +103,13 @@ export default function ArticleFormDialog({
               value={formState.body}
               onChange={(v) => setFormField("body", v)}
             />
-            <textarea
+            <TextArea
               ref={textareaRef}
               value={formState.body}
               onChange={(e) => setFormField("body", e.target.value)}
-              className="nb-input text-sm min-h-56 font-mono"
+              className="text-sm min-h-56 font-mono"
               placeholder="اكتب المحتوى بصيغة Markdown..."
+              fullWidth
               required
             />
           </div>
@@ -157,12 +160,13 @@ export default function ArticleFormDialog({
             <label className="text-xs font-extrabold mb-1 block">
               الوسوم (افصل بفاصلة)
             </label>
-            <input
+            <Input
               type="text"
               value={formState.tagsInput}
               onChange={(e) => setFormField("tagsInput", e.target.value)}
-              className="nb-input text-sm"
+              className="text-sm"
               placeholder="ريادة, تقنية, دليل"
+              fullWidth
             />
           </div>
 

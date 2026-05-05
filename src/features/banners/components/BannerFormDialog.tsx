@@ -17,7 +17,7 @@ import {
   SelectItem,
 } from "@/components/ui/Select";
 import { youTubeThumbnail } from "@/lib/youtube";
-import { Button } from "@/components/ui";
+import { Button, Input, TextArea } from "@/components/ui";
 import type {
   MediaType,
   useBannerAdmin,
@@ -68,8 +68,8 @@ export function BannerFormDialog({
         <div className="space-y-4">
           <div>
             <label className="block text-xs font-bold mb-1.5">العنوان</label>
-            <input
-              className="nb-input"
+            <Input
+              fullWidth
               value={admin.formState.title}
               onChange={(e) => admin.setFormField("title", e.target.value)}
               placeholder={
@@ -90,9 +90,10 @@ export function BannerFormDialog({
                 </span>
               )}
             </label>
-            <textarea
+            <TextArea
               rows={2}
-              className="nb-input resize-none"
+              fullWidth
+              className="resize-none"
               value={admin.formState.message}
               onChange={(e) => admin.setFormField("message", e.target.value)}
               placeholder={
@@ -172,8 +173,8 @@ export function BannerFormDialog({
                       <label className="block text-xs font-bold mb-1.5">
                         أو رابط صورة خارجي
                       </label>
-                      <input
-                        className="nb-input"
+                      <Input
+                        fullWidth
                         dir="ltr"
                         value={admin.formState.imageUrl}
                         onChange={(e) =>
@@ -235,8 +236,8 @@ export function BannerFormDialog({
                     <label className="block text-xs font-bold mb-1.5">
                       رابط اليوتيوب
                     </label>
-                    <input
-                      className="nb-input"
+                    <Input
+                      fullWidth
                       dir="ltr"
                       value={admin.formState.youtubeUrl}
                       onChange={(e) =>
@@ -302,17 +303,17 @@ export function BannerFormDialog({
                 </span>
               </label>
               <div className="grid grid-cols-2 gap-3">
-                <input
+                <Input
                   type="date"
-                  className="nb-input"
+                  fullWidth
                   value={admin.formState.expiresDate}
                   onChange={(e) =>
                     admin.setFormField("expiresDate", e.target.value)
                   }
                 />
-                <input
+                <Input
                   type="time"
-                  className="nb-input"
+                  fullWidth
                   value={admin.formState.expiresTime}
                   onChange={(e) =>
                     admin.setFormField("expiresTime", e.target.value)
@@ -329,8 +330,8 @@ export function BannerFormDialog({
                 <label className="block text-xs font-bold mb-1.5">
                   كلمة الرابط (اختياري)
                 </label>
-                <input
-                  className="nb-input"
+                <Input
+                  fullWidth
                   value={admin.formState.linkLabel}
                   onChange={(e) =>
                     admin.setFormField("linkLabel", e.target.value)
@@ -342,8 +343,8 @@ export function BannerFormDialog({
                 <label className="block text-xs font-bold mb-1.5">
                   رابط URL (اختياري)
                 </label>
-                <input
-                  className="nb-input"
+                <Input
+                  fullWidth
                   dir="ltr"
                   value={admin.formState.linkHref}
                   onChange={(e) =>

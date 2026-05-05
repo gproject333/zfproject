@@ -8,7 +8,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/Select";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import type { GuideFormState } from "../hooks/useGuideAdmin";
 
 interface GuideFormDialogProps {
@@ -44,11 +44,12 @@ export default function GuideFormDialog({
         >
           <div>
             <label className="text-xs font-extrabold mb-1 block">العنوان *</label>
-            <input
+            <Input
               type="text"
               value={formState.title}
               onChange={(e) => setFormField("title", e.target.value)}
-              className="nb-input text-sm"
+              className="text-sm"
+              fullWidth
               placeholder="عنوان المورد"
               required
             />
@@ -73,11 +74,12 @@ export default function GuideFormDialog({
 
           <div>
             <label className="text-xs font-extrabold mb-1 block">الرابط *</label>
-            <input
+            <Input
               type="url"
               value={formState.url}
               onChange={(e) => setFormField("url", e.target.value)}
-              className="nb-input text-sm"
+              className="text-sm"
+              fullWidth
               placeholder="https://..."
               required
               dir="ltr"

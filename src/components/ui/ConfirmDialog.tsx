@@ -3,7 +3,7 @@
 import { type ReactNode, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/Dialog";
-import { Button } from "@/components/ui";
+import { Button, TextArea } from "@/components/ui";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -135,9 +135,10 @@ function ConfirmDialogBody({
             >
               {notesRequired ? "السبب (مطلوب)" : "ملاحظة (اختياري)"}
             </label>
-            <textarea
+            <TextArea
               id="confirm-dialog-notes"
-              className="nb-input w-full min-h-[100px]"
+              className="min-h-[100px]"
+              fullWidth
               placeholder={notesPlaceholder}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
