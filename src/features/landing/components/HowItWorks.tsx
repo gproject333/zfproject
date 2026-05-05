@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import { Card } from "@/components/ui";
 
 /**
  * Four-step "how it works" process section.
@@ -100,13 +101,13 @@ export default function HowItWorks() {
                   className={`w-full shrink-0 px-3 ${itemsPerView === 2 ? 'lg:w-1/2' : ''}`}
                 >
                   <Reveal animation="slide-up" delay={i * 150} className="h-full">
-                    <div className="nb-card p-8 sm:p-10 text-center h-full transition-transform duration-300 hover:-translate-y-1 hover:shadow-[6px_8px_0px_0px_var(--shadow-color)]">
+                    <Card className="p-8 sm:p-10 text-center h-full transition-transform duration-300 hover:-translate-y-1 hover:shadow-[6px_8px_0px_0px_var(--shadow-color)]">
                       <div className="w-20 h-20 bg-primary nb-border-thick rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] rotate-3 hover:rotate-0 transition-transform">
                         <span className="text-4xl font-black">{step.num}</span>
                       </div>
                       <h3 className="font-black text-xl mb-3 text-foreground">{step.title}</h3>
                       <p className="text-base text-foreground/70 dark:text-foreground/80 font-bold">{step.desc}</p>
-                    </div>
+                    </Card>
                   </Reveal>
                 </div>
               ))}

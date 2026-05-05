@@ -2,7 +2,7 @@
 
 import { useQuery } from "convex/react";
 import {User as UserIcon, Mail, Phone, GraduationCap, BookOpen, IdCard, Link2} from "lucide-react";
-import { Spinner } from "@/components/ui";
+import { Spinner, Card} from "@/components/ui";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import InfoRow from "@/features/applications/components/InfoRow";
@@ -23,9 +23,9 @@ export default function StudentProfileCard({ applicationId }: StudentProfileCard
 
   if (student === undefined) {
     return (
-      <div className="nb-card p-5 flex items-center justify-center min-h-[160px]">
+      <Card className="p-5 flex items-center justify-center min-h-[160px]">
         <Spinner size="sm" color="current" className="text-accent" />
-      </div>
+      </Card>
     );
   }
 
@@ -34,7 +34,7 @@ export default function StudentProfileCard({ applicationId }: StudentProfileCard
   const initial = student.name?.charAt(0) ?? "?";
 
   return (
-    <div className="nb-card p-5">
+    <Card className="p-5">
       <h3 className="font-bold text-base mb-4 flex items-center gap-2">
         <UserIcon className="w-5 h-5 text-primary" />
         بيانات مقدّم الطلب
@@ -122,7 +122,7 @@ export default function StudentProfileCard({ applicationId }: StudentProfileCard
           />
         )}
       </dl>
-    </div>
+    </Card>
   );
 }
 

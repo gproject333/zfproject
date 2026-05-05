@@ -6,7 +6,7 @@ import Link from "next/link";
 import {UserCircle, Calendar, ChevronRight} from "lucide-react";
 import { formatArabicDate } from "@/lib/formatters";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { Breadcrumbs, buttonVariants, Spinner } from "@/components/ui";
+import { Breadcrumbs, buttonVariants, Spinner, Card} from "@/components/ui";
 import { useArticleDetail } from "../hooks/useArticlesList";
 import type { Id } from "../../../../convex/_generated/dataModel";
 
@@ -67,14 +67,14 @@ export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {
       </Breadcrumbs>
 
       {article.coverUrl && (
-        <div className="nb-card p-0 overflow-hidden mb-6">
+        <Card className="p-0 overflow-hidden mb-6">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={article.coverUrl}
             alt={article.title}
             className="w-full h-auto max-h-80 object-cover"
           />
-        </div>
+        </Card>
       )}
 
       <header className="mb-6">
@@ -105,11 +105,11 @@ export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {
         )}
       </header>
 
-      <div className="nb-card p-6 text-sm leading-relaxed break-words markdown-body">
+      <Card className="p-6 text-sm leading-relaxed break-words markdown-body">
         <ReactMarkdown remarkPlugins={[remarkGfm]} allowedElements={ALLOWED_ELEMENTS}>
           {article.body}
         </ReactMarkdown>
-      </div>
+      </Card>
     </article>
   );
 }

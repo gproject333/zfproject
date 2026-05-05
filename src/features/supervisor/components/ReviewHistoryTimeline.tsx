@@ -2,7 +2,7 @@
 
 import { useQuery } from "convex/react";
 import {History, ArrowLeft} from "lucide-react";
-import { Spinner } from "@/components/ui";
+import { Spinner, Card} from "@/components/ui";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api } from "../../../../convex/_generated/api";
@@ -27,16 +27,16 @@ export default function ReviewHistoryTimeline({ applicationId }: ReviewHistoryTi
 
   if (items === undefined) {
     return (
-      <div className="nb-card p-5 flex items-center justify-center">
+      <Card className="p-5 flex items-center justify-center">
         <Spinner size="sm" color="current" className="text-muted-foreground" />
-      </div>
+      </Card>
     );
   }
 
   if (items.length === 0) return null;
 
   return (
-    <div className="nb-card p-5">
+    <Card className="p-5">
       <h3 className="font-bold text-base mb-4 flex items-center gap-2">
         <History className="w-5 h-5 text-accent" />
         سجل المراجعات
@@ -72,6 +72,6 @@ export default function ReviewHistoryTimeline({ applicationId }: ReviewHistoryTi
           </li>
         ))}
       </ol>
-    </div>
+    </Card>
   );
 }

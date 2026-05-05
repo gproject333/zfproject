@@ -3,7 +3,7 @@
 import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import {Activity} from "lucide-react";
-import { Spinner } from "@/components/ui";
+import { Spinner, Card} from "@/components/ui";
 import { api } from "../../../../convex/_generated/api";
 import { STATUS_CONFIG } from "@/lib/configs/application";
 import { STATUS_LABELS } from "../../../../convex/lib/statuses";
@@ -41,7 +41,7 @@ export default function RecentActivity() {
   const items = useQuery(api.applications.supervisor.recentActivity, { limit: 3 });
 
   return (
-    <div className="nb-card p-5">
+    <Card className="p-5">
       <h3 className="font-extrabold mb-4 text-base flex items-center gap-2">
         <Activity className="w-5 h-5 text-accent" />
         آخر النشاطات
@@ -97,6 +97,6 @@ export default function RecentActivity() {
           })}
         </ul>
       )}
-    </div>
+    </Card>
   );
 }

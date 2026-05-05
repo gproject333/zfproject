@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import {Mail, CheckCircle2, AlertCircle, GraduationCap, ArrowRight} from "lucide-react";
-import { Button, InputOTP, Spinner} from "@/components/ui";
+import { Button, InputOTP, Spinner, Card} from "@/components/ui";
 
 export default function OtpVerifyForm() {
   const { signUp, setActive } = useSignUp();
@@ -62,7 +62,7 @@ export default function OtpVerifyForm() {
           <p className="text-muted-foreground font-medium">خطوة أخيرة للدخول للمنصة</p>
         </div>
 
-        <div className="nb-card p-8">
+        <Card className="p-8">
           <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-foreground">
             <div className="flex gap-1.5">
               <span className="w-3 h-3 rounded-full bg-destructive nb-border" />
@@ -137,7 +137,7 @@ export default function OtpVerifyForm() {
               رجوع
             </Button>
           </form>
-        </div>
+        </Card>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ import {
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "@/lib/toast";
-import { Button, Input } from "@/components/ui";
+import { Button, Input, Card} from "@/components/ui";
 
 export default function CollegesManager() {
   const data = useQuery(api.colleges.listWithDepartments, {});
@@ -154,7 +154,7 @@ export default function CollegesManager() {
 
       {/* New College Form */}
       {showNewCollege && (
-        <div className="nb-card p-4 flex gap-3 items-center">
+        <Card className="p-4 flex gap-3 items-center">
           <Input
             value={newCollegeName}
             onChange={(e) => setNewCollegeName(e.target.value)}
@@ -170,7 +170,7 @@ export default function CollegesManager() {
           <button onClick={() => setShowNewCollege(false)} className="hover:bg-foreground/5 rounded transition-colors p-2">
             <X className="w-4 h-4" />
           </button>
-        </div>
+        </Card>
       )}
 
       {/* Colleges List */}
@@ -181,17 +181,17 @@ export default function CollegesManager() {
           ))}
         </div>
       ) : data.length === 0 ? (
-        <div className="nb-card p-12 text-center">
+        <Card className="p-12 text-center">
           <BookOpen className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
           <p className="text-muted-foreground font-medium">لا توجد كليات مضافة بعد</p>
-        </div>
+        </Card>
       ) : (
         <div className="space-y-3">
           {data.map((college) => {
             const isExpanded = expandedColleges.has(college._id);
             const isEditingThis = editingCollegeId === college._id;
             return (
-              <div key={college._id} className="nb-card overflow-hidden">
+              <Card key={college._id} className="overflow-hidden">
                 {/* College Row */}
                 <div className="flex items-center gap-3 p-4">
                   <button
@@ -347,7 +347,7 @@ export default function CollegesManager() {
                     )}
                   </div>
                 )}
-              </div>
+              </Card>
             );
           })}
         </div>

@@ -11,7 +11,7 @@ import {
   FloatingPasswordInput,
   FloatingSelectInput,
 } from "./FloatingFields";
-import { Button, Input, InputOTP, Spinner} from "@/components/ui";
+import { Button, Input, InputOTP, Spinner, Card} from "@/components/ui";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -83,7 +83,7 @@ export default function RegisterForm() {
           ))}
         </div>
 
-        <div className="nb-card p-8">
+        <Card className="p-8">
           <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-foreground">
             <div className="flex gap-1.5">
               <span className="w-3 h-3 rounded-full bg-destructive nb-border" />
@@ -306,7 +306,7 @@ export default function RegisterForm() {
               </Button>
             </div>
           )}
-        </div>
+        </Card>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground font-medium">

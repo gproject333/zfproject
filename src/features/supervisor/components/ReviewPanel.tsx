@@ -9,7 +9,7 @@ import {
 } from "../../../../convex/lib/statuses";
 import { RATING_CONFIG, RATING_KEYS } from "@/lib/configs/application";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
-import { Button, TextArea, Spinner} from "@/components/ui";
+import { Button, TextArea, Spinner, Card} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 import { Tooltip } from "@/components/ui/Tooltip";
 
@@ -47,7 +47,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
   const notesRef = useRef<HTMLTextAreaElement>(null);
 
   return (
-    <div className="nb-card p-5 border-accent border-[3px] bg-accent/5">
+    <Card className="p-5 border-accent border-[3px] bg-accent/5">
       <h3 className="font-bold text-base mb-4 flex items-center gap-2 text-accent-foreground">
         <ShieldCheck className="w-5 h-5 text-accent" />
         لوحة التقييم
@@ -153,6 +153,6 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
           </Button>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

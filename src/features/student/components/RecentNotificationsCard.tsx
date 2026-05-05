@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import {Bell} from "lucide-react";
-import { Spinner } from "@/components/ui";
+import { Spinner, Card} from "@/components/ui";
 import { api } from "../../../../convex/_generated/api";
 import NotificationItem from "@/components/NotificationItem";
 import { useRecentNotifications } from "@/features/student/hooks/useRecentNotifications";
@@ -28,7 +28,7 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
   };
 
   return (
-    <div className="nb-card p-0 overflow-hidden">
+    <Card className="p-0 overflow-hidden">
       <div className="flex items-center justify-between px-5 py-3.5 border-b-2 border-foreground/10">
         <h3 className="font-extrabold flex items-center gap-2">
           <Bell className="w-4 h-4 text-accent" />
@@ -57,6 +57,6 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
           ))}
         </div>
       )}
-    </div>
+    </Card>
   );
 }

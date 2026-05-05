@@ -10,7 +10,7 @@ import {
 } from "@/features/student/hooks/useCreateApplication";
 import type { ApplicationType } from "@/features/student/hooks/useApplicationForm";
 import ApplicationFormFields from "./ApplicationFormFields";
-import { Button, Spinner} from "@/components/ui";
+import { Button, Spinner, Card} from "@/components/ui";
 
 interface ApplicationCreateFormProps {
   type: ApplicationType;
@@ -29,7 +29,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
 
   if (!config) {
     return (
-      <div className="nb-card p-12 text-center">
+      <Card className="p-12 text-center">
         <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
         <h3 className="text-xl font-bold mb-2">نوع غير صالح</h3>
         <Button
@@ -39,7 +39,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
         >
           العودة لاختيار النوع
         </Button>
-      </div>
+      </Card>
     );
   }
 
@@ -65,7 +65,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
       </div>
 
       {/* Form */}
-      <div className="nb-card p-6 md:p-8">
+      <Card className="p-6 md:p-8">
         <FormError message={form.errors.form} shake className="mb-6" />
 
         <form
@@ -123,7 +123,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
             </Button>
           </div>
         </form>
-      </div>
+      </Card>
 
       {/* Tips */}
       <div className="mt-6 nb-card p-5 bg-muted/50">

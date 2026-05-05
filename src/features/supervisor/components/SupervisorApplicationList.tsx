@@ -10,7 +10,7 @@ import {FileText, Search, X as XIcon, CheckCircle2, XCircle, AlertTriangle, Info
 import { EmptyState } from "@/components/ui/EmptyState";
 import { STATUS_CONFIG, TYPE_CONFIG } from "@/lib/configs/application";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import { Button, Input, Spinner} from "@/components/ui";
+import { Button, Input, Spinner, Card} from "@/components/ui";
 import { useQuickAction } from "@/features/supervisor/hooks/useQuickAction";
 import { useBulkAction } from "@/features/supervisor/hooks/useBulkAction";
 import { useApplicationListColumns } from "@/features/supervisor/hooks/useApplicationListColumns";
@@ -102,8 +102,8 @@ export default function SupervisorApplicationList() {
       </div>
 
       {selectedIds.length > 0 && (
-        <div
-          className="nb-card border-accent border-[3px] bg-accent/5 p-3 mb-4 flex flex-wrap items-center gap-3 sticky top-4 z-10"
+        <Card
+          className="border-accent border-[3px] bg-accent/5 p-3 mb-4 flex flex-wrap items-center gap-3 sticky top-4 z-10"
           role="toolbar"
           aria-label="إجراءات على الطلبات المحددة"
         >
@@ -176,7 +176,7 @@ export default function SupervisorApplicationList() {
               مسح
             </Button>
           </div>
-        </div>
+        </Card>
       )}
 
       <div
@@ -273,8 +273,8 @@ export default function SupervisorApplicationList() {
       </div>
 
       {showIncompletePagesBanner && (
-        <div
-          className="nb-card border-info border-[2px] bg-info/5 p-3 mb-4 flex items-start gap-2 text-sm"
+        <Card
+          className="border-info border-[2px] bg-info/5 p-3 mb-4 flex items-start gap-2 text-sm"
           role="status"
         >
           <Info className="w-4 h-4 text-info shrink-0 mt-0.5" />
@@ -283,7 +283,7 @@ export default function SupervisorApplicationList() {
             <strong> &laquo;تحميل المزيد&raquo; </strong>
             في أسفل الجدول لمتابعة البحث في باقي الطلبات.
           </p>
-        </div>
+        </Card>
       )}
 
       {loading ? (

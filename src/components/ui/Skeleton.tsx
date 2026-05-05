@@ -2,6 +2,7 @@
 
 import { Skeleton as HSkeleton } from "@heroui/react";
 import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return <HSkeleton className={cn("rounded-md", className)} {...props} />;
@@ -12,13 +13,13 @@ function SkeletonStatCards({ count = 4 }: { count?: number }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="nb-card p-5">
+        <Card key={i} className="p-5">
           <div className="flex items-center justify-between mb-3">
             <Skeleton className="w-10 h-10 rounded-lg" />
             <Skeleton className="w-12 h-8" />
           </div>
           <Skeleton className="h-4 w-24" />
-        </div>
+        </Card>
       ))}
     </div>
   );
@@ -29,7 +30,7 @@ function SkeletonApplicationList({ count = 3 }: { count?: number }) {
   return (
     <div className="space-y-4">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="nb-card p-5">
+        <Card key={i} className="p-5">
           <div className="flex items-center gap-4">
             <Skeleton className="h-7 w-24 rounded-full" />
             <div className="flex-1 space-y-2">
@@ -38,7 +39,7 @@ function SkeletonApplicationList({ count = 3 }: { count?: number }) {
             </div>
             <Skeleton className="w-5 h-5 rounded" />
           </div>
-        </div>
+        </Card>
       ))}
     </div>
   );
@@ -65,7 +66,7 @@ function SkeletonDashboard() {
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         {[1, 2].map((i) => (
-          <div key={i} className="nb-card p-6">
+          <Card key={i} className="p-6">
             <div className="flex items-center gap-4">
               <Skeleton className="w-14 h-14 rounded-xl" />
               <div className="space-y-2 flex-1">
@@ -73,7 +74,7 @@ function SkeletonDashboard() {
                 <Skeleton className="h-3 w-48" />
               </div>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
 
@@ -100,12 +101,12 @@ function SkeletonApplicationDetail() {
 
       {/* Content sections */}
       {[1, 2, 3].map((i) => (
-        <div key={i} className="nb-card p-6 space-y-4">
+        <Card key={i} className="p-6 space-y-4">
           <Skeleton className="h-5 w-36" />
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-5/6" />
           <Skeleton className="h-4 w-3/4" />
-        </div>
+        </Card>
       ))}
     </div>
   );

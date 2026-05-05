@@ -6,7 +6,7 @@ import { CheckCircle2, XCircle, Clock, TrendingUp } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "@/lib/toast";
-import { Tabs } from "@/components/ui";
+import { Tabs, Card} from "@/components/ui";
 
 const STATUS_LABELS = {
   pending: { label: "معلق", color: "text-warning", bg: "bg-warning/10" },
@@ -73,7 +73,7 @@ export default function UpgradeRequestsManager() {
       </Tabs>
 
       {/* Table */}
-      <div className="nb-card overflow-hidden">
+      <Card className="overflow-hidden">
         {requests === undefined ? (
           <div className="p-8 space-y-3">
             {[...Array(4)].map((_, i) => (
@@ -156,7 +156,7 @@ export default function UpgradeRequestsManager() {
             </table>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

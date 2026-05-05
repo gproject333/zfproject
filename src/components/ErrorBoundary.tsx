@@ -2,7 +2,7 @@
 
 import { Component, type ReactNode } from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
-import { Button } from "@/components/ui";
+import { Button, Card} from "@/components/ui";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -47,7 +47,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
 
       return (
         <div className="min-h-[60vh] flex items-center justify-center p-4">
-          <div className="nb-card p-6 max-w-md w-full text-center">
+          <Card className="p-6 max-w-md w-full text-center">
             <div className="w-14 h-14 bg-destructive/10 nb-border rounded-xl flex items-center justify-center mx-auto mb-4">
               <AlertTriangle className="w-7 h-7 text-destructive" />
             </div>
@@ -64,7 +64,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
               <RefreshCw className="w-4 h-4" />
               المحاولة مرة أخرى
             </Button>
-          </div>
+          </Card>
         </div>
       );
     }

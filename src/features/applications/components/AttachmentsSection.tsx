@@ -1,6 +1,7 @@
 "use client";
 
 import { FileText, Video, Download, ExternalLink } from "lucide-react";
+import { Card } from "@/components/ui";
 
 interface AttachmentsSectionProps {
   pdfFileId?: string;
@@ -22,7 +23,7 @@ export default function AttachmentsSection({
   onShowPdf,
 }: AttachmentsSectionProps) {
   return (
-    <div className="nb-card p-5">
+    <Card className="p-5">
       <h3 className="font-bold text-base mb-4 flex items-center gap-2">
         <Download className="w-5 h-5 text-info" />
         المرفقات
@@ -37,7 +38,7 @@ export default function AttachmentsSection({
         />
         <AttachmentTile kind="video" present={!!videoFileId} url={videoUrl} />
       </div>
-    </div>
+    </Card>
   );
 }
 

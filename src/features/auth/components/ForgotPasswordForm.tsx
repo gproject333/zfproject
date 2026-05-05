@@ -6,7 +6,7 @@ import { useSignIn } from "@clerk/nextjs";
 import { useState } from "react";
 import {GraduationCap, Mail, KeyRound, AlertCircle, CheckCircle2, ArrowRight, Lock} from "lucide-react";
 import { FloatingEmailInput, FloatingPasswordInput, FloatingTextInput } from "./FloatingFields";
-import { Button, Spinner} from "@/components/ui";
+import { Button, Spinner, Card} from "@/components/ui";
 
 type Step = "email" | "verify";
 
@@ -95,7 +95,7 @@ export default function ForgotPasswordForm() {
           </p>
         </div>
 
-        <div className="nb-card p-8">
+        <Card className="p-8">
           <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-foreground">
             <div className="flex gap-1.5">
               <span className="w-3 h-3 rounded-full bg-destructive nb-border" />
@@ -190,7 +190,7 @@ export default function ForgotPasswordForm() {
               </div>
             </form>
           )}
-        </div>
+        </Card>
 
         <div className="mt-6 text-center">
           <Link href="/login" className="text-sm font-bold text-primary hover:text-accent underline underline-offset-4 transition-colors inline-flex items-center gap-1">

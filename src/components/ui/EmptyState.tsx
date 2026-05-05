@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import { Rocket, Inbox, FileText, Search } from "lucide-react";
+import { Card } from "@/components/ui";
 
 type EmptyVariant = "no-applications" | "no-results" | "empty-inbox" | "get-started";
 
@@ -67,7 +68,7 @@ export function EmptyState({
   const v = VARIANTS[variant];
 
   return (
-    <div className="nb-card p-12 text-center">
+    <Card className="p-12 text-center">
       {/* Illustration */}
       <div className="relative inline-block mb-6">
         <div className={`w-20 h-20 ${v.bg} nb-border rounded-2xl flex items-center justify-center relative z-10`}>
@@ -81,6 +82,6 @@ export function EmptyState({
         {description}
       </p>
       {action}
-    </div>
+    </Card>
   );
 }

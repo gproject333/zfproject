@@ -5,7 +5,7 @@ import {Camera, Save, CheckCircle2, Shield, Link2, KeyRound, Mail} from "lucide-
 import { useStudentProfile } from "../hooks/useStudentProfile";
 import { usePasswordChange } from "../hooks/usePasswordChange";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
-import { Button, Input, Spinner} from "@/components/ui";
+import { Button, Input, Spinner, Card} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -48,7 +48,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
         <h2 className="text-2xl font-extrabold text-center">ملفي الشخصي</h2>
 
         {/* ─── بطاقة البيانات الشخصية ─── */}
-        <div className="nb-card p-6 space-y-6">
+        <Card className="p-6 space-y-6">
           {/* الصورة الشخصية */}
           <div className="flex flex-col items-center gap-3">
             <button
@@ -239,10 +239,10 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             )}
             حفظ التغييرات
           </Button>
-        </div>
+        </Card>
 
         {/* ─── بطاقة الأمان ─── */}
-        <div className="nb-card p-6 space-y-4">
+        <Card className="p-6 space-y-4">
           <h3 className="font-extrabold text-base flex items-center gap-2">
             <Shield className="w-5 h-5 text-accent" />
             الأمان
@@ -355,7 +355,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               {password.error}
             </p>
           )}
-        </div>
+        </Card>
       </div>
     </div>
   );

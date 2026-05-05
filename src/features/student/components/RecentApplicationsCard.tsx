@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {FileText, ChevronLeft} from "lucide-react";
-import { Spinner } from "@/components/ui";
+import { Spinner, Card} from "@/components/ui";
 import ApplicationCard from "@/features/applications/components/ApplicationCard";
 import { useRecentApplications } from "@/features/student/hooks/useRecentApplications";
 
@@ -17,7 +17,7 @@ export default function RecentApplicationsCard({ limit = 3 }: { limit?: number }
   const { applications, loading } = useRecentApplications(limit);
 
   return (
-    <div className="nb-card p-0 overflow-hidden">
+    <Card className="p-0 overflow-hidden">
       <div className="flex items-center justify-between px-5 py-3.5 border-b-2 border-foreground/10">
         <h3 className="font-extrabold flex items-center gap-2">
           <FileText className="w-4 h-4 text-accent" />
@@ -55,6 +55,6 @@ export default function RecentApplicationsCard({ limit = 3 }: { limit?: number }
           ))}
         </div>
       )}
-    </div>
+    </Card>
   );
 }

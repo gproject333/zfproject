@@ -13,7 +13,7 @@ import {
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "@/lib/toast";
-import { Input } from "@/components/ui";
+import { Input, Card} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 
 interface StudentProfile {
@@ -68,7 +68,7 @@ export default function StudentManagement() {
       </div>
 
       {/* Filters */}
-      <div className="nb-card p-4 flex flex-wrap gap-3 items-center">
+      <Card className="p-4 flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-48">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -127,10 +127,10 @@ export default function StudentManagement() {
             مسح
           </button>
         )}
-      </div>
+      </Card>
 
       {/* Table */}
-      <div className="nb-card overflow-hidden">
+      <Card className="overflow-hidden">
         {students === undefined ? (
           <div className="p-8 space-y-3">
             {[...Array(5)].map((_, i) => (
@@ -218,7 +218,7 @@ export default function StudentManagement() {
             </table>
           </div>
         )}
-      </div>
+      </Card>
 
       {/* Profile Modal */}
       {profileStudent && (
@@ -226,8 +226,8 @@ export default function StudentManagement() {
           className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
           onClick={() => setProfileStudent(null)}
         >
-          <div
-            className="nb-card p-6 w-full max-w-md space-y-4"
+          <Card
+            className="p-6 w-full max-w-md space-y-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -264,7 +264,7 @@ export default function StudentManagement() {
                 />
               )}
             </div>
-          </div>
+          </Card>
         </div>
       )}
     </div>

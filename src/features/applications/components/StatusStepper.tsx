@@ -3,6 +3,7 @@
 import { Check } from "lucide-react";
 import type { ApplicationStatus } from "../../../../convex/lib/statuses";
 import { buildStepperSteps } from "../utils/stepper";
+import { Card } from "@/components/ui";
 
 interface StatusStepperProps {
   status: ApplicationStatus;
@@ -17,7 +18,7 @@ export default function StatusStepper({ status }: StatusStepperProps) {
   const steps = buildStepperSteps(status);
 
   return (
-    <div className="nb-card p-5 sm:p-6" role="group" aria-label="مراحل الطلب">
+    <Card className="p-5 sm:p-6" role="group" aria-label="مراحل الطلب">
       <ol className="flex items-start justify-between gap-2 sm:gap-4">
         {steps.map((step, idx) => {
           const isDone = step.state === "done";
@@ -63,6 +64,6 @@ export default function StatusStepper({ status }: StatusStepperProps) {
           );
         })}
       </ol>
-    </div>
+    </Card>
   );
 }

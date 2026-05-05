@@ -7,7 +7,7 @@ import type { LucideIcon } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
-import { Button, Input, Spinner} from "@/components/ui";
+import { Button, Input, Spinner, Card} from "@/components/ui";
 import { toast } from "@/lib/toast";
 
 interface ColorScheme {
@@ -112,7 +112,7 @@ interface UserItem {
 function ProfileModal({ user, config, onClose }: { user: UserItem; config: UserManagementConfig; onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="nb-card p-6 w-full max-w-sm space-y-4" onClick={(e) => e.stopPropagation()}>
+      <Card className="p-6 w-full max-w-sm space-y-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <h3 className="font-extrabold text-lg">الملف الشخصي</h3>
           <button onClick={onClose} className="hover:bg-foreground/5 rounded transition-colors p-1"><X className="w-5 h-5" /></button>
@@ -147,7 +147,7 @@ function ProfileModal({ user, config, onClose }: { user: UserItem; config: UserM
             </span>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
@@ -284,7 +284,7 @@ export default function UserManagement({ role }: UserManagementProps) {
 
       {/* Create Form — only for sponsors */}
       {!config.hideAddForm && showForm && (
-        <div className="nb-card p-6 border-[3px] animate-slide-up" style={{ borderColor: config.color.primary }}>
+        <Card className="p-6 border-[3px] animate-slide-up" style={{ borderColor: config.color.primary }}>
           <h3 className="font-extrabold text-lg mb-4 flex items-center gap-2">
             <FormIcon className="w-5 h-5" style={{ color: config.color.primary }} />
             {config.formTitle}
@@ -355,7 +355,7 @@ export default function UserManagement({ role }: UserManagementProps) {
               </Button>
             </div>
           </form>
-        </div>
+        </Card>
       )}
 
       {/* Search */}
@@ -374,15 +374,15 @@ export default function UserManagement({ role }: UserManagementProps) {
       {users === undefined ? (
         <SkeletonApplicationList count={4} />
       ) : filtered.length === 0 ? (
-        <div className="nb-card p-12 text-center">
+        <Card className="p-12 text-center">
           <PageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
           <h3 className="font-extrabold text-lg mb-1">{config.emptyTitle}</h3>
           <p className="text-sm text-muted-foreground">{config.emptyDescription}</p>
-        </div>
+        </Card>
       ) : (
         <div className="space-y-3">
           {filtered.map((user, i) => (
-            <div key={user._id} className="nb-card p-4 flex items-center gap-4 animate-slide-up" style={{ animationDelay: `${i * 0.05}s`, opacity: 0 }}>
+            <Card key={user._id} className="p-4 flex items-center gap-4 animate-slide-up" style={{ animationDelay: `${i * 0.05}s`, opacity: 0 }}>
               <div className="w-12 h-12 rounded-xl nb-border flex items-center justify-center shrink-0 font-extrabold text-lg" style={{ background: config.color.primary, color: config.color.textOnPrimary }}>
                 {user.name?.charAt(0) ?? config.fallbackInitial}
               </div>
@@ -422,7 +422,7 @@ export default function UserManagement({ role }: UserManagementProps) {
                   )}
                 </button>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       )}

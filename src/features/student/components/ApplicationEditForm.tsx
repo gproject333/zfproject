@@ -6,7 +6,7 @@ import FileUploadFields from "@/features/applications/components/FileUploadField
 import FormError from "@/features/applications/components/FormError";
 import { useEditApplication } from "@/features/student/hooks/useEditApplication";
 import ApplicationFormFields from "./ApplicationFormFields";
-import { Button, Spinner} from "@/components/ui";
+import { Button, Spinner, Card} from "@/components/ui";
 
 interface ApplicationEditFormProps {
   app: Doc<"applications">;
@@ -23,7 +23,7 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
   const { form, upload, saving, saveMode, save } = useEditApplication(app, onSaved);
 
   return (
-    <div className="nb-card p-6">
+    <Card className="p-6">
       <h3 className="font-bold text-base mb-5 flex items-center gap-2">
         <Edit3 className="w-5 h-5 text-primary" />
         تعديل الطلب
@@ -79,6 +79,6 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
           )}
         </Button>
       </div>
-    </div>
+    </Card>
   );
 }

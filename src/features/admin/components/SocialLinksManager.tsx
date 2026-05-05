@@ -11,7 +11,7 @@ import {
   getPlatformMeta,
 } from "@/lib/configs/socialPlatforms";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import { Button, Input, Spinner} from "@/components/ui";
+import { Button, Input, Spinner, Card} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 
 interface DraftLink {
@@ -257,13 +257,13 @@ export default function SocialLinksManager() {
             ))}
           </div>
         ) : links.length === 0 ? (
-          <div className="nb-card p-12 text-center">
+          <Card className="p-12 text-center">
             <Link2 className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
             <h4 className="font-extrabold text-lg mb-1">لا توجد روابط بعد</h4>
             <p className="text-sm text-muted-foreground">
               أضف أول رابط تواصل ليظهر في تذييل الموقع
             </p>
-          </div>
+          </Card>
         ) : (
           <div className="space-y-3">
             {links.map((link) => {

@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { STATUS_CONFIG } from "@/lib/configs/application";
+import { Card } from "@/components/ui";
 
 interface Props {
   underReview: number;
@@ -36,7 +37,7 @@ export function ApplicationsDonut({
   const total = data.reduce((sum, d) => sum + d.value, 0);
 
   return (
-    <div className="nb-card p-5">
+    <Card className="p-5">
       <h3 className="font-extrabold mb-4 text-base" id="applications-donut-title">
         توزيع حالات الطلبات
       </h3>
@@ -122,6 +123,6 @@ export function ApplicationsDonut({
           </div>
         </>
       )}
-    </div>
+    </Card>
   );
 }

@@ -7,6 +7,7 @@ import type { Doc } from "../../../../convex/_generated/dataModel";
 import { RATING_CONFIG, type SupervisorRating } from "@/lib/configs/application";
 import DetailField from "./DetailField";
 import AttachmentsSection from "./AttachmentsSection";
+import { Card } from "@/components/ui";
 
 interface ApplicationDetailsViewProps {
   app: Doc<"applications">;
@@ -92,7 +93,7 @@ export default function ApplicationDetailsView({
       )}
 
       {/* Read-only details */}
-      <div className="nb-card p-5">
+      <Card className="p-5">
         <h3 className="font-bold text-base mb-4 flex items-center gap-2">
           <FileText className="w-5 h-5 text-primary" />
           تفاصيل المشروع
@@ -149,7 +150,7 @@ export default function ApplicationDetailsView({
             </>
           )}
         </div>
-      </div>
+      </Card>
 
       {/* Attachments */}
       <AttachmentsSection

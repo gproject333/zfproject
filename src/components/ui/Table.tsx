@@ -1,12 +1,13 @@
 "use client";
 
 import type { HTMLAttributes, TableHTMLAttributes, ThHTMLAttributes, TdHTMLAttributes } from "react";
+import { Card } from "@/components/ui";
 
 export function Table({ className = "", ...props }: TableHTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="nb-card overflow-x-auto">
+    <Card className="overflow-x-auto">
       <table className={`w-full text-sm ${className}`} {...props} />
-    </div>
+    </Card>
   );
 }
 
