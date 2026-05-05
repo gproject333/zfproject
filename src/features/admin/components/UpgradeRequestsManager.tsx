@@ -64,7 +64,7 @@ export default function UpgradeRequestsManager() {
         selectedKey={filter}
         onSelectionChange={(k) => setFilter(k as typeof filter)}
       >
-        <Tabs.List>
+        <Tabs.List className="overflow-x-auto flex-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <Tabs.Tab id="all">الكل</Tabs.Tab>
           <Tabs.Tab id="pending">{STATUS_LABELS.pending.label}</Tabs.Tab>
           <Tabs.Tab id="approved">{STATUS_LABELS.approved.label}</Tabs.Tab>

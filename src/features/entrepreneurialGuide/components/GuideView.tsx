@@ -59,7 +59,7 @@ export default function GuideView() {
           selectedKey={filter}
           onSelectionChange={(k) => setFilter(k as FilterType)}
         >
-          <Tabs.List>
+          <Tabs.List className="overflow-x-auto flex-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {FILTERS.map((f) => (
               <Tabs.Tab key={f.value} id={f.value}>
                 {f.label}

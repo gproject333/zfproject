@@ -76,7 +76,7 @@ export default function StudentApplicationList() {
         onSelectionChange={(k) => setStatusFilter(k as typeof statusFilter)}
         className="mb-6"
       >
-        <Tabs.List>
+        <Tabs.List className="overflow-x-auto flex-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <Tabs.Tab id="all">الكل</Tabs.Tab>
           {STATUS_KEYS.map((key) => {
             const cfg = STATUS_CONFIG[key];
