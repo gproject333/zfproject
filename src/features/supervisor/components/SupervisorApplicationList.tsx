@@ -6,20 +6,11 @@ import {
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import {
-  FileText,
-  Search,
-  Loader2,
-  X as XIcon,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Info,
-} from "lucide-react";
+import {FileText, Search, X as XIcon, CheckCircle2, XCircle, AlertTriangle, Info} from "lucide-react";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { STATUS_CONFIG, TYPE_CONFIG } from "@/lib/configs/application";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import { Button, Input } from "@/components/ui";
+import { Button, Input, Spinner} from "@/components/ui";
 import { useQuickAction } from "@/features/supervisor/hooks/useQuickAction";
 import { useBulkAction } from "@/features/supervisor/hooks/useBulkAction";
 import { useApplicationListColumns } from "@/features/supervisor/hooks/useApplicationListColumns";
@@ -297,7 +288,7 @@ export default function SupervisorApplicationList() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+          <Spinner size="lg" color="current" className="text-accent" />
         </div>
       ) : filtered.length === 0 ? (
         <EmptyState
@@ -374,7 +365,7 @@ export default function SupervisorApplicationList() {
               )}
               {pageStatus === "LoadingMore" && (
                 <span className="flex items-center gap-2 text-muted-foreground">
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Spinner size="sm" color="current" />
                   جاري التحميل...
                 </span>
               )}

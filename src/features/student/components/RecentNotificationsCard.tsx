@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
-import { Bell, Loader2 } from "lucide-react";
+import {Bell} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import { api } from "../../../../convex/_generated/api";
 import NotificationItem from "@/components/NotificationItem";
 import { useRecentNotifications } from "@/features/student/hooks/useRecentNotifications";
@@ -37,7 +38,7 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
 
       {loading ? (
         <div className="flex justify-center py-10">
-          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          <Spinner size="md" color="current" className="text-muted-foreground" />
         </div>
       ) : notifications.length === 0 ? (
         <div className="text-center py-10 px-5">

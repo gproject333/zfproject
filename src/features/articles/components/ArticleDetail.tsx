@@ -3,10 +3,10 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { UserCircle, Calendar, ChevronRight, Loader2 } from "lucide-react";
+import {UserCircle, Calendar, ChevronRight} from "lucide-react";
 import { formatArabicDate } from "@/lib/formatters";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { buttonVariants } from "@/components/ui";
+import { buttonVariants, Spinner} from "@/components/ui";
 import { useArticleDetail } from "../hooks/useArticlesList";
 import type { Id } from "../../../../convex/_generated/dataModel";
 
@@ -35,7 +35,7 @@ export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {
   if (loading) {
     return (
       <div className="flex justify-center py-20">
-        <Loader2 className="w-8 h-8 animate-spin text-accent" />
+        <Spinner size="lg" color="current" className="text-accent" />
       </div>
     );
   }

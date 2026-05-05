@@ -3,15 +3,8 @@
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import {
-  Compass,
-  Loader2,
-  ExternalLink,
-  Video,
-  GraduationCap,
-  Link2,
-  Calendar,
-} from "lucide-react";
+import {Compass, ExternalLink, Video, GraduationCap, Link2, Calendar} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatArabicDate } from "@/lib/formatters";
 
@@ -81,7 +74,7 @@ export default function GuideView() {
 
       {resources === undefined ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-secondary" />
+          <Spinner size="lg" color="current" className="text-secondary" />
         </div>
       ) : filtered.length === 0 ? (
         <EmptyState

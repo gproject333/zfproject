@@ -1,16 +1,8 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import {
-  User as UserIcon,
-  Mail,
-  Phone,
-  GraduationCap,
-  BookOpen,
-  IdCard,
-  Link2,
-  Loader2,
-} from "lucide-react";
+import {User as UserIcon, Mail, Phone, GraduationCap, BookOpen, IdCard, Link2} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import InfoRow from "@/features/applications/components/InfoRow";
@@ -32,7 +24,7 @@ export default function StudentProfileCard({ applicationId }: StudentProfileCard
   if (student === undefined) {
     return (
       <div className="nb-card p-5 flex items-center justify-center min-h-[160px]">
-        <Loader2 className="w-5 h-5 animate-spin text-accent" />
+        <Spinner size="sm" color="current" className="text-accent" />
       </div>
     );
   }

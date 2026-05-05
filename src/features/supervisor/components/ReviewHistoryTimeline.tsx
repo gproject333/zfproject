@@ -1,7 +1,8 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import { History, Loader2, ArrowLeft } from "lucide-react";
+import {History, ArrowLeft} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api } from "../../../../convex/_generated/api";
@@ -27,7 +28,7 @@ export default function ReviewHistoryTimeline({ applicationId }: ReviewHistoryTi
   if (items === undefined) {
     return (
       <div className="nb-card p-5 flex items-center justify-center">
-        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+        <Spinner size="sm" color="current" className="text-muted-foreground" />
       </div>
     );
   }

@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FileText, Search, Plus, Loader2 } from "lucide-react";
+import {FileText, Search, Plus} from "lucide-react";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ApplicationCard from "@/features/applications/components/ApplicationCard";
-import { Button, Input } from "@/components/ui";
+import { Button, Input, Spinner} from "@/components/ui";
 import { STATUS_CONFIG } from "@/lib/configs/application";
 import { useStudentApplicationListFilters } from "@/features/student/hooks/useStudentApplicationListFilters";
 
@@ -137,7 +137,7 @@ export default function StudentApplicationList() {
           )}
           {status === "LoadingMore" && (
             <div className="flex justify-center pt-2">
-              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              <Spinner size="md" color="current" className="text-primary" />
             </div>
           )}
         </div>

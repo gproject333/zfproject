@@ -4,18 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSignIn } from "@clerk/nextjs";
 import { useState } from "react";
-import {
-  GraduationCap,
-  Mail,
-  KeyRound,
-  AlertCircle,
-  Loader2,
-  CheckCircle2,
-  ArrowRight,
-  Lock,
-} from "lucide-react";
+import {GraduationCap, Mail, KeyRound, AlertCircle, CheckCircle2, ArrowRight, Lock} from "lucide-react";
 import { FloatingEmailInput, FloatingPasswordInput, FloatingTextInput } from "./FloatingFields";
-import { Button } from "@/components/ui";
+import { Button, Spinner} from "@/components/ui";
 
 type Step = "email" | "verify";
 
@@ -134,7 +125,7 @@ export default function ForgotPasswordForm() {
               />
               <Button type="submit" isDisabled={loading} variant="primary" fullWidth className="text-base">
                 {loading ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" />جاري الإرسال...</>
+                  <><Spinner size="sm" color="current" />جاري الإرسال...</>
                 ) : (
                   <><Mail className="w-5 h-5" />إرسال رمز التحقق</>
                 )}
@@ -191,7 +182,7 @@ export default function ForgotPasswordForm() {
                 </Button>
                 <Button type="submit" isDisabled={loading} variant="primary" className="flex-[2] text-base">
                   {loading ? (
-                    <><Loader2 className="w-5 h-5 animate-spin" />جاري التغيير...</>
+                    <><Spinner size="sm" color="current" />جاري التغيير...</>
                   ) : (
                     <><Lock className="w-5 h-5" />تغيير كلمة المرور</>
                   )}

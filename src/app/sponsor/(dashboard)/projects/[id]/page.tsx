@@ -5,7 +5,8 @@ import { api } from "../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../convex/_generated/dataModel";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowLeft, Loader2, Heart, VideoOff } from "lucide-react";
+import {ArrowLeft, Heart, VideoOff} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import { useApplication } from "@/features/applications/hooks/useApplication";
 
@@ -34,7 +35,7 @@ export default function SponsorProjectReelsPage() {
   if (app === undefined || assignment === undefined) {
     return (
       <div className="flex justify-center flex-col items-center h-[60vh] gap-4">
-        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        <Spinner size="xl" color="current" className="text-primary" />
         <p className="font-bold text-muted-foreground animate-pulse">جاري تحميل العرض...</p>
       </div>
     );
@@ -104,7 +105,7 @@ export default function SponsorProjectReelsPage() {
                 : "bg-black/40 text-white/90 backdrop-blur-md border border-white/20 hover:scale-105"
             }`}>
               {isLiking ? (
-                <Loader2 className="w-6 h-6 animate-spin" />
+                <Spinner size="md" color="current" />
               ) : (
                 <Heart className={`w-6 h-6 transition-all ${isInterested ? "fill-white" : ""}`} />
               )}

@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FileText, Loader2, ChevronLeft } from "lucide-react";
+import {FileText, ChevronLeft} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import ApplicationCard from "@/features/applications/components/ApplicationCard";
 import { useRecentApplications } from "@/features/student/hooks/useRecentApplications";
 
@@ -33,7 +34,7 @@ export default function RecentApplicationsCard({ limit = 3 }: { limit?: number }
 
       {loading ? (
         <div className="flex justify-center py-10">
-          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          <Spinner size="md" color="current" className="text-muted-foreground" />
         </div>
       ) : applications.length === 0 ? (
         <div className="text-center py-10 px-5">

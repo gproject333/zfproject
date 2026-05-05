@@ -2,30 +2,12 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useAction } from "convex/react";
-import {
-  Users,
-  Building2,
-  Plus,
-  X,
-  Mail,
-  User,
-  Building,
-  Phone,
-  KeyRound,
-  Loader2,
-  CheckCircle2,
-  AlertCircle,
-  ShieldCheck,
-  Star,
-  ToggleLeft,
-  ToggleRight,
-  Search,
-} from "lucide-react";
+import {Users, Building2, Plus, X, Mail, User, Building, Phone, KeyRound, CheckCircle2, AlertCircle, ShieldCheck, Star, ToggleLeft, ToggleRight, Search} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
-import { Button, Input } from "@/components/ui";
+import { Button, Input, Spinner} from "@/components/ui";
 import { toast } from "sonner";
 
 interface ColorScheme {
@@ -368,7 +350,7 @@ export default function UserManagement({ role }: UserManagementProps) {
                 {config.formHint.text}
               </div>
               <Button type="submit" isDisabled={loading} variant="primary" className="w-full md:w-auto" style={{ background: config.color.primary, color: config.color.textOnPrimary, borderColor: config.color.border }}>
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                {loading ? <Spinner size="sm" color="current" /> : <Plus className="w-4 h-4" />}
                 {loading ? "جاري الإنشاء..." : "إنشاء الحساب"}
               </Button>
             </div>

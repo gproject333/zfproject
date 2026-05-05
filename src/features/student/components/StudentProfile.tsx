@@ -1,20 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
-import {
-  Camera,
-  Save,
-  Loader2,
-  CheckCircle2,
-  Shield,
-  Link2,
-  KeyRound,
-  Mail,
-} from "lucide-react";
+import {Camera, Save, CheckCircle2, Shield, Link2, KeyRound, Mail} from "lucide-react";
 import { useStudentProfile } from "../hooks/useStudentProfile";
 import { usePasswordChange } from "../hooks/usePasswordChange";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
-import { Button, Input } from "@/components/ui";
+import { Button, Input, Spinner} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -242,7 +233,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             fullWidth
           >
             {profile.saving ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Spinner size="sm" color="current" />
             ) : (
               <Save className="w-4 h-4" />
             )}
@@ -268,7 +259,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               size="sm"
             >
               {password.loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Spinner size="sm" color="current" />
               ) : (
                 <KeyRound className="w-4 h-4" />
               )}
@@ -332,7 +323,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                   size="sm"
                 >
                   {password.loading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Spinner size="sm" color="current" />
                   ) : (
                     <CheckCircle2 className="w-4 h-4" />
                   )}

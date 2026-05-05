@@ -1,9 +1,8 @@
 "use client";
 
 import { type ReactNode, useState } from "react";
-import { Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
-import { Button, TextArea } from "@/components/ui";
+import { Button, TextArea, Spinner} from "@/components/ui";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -175,7 +174,7 @@ function ConfirmDialogBody({
             variant={destructive ? "danger" : "primary"}
             className="flex-1"
           >
-            {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+            {isSubmitting && <Spinner size="sm" color="current" />}
             {confirmLabel}
           </Button>
         </div>

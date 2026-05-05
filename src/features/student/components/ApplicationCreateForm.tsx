@@ -1,15 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import {
-  ArrowLeft,
-  Save,
-  Send,
-  FileText,
-  Loader2,
-  AlertCircle,
-  CheckCircle2,
-} from "lucide-react";
+import {ArrowLeft, Save, Send, FileText, AlertCircle, CheckCircle2} from "lucide-react";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import FileUploadFields from "@/features/applications/components/FileUploadFields";
 import FormError from "@/features/applications/components/FormError";
@@ -18,7 +10,7 @@ import {
 } from "@/features/student/hooks/useCreateApplication";
 import type { ApplicationType } from "@/features/student/hooks/useApplicationForm";
 import ApplicationFormFields from "./ApplicationFormFields";
-import { Button } from "@/components/ui";
+import { Button, Spinner} from "@/components/ui";
 
 interface ApplicationCreateFormProps {
   type: ApplicationType;
@@ -110,7 +102,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
               className="flex-1"
             >
               {loading && submitMode === "draft" ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Spinner size="sm" color="current" />
               ) : (
                 <Save className="w-5 h-5" />
               )}
@@ -119,7 +111,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
             <Button type="submit" isDisabled={loading} variant="secondary" className="flex-[2]">
               {loading && submitMode === "submit" ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Spinner size="sm" color="current" />
                   جاري التقديم...
                 </>
               ) : (

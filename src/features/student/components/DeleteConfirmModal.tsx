@@ -1,8 +1,8 @@
 "use client";
 
-import { Trash2, Loader2 } from "lucide-react";
+import {Trash2} from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
-import { Button } from "@/components/ui";
+import { Button, Spinner} from "@/components/ui";
 
 interface DeleteConfirmModalProps {
   open: boolean;
@@ -45,7 +45,7 @@ export default function DeleteConfirmModal({
             className="flex-1"
           >
             {isDeleting ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Spinner size="sm" color="current" />
             ) : (
               <Trash2 className="w-4 h-4" />
             )}

@@ -1,6 +1,7 @@
 "use client";
 
-import { BookOpen, Loader2 } from "lucide-react";
+import {BookOpen} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ArticleCard from "./ArticleCard";
 import { useStudentArticlesList } from "../hooks/useArticlesList";
@@ -25,7 +26,7 @@ export default function ArticlesList() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+          <Spinner size="lg" color="current" className="text-accent" />
         </div>
       ) : articles.length === 0 ? (
         <EmptyState

@@ -3,17 +3,7 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
-import {
-  Plus,
-  Trash2,
-  Edit3,
-  Check,
-  X,
-  Loader2,
-  Link2,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import {Plus, Trash2, Edit3, Check, X, Link2, Eye, EyeOff} from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import {
@@ -21,7 +11,7 @@ import {
   getPlatformMeta,
 } from "@/lib/configs/socialPlatforms";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import { Button, Input } from "@/components/ui";
+import { Button, Input, Spinner} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 
 interface DraftLink {
@@ -250,7 +240,7 @@ export default function SocialLinksManager() {
               variant="primary"
               className="flex-1 sm:flex-initial"
             >
-              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+              {saving ? <Spinner size="sm" color="current" /> : <Check className="w-4 h-4" />}
               {editingId ? "حفظ التعديل" : "إضافة"}
             </Button>
           </div>

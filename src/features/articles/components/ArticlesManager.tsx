@@ -1,16 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  BookOpen,
-  Plus,
-  Loader2,
-  Edit3,
-  Trash2,
-  Eye,
-  EyeOff,
-  ExternalLink,
-} from "lucide-react";
+import {BookOpen, Plus, Edit3, Trash2, Eye, EyeOff, ExternalLink} from "lucide-react";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import {
@@ -24,7 +15,7 @@ import {
 import { formatArabicDate } from "@/lib/formatters";
 import ArticleFormDialog from "./ArticleFormDialog";
 import { useArticleForm } from "../hooks/useArticleForm";
-import { Button } from "@/components/ui";
+import { Button, Spinner} from "@/components/ui";
 
 const AUDIENCE_LABEL = {
   student: "الطلاب",
@@ -66,7 +57,7 @@ export default function ArticlesManager() {
 
       {admin.loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+          <Spinner size="lg" color="current" className="text-accent" />
         </div>
       ) : !admin.articles || admin.articles.length === 0 ? (
         <EmptyState

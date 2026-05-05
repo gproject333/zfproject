@@ -4,7 +4,7 @@ import { useQuery, useConvexAuth } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { Spinner } from "@/components/ui";
 
 type Role = "student" | "supervisor" | "admin" | "sponsor";
 
@@ -52,7 +52,7 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
   if (authLoading || user === undefined) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
-        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        <Spinner size="xl" color="current" className="text-primary" />
       </div>
     );
   }

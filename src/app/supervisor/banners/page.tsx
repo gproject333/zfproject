@@ -1,12 +1,12 @@
 "use client";
 
-import { ImageIcon, Loader2, Megaphone, Plus, Type } from "lucide-react";
+import {ImageIcon, Megaphone, Plus, Type} from "lucide-react";
 import { useBannerForm } from "@/features/banners/hooks/useBannerForm";
 import { BannerTable } from "@/features/banners/components/BannerTable";
 import { BannerFormDialog } from "@/features/banners/components/BannerFormDialog";
 import { DeleteBannerDialog } from "@/features/banners/components/DeleteBannerDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { Button } from "@/components/ui";
+import { Button, Spinner} from "@/components/ui";
 
 export default function SupervisorBannersPage() {
   const form = useBannerForm();
@@ -47,7 +47,7 @@ export default function SupervisorBannersPage() {
 
       {admin.loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+          <Spinner size="lg" color="current" className="text-accent" />
         </div>
       ) : banners.length === 0 ? (
         <EmptyState

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Spinner } from "@/components/ui";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import PdfViewer from "@/components/PdfViewerLazy";
 import ApplicationDetailsView from "@/features/applications/components/ApplicationDetailsView";
@@ -33,7 +33,7 @@ export default function SupervisorApplicationReview() {
   if (app === undefined) {
     return (
       <div className="flex justify-center py-20">
-        <Loader2 className="w-8 h-8 animate-spin text-accent" />
+        <Spinner size="lg" color="current" className="text-accent" />
       </div>
     );
   }

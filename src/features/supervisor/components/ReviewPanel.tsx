@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { ShieldCheck, Send, Loader2 } from "lucide-react";
+import {ShieldCheck, Send} from "lucide-react";
 import type { useReview, SupervisorStatus, SupervisorRating } from "@/features/supervisor/hooks/useReview";
 import {
   SUPERVISOR_STATUS_KEYS,
@@ -9,7 +9,7 @@ import {
 } from "../../../../convex/lib/statuses";
 import { RATING_CONFIG, RATING_KEYS } from "@/lib/configs/application";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
-import { Button, TextArea } from "@/components/ui";
+import { Button, TextArea, Spinner} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 import { Tooltip } from "@/components/ui/Tooltip";
 
@@ -137,7 +137,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
               onPress={() => void handleUpdate(onSaved)}
               isDisabled={isSubmitting || !status || !isDirty}
             >
-              {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+              {isSubmitting ? <Spinner size="sm" color="current" /> : <Send className="w-5 h-5" />}
               حفظ وإرسال إشعار
             </Button>
           </Tooltip>
@@ -148,7 +148,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
             onPress={() => void handleUpdate(onSaved)}
             isDisabled={isSubmitting || !status}
           >
-            {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+            {isSubmitting ? <Spinner size="sm" color="current" /> : <Send className="w-5 h-5" />}
             حفظ وإرسال إشعار
           </Button>
         )}

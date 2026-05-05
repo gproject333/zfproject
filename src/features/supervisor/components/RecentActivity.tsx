@@ -2,7 +2,8 @@
 
 import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
-import { Activity, Loader2 } from "lucide-react";
+import {Activity} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import { api } from "../../../../convex/_generated/api";
 import { STATUS_CONFIG } from "@/lib/configs/application";
 import { STATUS_LABELS } from "../../../../convex/lib/statuses";
@@ -48,7 +49,7 @@ export default function RecentActivity() {
 
       {items === undefined ? (
         <div className="flex justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          <Spinner size="md" color="current" className="text-muted-foreground" />
         </div>
       ) : items.length === 0 ? (
         <p className="text-sm text-muted-foreground font-bold text-center py-8">

@@ -3,15 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import {
-  Mail,
-  LogIn,
-  AlertCircle,
-  Loader2,
-  Eye,
-  EyeOff,
-  ArrowRight,
-} from "lucide-react";
+import {Mail, LogIn, AlertCircle, Eye, EyeOff, ArrowRight} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type {
   CSSProperties,
@@ -21,7 +13,7 @@ import type {
 import { useAuthForm } from "@/features/auth/hooks/useAuthForm";
 import type { LoginVariant, LoginVariantConfig } from "@/features/auth/types/login-variants";
 import { EMAIL_DOMAIN_SUGGESTIONS, LOGIN_VARIANTS } from "@/features/auth/utils/login-configs";
-import { buttonVariants } from "@/components/ui";
+import { buttonVariants, Spinner} from "@/components/ui";
 
 interface LoginFormProps {
   variant: LoginVariant;
@@ -365,7 +357,7 @@ function SubmitButton({ loading, text, className, style, hoverShadow }: {
   return (
     <button type="submit" disabled={loading} className={className} style={style} {...handleHover}>
       {loading ? (
-        <><Loader2 className="w-5 h-5 animate-spin" />جاري الدخول...</>
+        <><Spinner size="sm" color="current" />جاري الدخول...</>
       ) : (
         <><LogIn className="w-5 h-5" />{text}</>
       )}

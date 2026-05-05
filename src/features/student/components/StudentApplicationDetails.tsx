@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { Edit3, Send, Loader2, X, Trash2 } from "lucide-react";
+import {Edit3, Send, X, Trash2} from "lucide-react";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import PdfViewer from "@/components/PdfViewerLazy";
 import ApplicationDetailsView from "@/features/applications/components/ApplicationDetailsView";
@@ -10,7 +10,7 @@ import StatusStepper from "@/features/applications/components/StatusStepper";
 import { useStudentApplicationDetails } from "@/features/student/hooks/useStudentApplicationDetails";
 import ApplicationEditForm from "./ApplicationEditForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
-import { Button } from "@/components/ui";
+import { Button, Spinner} from "@/components/ui";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 /**
@@ -42,7 +42,7 @@ export default function StudentApplicationDetails() {
   if (app === undefined) {
     return (
       <div className="flex justify-center py-20">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Spinner size="lg" color="current" className="text-primary" />
       </div>
     );
   }

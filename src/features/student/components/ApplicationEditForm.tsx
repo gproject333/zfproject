@@ -1,12 +1,12 @@
 "use client";
 
-import { Edit3, Save, Send, Loader2 } from "lucide-react";
+import {Edit3, Save, Send} from "lucide-react";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 import FileUploadFields from "@/features/applications/components/FileUploadFields";
 import FormError from "@/features/applications/components/FormError";
 import { useEditApplication } from "@/features/student/hooks/useEditApplication";
 import ApplicationFormFields from "./ApplicationFormFields";
-import { Button } from "@/components/ui";
+import { Button, Spinner} from "@/components/ui";
 
 interface ApplicationEditFormProps {
   app: Doc<"applications">;
@@ -56,7 +56,7 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
           className="flex-1"
         >
           {saving && saveMode === "save" ? (
-            <Loader2 className="w-5 h-5 animate-spin" />
+            <Spinner size="sm" color="current" />
           ) : (
             <Save className="w-5 h-5" />
           )}
@@ -70,7 +70,7 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
         >
           {saving && saveMode === "submit" ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin" /> جاري التقديم...
+              <Spinner size="sm" color="current" /> جاري التقديم...
             </>
           ) : (
             <>

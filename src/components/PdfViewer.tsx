@@ -4,20 +4,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import {
-  X,
-  Download,
-  ExternalLink,
-  ZoomIn,
-  ZoomOut,
-  ChevronRight,
-  ChevronLeft,
-  FileText,
-  Loader2,
-  AlertTriangle,
-  GripVertical,
-} from "lucide-react";
-import { buttonVariants } from "@/components/ui";
+import {X, Download, ExternalLink, ZoomIn, ZoomOut, ChevronRight, ChevronLeft, FileText, AlertTriangle, GripVertical} from "lucide-react";
+import { buttonVariants, Spinner} from "@/components/ui";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -225,7 +213,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
             onLoadSuccess={({ numPages }) => { setNumPages(numPages); setPage(1); }}
             loading={
               <div className="flex flex-col items-center justify-center gap-3 py-20">
-                <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+                <Spinner size="lg" color="current" className="text-muted-foreground" />
                 <p className="text-sm font-bold text-muted-foreground">جاري تحميل الملف...</p>
               </div>
             }

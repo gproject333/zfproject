@@ -3,16 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  Mail,
-  KeyRound,
-  CheckCircle2,
-  Loader2,
-  AlertCircle,
-  GraduationCap,
-  ArrowRight,
-} from "lucide-react";
-import { Button, Input } from "@/components/ui";
+import {Mail, KeyRound, CheckCircle2, AlertCircle, GraduationCap, ArrowRight} from "lucide-react";
+import { Button, Input, Spinner} from "@/components/ui";
 
 export default function OtpVerifyForm() {
   const { signUp, setActive } = useSignUp();
@@ -125,7 +117,7 @@ export default function OtpVerifyForm() {
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Spinner size="sm" color="current" />
                   جاري التحقق...
                 </>
               ) : (

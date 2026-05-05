@@ -1,13 +1,7 @@
 "use client";
 
 import type { RefObject } from "react";
-import {
-  ImageIcon,
-  Loader2,
-  Play,
-  Upload,
-  Video,
-} from "lucide-react";
+import {ImageIcon, Play, Upload, Video} from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import {
   Select,
@@ -17,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/Select";
 import { youTubeThumbnail } from "@/lib/youtube";
-import { Button, Input, TextArea } from "@/components/ui";
+import { Button, Input, TextArea, Spinner} from "@/components/ui";
 import type {
   MediaType,
   useBannerAdmin,
@@ -394,7 +388,7 @@ export function BannerFormDialog({
               className="flex-1"
             >
               {admin.saving ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Spinner size="sm" color="current" />
               ) : admin.editingId ? (
                 "حفظ التعديلات"
               ) : (

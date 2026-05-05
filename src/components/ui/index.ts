@@ -25,6 +25,7 @@ export {
   ListBoxItem,
   TextArea,
   Skeleton,
+  Spinner,
 } from "@heroui/react";
 
 export type {

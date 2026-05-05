@@ -3,19 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  GraduationCap,
-  User,
-  Hash,
-  Building2,
-  UserPlus,
-  ArrowRight,
-  AlertCircle,
-  Loader2,
-  CheckCircle2,
-  Sparkles,
-  ShieldCheck,
-} from "lucide-react";
+import {GraduationCap, User, Hash, Building2, UserPlus, ArrowRight, AlertCircle, CheckCircle2, Sparkles, ShieldCheck} from "lucide-react";
 import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
 import {
   FloatingTextInput,
@@ -23,7 +11,7 @@ import {
   FloatingPasswordInput,
   FloatingSelectInput,
 } from "./FloatingFields";
-import { Button, Input } from "@/components/ui";
+import { Button, Input, Spinner} from "@/components/ui";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -160,7 +148,7 @@ export default function RegisterForm() {
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Spinner size="sm" color="current" />
                     جاري الإرسال...
                   </>
                 ) : (
@@ -216,7 +204,7 @@ export default function RegisterForm() {
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Spinner size="sm" color="current" />
                     جاري التحقق...
                   </>
                 ) : (
@@ -300,7 +288,7 @@ export default function RegisterForm() {
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Spinner size="sm" color="current" />
                     جاري الإنشاء...
                   </>
                 ) : (

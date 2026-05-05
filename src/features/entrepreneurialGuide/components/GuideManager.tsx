@@ -1,17 +1,7 @@
 "use client";
 
 import type { Doc } from "../../../../convex/_generated/dataModel";
-import {
-  Compass,
-  Plus,
-  Loader2,
-  Edit3,
-  Trash2,
-  ExternalLink,
-  Video,
-  GraduationCap,
-  Link2,
-} from "lucide-react";
+import {Compass, Plus, Edit3, Trash2, ExternalLink, Video, GraduationCap, Link2} from "lucide-react";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import {
@@ -25,7 +15,7 @@ import {
 import { formatArabicDate } from "@/lib/formatters";
 import GuideFormDialog from "./GuideFormDialog";
 import { useGuideForm } from "../hooks/useGuideForm";
-import { Button } from "@/components/ui";
+import { Button, Spinner} from "@/components/ui";
 
 const TYPE_LABEL = {
   video: "فيديو",
@@ -68,7 +58,7 @@ export default function GuideManager() {
 
       {admin.loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+          <Spinner size="lg" color="current" className="text-accent" />
         </div>
       ) : !admin.resources || admin.resources.length === 0 ? (
         <EmptyState

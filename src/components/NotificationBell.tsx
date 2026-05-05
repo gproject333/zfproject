@@ -4,7 +4,8 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Bell, CheckCheck, Loader2 } from "lucide-react";
+import {Bell, CheckCheck} from "lucide-react";
+import { Spinner } from "@/components/ui";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -65,7 +66,7 @@ export default function NotificationBell() {
         <div className="max-h-96 overflow-y-auto">
           {notifications === undefined ? (
             <div className="flex justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+              <Spinner size="md" color="current" className="text-muted-foreground" />
             </div>
           ) : notifications.length === 0 ? (
             <div className="text-center py-10">
