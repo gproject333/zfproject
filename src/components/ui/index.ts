@@ -30,6 +30,7 @@ export {
   Skeleton,
   Spinner,
   Switch,
+  Toast,
 } from "@heroui/react";
 
 export type {

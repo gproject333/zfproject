@@ -8,7 +8,7 @@ import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
 import { Button, Input, Spinner} from "@/components/ui";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 
 interface ColorScheme {
   primary: string;

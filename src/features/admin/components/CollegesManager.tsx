@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 import { Button, Input } from "@/components/ui";
 
 export default function CollegesManager() {
