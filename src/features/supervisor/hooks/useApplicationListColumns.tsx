@@ -159,14 +159,11 @@ export function useApplicationListColumns(
           );
           return (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
-                  aria-label="القائمة"
-                >
-                  <MoreHorizontal className="w-4 h-4" />
-                </button>
+              <DropdownMenuTrigger
+                className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                aria-label="القائمة"
+              >
+                <MoreHorizontal className="w-4 h-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem

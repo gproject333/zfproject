@@ -54,13 +54,11 @@ export default function SettingsMenu({
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover"
-            aria-label="الإعدادات"
-          >
-            <Settings className="w-5 h-5" />
-          </button>
+        <DropdownMenuTrigger
+          className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover"
+          aria-label="الإعدادات"
+        >
+          <Settings className="w-5 h-5" />
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">

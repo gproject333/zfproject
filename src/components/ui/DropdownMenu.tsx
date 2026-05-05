@@ -1,15 +1,41 @@
 "use client";
 
-import * as RDropdown from "@radix-ui/react-dropdown-menu";
+import { Dropdown, Separator } from "@heroui/react";
 import { Check } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 
-type DropdownMenuRootProps = ComponentProps<typeof RDropdown.Root>;
-
-export function DropdownMenu(props: DropdownMenuRootProps) {
-  return <RDropdown.Root dir="rtl" {...props} />;
+interface DropdownMenuProps {
+  children: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
-export const DropdownMenuTrigger = RDropdown.Trigger;
+
+export function DropdownMenu({ children, open, onOpenChange }: DropdownMenuProps) {
+  return (
+    <Dropdown isOpen={open} onOpenChange={onOpenChange}>
+      {children}
+    </Dropdown>
+  );
+}
+
+interface DropdownMenuTriggerProps {
+  children: ReactNode;
+  className?: string;
+  "aria-label"?: string;
+}
+
+/**
+ * Renders a real `<button>` (HeroUI Dropdown.Trigger extends react-aria
+ * Button). Old callsites that wrapped a `<button>` with `asChild` should
+ * inline the className here instead — the trigger IS the button now.
+ */
+export function DropdownMenuTrigger({ children, className, ...rest }: DropdownMenuTriggerProps) {
+  return (
+    <Dropdown.Trigger className={className} {...rest}>
+      {children}
+    </Dropdown.Trigger>
+  );
+}
 
 interface DropdownMenuContentProps {
   children: ReactNode;
@@ -17,21 +43,21 @@ interface DropdownMenuContentProps {
   className?: string;
 }
 
+const PLACEMENT_MAP = {
+  start: "bottom start",
+  center: "bottom",
+  end: "bottom end",
+} as const;
+
 export function DropdownMenuContent({
   children,
   align = "end",
-  className = "",
+  className,
 }: DropdownMenuContentProps) {
   return (
-    <RDropdown.Portal>
-      <RDropdown.Content
-        align={align}
-        sideOffset={6}
-        className={`glass-subtle rounded-xl min-w-[12rem] p-1 z-50 animate-in fade-in zoom-in-95 duration-150 ${className}`}
-      >
-        {children}
-      </RDropdown.Content>
-    </RDropdown.Portal>
+    <Dropdown.Popover className={className} placement={PLACEMENT_MAP[align]}>
+      <Dropdown.Menu>{children as ComponentProps<typeof Dropdown.Menu>["children"]}</Dropdown.Menu>
+    </Dropdown.Popover>
   );
 }
 
@@ -49,29 +75,23 @@ export function DropdownMenuItem({
   destructive,
 }: DropdownMenuItemProps) {
   return (
-    <RDropdown.Item
-      onSelect={onSelect}
-      disabled={disabled}
-      className={`flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md cursor-pointer outline-none data-[highlighted]:bg-muted data-[disabled]:opacity-50 data-[disabled]:pointer-events-none ${
-        destructive
-          ? "text-destructive data-[highlighted]:!bg-destructive data-[highlighted]:!text-white"
-          : ""
-      }`}
+    <Dropdown.Item
+      onAction={onSelect}
+      isDisabled={disabled}
+      variant={destructive ? "danger" : "default"}
     >
       {children}
-    </RDropdown.Item>
+    </Dropdown.Item>
   );
 }
 
 export function DropdownMenuSeparator() {
-  return <RDropdown.Separator className="h-px bg-border my-1" />;
+  return <Separator orientation="horizontal" className="my-1" />;
 }
 
 export function DropdownMenuLabel({ children }: { children: ReactNode }) {
   return (
-    <RDropdown.Label className="px-3 py-1.5 text-xs font-bold text-muted-foreground">
-      {children}
-    </RDropdown.Label>
+    <div className="px-3 py-1.5 text-xs font-bold text-muted-foreground">{children}</div>
   );
 }
 
@@ -81,23 +101,23 @@ interface DropdownMenuCheckboxItemProps {
   children: ReactNode;
 }
 
+/**
+ * Backwards-compatible checkbox menu item. HeroUI's Dropdown doesn't have
+ * a built-in checkbox-row primitive; we render a plain Item that toggles
+ * the controlled boolean and shows/hides a check icon. No callsites use
+ * this currently — kept exported in case anything is added later.
+ */
 export function DropdownMenuCheckboxItem({
   checked,
   onCheckedChange,
   children,
 }: DropdownMenuCheckboxItemProps) {
   return (
-    <RDropdown.CheckboxItem
-      checked={checked}
-      onCheckedChange={onCheckedChange}
-      className="flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md cursor-pointer outline-none data-[highlighted]:bg-muted"
-    >
-      <span className="w-4 h-4 flex items-center justify-center">
-        <RDropdown.ItemIndicator>
-          <Check className="w-4 h-4" />
-        </RDropdown.ItemIndicator>
+    <Dropdown.Item onAction={() => onCheckedChange(!checked)}>
+      <span className="w-4 h-4 inline-flex items-center justify-center">
+        {checked && <Check className="w-4 h-4" />}
       </span>
       {children}
-    </RDropdown.CheckboxItem>
+    </Dropdown.Item>
   );
 }

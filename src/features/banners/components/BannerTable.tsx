@@ -192,13 +192,11 @@ export function BannerTable({
               </TableCell>
               <TableCell>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
-                      aria-label="الإجراءات"
-                    >
-                      …
-                    </button>
+                  <DropdownMenuTrigger
+                    className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                    aria-label="الإجراءات"
+                  >
+                    …
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onSelect={() => onEdit(b)}>
