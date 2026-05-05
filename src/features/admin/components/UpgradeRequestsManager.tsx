@@ -71,7 +71,6 @@ export default function UpgradeRequestsManager() {
             <Tabs.Tab id="pending">{STATUS_LABELS.pending.label}</Tabs.Tab>
             <Tabs.Tab id="approved">{STATUS_LABELS.approved.label}</Tabs.Tab>
             <Tabs.Tab id="rejected">{STATUS_LABELS.rejected.label}</Tabs.Tab>
-            <Tabs.Indicator />
           </Tabs.List>
         </Tabs.ListContainer>
       </Tabs>

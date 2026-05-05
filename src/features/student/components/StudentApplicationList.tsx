@@ -90,7 +90,6 @@ export default function StudentApplicationList() {
                 </Tabs.Tab>
               );
             })}
-            <Tabs.Indicator />
           </Tabs.List>
         </Tabs.ListContainer>
       </Tabs>

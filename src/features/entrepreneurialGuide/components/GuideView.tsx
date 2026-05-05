@@ -67,7 +67,6 @@ export default function GuideView() {
                   {f.label}
                 </Tabs.Tab>
               ))}
-              <Tabs.Indicator />
             </Tabs.List>
           </Tabs.ListContainer>
         </Tabs>
