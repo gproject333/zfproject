@@ -1,7 +1,7 @@
 "use client";
 
 import { Trash2 } from "lucide-react";
-import { Dialog, DialogContent, DialogClose } from "@/components/ui/Dialog";
+import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Button } from "@/components/ui";
 
 interface DeleteBannerDialogProps {
@@ -22,9 +22,9 @@ export function DeleteBannerDialog({
         description="هذا الإجراء لا يمكن التراجع عنه."
       >
         <div className="flex gap-2 pt-2">
-          <DialogClose asChild>
-            <Button variant="outline" className="flex-1">إلغاء</Button>
-          </DialogClose>
+          <Button variant="outline" className="flex-1" onPress={() => onOpenChange(false)}>
+            إلغاء
+          </Button>
           <Button
             onPress={() => void onConfirm()}
             variant="danger"

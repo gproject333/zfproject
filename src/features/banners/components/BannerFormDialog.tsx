@@ -8,7 +8,7 @@ import {
   Upload,
   Video,
 } from "lucide-react";
-import { Dialog, DialogContent, DialogClose } from "@/components/ui/Dialog";
+import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import {
   Select,
   SelectTrigger,
@@ -375,16 +375,17 @@ export function BannerFormDialog({
           )}
 
           <div className="flex gap-2 pt-2">
-            <DialogClose asChild>
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1"
-                onPress={() => admin.resetForm()}
-              >
-                إلغاء
-              </Button>
-            </DialogClose>
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1"
+              onPress={() => {
+                admin.resetForm();
+                onOpenChange(false);
+              }}
+            >
+              إلغاء
+            </Button>
             <Button
               type="button"
               onPress={() => void onSubmit()}

@@ -2,7 +2,7 @@
 
 import { type ReactNode, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { Dialog, DialogContent, DialogClose } from "@/components/ui/Dialog";
+import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Button, TextArea } from "@/components/ui";
 
 interface ConfirmDialogProps {
@@ -80,13 +80,16 @@ export default function ConfirmDialog({
           notesMaxLength={notesMaxLength}
           isSubmitting={isSubmitting}
           onConfirm={onConfirm}
+          onClose={() => onOpenChange(false)}
         />
       )}
     </Dialog>
   );
 }
 
-type ConfirmDialogBodyProps = Omit<ConfirmDialogProps, "open" | "onOpenChange">;
+type ConfirmDialogBodyProps = Omit<ConfirmDialogProps, "open" | "onOpenChange"> & {
+  onClose: () => void;
+};
 
 function ConfirmDialogBody({
   title,
@@ -101,6 +104,7 @@ function ConfirmDialogBody({
   notesMaxLength = 2000,
   isSubmitting = false,
   onConfirm,
+  onClose,
 }: ConfirmDialogBodyProps) {
   const [notes, setNotes] = useState("");
 
@@ -157,11 +161,14 @@ function ConfirmDialogBody({
         )}
 
         <div className="flex gap-3">
-          <DialogClose asChild>
-            <Button variant="outline" isDisabled={isSubmitting} className="flex-1">
-              {cancelLabel}
-            </Button>
-          </DialogClose>
+          <Button
+            variant="outline"
+            isDisabled={isSubmitting}
+            className="flex-1"
+            onPress={onClose}
+          >
+            {cancelLabel}
+          </Button>
           <Button
             onPress={() => onConfirm(withNotes ? notes : undefined)}
             isDisabled={!canConfirm}

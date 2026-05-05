@@ -1,7 +1,7 @@
 "use client";
 
 import { Trash2, Loader2 } from "lucide-react";
-import { Dialog, DialogContent, DialogClose } from "@/components/ui/Dialog";
+import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Button } from "@/components/ui";
 
 interface DeleteConfirmModalProps {
@@ -35,9 +35,9 @@ export default function DeleteConfirmModal({
           هل أنت متأكد من حذف طلب &quot;<strong>{projectName}</strong>&quot;؟
         </p>
         <div className="flex gap-3">
-          <DialogClose asChild>
-            <Button variant="outline" className="flex-1">إلغاء</Button>
-          </DialogClose>
+          <Button variant="outline" className="flex-1" onPress={() => onOpenChange(false)}>
+            إلغاء
+          </Button>
           <Button
             onPress={onConfirm}
             isDisabled={isDeleting}
