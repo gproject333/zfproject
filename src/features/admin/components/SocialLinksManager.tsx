@@ -21,6 +21,7 @@ import {
   getPlatformMeta,
 } from "@/lib/configs/socialPlatforms";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { Button } from "@/components/ui";
 
 interface DraftLink {
   platform: string;
@@ -142,14 +143,14 @@ export default function SocialLinksManager() {
             الروابط التي تظهر في تذييل الصفحة — يراها كل الزوار
           </p>
         </div>
-        <button
+        <Button
           type="button"
-          onClick={showForm ? cancelForm : startCreate}
-          className="nb-btn nb-btn-accent font-bold"
+          onPress={showForm ? cancelForm : startCreate}
+          variant="primary"
         >
           {showForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           {showForm ? "إلغاء" : "رابط جديد"}
-        </button>
+        </Button>
       </div>
 
       {/* Create / edit form */}
@@ -231,22 +232,24 @@ export default function SocialLinksManager() {
           </div>
 
           <div className="flex gap-3">
-            <button
+            <Button
               type="button"
-              onClick={cancelForm}
-              disabled={saving}
-              className="nb-btn nb-btn-outline flex-1 sm:flex-initial"
+              onPress={cancelForm}
+              isDisabled={saving}
+              variant="outline"
+              className="flex-1 sm:flex-initial"
             >
               إلغاء
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              disabled={saving}
-              className="nb-btn nb-btn-accent flex-1 sm:flex-initial"
+              isDisabled={saving}
+              variant="primary"
+              className="flex-1 sm:flex-initial"
             >
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
               {editingId ? "حفظ التعديل" : "إضافة"}
-            </button>
+            </Button>
           </div>
         </form>
       )}

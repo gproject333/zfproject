@@ -9,6 +9,8 @@ import {
 } from "../../../../convex/lib/statuses";
 import { RATING_CONFIG, RATING_KEYS } from "@/lib/configs/application";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
+import { Button } from "@/components/ui";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 type ReviewState = ReturnType<typeof useReview>;
 
@@ -122,15 +124,29 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
           </p>
         </div>
 
-        <button
-          className="nb-btn nb-btn-accent w-full"
-          onClick={() => void handleUpdate(onSaved)}
-          disabled={isSubmitting || !status || !isDirty}
-          title={!isDirty ? "لا تغييرات للحفظ" : undefined}
-        >
-          {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
-          حفظ وإرسال إشعار
-        </button>
+        {!isDirty ? (
+          <Tooltip content="لا تغييرات للحفظ">
+            <Button
+              variant="primary"
+              fullWidth
+              onPress={() => void handleUpdate(onSaved)}
+              isDisabled={isSubmitting || !status || !isDirty}
+            >
+              {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+              حفظ وإرسال إشعار
+            </Button>
+          </Tooltip>
+        ) : (
+          <Button
+            variant="primary"
+            fullWidth
+            onPress={() => void handleUpdate(onSaved)}
+            isDisabled={isSubmitting || !status}
+          >
+            {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+            حفظ وإرسال إشعار
+          </Button>
+        )}
       </div>
     </div>
   );

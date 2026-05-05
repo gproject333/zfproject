@@ -6,6 +6,7 @@ import { BannerTable } from "@/features/banners/components/BannerTable";
 import { BannerFormDialog } from "@/features/banners/components/BannerFormDialog";
 import { DeleteBannerDialog } from "@/features/banners/components/DeleteBannerDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Button } from "@/components/ui";
 
 export default function SupervisorBannersPage() {
   const form = useBannerForm();
@@ -25,20 +26,22 @@ export default function SupervisorBannersPage() {
           )}
         </h2>
         <div className="flex items-center gap-2">
-          <button
-            onClick={form.openScrollingDialog}
-            className="nb-btn nb-btn-secondary text-sm"
+          <Button
+            onPress={form.openScrollingDialog}
+            variant="secondary"
+            size="sm"
           >
             <Type className="w-4 h-4" />
             إعلان نصي متحرك
-          </button>
-          <button
-            onClick={form.openHeroDialog}
-            className="nb-btn nb-btn-outline text-sm"
+          </Button>
+          <Button
+            onPress={form.openHeroDialog}
+            variant="outline"
+            size="sm"
           >
             <ImageIcon className="w-4 h-4" />
             إعلان صور وفيديوهات
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -52,13 +55,13 @@ export default function SupervisorBannersPage() {
           title="لا توجد إعلانات بعد"
           description="أنشئ أول إعلان ليظهر للطلاب أو في الصفحة الرئيسية."
           action={
-            <button
-              onClick={form.openScrollingDialog}
-              className="nb-btn nb-btn-secondary"
+            <Button
+              onPress={form.openScrollingDialog}
+              variant="secondary"
             >
               <Plus className="w-5 h-5" />
               إنشاء إعلان
-            </button>
+            </Button>
           }
         />
       ) : (

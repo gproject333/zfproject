@@ -19,6 +19,7 @@ import {
 import { EmptyState } from "@/components/ui/EmptyState";
 import { STATUS_CONFIG, TYPE_CONFIG } from "@/lib/configs/application";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { Button } from "@/components/ui";
 import { useQuickAction } from "@/features/supervisor/hooks/useQuickAction";
 import { useBulkAction } from "@/features/supervisor/hooks/useBulkAction";
 import { useApplicationListColumns } from "@/features/supervisor/hooks/useApplicationListColumns";
@@ -119,9 +120,9 @@ export default function SupervisorApplicationList() {
             تم اختيار {selectedIds.length} طلب
           </span>
           <div className="flex flex-wrap gap-2 mr-auto">
-            <button
+            <Button
               type="button"
-              onClick={() =>
+              onPress={() =>
                 bulkAction.requestAction({
                   ids: selectedIds,
                   status: "accepted",
@@ -131,14 +132,15 @@ export default function SupervisorApplicationList() {
                   destructive: false,
                 })
               }
-              className="nb-btn nb-btn-accent text-xs py-2 px-3"
+              variant="primary"
+              size="sm"
             >
               <CheckCircle2 className="w-4 h-4" />
               قبول
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              onClick={() =>
+              onPress={() =>
                 bulkAction.requestAction({
                   ids: selectedIds,
                   status: "needs_modification",
@@ -148,14 +150,15 @@ export default function SupervisorApplicationList() {
                   destructive: false,
                 })
               }
-              className="nb-btn nb-btn-outline text-xs py-2 px-3"
+              variant="outline"
+              size="sm"
             >
               <AlertTriangle className="w-4 h-4" />
               يحتاج تعديل
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              onClick={() =>
+              onPress={() =>
                 bulkAction.requestAction({
                   ids: selectedIds,
                   status: "rejected",
@@ -165,20 +168,22 @@ export default function SupervisorApplicationList() {
                   destructive: true,
                 })
               }
-              className="nb-btn bg-destructive text-white text-xs py-2 px-3"
+              variant="danger"
+              size="sm"
             >
               <XCircle className="w-4 h-4" />
               رفض
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              onClick={() => setRowSelection({})}
-              className="nb-btn nb-btn-outline text-xs py-2 px-3"
+              onPress={() => setRowSelection({})}
+              variant="outline"
+              size="sm"
               aria-label="مسح اختيار الطلبات"
             >
               <XIcon className="w-4 h-4" />
               مسح
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -263,14 +268,15 @@ export default function SupervisorApplicationList() {
         </div>
 
         {activeFilterCount > 0 && (
-          <button
+          <Button
             type="button"
-            onClick={clearFilters}
-            className="nb-btn nb-btn-outline text-xs py-2 px-3"
+            onPress={clearFilters}
+            variant="outline"
+            size="sm"
           >
             <XIcon className="w-4 h-4" />
             مسح الفلاتر ({activeFilterCount})
-          </button>
+          </Button>
         )}
       </div>
 
@@ -356,13 +362,14 @@ export default function SupervisorApplicationList() {
             </span>
             <div className="flex gap-2">
               {pageStatus === "CanLoadMore" && (
-                <button
+                <Button
                   type="button"
-                  onClick={loadMore}
-                  className="nb-btn nb-btn-outline text-xs py-2 px-3"
+                  onPress={loadMore}
+                  variant="outline"
+                  size="sm"
                 >
                   تحميل المزيد
-                </button>
+                </Button>
               )}
               {pageStatus === "LoadingMore" && (
                 <span className="flex items-center gap-2 text-muted-foreground">
