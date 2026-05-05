@@ -375,13 +375,14 @@ export function BannerFormDialog({
 
           <div className="flex gap-2 pt-2">
             <DialogClose asChild>
-              <button
+              <Button
                 type="button"
-                className="nb-btn nb-btn-outline flex-1"
-                onClick={() => admin.resetForm()}
+                variant="outline"
+                className="flex-1"
+                onPress={() => admin.resetForm()}
               >
                 إلغاء
-              </button>
+              </Button>
             </DialogClose>
             <Button
               type="button"

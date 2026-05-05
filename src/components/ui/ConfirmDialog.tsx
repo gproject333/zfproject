@@ -157,9 +157,9 @@ function ConfirmDialogBody({
 
         <div className="flex gap-3">
           <DialogClose asChild>
-            <button className="nb-btn nb-btn-outline flex-1" disabled={isSubmitting}>
+            <Button variant="outline" isDisabled={isSubmitting} className="flex-1">
               {cancelLabel}
-            </button>
+            </Button>
           </DialogClose>
           <Button
             onPress={() => onConfirm(withNotes ? notes : undefined)}

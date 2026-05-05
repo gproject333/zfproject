@@ -36,7 +36,7 @@ export default function DeleteConfirmModal({
         </p>
         <div className="flex gap-3">
           <DialogClose asChild>
-            <button className="nb-btn nb-btn-outline flex-1">إلغاء</button>
+            <Button variant="outline" className="flex-1">إلغاء</Button>
           </DialogClose>
           <Button
             onPress={onConfirm}

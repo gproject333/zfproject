@@ -23,7 +23,7 @@ export function DeleteBannerDialog({
       >
         <div className="flex gap-2 pt-2">
           <DialogClose asChild>
-            <button className="nb-btn nb-btn-outline flex-1">إلغاء</button>
+            <Button variant="outline" className="flex-1">إلغاء</Button>
           </DialogClose>
           <Button
             onPress={() => void onConfirm()}
