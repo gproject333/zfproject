@@ -13,6 +13,7 @@ import {
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
+import { Input } from "@/components/ui";
 
 interface StudentProfile {
   _id: Id<"users">;
@@ -69,11 +70,12 @@ export default function StudentManagement() {
       <div className="nb-card p-4 flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-48">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
+          <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="بحث بالاسم أو البريد..."
-            className="nb-input w-full pr-9 text-sm"
+            fullWidth
+            className="pr-9 text-sm"
           />
         </div>
 

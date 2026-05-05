@@ -9,7 +9,7 @@ import {
 } from "../../../../convex/lib/statuses";
 import { RATING_CONFIG, RATING_KEYS } from "@/lib/configs/application";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
-import { Button } from "@/components/ui";
+import { Button, TextArea } from "@/components/ui";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 type ReviewState = ReturnType<typeof useReview>;
@@ -102,10 +102,11 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
             value={notes}
             onChange={setNotes}
           />
-          <textarea
+          <TextArea
             ref={notesRef}
             id="review-notes"
-            className="nb-input w-full min-h-[120px] bg-card"
+            fullWidth
+            className="min-h-[120px] bg-card"
             placeholder="اكتب ملاحظاتك للطالب (ستظهر له في تفاصيل الطلب)..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}

@@ -3,7 +3,7 @@
 import { Plus, X, Info, Check } from "lucide-react";
 import FormField from "@/features/applications/components/FormField";
 import { Tooltip } from "@/components/ui/Tooltip";
-import { Button } from "@/components/ui";
+import { Button, Input, TextArea } from "@/components/ui";
 import {
   Select,
   SelectTrigger,
@@ -132,17 +132,19 @@ export default function ApplicationFormFields({
           </SelectContent>
         </Select>
       ) : field.type === "textarea" ? (
-        <textarea
+        <TextArea
           rows={3}
-          className={`nb-input resize-none ${errors[field.name] ? "!border-destructive" : ""}`}
+          fullWidth
+          className={`resize-none ${errors[field.name] ? "!border-destructive" : ""}`}
           placeholder={field.placeholder}
           value={(formData[field.name] as string) ?? ""}
           onChange={(e) => updateField(field.name, e.target.value)}
           onBlur={() => validateField(field.name)}
         />
       ) : (
-        <input
-          className={`nb-input ${errors[field.name] ? "!border-destructive" : ""}`}
+        <Input
+          fullWidth
+          className={errors[field.name] ? "!border-destructive" : ""}
           placeholder={field.placeholder}
           value={(formData[field.name] as string) ?? ""}
           onChange={(e) => updateField(field.name, e.target.value)}
@@ -156,8 +158,9 @@ export default function ApplicationFormFields({
     <div className="space-y-4">
       {/* 1. Project name */}
       <FormField label="اسم المشروع" required error={errors.projectName}>
-        <input
-          className={`nb-input ${errors.projectName ? "!border-destructive" : ""}`}
+        <Input
+          fullWidth
+          className={errors.projectName ? "!border-destructive" : ""}
           placeholder="مثال: منصة ذكية لإدارة المكتبات الجامعية"
           value={(formData.projectName as string) ?? ""}
           onChange={(e) => updateField("projectName", e.target.value)}
@@ -185,9 +188,10 @@ export default function ApplicationFormFields({
           </span>
         }
       >
-        <textarea
+        <TextArea
           rows={4}
-          className={`nb-input resize-none ${errors.description ? "!border-destructive" : ""}`}
+          fullWidth
+          className={`resize-none ${errors.description ? "!border-destructive" : ""}`}
           placeholder="اكتب وصفاً شاملاً لمشروعك (50 حرف على الأقل)..."
           value={(formData.description as string) ?? ""}
           onChange={(e) => updateField("description", e.target.value)}
@@ -200,9 +204,10 @@ export default function ApplicationFormFields({
 
       {/* 4. Problem statement */}
       <FormField label="المشكلة التي يحلها المشروع" required error={errors.problemStatement}>
-        <textarea
+        <TextArea
           rows={3}
-          className={`nb-input resize-none ${errors.problemStatement ? "!border-destructive" : ""}`}
+          fullWidth
+          className={`resize-none ${errors.problemStatement ? "!border-destructive" : ""}`}
           placeholder="ما المشكلة التي يعالجها مشروعك؟"
           value={(formData.problemStatement as string) ?? ""}
           onChange={(e) => updateField("problemStatement", e.target.value)}
@@ -212,8 +217,9 @@ export default function ApplicationFormFields({
 
       {/* 5. Target audience */}
       <FormField label="الجمهور المستهدف" required error={errors.targetAudience}>
-        <input
-          className={`nb-input ${errors.targetAudience ? "!border-destructive" : ""}`}
+        <Input
+          fullWidth
+          className={errors.targetAudience ? "!border-destructive" : ""}
           placeholder="مثال: طلاب الجامعات في الأردن"
           value={(formData.targetAudience as string) ?? ""}
           onChange={(e) => updateField("targetAudience", e.target.value)}
@@ -232,17 +238,17 @@ export default function ApplicationFormFields({
         <div className="space-y-2">
           {teamMembers.map((member, i) => (
             <div key={i} className="flex gap-2 items-start">
-              <input
-                className="nb-input flex-1"
+              <Input
+                className="flex-1"
                 placeholder="اسم العضو"
                 value={member.name}
                 onChange={(e) => updateMember(i, { name: e.target.value })}
               />
-              <input
+              <Input
                 type="tel"
                 inputMode="numeric"
                 maxLength={10}
-                className="nb-input flex-1"
+                className="flex-1"
                 placeholder="07XXXXXXXX"
                 value={member.phone}
                 onChange={(e) =>
@@ -279,11 +285,12 @@ export default function ApplicationFormFields({
           error={errors.phone}
           hint={<HintIcon text="10 أرقام تبدأ بـ 07" />}
         >
-          <input
+          <Input
             type="tel"
             inputMode="numeric"
             maxLength={10}
-            className={`nb-input ${errors.phone ? "!border-destructive" : ""}`}
+            fullWidth
+            className={errors.phone ? "!border-destructive" : ""}
             placeholder="07XXXXXXXX"
             value={(formData.phone as string) ?? ""}
             onChange={(e) => {

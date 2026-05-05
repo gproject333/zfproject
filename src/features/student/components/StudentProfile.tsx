@@ -14,7 +14,7 @@ import {
 import { useStudentProfile } from "../hooks/useStudentProfile";
 import { usePasswordChange } from "../hooks/usePasswordChange";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -98,8 +98,8 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               <label className="block text-xs font-bold mb-1.5">
                 الاسم الكامل
               </label>
-              <input
-                className="nb-input"
+              <Input
+                fullWidth
                 value={profile.form.name}
                 onChange={(e) => profile.setField("name", e.target.value)}
                 placeholder="الاسم الكامل"
@@ -110,8 +110,9 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               <label className="block text-xs font-bold mb-1.5">
                 البريد الإلكتروني
               </label>
-              <input
-                className="nb-input bg-muted/50 cursor-not-allowed"
+              <Input
+                fullWidth
+                className="bg-muted/50 cursor-not-allowed"
                 value={profile.user?.email ?? ""}
                 readOnly
                 dir="ltr"
@@ -122,8 +123,8 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               <label className="block text-xs font-bold mb-1.5">
                 الرقم الجامعي
               </label>
-              <input
-                className="nb-input"
+              <Input
+                fullWidth
                 value={profile.form.studentId}
                 onChange={(e) => profile.setField("studentId", e.target.value)}
                 placeholder="مثال: 202010001"
@@ -177,8 +178,8 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               <label className="block text-xs font-bold mb-1.5">
                 رقم الهاتف
               </label>
-              <input
-                className="nb-input"
+              <Input
+                fullWidth
                 value={profile.form.phone}
                 onChange={(e) => {
                   const val = e.target.value.replace(/\D/g, "").slice(0, 10);
@@ -202,8 +203,8 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                 <Link2 className="w-3.5 h-3.5 text-[#0A66C2]" />
                 رابط LinkedIn
               </label>
-              <input
-                className="nb-input"
+              <Input
+                fullWidth
                 value={profile.form.linkedinUrl}
                 onChange={(e) =>
                   profile.setField("linkedinUrl", e.target.value)
@@ -279,8 +280,8 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                   <label className="block text-xs font-bold mb-1.5">
                     رمز التحقق
                   </label>
-                  <input
-                    className="nb-input"
+                  <Input
+                    fullWidth
                     value={passwordForm.code}
                     onChange={(e) =>
                       setPasswordForm((p) => ({ ...p, code: e.target.value }))
@@ -294,9 +295,9 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                   <label className="block text-xs font-bold mb-1.5">
                     كلمة المرور الجديدة
                   </label>
-                  <input
+                  <Input
                     type="password"
-                    className="nb-input"
+                    fullWidth
                     value={passwordForm.newPassword}
                     onChange={(e) =>
                       setPasswordForm((p) => ({
