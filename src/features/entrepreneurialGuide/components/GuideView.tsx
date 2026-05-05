@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import {Compass, ExternalLink, Video, GraduationCap, Link2, Calendar} from "lucide-react";
-import { Spinner } from "@/components/ui";
+import { Spinner, Tabs } from "@/components/ui";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatArabicDate } from "@/lib/formatters";
 
@@ -55,21 +55,18 @@ export default function GuideView() {
           <Compass className="w-6 h-6 text-secondary" />
           دليلك الريادي
         </h2>
-        <div className="flex items-center gap-1 flex-wrap">
-          {FILTERS.map((f) => (
-            <button
-              key={f.value}
-              onClick={() => setFilter(f.value)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-bold nb-border transition-all ${
-                filter === f.value
-                  ? "bg-primary text-primary-foreground nb-shadow-sm"
-                  : "bg-card hover:bg-muted border-transparent"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
+        <Tabs
+          selectedKey={filter}
+          onSelectionChange={(k) => setFilter(k as FilterType)}
+        >
+          <Tabs.List>
+            {FILTERS.map((f) => (
+              <Tabs.Tab key={f.value} id={f.value}>
+                {f.label}
+              </Tabs.Tab>
+            ))}
+          </Tabs.List>
+        </Tabs>
       </div>
 
       {resources === undefined ? (

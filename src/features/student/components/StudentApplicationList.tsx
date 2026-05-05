@@ -5,7 +5,7 @@ import {FileText, Search, Plus} from "lucide-react";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ApplicationCard from "@/features/applications/components/ApplicationCard";
-import { Button, Input, Spinner} from "@/components/ui";
+import { Button, Input, Spinner, Tabs } from "@/components/ui";
 import { STATUS_CONFIG } from "@/lib/configs/application";
 import { useStudentApplicationListFilters } from "@/features/student/hooks/useStudentApplicationListFilters";
 
@@ -71,35 +71,25 @@ export default function StudentApplicationList() {
         />
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
-        <button
-          onClick={() => setStatusFilter("all")}
-          className={`nb-badge text-sm font-bold px-3 py-1.5 ${
-            statusFilter === "all"
-              ? "bg-foreground text-background"
-              : "bg-muted hover:bg-muted/70"
-          }`}
-        >
-          الكل
-        </button>
-        {STATUS_KEYS.map((key) => {
-          const cfg = STATUS_CONFIG[key];
-          const Icon = cfg.icon;
-          const active = statusFilter === key;
-          return (
-            <button
-              key={key}
-              onClick={() => setStatusFilter(key)}
-              className={`nb-badge text-sm font-bold px-3 py-1.5 ${
-                active ? "bg-foreground text-background" : "bg-muted hover:bg-muted/70"
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              {cfg.label}
-            </button>
-          );
-        })}
-      </div>
+      <Tabs
+        selectedKey={statusFilter}
+        onSelectionChange={(k) => setStatusFilter(k as typeof statusFilter)}
+        className="mb-6"
+      >
+        <Tabs.List>
+          <Tabs.Tab id="all">الكل</Tabs.Tab>
+          {STATUS_KEYS.map((key) => {
+            const cfg = STATUS_CONFIG[key];
+            const Icon = cfg.icon;
+            return (
+              <Tabs.Tab key={key} id={key}>
+                <Icon className="w-3.5 h-3.5" />
+                {cfg.label}
+              </Tabs.Tab>
+            );
+          })}
+        </Tabs.List>
+      </Tabs>
 
       {filteredApps.length === 0 ? (
         <EmptyState

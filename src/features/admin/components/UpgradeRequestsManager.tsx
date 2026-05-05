@@ -6,6 +6,7 @@ import { CheckCircle2, XCircle, Clock, TrendingUp } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "@/lib/toast";
+import { Tabs } from "@/components/ui";
 
 const STATUS_LABELS = {
   pending: { label: "معلق", color: "text-warning", bg: "bg-warning/10" },
@@ -59,19 +60,17 @@ export default function UpgradeRequestsManager() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-2 flex-wrap">
-        {(["all", "pending", "approved", "rejected"] as const).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`hover:bg-foreground/5 rounded transition-colors text-sm px-4 py-2 ${
-              filter === f ? "bg-primary/10 text-primary font-extrabold" : ""
-            }`}
-          >
-            {f === "all" ? "الكل" : STATUS_LABELS[f].label}
-          </button>
-        ))}
-      </div>
+      <Tabs
+        selectedKey={filter}
+        onSelectionChange={(k) => setFilter(k as typeof filter)}
+      >
+        <Tabs.List>
+          <Tabs.Tab id="all">الكل</Tabs.Tab>
+          <Tabs.Tab id="pending">{STATUS_LABELS.pending.label}</Tabs.Tab>
+          <Tabs.Tab id="approved">{STATUS_LABELS.approved.label}</Tabs.Tab>
+          <Tabs.Tab id="rejected">{STATUS_LABELS.rejected.label}</Tabs.Tab>
+        </Tabs.List>
+      </Tabs>
 
       {/* Table */}
       <div className="nb-card overflow-hidden">

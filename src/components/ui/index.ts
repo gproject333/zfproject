@@ -31,6 +31,7 @@ export {
   Skeleton,
   Spinner,
   Switch,
+  Tabs,
   Toast,
 } from "@heroui/react";
 
