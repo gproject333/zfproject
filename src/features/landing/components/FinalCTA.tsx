@@ -29,7 +29,7 @@ export default function FinalCTA() {
 
             <Link
               href={isAuthenticated ? "/student" : "/register"}
-              className="nb-btn inline-flex items-center gap-2 px-8 py-3 bg-primary-foreground text-primary font-extrabold text-base rounded-xl hover:opacity-90 transition-opacity nb-border border-primary-foreground/20"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-primary-foreground text-primary font-extrabold text-base rounded-xl hover:opacity-90 transition-opacity border-2 border-primary-foreground/20"
             >
               {isAuthenticated ? "الذهاب للوحة التحكم" : "قدّم مشروعك الآن"}
               <ArrowLeft className="w-5 h-5 rotate-180" />

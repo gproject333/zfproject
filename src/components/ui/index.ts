@@ -12,6 +12,7 @@
  */
 export {
   Button,
+  buttonVariants,
   Card,
   CardHeader,
   CardTitle,
@@ -26,6 +27,7 @@ export {
 
 export type {
   ButtonProps,
+  ButtonVariants,
   CardProps,
   CardHeaderProps,
   CardTitleProps,

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { UserCircle, Calendar, ChevronRight, Loader2 } from "lucide-react";
 import { formatArabicDate } from "@/lib/formatters";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { buttonVariants } from "@/components/ui";
 import { useArticleDetail } from "../hooks/useArticlesList";
 import type { Id } from "../../../../convex/_generated/dataModel";
 
@@ -46,7 +47,7 @@ export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {
         title="المقالة غير متاحة"
         description="قد تكون المقالة قد حُذفت أو لم تُنشر بعد."
         action={
-          <Link href={backHref} className="nb-btn nb-btn-outline">
+          <Link href={backHref} className={buttonVariants({ variant: "outline" })}>
             <ChevronRight className="w-4 h-4" />
             العودة للمقالات
           </Link>

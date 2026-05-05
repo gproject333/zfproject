@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   GripVertical,
 } from "lucide-react";
+import { buttonVariants } from "@/components/ui";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -232,7 +233,12 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
               <div className="flex flex-col items-center justify-center gap-3 py-20">
                 <AlertTriangle className="w-8 h-8 text-destructive" />
                 <p className="text-sm font-bold text-destructive">تعذّر تحميل الملف</p>
-                <a href={url} target="_blank" rel="noopener noreferrer" className="nb-btn nb-btn-outline text-sm">
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonVariants({ variant: "outline", size: "sm" })}
+                >
                   <ExternalLink className="w-4 h-4" />
                   فتح في تبويب جديد
                 </a>

@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/Select";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
-import { Button } from "@/components/ui";
+import { Button, buttonVariants } from "@/components/ui";
 import type { ArticleAudience, ArticleFormState } from "../hooks/useArticleAdmin";
 
 interface ArticleFormDialogProps {
@@ -117,7 +117,7 @@ export default function ArticleFormDialog({
               صورة الغلاف (اختيارية)
             </label>
             <div className="flex items-center gap-3">
-              <label className="nb-btn nb-btn-outline text-xs py-2 px-3 cursor-pointer">
+              <label className={`${buttonVariants({ variant: "outline", size: "sm" })} cursor-pointer`}>
                 <Upload className="w-4 h-4" />
                 {formState.coverFile ? "تغيير" : "رفع صورة"}
                 <input

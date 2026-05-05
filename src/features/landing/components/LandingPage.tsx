@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import OliveLogo from "@/components/OliveLogo";
 import SettingsMenu from "@/components/SettingsMenu";
+import { buttonVariants } from "@/components/ui";
 import { useAuth } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc } from "../../../../convex/_generated/dataModel";
@@ -148,17 +149,19 @@ export default function LandingPage() {
             ) : (
               showGuestCtas && (
                 <>
-                  <Link href="/login">
-                    <button className="nb-btn nb-btn-outline text-sm py-2 px-3 sm:px-4 whitespace-nowrap shadow-[2px_2px_0px_0px_var(--shadow-color)]">
-                      <LogIn className="w-4 h-4" />
-                      <span className="hidden sm:inline">تسجيل الدخول</span>
-                    </button>
+                  <Link
+                    href="/login"
+                    className={`${buttonVariants({ variant: "outline", size: "sm" })} whitespace-nowrap`}
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span className="hidden sm:inline">تسجيل الدخول</span>
                   </Link>
-                  <Link href="/register">
-                    <button className="nb-btn nb-btn-secondary text-sm py-2 px-3 sm:px-4 whitespace-nowrap">
-                      <Sparkles className="w-4 h-4" />
-                      <span className="hidden sm:inline">ابدأ الآن</span>
-                    </button>
+                  <Link
+                    href="/register"
+                    className={`${buttonVariants({ variant: "secondary", size: "sm" })} whitespace-nowrap`}
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    <span className="hidden sm:inline">ابدأ الآن</span>
                   </Link>
                 </>
               )

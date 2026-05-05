@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Info, CheckCircle2, AlertTriangle, ArrowLeft } from "lucide-react";
+import { buttonVariants } from "@/components/ui";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 
 type BannerDoc = Doc<"banners">;
@@ -64,7 +65,7 @@ export default function Banner({ banner }: BannerProps) {
       {banner.linkHref && (
         <Link
           href={banner.linkHref}
-          className="nb-btn nb-btn-outline text-xs shrink-0 whitespace-nowrap"
+          className={`${buttonVariants({ variant: "outline", size: "sm" })} shrink-0 whitespace-nowrap`}
         >
           {banner.linkLabel ?? "التفاصيل"}
           <ArrowLeft className="w-3.5 h-3.5" />

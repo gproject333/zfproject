@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Rocket, LogIn, LayoutDashboard } from "lucide-react";
+import { buttonVariants } from "@/components/ui";
 
 interface HeroProps {
   dashboardHref?: string;
@@ -47,25 +48,28 @@ export default function Hero({ dashboardHref = "/student", userName, authReady =
                   <div className="w-36 h-12 rounded-lg bg-foreground/10 animate-pulse" />
                 </>
               ) : isSignedIn ? (
-                <Link href={dashboardHref} className="w-full sm:w-auto">
-                  <button className="nb-btn nb-btn-secondary w-full text-base px-8 py-3">
-                    <LayoutDashboard className="w-5 h-5" />
-                    {userName ? `لوحة ${userName}` : "اذهب إلى لوحتي"}
-                  </button>
+                <Link
+                  href={dashboardHref}
+                  className={`${buttonVariants({ variant: "secondary", size: "lg" })} w-full sm:w-auto`}
+                >
+                  <LayoutDashboard className="w-5 h-5" />
+                  {userName ? `لوحة ${userName}` : "اذهب إلى لوحتي"}
                 </Link>
               ) : (
                 <>
-                  <Link href="/register" className="w-full sm:w-auto">
-                    <button className="nb-btn nb-btn-secondary w-full text-base px-8 py-3">
-                      <Rocket className="w-5 h-5" />
-                      ابدأ تقديم مشروعك
-                    </button>
+                  <Link
+                    href="/register"
+                    className={`${buttonVariants({ variant: "secondary", size: "lg" })} w-full sm:w-auto`}
+                  >
+                    <Rocket className="w-5 h-5" />
+                    ابدأ تقديم مشروعك
                   </Link>
-                  <Link href="/login" className="w-full sm:w-auto">
-                    <button className="nb-btn nb-btn-outline w-full text-base px-8 py-3">
-                      <LogIn className="w-5 h-5" />
-                      تسجيل الدخول
-                    </button>
+                  <Link
+                    href="/login"
+                    className={`${buttonVariants({ variant: "outline", size: "lg" })} w-full sm:w-auto`}
+                  >
+                    <LogIn className="w-5 h-5" />
+                    تسجيل الدخول
                   </Link>
                 </>
               )}

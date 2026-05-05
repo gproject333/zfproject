@@ -139,7 +139,7 @@ export default function TypeSelector() {
             </div>
 
             {/* CTA */}
-            <div className="nb-btn nb-btn-outline w-full group-hover:bg-foreground group-hover:text-card transition-colors">
+            <div className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg border-2 font-bold text-sm transition-colors group-hover:bg-foreground group-hover:text-card">
               <GraduationCap className="w-5 h-5" />
               ابدأ التقديم
             </div>
