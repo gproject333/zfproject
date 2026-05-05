@@ -15,6 +15,7 @@ import {
   Lock,
 } from "lucide-react";
 import { FloatingEmailInput, FloatingPasswordInput, FloatingTextInput } from "./FloatingFields";
+import { Button } from "@/components/ui";
 
 type Step = "email" | "verify";
 
@@ -131,13 +132,13 @@ export default function ForgotPasswordForm() {
                 onChange={setEmail}
                 required
               />
-              <button type="submit" disabled={loading} className="nb-btn nb-btn-primary w-full text-base">
+              <Button type="submit" isDisabled={loading} variant="primary" fullWidth className="text-base">
                 {loading ? (
                   <><Loader2 className="w-5 h-5 animate-spin" />جاري الإرسال...</>
                 ) : (
                   <><Mail className="w-5 h-5" />إرسال رمز التحقق</>
                 )}
-              </button>
+              </Button>
             </form>
           )}
 
@@ -180,16 +181,21 @@ export default function ForgotPasswordForm() {
               />
 
               <div className="flex gap-3">
-                <button type="button" onClick={() => { setStep("email"); setError(""); }} className="nb-btn nb-btn-outline flex-1">
+                <Button
+                  type="button"
+                  onPress={() => { setStep("email"); setError(""); }}
+                  variant="outline"
+                  className="flex-1"
+                >
                   <ArrowRight className="w-5 h-5" /> رجوع
-                </button>
-                <button type="submit" disabled={loading} className="nb-btn nb-btn-primary flex-[2] text-base">
+                </Button>
+                <Button type="submit" isDisabled={loading} variant="primary" className="flex-[2] text-base">
                   {loading ? (
                     <><Loader2 className="w-5 h-5 animate-spin" />جاري التغيير...</>
                   ) : (
                     <><Lock className="w-5 h-5" />تغيير كلمة المرور</>
                   )}
-                </button>
+                </Button>
               </div>
             </form>
           )}

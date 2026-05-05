@@ -23,6 +23,7 @@ import {
   FloatingPasswordInput,
   FloatingSelectInput,
 } from "./FloatingFields";
+import { Button } from "@/components/ui";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -149,11 +150,13 @@ export default function RegisterForm() {
                 dir="ltr"
                 autoComplete="off"
               />
-              <button
+              <Button
                 type="button"
-                disabled={loading}
-                onClick={form.submitStep1}
-                className="nb-btn nb-btn-primary w-full text-base"
+                isDisabled={loading}
+                onPress={form.submitStep1}
+                variant="primary"
+                fullWidth
+                className="text-base"
               >
                 {loading ? (
                   <>
@@ -165,7 +168,7 @@ export default function RegisterForm() {
                     التالي <ArrowRight className="w-5 h-5 rotate-180" />
                   </>
                 )}
-              </button>
+              </Button>
             </div>
           )}
 
@@ -202,11 +205,13 @@ export default function RegisterForm() {
                 )}
               </div>
 
-              <button
+              <Button
                 type="button"
-                disabled={loading || otpCode.length < 6}
-                onClick={() => form.submitOtp(otpCode)}
-                className="nb-btn nb-btn-primary w-full text-base disabled:opacity-60"
+                isDisabled={loading || otpCode.length < 6}
+                onPress={() => form.submitOtp(otpCode)}
+                variant="primary"
+                fullWidth
+                className="text-base"
               >
                 {loading ? (
                   <>
@@ -219,7 +224,7 @@ export default function RegisterForm() {
                     تحقق
                   </>
                 )}
-              </button>
+              </Button>
 
               <div className="text-center">
                 <button
@@ -284,11 +289,13 @@ export default function RegisterForm() {
                 showEye={false}
               />
 
-              <button
+              <Button
                 type="button"
-                disabled={loading}
-                onClick={() => form.submitStep3(() => router.push("/login-redirect"))}
-                className="nb-btn nb-btn-primary w-full text-base"
+                isDisabled={loading}
+                onPress={() => form.submitStep3(() => router.push("/login-redirect"))}
+                variant="primary"
+                fullWidth
+                className="text-base"
               >
                 {loading ? (
                   <>
@@ -301,7 +308,7 @@ export default function RegisterForm() {
                     إنشاء الحساب
                   </>
                 )}
-              </button>
+              </Button>
             </div>
           )}
         </div>

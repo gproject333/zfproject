@@ -12,6 +12,7 @@ import {
   GraduationCap,
   ArrowRight,
 } from "lucide-react";
+import { Button } from "@/components/ui";
 
 export default function OtpVerifyForm() {
   const { signUp, setActive } = useSignUp();
@@ -114,10 +115,12 @@ export default function OtpVerifyForm() {
               </div>
             </div>
 
-            <button
+            <Button
               type="submit"
-              disabled={loading || otpCode.length < 6}
-              className="nb-btn nb-btn-primary w-full text-base"
+              isDisabled={loading || otpCode.length < 6}
+              variant="primary"
+              fullWidth
+              className="text-base"
             >
               {loading ? (
                 <>
@@ -130,12 +133,18 @@ export default function OtpVerifyForm() {
                   تأكيد والدخول
                 </>
               )}
-            </button>
+            </Button>
 
-            <button type="button" onClick={() => router.back()} className="nb-btn nb-btn-outline w-full text-sm">
+            <Button
+              type="button"
+              onPress={() => router.back()}
+              variant="outline"
+              fullWidth
+              className="text-sm"
+            >
               <ArrowRight className="w-4 h-4" />
               رجوع
-            </button>
+            </Button>
           </form>
         </div>
       </div>
