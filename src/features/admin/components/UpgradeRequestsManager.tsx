@@ -64,7 +64,7 @@ export default function UpgradeRequestsManager() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`nb-button-ghost text-sm px-4 py-2 ${
+            className={`hover:bg-foreground/5 rounded transition-colors text-sm px-4 py-2 ${
               filter === f ? "bg-primary/10 text-primary font-extrabold" : ""
             }`}
           >
@@ -132,7 +132,7 @@ export default function UpgradeRequestsManager() {
                             <button
                               onClick={() => handleReview(req._id, "approved")}
                               disabled={isLoading}
-                              className="nb-button-ghost text-xs flex items-center gap-1 px-2 py-1 text-success hover:bg-success/10 disabled:opacity-50"
+                              className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1 text-success hover:bg-success/10 disabled:opacity-50"
                             >
                               <CheckCircle2 className="w-3.5 h-3.5" />
                               قبول
@@ -140,7 +140,7 @@ export default function UpgradeRequestsManager() {
                             <button
                               onClick={() => handleReview(req._id, "rejected")}
                               disabled={isLoading}
-                              className="nb-button-ghost text-xs flex items-center gap-1 px-2 py-1 text-destructive hover:bg-destructive/10 disabled:opacity-50"
+                              className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1 text-destructive hover:bg-destructive/10 disabled:opacity-50"
                             >
                               <XCircle className="w-3.5 h-3.5" />
                               رفض

@@ -109,7 +109,7 @@ export default function StudentManagement() {
         {(search || selectedCollege || selectedDepartment) && (
           <button
             onClick={() => { setSearch(""); setSelectedCollege(""); setSelectedDepartment(""); }}
-            className="nb-button-ghost text-sm flex items-center gap-1"
+            className="hover:bg-foreground/5 rounded transition-colors text-sm flex items-center gap-1"
           >
             <X className="w-4 h-4" />
             مسح
@@ -182,14 +182,14 @@ export default function StudentManagement() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => setProfileStudent(student)}
-                          className="nb-button-ghost text-xs flex items-center gap-1 px-2 py-1"
+                          className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
                         >
                           <User className="w-3.5 h-3.5" />
                           الملف
                         </button>
                         <button
                           onClick={() => handleToggle(student._id, !student.isActive)}
-                          className="nb-button-ghost text-xs flex items-center gap-1 px-2 py-1"
+                          className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
                         >
                           {student.isActive ? (
                             <ToggleRight className="w-4 h-4 text-success" />
@@ -220,7 +220,7 @@ export default function StudentManagement() {
           >
             <div className="flex items-center justify-between">
               <h3 className="font-extrabold text-lg">الملف الشخصي</h3>
-              <button onClick={() => setProfileStudent(null)} className="nb-button-ghost p-1">
+              <button onClick={() => setProfileStudent(null)} className="hover:bg-foreground/5 rounded transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>

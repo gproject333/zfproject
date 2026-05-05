@@ -133,7 +133,7 @@ function ProfileModal({ user, config, onClose }: { user: UserItem; config: UserM
       <div className="nb-card p-6 w-full max-w-sm space-y-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <h3 className="font-extrabold text-lg">الملف الشخصي</h3>
-          <button onClick={onClose} className="nb-button-ghost p-1"><X className="w-5 h-5" /></button>
+          <button onClick={onClose} className="hover:bg-foreground/5 rounded transition-colors p-1"><X className="w-5 h-5" /></button>
         </div>
         <div className="flex items-center gap-4">
           <div
@@ -420,7 +420,7 @@ export default function UserManagement({ role }: UserManagementProps) {
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={() => setProfileUser(user)}
-                  className="nb-button-ghost text-xs flex items-center gap-1 px-2 py-1"
+                  className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
                   title="عرض الملف الشخصي"
                 >
                   <User className="w-3.5 h-3.5" />

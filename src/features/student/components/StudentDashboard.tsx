@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Plus, TrendingUp, HelpCircle, BookOpen, Compass, ArrowUpCircle, Clock, XCircle } from "lucide-react";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
+import { Button } from "@/components/ui";
 import { useStudentDashboardStats } from "@/features/student/hooks/useStudentDashboardStats";
 import StudentAvatar from "./StudentAvatar";
 import RecentApplicationsCard from "./RecentApplicationsCard";
@@ -194,13 +195,14 @@ export default function StudentDashboard() {
             )}
           </div>
           {(upgradeRequest === null || upgradeRequest?.status === "rejected") && (
-            <button
-              onClick={handleUpgradeRequest}
-              className="nb-button shrink-0 text-sm font-bold px-4 py-2"
-              style={{ background: "hsl(var(--primary))" }}
+            <Button
+              onPress={handleUpgradeRequest}
+              variant="primary"
+              size="sm"
+              className="shrink-0"
             >
               طلب الترقية
-            </button>
+            </Button>
           )}
         </div>
       )}

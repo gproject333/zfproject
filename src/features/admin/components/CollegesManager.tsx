@@ -16,6 +16,7 @@ import {
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
+import { Button } from "@/components/ui";
 
 export default function CollegesManager() {
   const data = useQuery(api.colleges.listWithDepartments, {});
@@ -133,20 +134,21 @@ export default function CollegesManager() {
           {data !== undefined && data.length === 0 && (
             <button
               onClick={handleSeed}
-              className="nb-button-ghost flex items-center gap-2 text-sm"
+              className="hover:bg-foreground/5 rounded transition-colors flex items-center gap-2 text-sm"
             >
               <Download className="w-4 h-4" />
               استيراد الكليات الافتراضية
             </button>
           )}
-          <button
-            onClick={() => setShowNewCollege(!showNewCollege)}
-            className="nb-button flex items-center gap-2 text-sm"
+          <Button
+            onPress={() => setShowNewCollege(!showNewCollege)}
+            variant="primary"
+            size="sm"
             style={{ background: "#DC2626" }}
           >
             {showNewCollege ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             إضافة كلية
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -161,11 +163,11 @@ export default function CollegesManager() {
             className="nb-input flex-1"
             autoFocus
           />
-          <button onClick={handleCreateCollege} className="nb-button px-4 py-2 flex items-center gap-1">
+          <Button onPress={handleCreateCollege} variant="primary" size="sm">
             <Check className="w-4 h-4" />
             حفظ
-          </button>
-          <button onClick={() => setShowNewCollege(false)} className="nb-button-ghost p-2">
+          </Button>
+          <button onClick={() => setShowNewCollege(false)} className="hover:bg-foreground/5 rounded transition-colors p-2">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -224,13 +226,13 @@ export default function CollegesManager() {
                       <>
                         <button
                           onClick={() => handleUpdateCollege(college._id)}
-                          className="nb-button-ghost p-1.5 text-success"
+                          className="hover:bg-foreground/5 rounded transition-colors p-1.5 text-success"
                         >
                           <Check className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setEditingCollegeId(null)}
-                          className="nb-button-ghost p-1.5"
+                          className="hover:bg-foreground/5 rounded transition-colors p-1.5"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -242,13 +244,13 @@ export default function CollegesManager() {
                             setEditingCollegeId(college._id);
                             setEditingCollegeName(college.name);
                           }}
-                          className="nb-button-ghost p-1.5"
+                          className="hover:bg-foreground/5 rounded transition-colors p-1.5"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleRemoveCollege(college._id)}
-                          className="nb-button-ghost p-1.5 text-destructive"
+                          className="hover:bg-foreground/5 rounded transition-colors p-1.5 text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -277,10 +279,10 @@ export default function CollegesManager() {
                         <div className="flex items-center gap-1">
                           {editingDepId === dep._id ? (
                             <>
-                              <button onClick={() => handleUpdateDep(dep._id)} className="nb-button-ghost p-1 text-success">
+                              <button onClick={() => handleUpdateDep(dep._id)} className="hover:bg-foreground/5 rounded transition-colors p-1 text-success">
                                 <Check className="w-3.5 h-3.5" />
                               </button>
-                              <button onClick={() => setEditingDepId(null)} className="nb-button-ghost p-1">
+                              <button onClick={() => setEditingDepId(null)} className="hover:bg-foreground/5 rounded transition-colors p-1">
                                 <X className="w-3.5 h-3.5" />
                               </button>
                             </>
@@ -288,13 +290,13 @@ export default function CollegesManager() {
                             <>
                               <button
                                 onClick={() => { setEditingDepId(dep._id); setEditingDepName(dep.name); }}
-                                className="nb-button-ghost p-1"
+                                className="hover:bg-foreground/5 rounded transition-colors p-1"
                               >
                                 <Pencil className="w-3.5 h-3.5" />
                               </button>
                               <button
                                 onClick={() => handleRemoveDep(dep._id)}
-                                className="nb-button-ghost p-1 text-destructive"
+                                className="hover:bg-foreground/5 rounded transition-colors p-1 text-destructive"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -319,7 +321,7 @@ export default function CollegesManager() {
                         />
                         <button
                           onClick={() => handleAddDep(college._id)}
-                          className="nb-button-ghost p-1.5 text-success"
+                          className="hover:bg-foreground/5 rounded transition-colors p-1.5 text-success"
                         >
                           <Check className="w-4 h-4" />
                         </button>
@@ -327,7 +329,7 @@ export default function CollegesManager() {
                           onClick={() =>
                             setShowNewDep((p) => ({ ...p, [college._id]: false }))
                           }
-                          className="nb-button-ghost p-1.5"
+                          className="hover:bg-foreground/5 rounded transition-colors p-1.5"
                         >
                           <X className="w-4 h-4" />
                         </button>
