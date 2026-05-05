@@ -16,7 +16,7 @@ import {
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 
 export default function CollegesManager() {
   const data = useQuery(api.colleges.listWithDepartments, {});
@@ -155,12 +155,12 @@ export default function CollegesManager() {
       {/* New College Form */}
       {showNewCollege && (
         <div className="nb-card p-4 flex gap-3 items-center">
-          <input
+          <Input
             value={newCollegeName}
             onChange={(e) => setNewCollegeName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleCreateCollege()}
             placeholder="اسم الكلية الجديدة"
-            className="nb-input flex-1"
+            className="flex-1"
             autoFocus
           />
           <Button onPress={handleCreateCollege} variant="primary" size="sm">
@@ -202,11 +202,11 @@ export default function CollegesManager() {
                   </button>
 
                   {isEditingThis ? (
-                    <input
+                    <Input
                       value={editingCollegeName}
                       onChange={(e) => setEditingCollegeName(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleUpdateCollege(college._id)}
-                      className="nb-input flex-1"
+                      className="flex-1"
                       autoFocus
                     />
                   ) : (
@@ -266,11 +266,11 @@ export default function CollegesManager() {
                       <div key={dep._id} className="flex items-center gap-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground shrink-0" />
                         {editingDepId === dep._id ? (
-                          <input
+                          <Input
                             value={editingDepName}
                             onChange={(e) => setEditingDepName(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleUpdateDep(dep._id)}
-                            className="nb-input flex-1 py-1 text-sm"
+                            className="flex-1 py-1 text-sm"
                             autoFocus
                           />
                         ) : (
@@ -309,14 +309,14 @@ export default function CollegesManager() {
                     {/* Add Department */}
                     {showNewDep[college._id] ? (
                       <div className="flex items-center gap-2 pt-1">
-                        <input
+                        <Input
                           value={newDepNames[college._id] ?? ""}
                           onChange={(e) =>
                             setNewDepNames((p) => ({ ...p, [college._id]: e.target.value }))
                           }
                           onKeyDown={(e) => e.key === "Enter" && handleAddDep(college._id)}
                           placeholder="اسم التخصص الجديد"
-                          className="nb-input flex-1 py-1 text-sm"
+                          className="flex-1 py-1 text-sm"
                           autoFocus
                         />
                         <button

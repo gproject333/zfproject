@@ -19,7 +19,7 @@ import {
 import { EmptyState } from "@/components/ui/EmptyState";
 import { STATUS_CONFIG, TYPE_CONFIG } from "@/lib/configs/application";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import { useQuickAction } from "@/features/supervisor/hooks/useQuickAction";
 import { useBulkAction } from "@/features/supervisor/hooks/useBulkAction";
 import { useApplicationListColumns } from "@/features/supervisor/hooks/useApplicationListColumns";
@@ -195,13 +195,14 @@ export default function SupervisorApplicationList() {
       >
         <div className="relative flex-1 min-w-[180px]">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
+          <Input
             type="text"
             placeholder="ابحث بالمشروع أو الطالب..."
             aria-label="بحث في الطلبات"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="nb-input pr-12 text-sm"
+            fullWidth
+            className="pr-12 text-sm"
           />
         </div>
 

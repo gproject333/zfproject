@@ -5,7 +5,7 @@ import { FileText, Search, Plus, Loader2 } from "lucide-react";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ApplicationCard from "@/features/applications/components/ApplicationCard";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import { STATUS_CONFIG } from "@/lib/configs/application";
 import { useStudentApplicationListFilters } from "@/features/student/hooks/useStudentApplicationListFilters";
 
@@ -60,13 +60,14 @@ export default function StudentApplicationList() {
 
       <div className="relative mb-4">
         <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-        <input
+        <Input
           type="text"
           placeholder="ابحث عن طلب..."
           aria-label="بحث في طلباتي"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="nb-input pr-11"
+          fullWidth
+          className="pr-11"
         />
       </div>
 

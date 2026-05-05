@@ -25,7 +25,7 @@ import type { LucideIcon } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import { toast } from "sonner";
 
 interface ColorScheme {
@@ -318,14 +318,14 @@ export default function UserManagement({ role }: UserManagementProps) {
               <label className="block text-sm font-bold">{config.nameField.label}</label>
               <div className="relative">
                 <User className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input className="nb-input pr-10" placeholder={config.nameField.placeholder} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                <Input fullWidth className="pr-10" placeholder={config.nameField.placeholder} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
               </div>
             </div>
             <div className="space-y-1">
               <label className="block text-sm font-bold">البريد الإلكتروني *</label>
               <div className="relative">
                 <Mail className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input className="nb-input pr-10" type="email" placeholder={config.emailPlaceholder} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} dir="ltr" style={{ textAlign: "left" }} required />
+                <Input fullWidth className="pr-10" type="email" placeholder={config.emailPlaceholder} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} dir="ltr" style={{ textAlign: "left" }} required />
               </div>
             </div>
             {config.showDepartment && (
@@ -333,7 +333,7 @@ export default function UserManagement({ role }: UserManagementProps) {
                 <label className="block text-sm font-bold">القسم / التخصص</label>
                 <div className="relative">
                   <Building className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input className="nb-input pr-10" placeholder="هندسة البرمجيات" value={formData.department} onChange={(e) => setFormData({ ...formData, department: e.target.value })} />
+                  <Input fullWidth className="pr-10" placeholder="هندسة البرمجيات" value={formData.department} onChange={(e) => setFormData({ ...formData, department: e.target.value })} />
                 </div>
               </div>
             )}
@@ -342,8 +342,9 @@ export default function UserManagement({ role }: UserManagementProps) {
                 <label className="block text-sm font-bold">كلمة المرور *</label>
                 <div className="relative">
                   <KeyRound className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input
-                    className="nb-input pr-10"
+                  <Input
+                    fullWidth
+                    className="pr-10"
                     type="password"
                     placeholder="••••••••"
                     value={formData.password}
@@ -359,7 +360,7 @@ export default function UserManagement({ role }: UserManagementProps) {
               <label className="block text-sm font-bold">{config.phoneLabel}</label>
               <div className="relative">
                 <Phone className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input className="nb-input pr-10" placeholder={config.phonePlaceholder} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} dir="ltr" style={{ textAlign: "left" }} />
+                <Input fullWidth className="pr-10" placeholder={config.phonePlaceholder} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} dir="ltr" style={{ textAlign: "left" }} />
               </div>
             </div>
             <div className="md:col-span-2">
@@ -378,11 +379,12 @@ export default function UserManagement({ role }: UserManagementProps) {
       {/* Search */}
       <div className="relative">
         <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <input
+        <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="بحث بالاسم أو البريد..."
-          className="nb-input w-full pr-9"
+          fullWidth
+          className="pr-9"
         />
       </div>
 

@@ -21,7 +21,7 @@ import {
   getPlatformMeta,
 } from "@/lib/configs/socialPlatforms";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 
 interface DraftLink {
   platform: string;
@@ -187,11 +187,11 @@ export default function SocialLinksManager() {
               <label className="block text-sm font-bold" htmlFor="url-input">
                 الرابط *
               </label>
-              <input
+              <Input
                 id="url-input"
                 type="text"
                 dir="ltr"
-                className="nb-input w-full"
+                fullWidth
                 placeholder={platformMeta.placeholder}
                 value={draft.url}
                 onChange={(e) => setDraft((d) => ({ ...d, url: e.target.value }))}
@@ -203,10 +203,10 @@ export default function SocialLinksManager() {
               <label className="block text-sm font-bold" htmlFor="label-input">
                 تسمية بديلة (اختياري)
               </label>
-              <input
+              <Input
                 id="label-input"
                 type="text"
-                className="nb-input w-full"
+                fullWidth
                 placeholder={platformMeta.label}
                 value={draft.label}
                 onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))}
@@ -218,11 +218,11 @@ export default function SocialLinksManager() {
               <label className="block text-sm font-bold" htmlFor="order-input">
                 ترتيب العرض
               </label>
-              <input
+              <Input
                 id="order-input"
                 type="number"
-                className="nb-input w-full"
-                value={draft.order}
+                fullWidth
+                value={String(draft.order)}
                 onChange={(e) => setDraft((d) => ({ ...d, order: Number(e.target.value) || 0 }))}
               />
               <p className="text-xs text-muted-foreground">
