@@ -18,6 +18,7 @@ import {
 } from "@/features/student/hooks/useCreateApplication";
 import type { ApplicationType } from "@/features/student/hooks/useApplicationForm";
 import ApplicationFormFields from "./ApplicationFormFields";
+import { Button } from "@/components/ui";
 
 interface ApplicationCreateFormProps {
   type: ApplicationType;
@@ -39,12 +40,13 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
       <div className="nb-card p-12 text-center">
         <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
         <h3 className="text-xl font-bold mb-2">نوع غير صالح</h3>
-        <button
-          onClick={() => router.push("/student/new")}
-          className="nb-btn nb-btn-primary mt-4"
+        <Button
+          onPress={() => router.push("/student/new")}
+          variant="primary"
+          className="mt-4"
         >
           العودة لاختيار النوع
-        </button>
+        </Button>
       </div>
     );
   }
@@ -100,11 +102,12 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <button
+            <Button
               type="button"
-              onClick={() => void submit("draft")}
-              disabled={loading}
-              className="nb-btn nb-btn-outline flex-1"
+              onPress={() => void submit("draft")}
+              isDisabled={loading}
+              variant="outline"
+              className="flex-1"
             >
               {loading && submitMode === "draft" ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -112,8 +115,8 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
                 <Save className="w-5 h-5" />
               )}
               حفظ كمسودة
-            </button>
-            <button type="submit" disabled={loading} className="nb-btn nb-btn-secondary flex-[2]">
+            </Button>
+            <Button type="submit" isDisabled={loading} variant="secondary" className="flex-[2]">
               {loading && submitMode === "submit" ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -125,7 +128,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
                   تقديم الطلب
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

@@ -5,6 +5,7 @@ import { FileText, Search, Plus, Loader2 } from "lucide-react";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ApplicationCard from "@/features/applications/components/ApplicationCard";
+import { Button } from "@/components/ui";
 import { STATUS_CONFIG } from "@/lib/configs/application";
 import { useStudentApplicationListFilters } from "@/features/student/hooks/useStudentApplicationListFilters";
 
@@ -51,10 +52,10 @@ export default function StudentApplicationList() {
             تابع حالة طلباتك واقرأ ملاحظات المشرف
           </p>
         </div>
-        <button onClick={() => router.push("/student/new")} className="nb-btn nb-btn-secondary text-sm">
+        <Button onPress={() => router.push("/student/new")} variant="secondary" size="sm">
           <Plus className="w-4 h-4" />
           طلب جديد
-        </button>
+        </Button>
       </div>
 
       <div className="relative mb-4">
@@ -109,10 +110,10 @@ export default function StudentApplicationList() {
               : "جرّب فلتراً آخر أو قدّم طلباً جديداً."
           }
           action={
-            <button onClick={() => router.push("/student/new")} className="nb-btn nb-btn-secondary">
+            <Button onPress={() => router.push("/student/new")} variant="secondary">
               <Plus className="w-5 h-5" />
               تقديم طلب جديد
-            </button>
+            </Button>
           }
         />
       ) : (
@@ -128,9 +129,9 @@ export default function StudentApplicationList() {
 
           {status === "CanLoadMore" && (
             <div className="flex justify-center pt-2">
-              <button onClick={loadMore} className="nb-btn nb-btn-outline">
+              <Button onPress={loadMore} variant="outline">
                 تحميل المزيد
-              </button>
+              </Button>
             </div>
           )}
           {status === "LoadingMore" && (

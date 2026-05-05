@@ -14,6 +14,7 @@ import {
 import { useStudentProfile } from "../hooks/useStudentProfile";
 import { usePasswordChange } from "../hooks/usePasswordChange";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
+import { Button } from "@/components/ui";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -226,10 +227,11 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             </p>
           )}
 
-          <button
-            onClick={() => void profile.submit()}
-            disabled={profile.saving}
-            className="nb-btn nb-btn-secondary w-full"
+          <Button
+            onPress={() => void profile.submit()}
+            isDisabled={profile.saving}
+            variant="secondary"
+            fullWidth
           >
             {profile.saving ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -237,7 +239,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               <Save className="w-4 h-4" />
             )}
             حفظ التغييرات
-          </button>
+          </Button>
         </div>
 
         {/* ─── بطاقة الأمان ─── */}
@@ -248,13 +250,14 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
           </h3>
 
           {password.step === "idle" && (
-            <button
-              onClick={() =>
+            <Button
+              onPress={() =>
                 profile.user?.email &&
                 void password.requestReset(profile.user.email)
               }
-              disabled={password.loading}
-              className="nb-btn nb-btn-outline text-sm"
+              isDisabled={password.loading}
+              variant="outline"
+              size="sm"
             >
               {password.loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -262,7 +265,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                 <KeyRound className="w-4 h-4" />
               )}
               تغيير كلمة المرور
-            </button>
+            </Button>
           )}
 
           {password.step === "verifying" && (
@@ -307,8 +310,8 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                 </div>
               </div>
               <div className="flex gap-2">
-                <button
-                  onClick={() =>
+                <Button
+                  onPress={() =>
                     profile.user?.email &&
                     void password.verifyAndChange(
                       profile.user.email,
@@ -316,8 +319,9 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                       passwordForm.newPassword,
                     )
                   }
-                  disabled={password.loading}
-                  className="nb-btn nb-btn-secondary text-sm"
+                  isDisabled={password.loading}
+                  variant="secondary"
+                  size="sm"
                 >
                   {password.loading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -325,16 +329,17 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                     <CheckCircle2 className="w-4 h-4" />
                   )}
                   تأكيد
-                </button>
-                <button
-                  onClick={() => {
+                </Button>
+                <Button
+                  onPress={() => {
                     password.reset();
                     setPasswordForm({ code: "", newPassword: "" });
                   }}
-                  className="nb-btn nb-btn-outline text-sm"
+                  variant="outline"
+                  size="sm"
                 >
                   إلغاء
-                </button>
+                </Button>
               </div>
             </div>
           )}

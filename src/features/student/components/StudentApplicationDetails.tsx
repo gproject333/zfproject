@@ -10,6 +10,8 @@ import StatusStepper from "@/features/applications/components/StatusStepper";
 import { useStudentApplicationDetails } from "@/features/student/hooks/useStudentApplicationDetails";
 import ApplicationEditForm from "./ApplicationEditForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
+import { Button } from "@/components/ui";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 /**
  * Top-level orchestrator for the student application details page.
@@ -70,35 +72,40 @@ export default function StudentApplicationDetails() {
         rightSlot={
           <div className="grid grid-cols-2 gap-2 w-full sm:w-auto sm:flex sm:items-center">
             {!isEditing && (
-              <button
-                onClick={() => canDelete && setShowDeleteConfirm(true)}
-                disabled={!canDelete}
-                title={!canDelete ? "يمكن حذف المسودات والمرفوضة فقط" : "حذف الطلب"}
-                className={`nb-btn text-sm py-2 col-span-1 justify-center ${
-                  canDelete ? "bg-destructive/10 hover:bg-destructive/20" : "opacity-40 cursor-not-allowed"
-                }`}
-              >
-                <Trash2 className="w-4 h-4 text-destructive" />
-                <span className="sm:hidden text-destructive">حذف</span>
-              </button>
+              <Tooltip content={!canDelete ? "يمكن حذف المسودات والمرفوضة فقط" : "حذف الطلب"}>
+                <Button
+                  onPress={() => canDelete && setShowDeleteConfirm(true)}
+                  isDisabled={!canDelete}
+                  variant="danger-soft"
+                  size="sm"
+                  className="col-span-1 justify-center"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span className="sm:hidden">حذف</span>
+                </Button>
+              </Tooltip>
             )}
             {canEdit && !isEditing && (
-              <button
-                onClick={() => setIsEditing(true)}
-                className={`nb-btn nb-btn-primary text-sm py-2 col-span-1 justify-center ${!canDelete ? "col-span-2" : ""}`}
+              <Button
+                onPress={() => setIsEditing(true)}
+                variant="primary"
+                size="sm"
+                className={`col-span-1 justify-center ${!canDelete ? "col-span-2" : ""}`}
               >
                 <Edit3 className="w-4 h-4" />
                 تعديل
-              </button>
+              </Button>
             )}
             {isEditing && (
-              <button
-                onClick={() => setIsEditing(false)}
-                className="nb-btn text-sm py-2 col-span-2 justify-center"
+              <Button
+                onPress={() => setIsEditing(false)}
+                variant="ghost"
+                size="sm"
+                className="col-span-2 justify-center"
               >
                 <X className="w-4 h-4" />
                 إلغاء التعديل
-              </button>
+              </Button>
             )}
           </div>
         }
@@ -120,10 +127,10 @@ export default function StudentApplicationDetails() {
 
           {canEdit && (
             <div className="flex gap-3">
-              <button onClick={() => setIsEditing(true)} className="nb-btn nb-btn-secondary flex-1">
+              <Button onPress={() => setIsEditing(true)} variant="secondary" className="flex-1">
                 <Send className="w-5 h-5" />
                 تعديل وإعادة التقديم
-              </button>
+              </Button>
             </div>
           )}
         </>

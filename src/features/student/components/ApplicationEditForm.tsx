@@ -6,6 +6,7 @@ import FileUploadFields from "@/features/applications/components/FileUploadField
 import FormError from "@/features/applications/components/FormError";
 import { useEditApplication } from "@/features/student/hooks/useEditApplication";
 import ApplicationFormFields from "./ApplicationFormFields";
+import { Button } from "@/components/ui";
 
 interface ApplicationEditFormProps {
   app: Doc<"applications">;
@@ -48,10 +49,11 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 mt-6 pt-5 border-t-2 border-foreground/10">
-        <button
-          onClick={() => void save(false)}
-          disabled={saving}
-          className="nb-btn nb-btn-outline flex-1"
+        <Button
+          onPress={() => void save(false)}
+          isDisabled={saving}
+          variant="outline"
+          className="flex-1"
         >
           {saving && saveMode === "save" ? (
             <Loader2 className="w-5 h-5 animate-spin" />
@@ -59,11 +61,12 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
             <Save className="w-5 h-5" />
           )}
           حفظ التعديلات
-        </button>
-        <button
-          onClick={() => void save(true)}
-          disabled={saving}
-          className="nb-btn nb-btn-secondary flex-[2]"
+        </Button>
+        <Button
+          onPress={() => void save(true)}
+          isDisabled={saving}
+          variant="secondary"
+          className="flex-[2]"
         >
           {saving && saveMode === "submit" ? (
             <>
@@ -74,7 +77,7 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
               <Send className="w-5 h-5" /> حفظ وإعادة التقديم
             </>
           )}
-        </button>
+        </Button>
       </div>
     </div>
   );

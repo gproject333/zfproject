@@ -2,6 +2,7 @@
 
 import { Trash2, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/Dialog";
+import { Button } from "@/components/ui";
 
 interface DeleteConfirmModalProps {
   open: boolean;
@@ -37,10 +38,11 @@ export default function DeleteConfirmModal({
           <DialogClose asChild>
             <button className="nb-btn nb-btn-outline flex-1">إلغاء</button>
           </DialogClose>
-          <button
-            onClick={onConfirm}
-            disabled={isDeleting}
-            className="nb-btn bg-destructive text-white flex-1"
+          <Button
+            onPress={onConfirm}
+            isDisabled={isDeleting}
+            variant="danger"
+            className="flex-1"
           >
             {isDeleting ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -48,7 +50,7 @@ export default function DeleteConfirmModal({
               <Trash2 className="w-4 h-4" />
             )}
             حذف
-          </button>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

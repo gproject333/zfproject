@@ -3,6 +3,7 @@
 import { Plus, X, Info, Check } from "lucide-react";
 import FormField from "@/features/applications/components/FormField";
 import { Tooltip } from "@/components/ui/Tooltip";
+import { Button } from "@/components/ui";
 import {
   Select,
   SelectTrigger,
@@ -258,14 +259,15 @@ export default function ApplicationFormFields({
               </button>
             </div>
           ))}
-          <button
+          <Button
             type="button"
-            onClick={addMember}
-            className="nb-btn nb-btn-outline w-full"
+            onPress={addMember}
+            variant="outline"
+            fullWidth
           >
             <Plus className="w-4 h-4" />
             إضافة عضو
-          </button>
+          </Button>
         </div>
       </FormField>
 
