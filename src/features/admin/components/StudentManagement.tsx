@@ -14,6 +14,7 @@ import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
 import { Input } from "@/components/ui";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 
 interface StudentProfile {
   _id: Id<"users">;
@@ -79,33 +80,42 @@ export default function StudentManagement() {
           />
         </div>
 
-        <div className="relative min-w-40">
-          <select
-            value={selectedCollege}
-            onChange={(e) => { setSelectedCollege(e.target.value); setSelectedDepartment(""); }}
-            className="nb-input w-full appearance-none text-sm"
+        <div className="min-w-40">
+          <Select
+            value={selectedCollege || "all"}
+            onValueChange={(v) => {
+              setSelectedCollege(v === "all" ? "" : v);
+              setSelectedDepartment("");
+            }}
           >
-            <option value="">كل الكليات</option>
-            {colleges?.map((c) => (
-              <option key={c._id} value={c.name}>{c.name}</option>
-            ))}
-          </select>
-          <ChevronDown className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">كل الكليات</SelectItem>
+              {colleges?.map((c) => (
+                <SelectItem key={c._id} value={c.name}>{c.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        <div className="relative min-w-40">
-          <select
-            value={selectedDepartment}
-            onChange={(e) => setSelectedDepartment(e.target.value)}
-            disabled={!selectedCollege}
-            className="nb-input w-full appearance-none text-sm disabled:opacity-50"
+        <div className="min-w-40">
+          <Select
+            value={selectedDepartment || "all"}
+            onValueChange={(v) => setSelectedDepartment(v === "all" ? "" : v)}
+            isDisabled={!selectedCollege}
           >
-            <option value="">كل التخصصات</option>
-            {departments?.map((d) => (
-              <option key={d._id} value={d.name}>{d.name}</option>
-            ))}
-          </select>
-          <ChevronDown className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">كل التخصصات</SelectItem>
+              {departments?.map((d) => (
+                <SelectItem key={d._id} value={d.name}>{d.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {(search || selectedCollege || selectedDepartment) && (

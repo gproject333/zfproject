@@ -10,6 +10,7 @@ import {
 import { RATING_CONFIG, RATING_KEYS } from "@/lib/configs/application";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
 import { Button, TextArea } from "@/components/ui";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 type ReviewState = ReturnType<typeof useReview>;
@@ -57,40 +58,43 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
           <label htmlFor="review-status" className="block text-sm font-bold mb-2">
             حالة الطلب
           </label>
-          <select
-            id="review-status"
-            className="nb-input w-full bg-card"
+          <Select
             value={status ?? ""}
-            onChange={(e) => setStatus((e.target.value as SupervisorStatus) || null)}
+            onValueChange={(v) => setStatus((v as SupervisorStatus) || null)}
           >
-            <option value="" disabled hidden>
-              اختر الحركة...
-            </option>
-            {SUPERVISOR_STATUS_KEYS.map((key) => (
-              <option key={key} value={key}>
-                {STATUS_LABELS[key]} {STATUS_EMOJI[key]}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger aria-labelledby="review-status">
+              <SelectValue placeholder="اختر الحركة..." />
+            </SelectTrigger>
+            <SelectContent>
+              {SUPERVISOR_STATUS_KEYS.map((key) => (
+                <SelectItem key={key} value={key}>
+                  {STATUS_LABELS[key]} {STATUS_EMOJI[key]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
           <label htmlFor="review-rating" className="block text-sm font-bold mb-2">
             تقييم المشرف
           </label>
-          <select
-            id="review-rating"
-            className="nb-input w-full bg-card"
-            value={rating ?? ""}
-            onChange={(e) => setRating((e.target.value as SupervisorRating) || null)}
+          <Select
+            value={rating ?? "none"}
+            onValueChange={(v) => setRating(v === "none" ? null : (v as SupervisorRating))}
           >
-            <option value="">بدون تقييم</option>
-            {RATING_KEYS.map((key) => (
-              <option key={key} value={key}>
-                {RATING_CONFIG[key].selectLabel}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger aria-labelledby="review-rating">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">بدون تقييم</SelectItem>
+              {RATING_KEYS.map((key) => (
+                <SelectItem key={key} value={key}>
+                  {RATING_CONFIG[key].selectLabel}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div>

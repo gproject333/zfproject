@@ -22,6 +22,7 @@ import {
 } from "@/lib/configs/socialPlatforms";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { Button, Input } from "@/components/ui";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 
 interface DraftLink {
   platform: string;
@@ -168,19 +169,21 @@ export default function SocialLinksManager() {
               <label className="block text-sm font-bold" htmlFor="platform-select">
                 المنصة *
               </label>
-              <select
-                id="platform-select"
-                className="nb-input w-full"
+              <Select
                 value={draft.platform}
-                onChange={(e) => setDraft((d) => ({ ...d, platform: e.target.value }))}
-                required
+                onValueChange={(v) => setDraft((d) => ({ ...d, platform: v }))}
               >
-                {SOCIAL_PLATFORMS.map((p) => (
-                  <option key={p.key} value={p.key}>
-                    {p.label}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger aria-labelledby="platform-select">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {SOCIAL_PLATFORMS.map((p) => (
+                    <SelectItem key={p.key} value={p.key}>
+                      {p.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-1">

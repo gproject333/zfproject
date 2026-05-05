@@ -15,6 +15,7 @@ import { useStudentProfile } from "../hooks/useStudentProfile";
 import { usePasswordChange } from "../hooks/usePasswordChange";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
 import { Button, Input } from "@/components/ui";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -136,40 +137,46 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               <>
                 <div>
                   <label className="block text-xs font-bold mb-1.5">الكلية</label>
-                  <select
-                    className="nb-input"
+                  <Select
                     value={profile.form.college}
-                    onChange={(e) => {
-                      profile.setField("college", e.target.value);
+                    onValueChange={(v) => {
+                      profile.setField("college", v);
                       profile.setField("department", "");
                     }}
                   >
-                    <option value="">اختر الكلية</option>
-                    {collegeNames.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="اختر الكلية" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {collegeNames.map((c) => (
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold mb-1.5">التخصص</label>
-                  <select
-                    className="nb-input"
+                  <Select
                     value={profile.form.department}
-                    onChange={(e) => profile.setField("department", e.target.value)}
-                    disabled={!profile.form.college}
+                    onValueChange={(v) => profile.setField("department", v)}
+                    isDisabled={!profile.form.college}
                   >
-                    <option value="">
-                      {profile.form.college ? "اختر التخصص" : "اختر الكلية أولاً"}
-                    </option>
-                    {collegeDepartments.map((d) => (
-                      <option key={d} value={d}>
-                        {d}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={profile.form.college ? "اختر التخصص" : "اختر الكلية أولاً"}
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {collegeDepartments.map((d) => (
+                        <SelectItem key={d} value={d}>
+                          {d}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </>
             )}
