@@ -57,17 +57,22 @@ export const list = query({
 export const listWithDepartments = query({
   args: {},
   handler: async (ctx) => {
-    const colleges = await ctx.db.query("colleges").collect();
-    const result = await Promise.all(
-      colleges.map(async (college) => {
-        const deps = await ctx.db
-          .query("departments")
-          .withIndex("by_college", (q) => q.eq("collegeId", college._id))
-          .collect();
-        return { ...college, departments: deps };
-      }),
-    );
-    return result;
+    // One scan over each table; group by collegeId in-memory. Avoids
+    // N+1 of one departments query per college.
+    const [colleges, allDepartments] = await Promise.all([
+      ctx.db.query("colleges").collect(),
+      ctx.db.query("departments").collect(),
+    ]);
+    const byCollege = new Map<string, typeof allDepartments>();
+    for (const dep of allDepartments) {
+      const list = byCollege.get(dep.collegeId);
+      if (list) list.push(dep);
+      else byCollege.set(dep.collegeId, [dep]);
+    }
+    return colleges.map((college) => ({
+      ...college,
+      departments: byCollege.get(college._id) ?? [],
+    }));
   },
 });
 

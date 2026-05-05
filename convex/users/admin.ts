@@ -180,25 +180,39 @@ export const getAllUsers = query({
   },
 });
 
+// Soft cap on `.take()` for admin scans. Set high enough to cover realistic
+// university size; if the dataset grows past this we switch to a denormalized
+// stats document maintained by mutations.
+const ADMIN_SCAN_LIMIT = 5000;
+
 export const getAdminStats = query({
   args: {},
   handler: async (ctx) => {
     await requireAdmin(ctx);
 
-    const [allUsers, allApps, allAssignments] = await Promise.all([
-      ctx.db.query("users").collect(),
-      ctx.db.query("applications").collect(),
-      ctx.db.query("sponsorAssignments").collect(),
+    const [students, supervisors, sponsors, allApps, allAssignments] = await Promise.all([
+      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "student")).take(ADMIN_SCAN_LIMIT),
+      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "supervisor")).take(ADMIN_SCAN_LIMIT),
+      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "sponsor")).take(ADMIN_SCAN_LIMIT),
+      ctx.db.query("applications").take(ADMIN_SCAN_LIMIT),
+      ctx.db.query("sponsorAssignments").take(ADMIN_SCAN_LIMIT),
     ]);
 
+    let underReview = 0, accepted = 0, rejected = 0;
+    for (const a of allApps) {
+      if (a.status === "under_review") underReview++;
+      else if (a.status === "accepted") accepted++;
+      else if (a.status === "rejected") rejected++;
+    }
+
     return {
-      totalStudents: allUsers.filter((u) => u.role === "student").length,
-      totalSupervisors: allUsers.filter((u) => u.role === "supervisor").length,
-      totalSponsors: allUsers.filter((u) => u.role === "sponsor").length,
+      totalStudents: students.length,
+      totalSupervisors: supervisors.length,
+      totalSponsors: sponsors.length,
       totalApplications: allApps.length,
-      underReviewApplications: allApps.filter((a) => a.status === "under_review").length,
-      acceptedApplications: allApps.filter((a) => a.status === "accepted").length,
-      rejectedApplications: allApps.filter((a) => a.status === "rejected").length,
+      underReviewApplications: underReview,
+      acceptedApplications: accepted,
+      rejectedApplications: rejected,
       totalAssignments: allAssignments.length,
     };
   },
@@ -250,27 +264,27 @@ export const getStudentsWithStats = query({
       return true;
     });
 
-    return await Promise.all(
-      filtered.map(async (student) => {
-        const apps = await ctx.db
-          .query("applications")
-          .withIndex("by_student", (q) => q.eq("studentId", student._id))
-          .collect();
-        return {
-          _id: student._id,
-          name: student.name ?? null,
-          email: student.email,
-          studentId: student.studentId ?? null,
-          college: student.college ?? null,
-          department: student.department ?? null,
-          phone: student.phone ?? null,
-          linkedinUrl: student.linkedinUrl ?? null,
-          isActive: student.isActive ?? true,
-          createdAt: student.createdAt ?? null,
-          applicationCount: apps.length,
-        };
-      }),
-    );
+    // Avoid the N+1 of one applications query per student: fetch
+    // applications once (bounded), then group counts in-memory.
+    const allApps = await ctx.db.query("applications").take(ADMIN_SCAN_LIMIT);
+    const countByStudent = new Map<string, number>();
+    for (const a of allApps) {
+      countByStudent.set(a.studentId, (countByStudent.get(a.studentId) ?? 0) + 1);
+    }
+
+    return filtered.map((student) => ({
+      _id: student._id,
+      name: student.name ?? null,
+      email: student.email,
+      studentId: student.studentId ?? null,
+      college: student.college ?? null,
+      department: student.department ?? null,
+      phone: student.phone ?? null,
+      linkedinUrl: student.linkedinUrl ?? null,
+      isActive: student.isActive ?? true,
+      createdAt: student.createdAt ?? null,
+      applicationCount: countByStudent.get(student._id) ?? 0,
+    }));
   },
 });
 
@@ -321,7 +335,7 @@ export const getApplicationStatusStats = query({
   args: {},
   handler: async (ctx) => {
     await requireAdmin(ctx);
-    const apps = await ctx.db.query("applications").collect();
+    const apps = await ctx.db.query("applications").take(ADMIN_SCAN_LIMIT);
     const counts = {
       under_review: 0,
       accepted: 0,

@@ -215,20 +215,12 @@ export const filterFacets = query({
       return { departments: [] as string[] };
     }
 
-    const students = await ctx.db
-      .query("users")
-      .withIndex("by_role", (q) => q.eq("role", "student"))
-      .collect();
-
-    const departments = Array.from(
-      new Set(
-        students
-          .map((s) => s.department)
-          .filter((d): d is string => typeof d === "string" && d.length > 0),
-      ),
-    ).sort();
-
-    return { departments };
+    // Departments are a small, admin-managed table — read them directly
+    // rather than scanning every student row to extract distinct values.
+    const departments = await ctx.db.query("departments").collect();
+    return {
+      departments: Array.from(new Set(departments.map((d) => d.name))).sort(),
+    };
   },
 });
 
