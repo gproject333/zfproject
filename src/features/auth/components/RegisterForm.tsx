@@ -11,7 +11,7 @@ import {
   FloatingPasswordInput,
   FloatingSelectInput,
 } from "./FloatingFields";
-import { Button, Input, Spinner} from "@/components/ui";
+import { Button, Input, InputOTP, Spinner} from "@/components/ui";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -174,21 +174,27 @@ export default function RegisterForm() {
 
               <div className="space-y-1.5">
                 <label className="block text-sm font-bold">كود التحقق *</label>
-                <Input
-                  value={otpCode}
-                  onChange={(e) => {
-                    const val = e.target.value.replace(/\D/g, "").slice(0, 6);
-                    setOtpCode(val);
-                    if (errors.otp) form.updateField("name", formData.name); // clear errors side effect
-                  }}
-                  placeholder="000000"
-                  fullWidth
-                  className={`text-center text-2xl tracking-[0.5em] font-mono ${errors.otp ? "border-destructive" : ""}`}
-                  dir="ltr"
-                  maxLength={6}
-                  inputMode="numeric"
-                  autoFocus
-                />
+                <div className="flex justify-center" dir="ltr">
+                  <InputOTP
+                    value={otpCode}
+                    onChange={(val) => {
+                      setOtpCode(val);
+                      if (errors.otp) form.updateField("name", formData.name); // clear errors side effect
+                    }}
+                    maxLength={6}
+                    isInvalid={!!errors.otp}
+                    autoFocus
+                  >
+                    <InputOTP.Group>
+                      <InputOTP.Slot index={0} />
+                      <InputOTP.Slot index={1} />
+                      <InputOTP.Slot index={2} />
+                      <InputOTP.Slot index={3} />
+                      <InputOTP.Slot index={4} />
+                      <InputOTP.Slot index={5} />
+                    </InputOTP.Group>
+                  </InputOTP>
+                </div>
                 {errors.otp && (
                   <p className="text-xs text-destructive font-semibold">{errors.otp}</p>
                 )}

@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import {Mail, KeyRound, CheckCircle2, AlertCircle, GraduationCap, ArrowRight} from "lucide-react";
-import { Button, Input, Spinner} from "@/components/ui";
+import {Mail, CheckCircle2, AlertCircle, GraduationCap, ArrowRight} from "lucide-react";
+import { Button, InputOTP, Spinner} from "@/components/ui";
 
 export default function OtpVerifyForm() {
   const { signUp, setActive } = useSignUp();
@@ -92,19 +92,17 @@ export default function OtpVerifyForm() {
           <form onSubmit={handleVerify} className="space-y-5">
             <div className="space-y-2">
               <label className="block text-sm font-bold text-center">رمز التحقق (OTP)</label>
-              <div className="relative max-w-xs mx-auto">
-                <KeyRound className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  placeholder="000000"
-                  fullWidth
-                  className="pr-11 text-center font-bold text-xl tracking-[0.5em]"
-                  dir="ltr"
-                  autoFocus
-                />
+              <div className="flex justify-center" dir="ltr">
+                <InputOTP value={otpCode} onChange={setOtpCode} maxLength={6} autoFocus>
+                  <InputOTP.Group>
+                    <InputOTP.Slot index={0} />
+                    <InputOTP.Slot index={1} />
+                    <InputOTP.Slot index={2} />
+                    <InputOTP.Slot index={3} />
+                    <InputOTP.Slot index={4} />
+                    <InputOTP.Slot index={5} />
+                  </InputOTP.Group>
+                </InputOTP>
               </div>
             </div>
 

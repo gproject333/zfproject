@@ -13,7 +13,7 @@ import type {
 import { useAuthForm } from "@/features/auth/hooks/useAuthForm";
 import type { LoginVariant, LoginVariantConfig } from "@/features/auth/types/login-variants";
 import { EMAIL_DOMAIN_SUGGESTIONS, LOGIN_VARIANTS } from "@/features/auth/utils/login-configs";
-import { buttonVariants, Spinner} from "@/components/ui";
+import { buttonVariants, InputOTP, Spinner} from "@/components/ui";
 
 interface LoginFormProps {
   variant: LoginVariant;
@@ -127,19 +127,17 @@ export default function LoginForm({ variant }: LoginFormProps) {
                     تم إرسال رمز التحقق إلى بريدك الإلكتروني
                   </p>
                 </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={auth.otp}
-                    onChange={(e) => auth.setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                    placeholder="أدخل رمز التحقق"
-                    className={config.inputClassName ?? "nb-input"}
-                    style={config.inputStyle ? { ...config.inputStyle, textAlign: "center", letterSpacing: "0.3em" } : { textAlign: "center", letterSpacing: "0.3em" }}
-                    required
-                    autoComplete="one-time-code"
-                    dir="ltr"
-                  />
+                <div className="flex justify-center" dir="ltr">
+                  <InputOTP value={auth.otp} onChange={auth.setOtp} maxLength={6} autoFocus>
+                    <InputOTP.Group>
+                      <InputOTP.Slot index={0} />
+                      <InputOTP.Slot index={1} />
+                      <InputOTP.Slot index={2} />
+                      <InputOTP.Slot index={3} />
+                      <InputOTP.Slot index={4} />
+                      <InputOTP.Slot index={5} />
+                    </InputOTP.Group>
+                  </InputOTP>
                 </div>
               </>
             ) : (

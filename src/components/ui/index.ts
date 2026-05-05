@@ -23,6 +23,7 @@ export {
   CardFooter,
   Chip,
   Input,
+  InputOTP,
   ListBox,
   ListBoxItem,
   TextArea,
