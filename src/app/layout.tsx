@@ -5,6 +5,7 @@ import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { arSA } from "@clerk/localizations";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Providers } from "./Providers";
 import { TooltipProvider } from "@/components/ui/Tooltip";
 import { Toaster } from "sonner";
 
@@ -42,9 +43,11 @@ export default function RootLayout({
           style={{ fontFamily: "'Tajawal', sans-serif" }}
         >
           <ThemeProvider>
-            <TooltipProvider delayDuration={150}>
-              <ConvexClientProvider>{children}</ConvexClientProvider>
-            </TooltipProvider>
+            <Providers>
+              <TooltipProvider delayDuration={150}>
+                <ConvexClientProvider>{children}</ConvexClientProvider>
+              </TooltipProvider>
+            </Providers>
             <Toaster
               position="top-center"
               dir="rtl"
