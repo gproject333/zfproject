@@ -26,6 +26,7 @@ export {
   TextArea,
   Skeleton,
   Spinner,
+  Switch,
 } from "@heroui/react";
 
 export type {

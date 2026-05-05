@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Pencil, Power, PowerOff, Trash2, Video } from "lucide-react";
+import { Pencil, Trash2, Video } from "lucide-react";
+import { Switch } from "@/components/ui";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -164,15 +165,12 @@ export function BannerTable({
                 </span>
               </TableCell>
               <TableCell>
-                <span
-                  className={`nb-badge text-xs ${
-                    b.isActive
-                      ? "bg-success/20 text-success"
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {b.isActive ? "نشط" : "متوقف"}
-                </span>
+                <Switch
+                  isSelected={b.isActive}
+                  onChange={(checked) => void onToggle(b._id, checked)}
+                  aria-label={b.isActive ? "إيقاف الإعلان" : "تفعيل الإعلان"}
+                  size="sm"
+                />
               </TableCell>
               <TableCell>
                 <span
@@ -202,21 +200,6 @@ export function BannerTable({
                     <DropdownMenuItem onSelect={() => onEdit(b)}>
                       <Pencil className="w-4 h-4" />
                       تعديل
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onSelect={() => void onToggle(b._id, !b.isActive)}
-                    >
-                      {b.isActive ? (
-                        <>
-                          <PowerOff className="w-4 h-4" />
-                          إيقاف
-                        </>
-                      ) : (
-                        <>
-                          <Power className="w-4 h-4" />
-                          تفعيل
-                        </>
-                      )}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       destructive
