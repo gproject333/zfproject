@@ -26,19 +26,11 @@ export const getFileUrl = query({
 
     const isOwner = app.studentId === user._id;
     const isStaff = user.role === "supervisor" || user.role === "admin";
+    // Sponsors can see any application that has been submitted (i.e. moved
+    // out of the student-only `draft` stage). No admin assignment required.
+    const isSponsorViewing = user.role === "sponsor" && app.status !== "draft";
 
-    let isAssignedSponsor = false;
-    if (user.role === "sponsor") {
-      const assignment = await ctx.db
-        .query("sponsorAssignments")
-        .withIndex("by_sponsor_application", (q) =>
-          q.eq("sponsorId", user._id).eq("applicationId", args.applicationId),
-        )
-        .first();
-      isAssignedSponsor = !!assignment;
-    }
-
-    if (!isOwner && !isStaff && !isAssignedSponsor) return null;
+    if (!isOwner && !isStaff && !isSponsorViewing) return null;
 
     return await ctx.storage.getUrl(args.id);
   },

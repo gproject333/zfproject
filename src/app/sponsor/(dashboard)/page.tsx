@@ -8,9 +8,8 @@ import {
   FileText,
   Lightbulb,
   Eye,
-  CheckCircle2,
 } from "lucide-react";
-import { TYPE_CONFIG } from "@/lib/configs/application";
+import { STATUS_CONFIG, TYPE_CONFIG } from "@/lib/configs/application";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { SkeletonApplicationList } from "@/components/ui/Skeleton";
 
@@ -36,12 +35,12 @@ export default function SponsorProjectsPage() {
       <div>
         <h2 className="text-2xl font-extrabold flex items-center gap-2 mb-2">
           <Briefcase className="w-7 h-7" style={{ color: "#C9A227" }} />
-          المشاريع المرتبطة بي
+          المشاريع المتاحة
         </h2>
         <p className="text-muted-foreground font-medium">
           {projects.length === 0
-            ? "لم يتم ربطك بأي مشاريع بعد"
-            : `${projects.length} مشروع تحت رعايتك`}
+            ? "لا توجد مشاريع مُقدَّمة حالياً"
+            : `${projects.length} مشروع متاح للاستعراض`}
         </p>
       </div>
 
@@ -49,8 +48,8 @@ export default function SponsorProjectsPage() {
       {projects.length === 0 ? (
         <EmptyState
           variant="empty-inbox"
-          title="لا توجد مشاريع"
-          description="سيقوم فريق الحاضنة بربط المشاريع المناسبة بك قريباً."
+          title="لا توجد مشاريع بعد"
+          description="ستظهر المشاريع هنا فور تقديم الطلاب لها."
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -58,6 +57,8 @@ export default function SponsorProjectsPage() {
             if (!project) return null;
             const typeCfg = TYPE_CONFIG[project.type];
             const TypeIcon = typeCfg?.icon ?? Lightbulb;
+            const statusCfg = STATUS_CONFIG[project.status];
+            const StatusIcon = statusCfg?.icon;
 
             return (
               <button
@@ -74,11 +75,12 @@ export default function SponsorProjectsPage() {
                   >
                     <TypeIcon className="w-6 h-6 text-white" />
                   </div>
-                  {/* Status = always accepted for sponsor */}
-                  <span className="nb-badge bg-success/10 text-success border-success/30 self-start">
-                    <CheckCircle2 className="w-3 h-3" />
-                    مقبول
-                  </span>
+                  {statusCfg && (
+                    <span className={`nb-badge self-start ${statusCfg.bg} ${statusCfg.text}`}>
+                      {StatusIcon && <StatusIcon className="w-3 h-3" />}
+                      {statusCfg.label}
+                    </span>
+                  )}
                 </div>
 
                 {/* Title */}

@@ -2,19 +2,35 @@ import { query, mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { getOptionalUser, requireAdmin } from "../lib/auth";
 
+/**
+ * Returns every application a sponsor is allowed to see — i.e. anything past
+ * the `draft` stage and not `rejected`. No admin assignment required:
+ * applications become visible to all sponsors the moment the student submits
+ * (status moves to `under_review`).
+ */
 export const mySponsoredApplications = query({
   args: {},
   handler: async (ctx) => {
     const user = await getOptionalUser(ctx);
     if (!user || user.role !== "sponsor") return [];
 
-    const assignments = await ctx.db
-      .query("sponsorAssignments")
-      .withIndex("by_sponsor", (q) => q.eq("sponsorId", user._id))
-      .collect();
+    const VISIBLE_STATUSES = [
+      "under_review",
+      "needs_modification",
+      "accepted",
+    ] as const;
 
-    const apps = await Promise.all(assignments.map((a) => ctx.db.get(a.applicationId)));
-    return apps.filter(Boolean);
+    const groups = await Promise.all(
+      VISIBLE_STATUSES.map((status) =>
+        ctx.db
+          .query("applications")
+          .withIndex("by_status", (q) => q.eq("status", status))
+          .collect(),
+      ),
+    );
+    const apps = groups.flat();
+    apps.sort((a, b) => (b.submittedAt ?? b.createdAt) - (a.submittedAt ?? a.createdAt));
+    return apps;
   },
 });
 
@@ -84,16 +100,36 @@ export const getAssignmentByProject = query({
   },
 });
 
+/**
+ * Toggle "interested" for the (current sponsor, application) pair.
+ * Lazily creates a sponsorAssignments record on first call, so sponsors
+ * don't need an admin to pre-assign them — the assignment row now just
+ * holds the per-sponsor "interest" bit.
+ */
 export const toggleSponsorInterest = mutation({
-  args: { assignmentId: v.id("sponsorAssignments") },
+  args: { applicationId: v.id("applications") },
   handler: async (ctx, args) => {
     const user = await getOptionalUser(ctx);
     if (!user || user.role !== "sponsor") throw new Error("غير مصرح");
 
-    const assignment = await ctx.db.get(args.assignmentId);
-    if (!assignment) throw new Error("الربط غير موجود");
-    if (assignment.sponsorId !== user._id) throw new Error("غير مصرح");
+    const existing = await ctx.db
+      .query("sponsorAssignments")
+      .withIndex("by_sponsor_application", (q) =>
+        q.eq("sponsorId", user._id).eq("applicationId", args.applicationId),
+      )
+      .first();
 
-    await ctx.db.patch(args.assignmentId, { isInterested: !assignment.isInterested });
+    if (existing) {
+      await ctx.db.patch(existing._id, { isInterested: !existing.isInterested });
+      return;
+    }
+
+    await ctx.db.insert("sponsorAssignments", {
+      sponsorId: user._id,
+      applicationId: args.applicationId,
+      assignedBy: user._id,
+      createdAt: Date.now(),
+      isInterested: true,
+    });
   },
 });

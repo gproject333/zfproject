@@ -23,16 +23,15 @@ export default function SponsorProjectReelsPage() {
   const [isLiking, setIsLiking] = useState(false);
 
   const handleToggle = async () => {
-    if (!assignment) return;
     setIsLiking(true);
     try {
-      await toggleInterest({ assignmentId: assignment._id });
+      await toggleInterest({ applicationId: appId });
     } finally {
       setIsLiking(false);
     }
   };
 
-  if (app === undefined || assignment === undefined) {
+  if (app === undefined) {
     return (
       <div className="flex justify-center flex-col items-center h-[60vh] gap-4">
         <Spinner size="xl" color="current" className="text-primary" />

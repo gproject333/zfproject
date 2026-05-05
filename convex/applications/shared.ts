@@ -10,6 +10,8 @@ export const getApplication = query({
     const app = await ctx.db.get(args.id);
     if (!app) return null;
     if (user.role === "student" && app.studentId !== user._id) return null;
+    // Sponsors can only see applications that have moved past `draft`.
+    if (user.role === "sponsor" && app.status === "draft") return null;
     return app;
   },
 });
