@@ -2,6 +2,7 @@
 
 import { Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/Dialog";
+import { Button } from "@/components/ui";
 
 interface DeleteBannerDialogProps {
   open: boolean;
@@ -24,13 +25,14 @@ export function DeleteBannerDialog({
           <DialogClose asChild>
             <button className="nb-btn nb-btn-outline flex-1">إلغاء</button>
           </DialogClose>
-          <button
-            onClick={() => void onConfirm()}
-            className="nb-btn flex-1 bg-destructive text-white"
+          <Button
+            onPress={() => void onConfirm()}
+            variant="danger"
+            className="flex-1"
           >
             <Trash2 className="w-4 h-4" />
             حذف
-          </button>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

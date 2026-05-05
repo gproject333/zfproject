@@ -17,6 +17,7 @@ import {
   SelectItem,
 } from "@/components/ui/Select";
 import { youTubeThumbnail } from "@/lib/youtube";
+import { Button } from "@/components/ui";
 import type {
   MediaType,
   useBannerAdmin,
@@ -382,11 +383,12 @@ export function BannerFormDialog({
                 إلغاء
               </button>
             </DialogClose>
-            <button
+            <Button
               type="button"
-              onClick={() => void onSubmit()}
-              disabled={admin.saving}
-              className="nb-btn nb-btn-secondary flex-1"
+              onPress={() => void onSubmit()}
+              isDisabled={admin.saving}
+              variant="secondary"
+              className="flex-1"
             >
               {admin.saving ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -395,7 +397,7 @@ export function BannerFormDialog({
               ) : (
                 "إنشاء الإعلان"
               )}
-            </button>
+            </Button>
           </div>
         </div>
       </DialogContent>

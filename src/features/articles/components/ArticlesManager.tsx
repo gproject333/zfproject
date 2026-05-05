@@ -24,6 +24,7 @@ import {
 import { formatArabicDate } from "@/lib/formatters";
 import ArticleFormDialog from "./ArticleFormDialog";
 import { useArticleForm } from "../hooks/useArticleForm";
+import { Button } from "@/components/ui";
 
 const AUDIENCE_LABEL = {
   student: "الطلاب",
@@ -52,14 +53,15 @@ export default function ArticlesManager() {
             </span>
           )}
         </h2>
-        <button
+        <Button
           type="button"
-          onClick={form.openCreateDialog}
-          className="nb-btn nb-btn-primary text-sm py-2 px-3"
+          onPress={form.openCreateDialog}
+          variant="primary"
+          size="sm"
         >
           <Plus className="w-4 h-4" />
           مقالة جديدة
-        </button>
+        </Button>
       </div>
 
       {admin.loading ? (
@@ -72,13 +74,13 @@ export default function ArticlesManager() {
           title="لا توجد مقالات بعد"
           description="ابدأ بنشر أول مقالة لتظهر للطلاب في صفحة المقالات."
           action={
-            <button
-              onClick={form.openCreateDialog}
-              className="nb-btn nb-btn-primary"
+            <Button
+              onPress={form.openCreateDialog}
+              variant="primary"
             >
               <Plus className="w-5 h-5" />
               مقالة جديدة
-            </button>
+            </Button>
           }
         />
       ) : (

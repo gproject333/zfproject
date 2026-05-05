@@ -11,6 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/Select";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
+import { Button } from "@/components/ui";
 import type { ArticleAudience, ArticleFormState } from "../hooks/useArticleAdmin";
 
 interface ArticleFormDialogProps {
@@ -208,21 +209,23 @@ export default function ArticleFormDialog({
           )}
 
           <div className="flex justify-end gap-2 pt-2">
-            <button
+            <Button
               type="button"
-              onClick={() => onOpenChange(false)}
-              className="nb-btn nb-btn-outline text-sm"
-              disabled={saving}
+              onPress={() => onOpenChange(false)}
+              variant="outline"
+              size="sm"
+              isDisabled={saving}
             >
               إلغاء
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              className="nb-btn nb-btn-primary text-sm"
-              disabled={saving}
+              variant="primary"
+              size="sm"
+              isDisabled={saving}
             >
               {saving ? "جاري الحفظ..." : editing ? "حفظ التعديلات" : "نشر المقالة"}
-            </button>
+            </Button>
           </div>
         </form>
       </DialogContent>

@@ -8,6 +8,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/Select";
+import { Button } from "@/components/ui";
 import type { GuideFormState } from "../hooks/useGuideAdmin";
 
 interface GuideFormDialogProps {
@@ -90,21 +91,23 @@ export default function GuideFormDialog({
           )}
 
           <div className="flex justify-end gap-2 pt-2">
-            <button
+            <Button
               type="button"
-              onClick={() => onOpenChange(false)}
-              className="nb-btn nb-btn-outline text-sm"
-              disabled={saving}
+              onPress={() => onOpenChange(false)}
+              variant="outline"
+              size="sm"
+              isDisabled={saving}
             >
               إلغاء
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              className="nb-btn nb-btn-primary text-sm"
-              disabled={saving}
+              variant="primary"
+              size="sm"
+              isDisabled={saving}
             >
               {saving ? "جاري الحفظ..." : editing ? "حفظ التعديلات" : "إضافة"}
-            </button>
+            </Button>
           </div>
         </form>
       </DialogContent>

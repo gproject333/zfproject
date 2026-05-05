@@ -25,6 +25,7 @@ import {
 import { formatArabicDate } from "@/lib/formatters";
 import GuideFormDialog from "./GuideFormDialog";
 import { useGuideForm } from "../hooks/useGuideForm";
+import { Button } from "@/components/ui";
 
 const TYPE_LABEL = {
   video: "فيديو",
@@ -54,14 +55,15 @@ export default function GuideManager() {
             </span>
           )}
         </h2>
-        <button
+        <Button
           type="button"
-          onClick={form.openCreateDialog}
-          className="nb-btn nb-btn-primary text-sm py-2 px-3"
+          onPress={form.openCreateDialog}
+          variant="primary"
+          size="sm"
         >
           <Plus className="w-4 h-4" />
           إضافة مورد
-        </button>
+        </Button>
       </div>
 
       {admin.loading ? (
@@ -74,13 +76,13 @@ export default function GuideManager() {
           title="لا توجد موارد بعد"
           description="أضف فيديوهات ودورات وروابط لتظهر للطلاب في دليلهم الريادي."
           action={
-            <button
-              onClick={form.openCreateDialog}
-              className="nb-btn nb-btn-primary"
+            <Button
+              onPress={form.openCreateDialog}
+              variant="primary"
             >
               <Plus className="w-5 h-5" />
               إضافة مورد
-            </button>
+            </Button>
           }
         />
       ) : (
