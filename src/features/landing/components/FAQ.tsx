@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { HelpCircle, ChevronDown } from "lucide-react";
+import { HelpCircle } from "lucide-react";
+import { Accordion } from "@/components/ui";
 import { DecorationsB } from "./SectionDecorations";
 
 const ITEMS = [
@@ -32,12 +32,6 @@ const ITEMS = [
 ];
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (i: number) => {
-    setOpenIndex((prev) => (prev === i ? null : i));
-  };
-
   return (
     <section className="relative px-4 py-16 overflow-hidden">
       <DecorationsB />
@@ -56,42 +50,22 @@ export default function FAQ() {
           </h2>
         </div>
 
-        <div className="space-y-3">
-          {ITEMS.map((item, i) => {
-            const isOpen = openIndex === i;
-            return (
-              <div
-                key={i}
-                className="nb-card overflow-hidden animate-slide-up"
-                style={{ opacity: 0, animationDelay: `${i * 0.06}s` }}
-              >
-                <button
-                  onClick={() => toggle(i)}
-                  className="w-full flex items-center justify-between gap-4 p-5 text-right font-bold text-sm hover:bg-muted/50 transition-colors"
-                  aria-expanded={isOpen}
-                >
-                  <span>{item.q}</span>
-                  <ChevronDown
-                    className={`w-5 h-5 shrink-0 text-foreground/50 dark:text-foreground/60 transition-transform duration-200 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                <div
-                  className={`grid transition-all duration-200 ease-in-out ${
-                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p className="px-5 pb-5 text-sm text-foreground/70 dark:text-foreground/80 font-medium leading-relaxed">
-                      {item.a}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <Accordion>
+          {ITEMS.map((item, i) => (
+            <Accordion.Item key={i} id={`faq-${i}`}>
+              <Accordion.Heading>
+                <Accordion.Trigger className="text-right font-bold text-sm">
+                  {item.q}
+                </Accordion.Trigger>
+              </Accordion.Heading>
+              <Accordion.Panel>
+                <Accordion.Body className="text-sm text-foreground/70 dark:text-foreground/80 font-medium leading-relaxed">
+                  {item.a}
+                </Accordion.Body>
+              </Accordion.Panel>
+            </Accordion.Item>
+          ))}
+        </Accordion>
       </div>
     </section>
   );
