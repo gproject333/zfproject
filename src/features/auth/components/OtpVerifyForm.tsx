@@ -12,7 +12,7 @@ import {
   GraduationCap,
   ArrowRight,
 } from "lucide-react";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 
 export default function OtpVerifyForm() {
   const { signUp, setActive } = useSignUp();
@@ -102,13 +102,14 @@ export default function OtpVerifyForm() {
               <label className="block text-sm font-bold text-center">رمز التحقق (OTP)</label>
               <div className="relative max-w-xs mx-auto">
                 <KeyRound className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
-                <input
+                <Input
                   type="text"
                   inputMode="numeric"
                   value={otpCode}
                   onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                   placeholder="000000"
-                  className="nb-input pr-11 text-center font-bold text-xl tracking-[0.5em]"
+                  fullWidth
+                  className="pr-11 text-center font-bold text-xl tracking-[0.5em]"
                   dir="ltr"
                   autoFocus
                 />

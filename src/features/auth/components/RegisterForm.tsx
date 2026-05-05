@@ -23,7 +23,7 @@ import {
   FloatingPasswordInput,
   FloatingSelectInput,
 } from "./FloatingFields";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -186,7 +186,7 @@ export default function RegisterForm() {
 
               <div className="space-y-1.5">
                 <label className="block text-sm font-bold">كود التحقق *</label>
-                <input
+                <Input
                   value={otpCode}
                   onChange={(e) => {
                     const val = e.target.value.replace(/\D/g, "").slice(0, 6);
@@ -194,7 +194,8 @@ export default function RegisterForm() {
                     if (errors.otp) form.updateField("name", formData.name); // clear errors side effect
                   }}
                   placeholder="000000"
-                  className={`nb-input w-full text-center text-2xl tracking-[0.5em] font-mono ${errors.otp ? "border-destructive" : ""}`}
+                  fullWidth
+                  className={`text-center text-2xl tracking-[0.5em] font-mono ${errors.otp ? "border-destructive" : ""}`}
                   dir="ltr"
                   maxLength={6}
                   inputMode="numeric"
