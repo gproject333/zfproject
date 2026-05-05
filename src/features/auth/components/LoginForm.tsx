@@ -21,6 +21,7 @@ import type {
 import { useAuthForm } from "@/features/auth/hooks/useAuthForm";
 import type { LoginVariant, LoginVariantConfig } from "@/features/auth/types/login-variants";
 import { EMAIL_DOMAIN_SUGGESTIONS, LOGIN_VARIANTS } from "@/features/auth/utils/login-configs";
+import { buttonVariants } from "@/components/ui";
 
 interface LoginFormProps {
   variant: LoginVariant;
@@ -46,26 +47,32 @@ export default function LoginForm({ variant }: LoginFormProps) {
     <div className={config.pageClassName} style={config.pageStyle}>
       {config.decorations}
 
-      <Link
-        href="/"
-        className="absolute top-5 right-5 z-20 flex items-center gap-1.5 px-3 py-2 rounded-lg font-bold text-sm transition-all duration-150 group"
-        style={
-          isLight
-            ? { background: "var(--card)", border: "2px solid var(--foreground)", boxShadow: "3px 3px 0 var(--foreground)", color: "var(--foreground)" }
-            : { background: "rgba(255,255,255,0.07)", border: "2px solid rgba(255,255,255,0.18)", boxShadow: "3px 3px 0 rgba(0,0,0,0.4)", color: "rgba(255,255,255,0.85)" }
-        }
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLAnchorElement).style.transform = "translate(2px,2px)";
-          (e.currentTarget as HTMLAnchorElement).style.boxShadow = isLight ? "1px 1px 0 var(--foreground)" : "1px 1px 0 rgba(0,0,0,0.4)";
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLAnchorElement).style.transform = "";
-          (e.currentTarget as HTMLAnchorElement).style.boxShadow = isLight ? "3px 3px 0 var(--foreground)" : "3px 3px 0 rgba(0,0,0,0.4)";
-        }}
-      >
-        <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
-        <span>الرئيسية</span>
-      </Link>
+      {isLight ? (
+        <Link
+          href="/"
+          className={`${buttonVariants({ variant: "outline", size: "sm" })} absolute top-5 right-5 z-20 group`}
+        >
+          <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+          <span>الرئيسية</span>
+        </Link>
+      ) : (
+        <Link
+          href="/"
+          className="absolute top-5 right-5 z-20 flex items-center gap-1.5 px-3 py-2 rounded-lg font-bold text-sm transition-all duration-150 group"
+          style={{ background: "rgba(255,255,255,0.07)", border: "2px solid rgba(255,255,255,0.18)", boxShadow: "3px 3px 0 rgba(0,0,0,0.4)", color: "rgba(255,255,255,0.85)" }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.transform = "translate(2px,2px)";
+            (e.currentTarget as HTMLAnchorElement).style.boxShadow = "1px 1px 0 rgba(0,0,0,0.4)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.transform = "";
+            (e.currentTarget as HTMLAnchorElement).style.boxShadow = "3px 3px 0 rgba(0,0,0,0.4)";
+          }}
+        >
+          <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+          <span>الرئيسية</span>
+        </Link>
+      )}
 
       <div className="w-full max-w-md animate-scale-in relative z-10">
         <div className="text-center mb-8">
