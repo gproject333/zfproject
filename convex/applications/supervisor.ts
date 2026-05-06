@@ -2,7 +2,7 @@ import { query, mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import type { Doc, Id } from "../_generated/dataModel";
-import { getOptionalUser, requireSupervisor } from "../lib/auth";
+import { getOptionalUser, getOptionalSupervisor, requireSupervisor } from "../lib/auth";
 import { STATUS_LABELS, canTransition } from "../lib/statuses";
 import { assertMaxLength } from "../lib/validation";
 import { loadUsersMap, loadStudentsMap } from "../lib/users";
@@ -27,11 +27,8 @@ export const listApplications = query({
     ),
   },
   handler: async (ctx, args) => {
-    const user = await getOptionalUser(ctx);
+    const user = await getOptionalSupervisor(ctx);
     if (!user) return { page: [], isDone: true, continueCursor: "" };
-    if (user.role !== "supervisor" && user.role !== "admin") {
-      throw new Error("غير مصرح — هذه الصفحة للمشرفين فقط");
-    }
 
     if (args.type && args.status) {
       return await ctx.db
@@ -86,7 +83,7 @@ export const listApplicationsWithStudent = query({
     sortDir: v.optional(v.union(v.literal("asc"), v.literal("desc"))),
   },
   handler: async (ctx, args) => {
-    const user = await getOptionalUser(ctx);
+    const user = await getOptionalSupervisor(ctx);
     if (!user) {
       return {
         page: [] as (Doc<"applications"> & {
@@ -96,9 +93,6 @@ export const listApplicationsWithStudent = query({
         isDone: true,
         continueCursor: "",
       };
-    }
-    if (user.role !== "supervisor" && user.role !== "admin") {
-      throw new Error("غير مصرح — هذه الصفحة للمشرفين فقط");
     }
 
     const order: "asc" | "desc" = args.sortDir ?? "desc";
@@ -158,11 +152,8 @@ export const applicationsByStatus = query({
     ),
   },
   handler: async (ctx, args) => {
-    const user = await getOptionalUser(ctx);
+    const user = await getOptionalSupervisor(ctx);
     if (!user) return [];
-    if (user.role !== "supervisor" && user.role !== "admin") {
-      throw new Error("غير مصرح — هذه الصفحة للمشرفين فقط");
-    }
     return await ctx.db
       .query("applications")
       .withIndex("by_status", (q) => q.eq("status", args.status))
@@ -174,9 +165,8 @@ export const applicationsByStatus = query({
 export const recentActivity = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, args) => {
-    const user = await getOptionalUser(ctx);
+    const user = await getOptionalSupervisor(ctx);
     if (!user) return [];
-    if (user.role !== "supervisor" && user.role !== "admin") return [];
 
     const limit = args.limit ?? 10;
     const apps = await ctx.db
@@ -209,11 +199,8 @@ export const recentActivity = query({
 export const filterFacets = query({
   args: {},
   handler: async (ctx) => {
-    const user = await getOptionalUser(ctx);
+    const user = await getOptionalSupervisor(ctx);
     if (!user) return { departments: [] as string[] };
-    if (user.role !== "supervisor" && user.role !== "admin") {
-      return { departments: [] as string[] };
-    }
 
     // Departments are a small, admin-managed table — read them directly
     // rather than scanning every student row to extract distinct values.

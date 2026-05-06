@@ -55,3 +55,31 @@ export async function getOptionalUser(
 ): Promise<Doc<"users"> | null> {
   return getUserFromIdentity(ctx);
 }
+
+/**
+ * Returns the user if they're a supervisor or admin, null otherwise (whether
+ * signed-out or wrong role). Use in queries that should render empty rather
+ * than error for unauthorized callers — e.g. dashboards where a stale client
+ * may still hold a subscription after logout.
+ */
+export async function getOptionalSupervisor(
+  ctx: AnyCtx,
+): Promise<Doc<"users"> | null> {
+  const user = await getUserFromIdentity(ctx);
+  if (!user) return null;
+  if (user.role !== "supervisor" && user.role !== "admin") return null;
+  return user;
+}
+
+/**
+ * Returns the user if they're an admin, null otherwise.
+ * Mirror of getOptionalSupervisor for admin-only read endpoints.
+ */
+export async function getOptionalAdmin(
+  ctx: AnyCtx,
+): Promise<Doc<"users"> | null> {
+  const user = await getUserFromIdentity(ctx);
+  if (!user) return null;
+  if (user.role !== "admin") return null;
+  return user;
+}

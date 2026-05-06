@@ -1,13 +1,13 @@
 import { query, mutation, internalMutation } from "../_generated/server";
 import { v } from "convex/values";
-import { requireAdmin, requireSupervisor, getOptionalUser } from "../lib/auth";
+import { requireAdmin, requireSupervisor, getOptionalSupervisor } from "../lib/auth";
 import { internal } from "../_generated/api";
 
 export const getStudentByApplication = query({
   args: { applicationId: v.id("applications") },
   handler: async (ctx, args) => {
-    const caller = await getOptionalUser(ctx);
-    if (!caller || (caller.role !== "admin" && caller.role !== "supervisor")) return null;
+    const caller = await getOptionalSupervisor(ctx);
+    if (!caller) return null;
 
     const app = await ctx.db.get(args.applicationId);
     if (!app) return null;
@@ -35,8 +35,8 @@ export const getStudentByApplication = query({
 export const getUserByEmail = query({
   args: { email: v.string() },
   handler: async (ctx, args) => {
-    const caller = await getOptionalUser(ctx);
-    if (!caller || (caller.role !== "admin" && caller.role !== "supervisor")) return null;
+    const caller = await getOptionalSupervisor(ctx);
+    if (!caller) return null;
     return await ctx.db
       .query("users")
       .withIndex("email", (q) => q.eq("email", args.email))

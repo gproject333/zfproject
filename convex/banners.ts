@@ -1,6 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { requireSupervisor, getOptionalUser } from "./lib/auth";
+import { requireSupervisor, getOptionalSupervisor } from "./lib/auth";
 import { notifyAllStudents } from "./lib/notifications";
 
 const VARIANT = v.union(v.literal("info"), v.literal("success"), v.literal("warning"));
@@ -70,8 +70,8 @@ export const listActiveScrolling = query({
 export const listAll = query({
   args: {},
   handler: async (ctx) => {
-    const user = await getOptionalUser(ctx);
-    if (!user || (user.role !== "supervisor" && user.role !== "admin")) return [];
+    const user = await getOptionalSupervisor(ctx);
+    if (!user) return [];
     const banners = await ctx.db.query("banners").order("desc").collect();
     return Promise.all(
       banners.map(async (b) => ({

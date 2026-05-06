@@ -1,6 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { requireSupervisor, getOptionalUser } from "./lib/auth";
+import { requireSupervisor, getOptionalUser, getOptionalSupervisor } from "./lib/auth";
 import type { Doc, Id } from "./_generated/dataModel";
 
 const AUDIENCE = v.union(
@@ -57,8 +57,8 @@ export const listPublished = query({
 export const listAll = query({
   args: {},
   handler: async (ctx) => {
-    const user = await getOptionalUser(ctx);
-    if (!user || (user.role !== "supervisor" && user.role !== "admin")) return [];
+    const user = await getOptionalSupervisor(ctx);
+    if (!user) return [];
     const articles = await ctx.db.query("articles").order("desc").collect();
     return Promise.all(articles.map((a) => enrichArticle(ctx, a)));
   },
