@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireSupervisor, getOptionalUser } from "./lib/auth";
+import { assertMaxLength } from "./lib/validation";
 import { internal } from "./_generated/api";
 
 const RESOURCE_TYPE = v.union(
@@ -36,6 +37,8 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     const supervisor = await requireSupervisor(ctx);
+    assertMaxLength("guideTitle", args.title);
+    assertMaxLength("guideUrl", args.url);
     const now = Date.now();
     const id = await ctx.db.insert("entrepreneurialGuide", {
       ...args,
@@ -64,6 +67,8 @@ export const update = mutation({
   },
   handler: async (ctx, args) => {
     const supervisor = await requireSupervisor(ctx);
+    assertMaxLength("guideTitle", args.title);
+    assertMaxLength("guideUrl", args.url);
     const { id, ...updates } = args;
     const patch: Record<string, unknown> = { updatedAt: Date.now() };
     for (const [key, val] of Object.entries(updates)) {

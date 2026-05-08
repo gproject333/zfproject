@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireSupervisor, getOptionalUser, getOptionalSupervisor } from "./lib/auth";
+import { assertArrayItemsMaxLength, assertMaxLength } from "./lib/validation";
 import type { Doc, Id } from "./_generated/dataModel";
 
 const AUDIENCE = v.union(
@@ -99,6 +100,10 @@ export const createArticle = mutation({
   },
   handler: async (ctx, args) => {
     const supervisor = await requireSupervisor(ctx);
+    assertMaxLength("articleTitle", args.title);
+    assertMaxLength("articleSummary", args.summary);
+    assertMaxLength("articleBody", args.body);
+    assertArrayItemsMaxLength("articleTag", args.tags);
     const now = Date.now();
     return await ctx.db.insert("articles", {
       ...args,
@@ -122,6 +127,10 @@ export const updateArticle = mutation({
   },
   handler: async (ctx, args) => {
     await requireSupervisor(ctx);
+    assertMaxLength("articleTitle", args.title);
+    assertMaxLength("articleSummary", args.summary);
+    assertMaxLength("articleBody", args.body);
+    assertArrayItemsMaxLength("articleTag", args.tags);
     const { id, ...updates } = args;
 
     if (updates.coverStorageId !== undefined) {

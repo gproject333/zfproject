@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireSupervisor, getOptionalSupervisor } from "./lib/auth";
+import { assertMaxLength } from "./lib/validation";
 import { notifyAllStudents } from "./lib/notifications";
 
 const VARIANT = v.union(v.literal("info"), v.literal("success"), v.literal("warning"));
@@ -107,6 +108,10 @@ export const createBanner = mutation({
   },
   handler: async (ctx, args) => {
     const supervisor = await requireSupervisor(ctx);
+    assertMaxLength("bannerTitle", args.title);
+    assertMaxLength("bannerMessage", args.message);
+    assertMaxLength("bannerLinkHref", args.linkHref);
+    assertMaxLength("bannerLinkLabel", args.linkLabel);
     const now = Date.now();
     const id = await ctx.db.insert("banners", {
       ...args,
@@ -146,6 +151,10 @@ export const updateBanner = mutation({
   },
   handler: async (ctx, args) => {
     await requireSupervisor(ctx);
+    assertMaxLength("bannerTitle", args.title);
+    assertMaxLength("bannerMessage", args.message);
+    assertMaxLength("bannerLinkHref", args.linkHref);
+    assertMaxLength("bannerLinkLabel", args.linkLabel);
     const { id, ...updates } = args;
 
     if (updates.storageId !== undefined) {
