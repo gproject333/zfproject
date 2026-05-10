@@ -2,7 +2,7 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireAdmin } from "./lib/auth";
 
-// بيانات الكليات والتخصصات الافتراضية
+// Default college/department seed data — used by the `seed` mutation.
 const SEED_DATA: { college: string; departments: string[] }[] = [
   {
     college: "كلية تكنولوجيا المعلومات",
@@ -109,7 +109,7 @@ export const remove = mutation({
   args: { id: v.id("colleges") },
   handler: async (ctx, args) => {
     await requireAdmin(ctx);
-    // حذف التخصصات التابعة أولاً
+    // Delete the dependent departments first to avoid orphan rows.
     const deps = await ctx.db
       .query("departments")
       .withIndex("by_college", (q) => q.eq("collegeId", args.id))

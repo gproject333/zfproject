@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireAdmin, requireUser } from "./lib/auth";
+import { loadUsersMap } from "./lib/users";
 import { internal } from "./_generated/api";
 
 export const submitRequest = mutation({
@@ -12,7 +13,7 @@ export const submitRequest = mutation({
       throw new Error("هذه الميزة متاحة لأعضاء هيئة التدريس فقط (@zuj.edu.jo)");
     }
 
-    // التحقق من وجود طلب سابق معلق
+    // Reject if the student already has a pending request.
     const existing = await ctx.db
       .query("supervisorUpgradeRequests")
       .withIndex("by_student", (q) => q.eq("studentId", student._id))
@@ -30,7 +31,7 @@ export const submitRequest = mutation({
       updatedAt: now,
     });
 
-    // إشعار لجميع الادمن
+    // Notify every admin so any of them can pick the request up.
     const admins = await ctx.db
       .query("users")
       .withIndex("by_role", (q) => q.eq("role", "admin"))
@@ -84,18 +85,17 @@ export const listRequests = query({
         .collect();
     }
 
-    return await Promise.all(
-      requests.map(async (req) => {
-        const student = await ctx.db.get(req.studentId);
-        return {
-          ...req,
-          studentName: student?.name ?? null,
-          studentEmail: student?.email ?? "",
-          studentCollege: student?.college ?? null,
-          studentDepartment: student?.department ?? null,
-        };
-      }),
-    );
+    const studentsMap = await loadUsersMap(ctx, requests.map((r) => r.studentId));
+    return requests.map((req) => {
+      const student = studentsMap.get(req.studentId);
+      return {
+        ...req,
+        studentName: student?.name ?? null,
+        studentEmail: student?.email ?? "",
+        studentCollege: student?.college ?? null,
+        studentDepartment: student?.department ?? null,
+      };
+    });
   },
 });
 
@@ -121,7 +121,7 @@ export const reviewRequest = mutation({
       await ctx.db.patch(request.studentId, { role: "supervisor" });
     }
 
-    // إشعار للطالب
+    // Notify the student of the decision.
     const student = await ctx.db.get(request.studentId);
     if (student) {
       await ctx.db.insert("notifications", {
@@ -137,7 +137,7 @@ export const reviewRequest = mutation({
       });
     }
 
-    // تسجيل النشاط
+    // Append to the activity log.
     await ctx.runMutation(internal.activityLogs.log, {
       actorId: admin._id,
       actorName: admin.name ?? admin.email,
