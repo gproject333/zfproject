@@ -1,0 +1,965 @@
+<!doctype html>
+<!--
+  ============================================================
+  حاضنة الزيتونة — ZUJ Incubator Landing Page (Static Template)
+  ============================================================
+  ملاحظات للمطوّر:
+  - هذا الملف هو نسخة Standalone من اللاندنج بيج الأصلية المبنية بـ
+    Next.js + Tailwind v4 + HeroUI. الهدف منه تسهيل تطوير وتحسين
+    التصميم بمعزل عن السيرفر (Convex/Clerk) أو الـ build pipeline.
+  - الستايل مبني على Tailwind عبر CDN (Play CDN) + متغيرات CSS تطابق
+    `src/app/globals.css` في المشروع الأصلي.
+  - الأيقونات من lucide.dev عبر CDN، والخط Tajawal من Google Fonts.
+  - كل القيم النصية والصور قابلة للتعديل مباشرة في هذا الملف.
+  - أي روابط CTA حالياً موجَّهة إلى "#" — استبدلها بمسارات حقيقية
+    عند الدمج في المشروع (/login, /register, /student ...الخ).
+  - بعد إنهاء التحسينات، أرسل الملف وسأعيد دمج التغييرات داخل
+    `src/features/landing/components/`.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>حاضنة الزيتونة — ZUJ Incubator</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Tailwind via CDN (development only). أي مطور يستطيع تعديل ملفات
+     HTML/CSS مباشرة دون Node/PostCSS. -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          background: 'var(--background)',
+          foreground: 'var(--foreground)',
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          border: 'var(--border)',
+        },
+        fontFamily: { sans: ['Tajawal', 'sans-serif'] },
+      },
+    },
+  };
+</script>
+
+<style>
+/* ============================================
+   CSS Variables — مطابقة لـ src/app/globals.css
+   ============================================ */
+:root {
+  --background: #F5F9F5;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+
+  --primary: #1F5C2E;
+  --primary-foreground: #FFFFFF;
+  --secondary: #C9A227;
+  --secondary-foreground: #1A1A1A;
+  --accent: #2D7A3E;
+  --accent-foreground: #FFFFFF;
+
+  --muted: #E8F0E8;
+  --muted-foreground: #6B7280;
+  --border: #2A3530;
+  --ring: #1F5C2E;
+
+  --shadow-offset: 3px;
+  --shadow-color: rgba(31, 92, 46, 0.55);
+  --radius: 10px;
+}
+
+.dark {
+  --background: #0F1A12;
+  --foreground: #E8F0E8;
+  --card: #1A2E1F;
+  --card-foreground: #E8F0E8;
+
+  --primary: #4CAF50;
+  --primary-foreground: #0F1A12;
+  --secondary: #D4AF37;
+  --secondary-foreground: #0F1A12;
+  --accent: #66BB6A;
+  --accent-foreground: #0F1A12;
+
+  --muted: #1A2E1F;
+  --muted-foreground: #B8C4BA;
+  --border: #2A3F2F;
+  --ring: #4CAF50;
+
+  --shadow-color: rgba(76, 175, 80, 0.5);
+}
+
+html { direction: rtl; }
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Tajawal', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================
+   Neobrutalism Utilities
+   ============================================ */
+.nb-shadow-sm  { box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.nb-shadow-lg  { box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04); }
+.nb-shadow-xl  { box-shadow: 0 10px 24px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.05); }
+
+.nb-border       { border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent); }
+.nb-border-thick { border: 1.5px solid color-mix(in srgb, var(--foreground) 12%, transparent); }
+
+.nb-card {
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+  border-radius: 16px;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.nb-card-interactive {
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+  border-radius: 16px;
+  transition: box-shadow .18s ease, transform .18s ease;
+  cursor: pointer;
+}
+.nb-card-interactive:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  transform: translateY(-2px);
+}
+
+.nb-badge {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-size: .75rem; font-weight: 700;
+  padding: .3rem .75rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  white-space: nowrap;
+}
+.nb-tag {
+  display: inline-flex; align-items: center; gap: .25rem;
+  font-size: .7rem; font-weight: 800;
+  padding: .15rem .5rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 var(--shadow-color), 0 1px 3px rgba(0,0,0,0.05);
+  text-transform: uppercase; letter-spacing: .05em;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: .5rem; font-weight: 800;
+  border-radius: 12px; padding: .55rem 1rem;
+  border: 1.5px solid var(--border);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+  white-space: nowrap;
+}
+.btn-sm  { padding: .35rem .75rem; font-size: .85rem; border-radius: 10px; }
+.btn-lg  { padding: .85rem 1.4rem; font-size: 1rem; border-radius: 14px; }
+.btn:hover { box-shadow: 3px 3px 0 var(--shadow-color); transform: translate(-1px,-1px); }
+.btn:active{ transform: translate(0,0); box-shadow: 0 1px 2px var(--shadow-color); }
+.btn-primary   { background: var(--primary);   color: var(--primary-foreground); }
+.btn-secondary { background: var(--secondary); color: var(--secondary-foreground); }
+.btn-outline   { background: transparent;      color: var(--foreground); }
+
+/* Glass */
+.glass {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.dark .glass {
+  background: rgba(15,26,18,0.68);
+  border: 1px solid rgba(76,175,80,0.14);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* Patterns */
+.bg-pattern {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(31,92,46,.10)  0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(201,162,39,.08) 0%, transparent 50%),
+    radial-gradient(circle at 60% 80%, rgba(45,122,62,.06)  0%, transparent 50%);
+}
+.dark .bg-pattern {
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(76,175,80,.06)  0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212,175,55,.04) 0%, transparent 50%),
+    radial-gradient(circle at 60% 80%, rgba(102,187,106,.03) 0%, transparent 50%);
+}
+.bg-dots {
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.bg-checker {
+  background-image:
+    linear-gradient(45deg,  rgba(26,26,46,.04) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(26,26,46,.04) 25%, transparent 25%),
+    linear-gradient(45deg,  transparent 75%, rgba(26,26,46,.04) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(26,26,46,.04) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+/* Animations */
+@keyframes float    { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes slideUp  { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+@keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+@keyframes marquee  { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes scrollX  { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
+
+.animate-float    { animation: float 3s ease-in-out infinite; }
+.animate-slide-up { animation: slideUp .5s ease-out forwards; }
+.animate-fade-in  { animation: fadeIn  .3s ease-out forwards; }
+.nb-marquee-track { overflow: hidden; }
+.animate-marquee  { display: flex; animation: marquee 30s linear infinite; }
+.nb-marquee-track:hover .animate-marquee { animation-play-state: paused; }
+
+/* Announcement bar */
+.announce {
+  background: var(--foreground);
+  color: var(--background);
+  overflow: hidden;
+  border-bottom: 1.5px solid var(--border);
+}
+.announce-track {
+  display: inline-flex; gap: 3rem; white-space: nowrap;
+  animation: scrollX 35s linear infinite;
+}
+
+/* Accordion */
+details.faq {
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 14px;
+  padding: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  transition: box-shadow .18s ease;
+}
+details.faq + details.faq { margin-top: .75rem; }
+details.faq[open] { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+details.faq > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem;
+  font-weight: 700; font-size: .95rem;
+}
+details.faq > summary::-webkit-details-marker { display: none; }
+details.faq > summary::after {
+  content: '+';
+  font-size: 1.4rem; font-weight: 300; color: var(--primary);
+  transition: transform .2s ease;
+}
+details.faq[open] > summary::after { content: '−'; }
+details.faq .faq-body {
+  padding: 0 1.25rem 1.1rem;
+  color: color-mix(in srgb, var(--foreground) 70%, transparent);
+  font-weight: 500; line-height: 1.7;
+  font-size: .9rem;
+}
+
+/* Hero Image stacked frame */
+.hero-frame-a, .hero-frame-b {
+  position: absolute;
+  width: 18rem; height: 18rem;
+  border-radius: 1.5rem;
+}
+@media (min-width: 640px) {
+  .hero-frame-a, .hero-frame-b { width: 24rem; height: 24rem; }
+}
+.hero-frame-a {
+  background: var(--primary);
+  transform: rotate(3deg);
+  border: 1.5px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.05);
+}
+.hero-frame-b {
+  background: color-mix(in srgb, var(--secondary) 20%, transparent);
+  transform: rotate(-2deg);
+  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+
+/* Highlight underline accent */
+.hl-underline { position: relative; display: inline-block; }
+.hl-underline > .hl {
+  position: absolute; left: 0; right: 0; bottom: .1rem;
+  height: .9rem; z-index: -1;
+  background: color-mix(in srgb, var(--secondary) 30%, transparent);
+}
+.hl-strong > .hl { background: var(--primary); transform: rotate(-1deg); bottom: .2rem; height: 1rem; }
+
+/* Section decorations (geometry SVGs are inline) */
+.decor { position: absolute; pointer-events: none; }
+</style>
+</head>
+
+<body class="min-h-screen bg-pattern overflow-x-hidden">
+
+<!-- ============================================================
+     Announcement bar (شريط إعلانات/أخبار متحرك)
+     ============================================================ -->
+<div class="announce text-sm py-2 font-bold">
+  <div class="announce-track px-4">
+    <span>📢 التقديم على فترة الاحتضان الربيعية مفتوح حتى نهاية الشهر</span>
+    <span>🎓 ورشة تدريبية: كيف تحوّل فكرتك إلى نموذج عمل قابل للتنفيذ</span>
+    <span>🚀 ٣ مسارات احتضان متاحة لجميع طلاب جامعة الزيتونة</span>
+    <span>📢 التقديم على فترة الاحتضان الربيعية مفتوح حتى نهاية الشهر</span>
+    <span>🎓 ورشة تدريبية: كيف تحوّل فكرتك إلى نموذج عمل قابل للتنفيذ</span>
+    <span>🚀 ٣ مسارات احتضان متاحة لجميع طلاب جامعة الزيتونة</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     Navbar
+     ============================================================ -->
+<nav id="navbar" class="fixed top-[36px] right-0 left-0 w-full z-50 transition-colors duration-300 bg-transparent">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <!-- Brand -->
+    <a href="#" class="flex items-center gap-3 shrink-0" aria-label="الصفحة الرئيسية">
+      <div class="w-12 h-12 flex items-center justify-center">
+        <!-- OliveLogo SVG (inlined from src/components/OliveLogo.tsx) -->
+        <svg viewBox="0 0 300 300" class="w-full h-full">
+          <g transform="translate(150 150)">
+            <g fill="var(--primary)" stroke="#1A1A1A" stroke-width="10" stroke-linejoin="round">
+              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z"/>
+              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(60)"/>
+              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(120)"/>
+              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(180)"/>
+              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(240)"/>
+              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(300)"/>
+            </g>
+            <ellipse cx="0" cy="0" rx="13" ry="17" fill="#2B1F3A" stroke="#1A1A1A" stroke-width="6"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hidden sm:block">
+        <p class="font-extrabold text-base leading-tight">حاضنة الزيتونة</p>
+        <p class="text-[10px] text-muted-foreground font-bold">ZUJ Incubator</p>
+      </div>
+    </a>
+
+    <!-- Right actions (Guest CTAs) -->
+    <div class="flex items-center gap-2 shrink-0">
+      <a href="#" class="btn btn-outline btn-sm">
+        <i data-lucide="log-in" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">تسجيل الدخول</span>
+      </a>
+      <a href="#" class="btn btn-secondary btn-sm">
+        <i data-lucide="sparkles" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">ابدأ الآن</span>
+      </a>
+      <!-- Theme toggle (optional) -->
+      <button id="themeToggle" class="btn btn-outline btn-sm" aria-label="تبديل الوضع">
+        <i data-lucide="moon" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- spacer for fixed navbar + announcement bar -->
+<div class="h-[100px]"></div>
+
+<!-- ============================================================
+     Hero
+     ============================================================ -->
+<section class="relative min-h-[80vh] flex items-center px-4 pt-10 pb-12 overflow-hidden">
+  <div class="absolute inset-0 bg-dots opacity-[0.04] pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <!-- Text -->
+      <div class="animate-fade-in">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6 text-foreground">
+          حوّل
+          <span class="hl-underline hl-strong"><span class="relative z-10">فكرتك</span><span class="hl"></span></span>
+          إلى
+          <br class="hidden sm:block" />
+          <span class="text-primary">مشروع حقيقي.</span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-foreground/70 font-medium leading-relaxed mb-8 max-w-lg">
+          منصة احتضان رقمية تربط طلاب الجامعة الزيتونة بمشرفين أكاديميين،
+          مع تتبع فوري لحالة كل طلب ومراجعة من قِبَل المشرف.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="#" class="btn btn-secondary btn-lg w-full sm:w-auto">
+            <i data-lucide="rocket" class="w-5 h-5"></i>
+            ابدأ تقديم مشروعك
+          </a>
+          <a href="#" class="btn btn-outline btn-lg w-full sm:w-auto">
+            <i data-lucide="log-in" class="w-5 h-5"></i>
+            تسجيل الدخول
+          </a>
+        </div>
+      </div>
+
+      <!-- Illustration -->
+      <div class="relative flex justify-center">
+        <div class="hero-frame-a"></div>
+        <div class="hero-frame-b"></div>
+        <div class="relative z-10">
+          <img src="./team.png" alt="طالب ريادي"
+               class="w-64 h-64 sm:w-80 sm:h-80 object-contain drop-shadow-2xl"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Hero Carousel (Banner) — مكان للبانرات التي يديرها المشرف
+     في المشروع الأصلي يكون ديناميكياً من قاعدة البيانات.
+     هنا عرضنا بانر ثابت كنموذج بصري.
+     ============================================================ -->
+<section class="py-6 w-full px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="relative rounded-3xl overflow-hidden nb-border-thick nb-shadow-lg aspect-[3/1] sm:aspect-[4/1] bg-gradient-to-l from-primary via-accent to-primary">
+      <div class="absolute inset-0 flex items-center justify-between px-6 sm:px-12">
+        <div class="text-primary-foreground">
+          <p class="text-xs sm:text-sm font-bold opacity-80 mb-1">إعلان من حاضنة الزيتونة</p>
+          <h3 class="text-xl sm:text-3xl font-black">انطلق مع الدفعة الجديدة من المشاريع الريادية</h3>
+        </div>
+        <i data-lucide="trending-up" class="w-12 h-12 sm:w-20 sm:h-20 text-primary-foreground/30"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Features (3 paths)
+     ============================================================ -->
+<section class="relative px-4 py-16 overflow-hidden">
+  <!-- decorations -->
+  <svg class="decor top-8 right-12 hidden md:block animate-float text-primary" width="90" height="90" viewBox="0 0 80 80" aria-hidden="true">
+    <rect x="12" y="12" width="56" height="56" rx="4" transform="rotate(45 40 40)" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" opacity="0.25" fill="none"/>
+  </svg>
+  <svg class="decor bottom-12 left-16 hidden md:block animate-float text-secondary" width="50" height="50" viewBox="0 0 48 48" aria-hidden="true">
+    <rect x="6" y="6" width="36" height="36" rx="3" transform="rotate(45 24 24)" stroke="currentColor" stroke-width="2" opacity="0.2" fill="none"/>
+  </svg>
+
+  <div class="relative z-[1] max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-black">
+        ثلاثة مسارات،
+        <span class="hl-underline"><span class="relative z-10">لا حدود للطموح</span><span class="hl"></span></span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Feature card 1 -->
+      <a href="#" class="nb-card-interactive p-6 group block text-right">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center group-hover:rotate-6 group-hover:scale-110 transition-all duration-300 nb-shadow-lg">
+            <i data-lucide="lightbulb" class="w-8 h-8 text-primary-foreground"></i>
+          </div>
+          <span class="nb-tag bg-muted text-muted-foreground">Startup</span>
+        </div>
+        <h3 class="text-xl font-extrabold mb-2">فكرة ريادية</h3>
+        <p class="text-sm text-foreground/70 font-medium leading-relaxed">
+          حوّل فكرتك إلى مشروع حقيقي بدعم أكاديمي ومنهجية واضحة.
+        </p>
+        <div class="mt-5 flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
+          <span>تقديم طلب</span>
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </div>
+      </a>
+
+      <!-- Feature card 2 -->
+      <a href="#" class="nb-card-interactive p-6 group block text-right">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center group-hover:rotate-6 group-hover:scale-110 transition-all duration-300 nb-shadow-lg">
+            <i data-lucide="code-2" class="w-8 h-8 text-secondary-foreground"></i>
+          </div>
+          <span class="nb-tag bg-muted text-muted-foreground">Tech</span>
+        </div>
+        <h3 class="text-xl font-extrabold mb-2">مشروع IT</h3>
+        <p class="text-sm text-foreground/70 font-medium leading-relaxed">
+          احصل على الدعم التقني والإرشاد الأكاديمي لمشروعك.
+        </p>
+        <div class="mt-5 flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
+          <span>تقديم طلب</span>
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </div>
+      </a>
+
+      <!-- Feature card 3 -->
+      <a href="#" class="nb-card-interactive p-6 group block text-right">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center group-hover:rotate-6 group-hover:scale-110 transition-all duration-300 nb-shadow-lg">
+            <i data-lucide="building-2" class="w-8 h-8 text-accent-foreground"></i>
+          </div>
+          <span class="nb-tag bg-muted text-muted-foreground">Academic</span>
+        </div>
+        <h3 class="text-xl font-extrabold mb-2">مشروع يخدم الجامعة</h3>
+        <p class="text-sm text-foreground/70 font-medium leading-relaxed">
+          قدّم حلولاً مبتكرة تضيف قيمة مباشرة للمجتمع الجامعي.
+        </p>
+        <div class="mt-5 flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
+          <span>تقديم طلب</span>
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     How it works (4 steps slider)
+     ============================================================ -->
+<section class="px-4 py-16 bg-checker overflow-hidden">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-12 animate-fade-in">
+      <h2 class="text-3xl sm:text-4xl font-black">أربع خطوات، ومشروعك ينطلق</h2>
+    </div>
+
+    <div class="relative group">
+      <div class="overflow-hidden">
+        <div id="stepsTrack" class="flex transition-transform duration-500 ease-in-out">
+          <!-- Step 1 -->
+          <div class="step-card w-full shrink-0 px-3 lg:w-1/2">
+            <div class="nb-card p-8 sm:p-10 text-center h-full">
+              <div class="w-20 h-20 bg-primary nb-border-thick rounded-2xl flex items-center justify-center mx-auto mb-6 nb-shadow-sm rotate-3">
+                <span class="text-4xl font-black text-primary-foreground">١</span>
+              </div>
+              <h3 class="font-black text-xl mb-3">سجّل حسابك</h3>
+              <p class="text-base text-foreground/70 font-bold">أنشئ حسابك بإيميل الجامعة</p>
+            </div>
+          </div>
+          <!-- Step 2 -->
+          <div class="step-card w-full shrink-0 px-3 lg:w-1/2">
+            <div class="nb-card p-8 sm:p-10 text-center h-full">
+              <div class="w-20 h-20 bg-primary nb-border-thick rounded-2xl flex items-center justify-center mx-auto mb-6 nb-shadow-sm rotate-3">
+                <span class="text-4xl font-black text-primary-foreground">٢</span>
+              </div>
+              <h3 class="font-black text-xl mb-3">قدّم فكرتك</h3>
+              <p class="text-base text-foreground/70 font-bold">اختر نوع الاحتضان وأدخل مشروعك</p>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div class="step-card w-full shrink-0 px-3 lg:w-1/2">
+            <div class="nb-card p-8 sm:p-10 text-center h-full">
+              <div class="w-20 h-20 bg-primary nb-border-thick rounded-2xl flex items-center justify-center mx-auto mb-6 nb-shadow-sm rotate-3">
+                <span class="text-4xl font-black text-primary-foreground">٣</span>
+              </div>
+              <h3 class="font-black text-xl mb-3">احصل على التقييم</h3>
+              <p class="text-base text-foreground/70 font-bold">المشرف يراجع طلبك ويرد عليك</p>
+            </div>
+          </div>
+          <!-- Step 4 -->
+          <div class="step-card w-full shrink-0 px-3 lg:w-1/2">
+            <div class="nb-card p-8 sm:p-10 text-center h-full">
+              <div class="w-20 h-20 bg-primary nb-border-thick rounded-2xl flex items-center justify-center mx-auto mb-6 nb-shadow-sm rotate-3">
+                <span class="text-4xl font-black text-primary-foreground">٤</span>
+              </div>
+              <h3 class="font-black text-xl mb-3">ابدأ الرحلة</h3>
+              <p class="text-base text-foreground/70 font-bold">انطلق بمشروعك بدعم كامل</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="stepsNext" class="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-12 w-12 h-12 bg-card nb-border-thick rounded-xl flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all nb-shadow-lg z-10" aria-label="التالي">
+        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+      </button>
+      <button id="stepsPrev" class="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-12 w-12 h-12 bg-card nb-border-thick rounded-xl flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all nb-shadow-lg z-10" aria-label="السابق">
+        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <div id="stepsDots" class="flex justify-center items-center gap-3 mt-10"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     About
+     ============================================================ -->
+<section id="about" class="relative px-4 py-16 sm:py-20 overflow-hidden">
+  <svg class="decor top-6 right-10 hidden md:block text-accent" width="65" height="65" viewBox="0 0 60 60" aria-hidden="true">
+    <path d="M4 20V8a4 4 0 014-4h12M40 4h12a4 4 0 014 4v12M56 40v12a4 4 0 01-4 4H40M20 56H8a4 4 0 01-4-4V40"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.15" fill="none"/>
+  </svg>
+
+  <div class="relative z-[1] max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 animate-fade-in">
+      <div class="relative w-full aspect-video md:aspect-[4/3] nb-border-thick rounded-3xl overflow-hidden nb-shadow-lg">
+        <img src="./about-team.png" alt="فريق حاضنة الزيتونة" class="absolute inset-0 w-full h-full object-cover"/>
+      </div>
+      <div class="text-right">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 leading-tight">من نحن</h2>
+        <p class="text-base sm:text-lg text-foreground/70 font-medium max-w-2xl leading-relaxed">
+          حاضنة الزيتونة هي بوابتك الرقمية نحو الريادة. منصة متكاملة تابعة لجامعة الزيتونة الأردنية،
+          صُممت لتمهد الطريق أمام إبداعات الطلاب ومشاريع تخرجهم، عبر ربطهم بنخبة من المشرفين
+          الأكاديميين. نحن نرافقك في رحلة منهجية واضحة لتحويل فكرتك الطموحة إلى مشروع حقيقي
+          وواقع ملموس.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <article class="nb-card p-6 sm:p-7 relative overflow-hidden">
+        <div class="w-14 h-14 bg-accent nb-border rounded-xl flex items-center justify-center nb-shadow-sm mb-4">
+          <i data-lucide="compass" class="w-7 h-7 text-accent-foreground"></i>
+        </div>
+        <h3 class="text-xl font-extrabold mb-2">رؤيتنا</h3>
+        <p class="text-sm sm:text-base text-foreground/70 font-medium leading-relaxed">
+          أن نكون البيئة الجامعية الأولى والوجهة الرائدة في المملكة لاحتضان المشاريع
+          التكنولوجية، ونقطة الانطلاق الأقوى لتخريج جيل من روّاد الأعمال المبتكرين.
+        </p>
+      </article>
+      <article class="nb-card p-6 sm:p-7 relative overflow-hidden">
+        <div class="w-14 h-14 bg-secondary nb-border rounded-xl flex items-center justify-center nb-shadow-sm mb-4">
+          <i data-lucide="target" class="w-7 h-7 text-secondary-foreground"></i>
+        </div>
+        <h3 class="text-xl font-extrabold mb-2">رسالتنا</h3>
+        <p class="text-sm sm:text-base text-foreground/70 font-medium leading-relaxed">
+          تمكين طاقات طلبة جامعة الزيتونة وتوجيهها، من خلال توفير منصة رقمية تفاعلية تربط
+          أصحاب الأفكار بالخبرات الأكاديمية، لتطوير مشاريعهم وفق أحدث المعايير.
+        </p>
+      </article>
+      <article class="nb-card p-6 sm:p-7 relative overflow-hidden">
+        <div class="w-14 h-14 bg-primary nb-border rounded-xl flex items-center justify-center nb-shadow-sm mb-4">
+          <i data-lucide="heart-handshake" class="w-7 h-7 text-primary-foreground"></i>
+        </div>
+        <h3 class="text-xl font-extrabold mb-2">ما نقدّمه</h3>
+        <p class="text-sm sm:text-base text-foreground/70 font-medium leading-relaxed">
+          إرشاد أكاديمي متخصص، ومتابعة حثيثة لكل مرحلة من مراحل بناء المشروع. نحن نوفر لك
+          التقييم والدعم المستمر لضمان تطور فكرتك من المخطط الأولي وحتى التنفيذ النهائي.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Testimonials
+     ============================================================ -->
+<section class="px-4 py-16 bg-muted/40">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 nb-badge bg-primary/10 text-primary mb-4 text-sm px-4 py-1.5">
+        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+        ماذا يقول طلابنا
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-black">
+        قصص نجاح
+        <span class="hl-underline"><span class="relative z-10">ملهمة</span><span class="hl"></span></span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="nb-card p-6 border-r-[5px] bg-primary/10" style="border-right-color: var(--primary);">
+        <i data-lucide="quote" class="w-8 h-8 text-primary/40 mb-3"></i>
+        <p class="text-sm font-medium leading-relaxed mb-5">
+          &ldquo;حاضنة الزيتونة ساعدتني على تحويل فكرتي من مجرد مشروع تخرج إلى شركة ناشئة حقيقية.
+          الدعم الأكاديمي والإرشاد كانا لا يقدران بثمن.&rdquo;
+        </p>
+        <div class="flex items-center gap-3 pt-4 border-t border-border">
+          <div class="w-10 h-10 rounded-full nb-border bg-muted flex items-center justify-center">
+            <span class="text-sm font-black">أ</span>
+          </div>
+          <div>
+            <p class="text-sm font-extrabold">أحمد الخطيب</p>
+            <p class="text-xs text-foreground/60 font-bold">طالب ريادة أعمال</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="nb-card p-6 border-r-[5px] bg-secondary/10" style="border-right-color: var(--secondary);">
+        <i data-lucide="quote" class="w-8 h-8 text-primary/40 mb-3"></i>
+        <p class="text-sm font-medium leading-relaxed mb-5">
+          &ldquo;التقديم الرقمي والمتابعة المباشرة مع المشرفين جعلا العملية سلسة جداً.
+          أنصح كل طالب بتجربة المنصة.&rdquo;
+        </p>
+        <div class="flex items-center gap-3 pt-4 border-t border-border">
+          <div class="w-10 h-10 rounded-full nb-border bg-muted flex items-center justify-center">
+            <span class="text-sm font-black">س</span>
+          </div>
+          <div>
+            <p class="text-sm font-extrabold">سارة المحمود</p>
+            <p class="text-xs text-foreground/60 font-bold">مشروع تخرج IT</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="nb-card p-6 border-r-[5px] bg-accent/10" style="border-right-color: var(--accent);">
+        <i data-lucide="quote" class="w-8 h-8 text-primary/40 mb-3"></i>
+        <p class="text-sm font-medium leading-relaxed mb-5">
+          &ldquo;حصلت على ملاحظات بنّاءة من المشرفين خلال أيام، وتم قبول مشروعي بسرعة.
+          تجربة ممتازة من البداية إلى النهاية.&rdquo;
+        </p>
+        <div class="flex items-center gap-3 pt-4 border-t border-border">
+          <div class="w-10 h-10 rounded-full nb-border bg-muted flex items-center justify-center">
+            <span class="text-sm font-black">م</span>
+          </div>
+          <div>
+            <p class="text-sm font-extrabold">محمد العبادي</p>
+            <p class="text-xs text-foreground/60 font-bold">مشروع يخدم الجامعة</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Partners (marquee)
+     ============================================================ -->
+<section class="py-12 border-y nb-border">
+  <div class="max-w-7xl mx-auto px-4 mb-6 text-center">
+    <div class="inline-flex items-center gap-2 nb-badge bg-secondary/10 text-secondary text-sm px-4 py-1.5" style="color: var(--secondary);">
+      <i data-lucide="handshake" class="w-4 h-4"></i>
+      شركاؤنا ورعاتنا
+    </div>
+  </div>
+  <div class="nb-marquee-track">
+    <div class="animate-marquee">
+      <!-- duplicate items (twice) for seamless loop -->
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">جامعة الزيتونة الأردنية</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">صندوق دعم الريادة</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">مؤسسة الإبداع التقني</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">حاضنة أعمال عمّان</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">وزارة الاقتصاد الرقمي</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">برنامج مسرّعات الأعمال</span>
+      <!-- repeat -->
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">جامعة الزيتونة الأردنية</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">صندوق دعم الريادة</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">مؤسسة الإبداع التقني</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">حاضنة أعمال عمّان</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">وزارة الاقتصاد الرقمي</span>
+      <span class="inline-flex items-center whitespace-nowrap mx-6 md:mx-10 px-6 py-3 rounded-xl nb-border bg-card font-bold text-sm text-foreground/70">برنامج مسرّعات الأعمال</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="relative px-4 py-16 overflow-hidden">
+  <svg class="decor bottom-8 right-16 hidden md:block animate-float text-secondary" width="70" height="70" viewBox="0 0 80 80" aria-hidden="true">
+    <rect x="12" y="12" width="56" height="56" rx="4" transform="rotate(45 40 40)" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" opacity="0.25" fill="none"/>
+  </svg>
+
+  <div class="relative z-[1] max-w-3xl mx-auto">
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 nb-badge bg-primary/10 text-primary mb-4 text-sm px-4 py-1.5">
+        <i data-lucide="help-circle" class="w-4 h-4"></i>
+        أسئلة شائعة
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-black">
+        كل ما تحتاج
+        <span class="hl-underline"><span class="relative z-10">معرفته</span><span class="hl"></span></span>
+      </h2>
+    </div>
+
+    <div>
+      <details class="faq">
+        <summary>كيف أقدّم طلب احتضان؟</summary>
+        <div class="faq-body">
+          سجّل حساباً جديداً، ثم اختر نوع الاحتضان المناسب (فكرة ريادية، مشروع IT، أو مشروع
+          يخدم الجامعة)، واملأ النموذج بالمعلومات المطلوبة وارفق الملفات اللازمة.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>ما هي أنواع الاحتضان المتاحة؟</summary>
+        <div class="faq-body">
+          ثلاثة مسارات: فكرة ريادية — لتحويل فكرتك إلى مشروع حقيقي، مشروع تخرج IT — بدعم
+          تقني وإرشاد أكاديمي، ومشروع يخدم الجامعة — لحلول مبتكرة تضيف قيمة للمجتمع الجامعي.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>كم تستغرق مراجعة الطلب؟</summary>
+        <div class="faq-body">
+          يقوم المشرفون بمراجعة الطلبات بشكل دوري. ستصلك إشعارات فورية عند أي تحديث على
+          حالة طلبك سواء تم القبول أو طُلب منك تعديل.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>هل يمكنني تعديل طلبي بعد التقديم؟</summary>
+        <div class="faq-body">
+          نعم، إذا طلب المشرف تعديلات ستتمكن من تعديل طلبك وإعادة تقديمه مع الملاحظات المطلوبة.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>هل المنصة مجانية؟</summary>
+        <div class="faq-body">
+          نعم، التقديم والمتابعة مجانيان بالكامل لجميع طلاب جامعة الزيتونة الأردنية.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>كيف أتابع حالة طلبي؟</summary>
+        <div class="faq-body">
+          من لوحة التحكم الخاصة بك يمكنك متابعة حالة جميع طلباتك (مسودة، قيد المراجعة،
+          مقبول، يحتاج تعديل) مع إشعارات فورية لكل تحديث.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Final CTA
+     ============================================================ -->
+<section class="px-4 py-16">
+  <div class="max-w-4xl mx-auto">
+    <div class="relative overflow-hidden rounded-3xl bg-primary p-8 md:p-12 text-center">
+      <div class="absolute top-0 left-0 w-40 h-40 bg-primary-foreground/5 rounded-br-full pointer-events-none"></div>
+      <div class="absolute bottom-0 right-0 w-40 h-40 bg-primary-foreground/5 rounded-tl-full pointer-events-none"></div>
+
+      <div class="relative z-[1]">
+        <div class="w-16 h-16 bg-primary-foreground/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="rocket" class="w-8 h-8 text-primary-foreground"></i>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-black text-primary-foreground mb-3">جاهز تبدأ؟</h2>
+        <p class="text-sm md:text-base text-primary-foreground/70 font-bold max-w-lg mx-auto mb-8">
+          انضم لمئات الطلاب الذين حوّلوا أفكارهم إلى مشاريع حقيقية. قدّم طلبك الآن
+          وابدأ رحلتك الريادية مع حاضنة الزيتونة.
+        </p>
+        <a href="#" class="inline-flex items-center gap-2 px-8 py-3 bg-primary-foreground text-primary font-extrabold text-base rounded-xl hover:opacity-90 transition-opacity border-2 border-primary-foreground/20">
+          قدّم مشروعك الآن
+          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Footer
+     ============================================================ -->
+<footer class="border-t-[3px]" style="border-top-color: var(--foreground);">
+  <div style="background: var(--foreground); color: var(--background);" class="px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-primary nb-border-thick rounded-xl flex items-center justify-center nb-shadow-sm">
+            <i data-lucide="graduation-cap" class="w-6 h-6 text-primary-foreground"></i>
+          </div>
+          <div>
+            <p class="font-extrabold text-lg leading-tight">حاضنة الزيتونة</p>
+            <p class="text-xs opacity-70 font-medium">ZUJ Incubator Platform</p>
+          </div>
+        </div>
+
+        <ul class="flex flex-wrap items-center justify-center gap-2.5">
+          <li><a href="#" aria-label="Facebook"  class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/30 bg-white/10 hover:bg-primary/30 transition-colors"><i data-lucide="facebook"  class="w-4 h-4"></i></a></li>
+          <li><a href="#" aria-label="Instagram" class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/30 bg-white/10 hover:bg-primary/30 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a></li>
+          <li><a href="#" aria-label="LinkedIn"  class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/30 bg-white/10 hover:bg-primary/30 transition-colors"><i data-lucide="linkedin"  class="w-4 h-4"></i></a></li>
+          <li><a href="#" aria-label="X"         class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/30 bg-white/10 hover:bg-primary/30 transition-colors"><i data-lucide="twitter"   class="w-4 h-4"></i></a></li>
+          <li><a href="#" aria-label="YouTube"   class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/30 bg-white/10 hover:bg-primary/30 transition-colors"><i data-lucide="youtube"   class="w-4 h-4"></i></a></li>
+        </ul>
+      </div>
+
+      <div class="h-px bg-white/15 mb-6"></div>
+
+      <div class="flex flex-col sm:flex-row items-center sm:justify-end gap-3 text-xs opacity-70 font-medium w-full">
+        <p class="mr-auto">حاضنة الزيتونة — جميع الحقوق محفوظ <span id="year"></span> ©</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     Scripts
+     ============================================================ -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  // Render lucide icons
+  lucide.createIcons();
+
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Scroll-aware navbar background
+  const navbar = document.getElementById('navbar');
+  const onScroll = () => {
+    if (window.scrollY > 20) {
+      navbar.classList.add('glass', 'border-b', 'border-white/20');
+      navbar.classList.remove('bg-transparent');
+    } else {
+      navbar.classList.remove('glass', 'border-b', 'border-white/20');
+      navbar.classList.add('bg-transparent');
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn?.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    const icon = themeBtn.querySelector('i');
+    if (icon) {
+      const dark = document.documentElement.classList.contains('dark');
+      icon.setAttribute('data-lucide', dark ? 'sun' : 'moon');
+      lucide.createIcons();
+    }
+  });
+
+  // HowItWorks slider
+  (function initStepsSlider() {
+    const track  = document.getElementById('stepsTrack');
+    const dotsEl = document.getElementById('stepsDots');
+    const next   = document.getElementById('stepsNext');
+    const prev   = document.getElementById('stepsPrev');
+    const cards  = track.querySelectorAll('.step-card');
+    const total  = cards.length;
+
+    let itemsPerView = window.innerWidth >= 1024 ? 2 : 1;
+    let index = 0;
+
+    const maxIndex = () => Math.max(0, total - itemsPerView);
+
+    function render() {
+      track.style.transform = `translateX(${index * (100 / itemsPerView)}%)`;
+      renderDots();
+    }
+
+    function renderDots() {
+      const slides = Math.ceil(total / itemsPerView);
+      dotsEl.innerHTML = '';
+      for (let i = 0; i < slides; i++) {
+        const isActive = (itemsPerView === 2 ? Math.floor(index / 2) : index) === i;
+        const btn = document.createElement('button');
+        btn.className = 'transition-all duration-300 nb-border rounded-full ' +
+          (isActive
+            ? 'w-10 h-3 bg-primary nb-shadow-sm'
+            : 'w-3 h-3 bg-muted-foreground/30 hover:bg-secondary cursor-pointer');
+        btn.setAttribute('aria-label', `الشريحة ${i + 1}`);
+        btn.addEventListener('click', () => { index = i * itemsPerView; render(); });
+        dotsEl.appendChild(btn);
+      }
+    }
+
+    next.addEventListener('click', () => { index = index >= maxIndex() ? 0 : index + 1; render(); });
+    prev.addEventListener('click', () => { index = index <= 0 ? maxIndex() : index - 1; render(); });
+
+    window.addEventListener('resize', () => {
+      const newIpv = window.innerWidth >= 1024 ? 2 : 1;
+      if (newIpv !== itemsPerView) { itemsPerView = newIpv; index = 0; render(); }
+    });
+
+    setInterval(() => { index = index >= maxIndex() ? 0 : index + 1; render(); }, 5000);
+    render();
+  })();
+</script>
+</body>
+</html>
