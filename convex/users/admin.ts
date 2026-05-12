@@ -159,24 +159,19 @@ export const createUserByAdmin = mutation({
 
 export const getAllUsers = query({
   args: {
-    role: v.optional(
-      v.union(
-        v.literal("student"),
-        v.literal("supervisor"),
-        v.literal("admin"),
-        v.literal("sponsor"),
-      ),
+    role: v.union(
+      v.literal("student"),
+      v.literal("supervisor"),
+      v.literal("admin"),
+      v.literal("sponsor"),
     ),
   },
   handler: async (ctx, args) => {
     await requireAdmin(ctx);
-    if (args.role) {
-      return await ctx.db
-        .query("users")
-        .withIndex("by_role", (q) => q.eq("role", args.role!))
-        .collect();
-    }
-    return await ctx.db.query("users").collect();
+    return await ctx.db
+      .query("users")
+      .withIndex("by_role", (q) => q.eq("role", args.role))
+      .collect();
   },
 });
 
@@ -185,21 +180,36 @@ export const getAdminStats = query({
   handler: async (ctx) => {
     await requireAdmin(ctx);
 
-    const [allUsers, allApps, allAssignments] = await Promise.all([
-      ctx.db.query("users").collect(),
-      ctx.db.query("applications").collect(),
+    const [
+      students,
+      supervisors,
+      sponsors,
+      underReview,
+      accepted,
+      rejected,
+      needsModification,
+      assignments,
+    ] = await Promise.all([
+      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "student")).collect(),
+      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "supervisor")).collect(),
+      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "sponsor")).collect(),
+      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "under_review")).collect(),
+      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "accepted")).collect(),
+      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "rejected")).collect(),
+      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "needs_modification")).collect(),
       ctx.db.query("sponsorAssignments").collect(),
     ]);
 
     return {
-      totalStudents: allUsers.filter((u) => u.role === "student").length,
-      totalSupervisors: allUsers.filter((u) => u.role === "supervisor").length,
-      totalSponsors: allUsers.filter((u) => u.role === "sponsor").length,
-      totalApplications: allApps.length,
-      underReviewApplications: allApps.filter((a) => a.status === "under_review").length,
-      acceptedApplications: allApps.filter((a) => a.status === "accepted").length,
-      rejectedApplications: allApps.filter((a) => a.status === "rejected").length,
-      totalAssignments: allAssignments.length,
+      totalStudents: students.length,
+      totalSupervisors: supervisors.length,
+      totalSponsors: sponsors.length,
+      totalApplications:
+        underReview.length + accepted.length + rejected.length + needsModification.length,
+      underReviewApplications: underReview.length,
+      acceptedApplications: accepted.length,
+      rejectedApplications: rejected.length,
+      totalAssignments: assignments.length,
     };
   },
 });
@@ -321,22 +331,17 @@ export const getApplicationStatusStats = query({
   args: {},
   handler: async (ctx) => {
     await requireAdmin(ctx);
-    const apps = await ctx.db.query("applications").collect();
-    const counts = {
-      under_review: 0,
-      accepted: 0,
-      rejected: 0,
-      needs_modification: 0,
-      draft: 0,
-    };
-    for (const a of apps) {
-      if (a.status in counts) counts[a.status as keyof typeof counts]++;
-    }
+    const [underReview, accepted, rejected, needsModification] = await Promise.all([
+      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "under_review")).collect(),
+      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "accepted")).collect(),
+      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "rejected")).collect(),
+      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "needs_modification")).collect(),
+    ]);
     return [
-      { status: "قيد المراجعة", count: counts.under_review },
-      { status: "مقبول", count: counts.accepted },
-      { status: "مرفوض", count: counts.rejected },
-      { status: "يحتاج تعديل", count: counts.needs_modification },
+      { status: "قيد المراجعة", count: underReview.length },
+      { status: "مقبول", count: accepted.length },
+      { status: "مرفوض", count: rejected.length },
+      { status: "يحتاج تعديل", count: needsModification.length },
     ];
   },
 });

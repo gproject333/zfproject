@@ -52,14 +52,15 @@ export const listApplications = query({
     if (args.type) {
       return await ctx.db
         .query("applications")
-        .withIndex("by_type", (q) => q.eq("type", args.type!))
-        .filter((q) => q.neq(q.field("status"), "draft"))
+        .withIndex("by_type_submitted", (q) =>
+          q.eq("type", args.type!).eq("submitted", true),
+        )
         .order("desc")
         .paginate(args.paginationOpts);
     }
     return await ctx.db
       .query("applications")
-      .filter((q) => q.neq(q.field("status"), "draft"))
+      .withIndex("by_submitted", (q) => q.eq("submitted", true))
       .order("desc")
       .paginate(args.paginationOpts);
   },
@@ -121,14 +122,15 @@ export const listApplicationsWithStudent = query({
     } else if (args.type) {
       result = await ctx.db
         .query("applications")
-        .withIndex("by_type", (q) => q.eq("type", args.type!))
-        .filter((q) => q.neq(q.field("status"), "draft"))
+        .withIndex("by_type_submitted", (q) =>
+          q.eq("type", args.type!).eq("submitted", true),
+        )
         .order(order)
         .paginate(args.paginationOpts);
     } else {
       result = await ctx.db
         .query("applications")
-        .filter((q) => q.neq(q.field("status"), "draft"))
+        .withIndex("by_submitted", (q) => q.eq("submitted", true))
         .order(order)
         .paginate(args.paginationOpts);
     }
@@ -267,6 +269,7 @@ export const updateApplicationStatus = mutation({
     const now = Date.now();
     const patch: Record<string, unknown> = {
       status: args.status,
+      submitted: true,
       reviewerId: reviewer._id,
       reviewedAt: now,
       updatedAt: now,
@@ -340,6 +343,7 @@ export const bulkUpdateStatus = mutation({
 
       const patch: Record<string, unknown> = {
         status: args.status,
+        submitted: true,
         reviewerId: reviewer._id,
         reviewedAt: now,
         updatedAt: now,

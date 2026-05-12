@@ -69,6 +69,7 @@ export const createApplication = mutation({
       ...data,
       studentId: student._id,
       status: submitNow ? "under_review" : "draft",
+      submitted: submitNow,
       createdAt: now,
       updatedAt: now,
       submittedAt: submitNow ? now : undefined,
@@ -156,6 +157,7 @@ export const submitApplication = mutation({
     const now = Date.now();
     await ctx.db.patch(args.id, {
       status: "under_review",
+      submitted: true,
       updatedAt: now,
       submittedAt: now,
     });

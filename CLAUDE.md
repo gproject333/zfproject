@@ -32,20 +32,21 @@ This is a **Next.js + Convex + Clerk** full-stack app using the Next.js App Rout
 
 ### Layers
 
-**Frontend** (`app/`, `components/`)
-- `app/layout.tsx` — root layout; wraps the entire tree in `<ConvexClientProvider>` (which in turn wraps Convex + Clerk providers)
-- `app/page.tsx` — client component; shows authenticated/unauthenticated UI with real-time Convex data
-- `app/server/page.tsx` + `app/server/inner.tsx` — demonstrates server-component preloading via `preloadQuery`
-- `components/ConvexClientProvider.tsx` — wires `ConvexProviderWithClerk` so auth tokens are forwarded to Convex on every request
+**Frontend** (`src/app/`, `src/components/`, `src/features/`)
+- `src/app/layout.tsx` — root layout; wraps the tree in `<ConvexClientProvider>` (Convex + Clerk providers)
+- `src/app/ConvexClientProvider.tsx` — wires `ConvexProviderWithClerk` so auth tokens are forwarded to Convex on every request
+- `src/app/(auth)/`, `src/app/admin/`, `src/app/student/`, `src/app/supervisor/`, `src/app/sponsor/` — role-scoped route groups
+- `src/features/<area>/` — feature-scoped components and hooks (admin, applications, articles, auth, banners, etc.)
 
 **Backend** (`convex/`)
 - `convex/schema.ts` — single source of truth for database tables; edit here first when adding data
-- `convex/myFunctions.ts` — example query (`listNumbers`), mutation (`addNumber`), and action (`myAction`)
-- `convex/auth.config.ts` — Clerk JWT provider config; the `providers` array is currently commented out — uncomment and set the correct Clerk issuer URL before enabling auth-protected queries
+- `convex/auth.config.ts` — Clerk JWT provider config (`CLERK_JWT_ISSUER_DOMAIN` env var, `applicationID: "convex"`)
+- `convex/migrations.ts` — one-shot internal mutations (e.g. `backfillApplicationSubmitted`); run from the Convex dashboard
+- `convex/applications/`, `convex/users/`, `convex/lib/` — domain-grouped functions
 - `convex/_generated/` — auto-generated; never edit manually; regenerated on `npx convex dev`
 
-**Middleware** (`proxy.ts`)
-- Clerk middleware protects the `/server` route; all other routes are public
+**Middleware** (`src/middleware.ts`)
+- Clerk middleware; protects the `/server` route, all other routes are public
 
 ### Auth flow
 

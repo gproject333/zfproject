@@ -30,7 +30,6 @@ export default defineSchema({
     // معلومات النظام
     isActive: v.optional(v.boolean()),
     emailVerified: v.optional(v.boolean()),
-    // حقول مطلوبة من @convex-dev/auth
     emailVerificationTime: v.optional(v.number()),
     phoneVerificationTime: v.optional(v.number()),
     isAnonymous: v.optional(v.boolean()),
@@ -113,13 +112,21 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
     submittedAt: v.optional(v.number()),
+
+    // Denormalized: `false` for drafts, `true` otherwise. Lets list/pagination
+    // queries replace `.filter(neq("status", "draft"))` with a proper index
+    // lookup. Optional in the validator so existing rows remain valid until
+    // `migrations.backfillApplicationSubmitted` runs.
+    submitted: v.optional(v.boolean()),
   })
     .index("by_student", ["studentId"])
     .index("by_status", ["status"])
     .index("by_type", ["type"])
     .index("by_reviewer", ["reviewerId"])
     .index("by_student_status", ["studentId", "status"])
-    .index("by_type_status", ["type", "status"]),
+    .index("by_type_status", ["type", "status"])
+    .index("by_submitted", ["submitted"])
+    .index("by_type_submitted", ["type", "submitted"]),
 
   // ============================================
   // سجل المراجعات (audit log)
