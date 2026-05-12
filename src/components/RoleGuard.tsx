@@ -5,8 +5,7 @@ import { api } from "../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui";
-
-type Role = "student" | "supervisor" | "admin" | "sponsor";
+import { getRoleHomepage, type Role } from "@/lib/roles";
 
 interface RoleGuardProps {
   allowedRoles: Role[];
@@ -39,12 +38,7 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
       if (user === null) {
         router.push("/login");
       } else if (!isAllowedRole(user.role, allowedRoles)) {
-        const effectiveRole: string = user.role || "student";
-        if (effectiveRole === "admin") router.push("/admin");
-        else if (effectiveRole === "sponsor") router.push("/sponsor");
-        else if (effectiveRole === "supervisor") router.push("/supervisor");
-        else if (effectiveRole === "student") router.push("/student");
-        else router.push("/");
+        router.push(getRoleHomepage(user.role));
       }
     }
   }, [authLoading, isAuthenticated, user, allowedRoles, router]);

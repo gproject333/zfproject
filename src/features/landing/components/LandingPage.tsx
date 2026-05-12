@@ -13,7 +13,7 @@ import NotificationBell from "@/components/NotificationBell";
 import { Button, buttonVariants } from "@/components/ui";
 import { useAuth } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import { getRoleHomepage, getRoleProfileHref } from "@/lib/roles";
 import AppFooter from "@/components/AppFooter";
 import CinematicHero from "./CinematicHero";
 import FeaturesSection from "./FeaturesSection";
@@ -29,23 +29,6 @@ import RevealOnScroll from "./RevealOnScroll";
 import AmbientOlives from "./AmbientOlives";
 import MarqueeStrip from "./MarqueeStrip";
 import SectionDivider from "./SectionDivider";
-
-/** Map a user role to the landing page of their role-specific
- *  dashboard. Student is the default for users without a role yet. */
-function dashboardHrefFor(user: Doc<"users"> | null | undefined): string {
-  if (!user) return "/student";
-  switch (user.role) {
-    case "admin":     return "/admin";
-    case "sponsor":   return "/sponsor";
-    case "supervisor":return "/supervisor";
-    default:          return "/student";
-  }
-}
-
-function profileHrefFor(user: Doc<"users"> | null | undefined): string {
-  if (!user || user.role === "student" || !user.role) return "/student/profile";
-  return dashboardHrefFor(user);
-}
 
 /** Stable no-op subscriber — the hydration flag never changes after mount. */
 const subscribeNoop = () => () => {};
@@ -83,10 +66,11 @@ export default function LandingPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const dashboardHref = dashboardHrefFor(user);
+  const dashboardHref = getRoleHomepage(user?.role);
   const navItems = navItemsForRole(user?.role);
-  // mounted: يمنع أي render قبل hydration
-  // clerkLoaded: يضمن أن Clerk قرأ الجلسة كاملاً
+  // `mounted` blocks any render before hydration; `clerkLoaded` waits
+  // for Clerk to finish reading the session — together they prevent
+  // a flash of guest UI between mount and auth resolution.
   const authReady   = mounted && clerkLoaded;
   const showGuestCtas = authReady && !isSignedIn;
   const showAuthNav   = authReady && !!isSignedIn;
@@ -193,7 +177,7 @@ export default function LandingPage() {
                 ) : showAuthNav ? (
                   <>
                     <NotificationBell />
-                    <SettingsMenu profileHref={profileHrefFor(user)} logoutHref="/login" />
+                    <SettingsMenu profileHref={getRoleProfileHref(user?.role)} logoutHref="/login" />
                   </>
                 ) : (
                   showGuestCtas && (
