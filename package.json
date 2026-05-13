@@ -6,7 +6,9 @@
     "dev": "convex dev --start 'next dev'",
     "build": "convex deploy --cmd 'next build'",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "vitest --environment edge-runtime --run",
+    "test:watch": "vitest --environment edge-runtime"
   },
   "dependencies": {
     "@clerk/backend": "^3.4.2",
@@ -38,15 +40,18 @@
   },
   "devDependencies": {
     "@convex-dev/eslint-plugin": "^1.2.2",
+    "@edge-runtime/vm": "^5.0.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "convex-test": "^0.0.52",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",
     "prettier": "^3.8.3",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.6"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
