@@ -1,7 +1,7 @@
 "use client";
 
-import UserManagement from "@/features/admin/components/UserManagement";
+import SponsorManagement from "@/features/admin/components/SponsorManagement";
 
 export default function AdminSponsorsPage() {
-  return <UserManagement role="sponsor" />;
+  return <SponsorManagement />;
 }

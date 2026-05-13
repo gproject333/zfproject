@@ -2,161 +2,21 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useAction } from "convex/react";
-import {Users, Building2, Plus, X, Mail, User, Building, Phone, KeyRound, CheckCircle2, AlertCircle, ShieldCheck, Star, ToggleLeft, ToggleRight, Search} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { Button, Input, Spinner, Card} from "@/components/ui";
+import { Plus, X, Mail, User, Building, Phone, KeyRound, CheckCircle2, AlertCircle, ToggleLeft, ToggleRight, Search } from "lucide-react";
+import { api } from "../../../../../convex/_generated/api";
+import type { Id } from "../../../../../convex/_generated/dataModel";
+import { Button, Input, Spinner, Card } from "@/components/ui";
 import { toast } from "@/lib/toast";
+import ProfileModal, { type UserItem } from "./ProfileModal";
+import type { UserManagementConfig } from "./config";
 
-interface ColorScheme {
-  primary: string;
-  border: string;
-  textOnPrimary: string;
-}
-
-interface UserManagementConfig {
-  role: "supervisor" | "sponsor";
-  pageTitle: string;
-  pageIcon: LucideIcon;
-  formIcon: LucideIcon;
-  countLabel: (n: number) => string;
-  emptyTitle: string;
-  emptyDescription: string;
-  addButtonLabel: string;
-  formTitle: string;
-  color: ColorScheme;
-  nameField: { label: string; placeholder: string };
-  emailPlaceholder: string;
-  phoneLabel: string;
-  phonePlaceholder: string;
-  showDepartment: boolean;
-  formHint: { text: string; bg: string; border: string; color: string };
-  successMessage: string;
-  fallbackInitial: string;
-  /** مشرفون لا يحتاجون نموذج إضافة — يُضافون عبر طلبات الترقية */
-  hideAddForm?: boolean;
-  /** يعرض حقل كلمة المرور في الفورم (للمشرفين) */
-  showPasswordField?: boolean;
-}
-
-const SUPERVISOR_CONFIG: UserManagementConfig = {
-  role: "supervisor",
-  pageTitle: "إدارة المشرفين الأكاديميين",
-  pageIcon: Users,
-  formIcon: ShieldCheck,
-  countLabel: (n) => `${n} مشرف مسجل`,
-  emptyTitle: "لا يوجد مشرفون",
-  emptyDescription: "ابدأ بإضافة أول مشرف للمنصة",
-  addButtonLabel: "إضافة مشرف جديد",
-  formTitle: "بيانات المشرف الجديد",
-  color: { primary: "#2D7A3E", border: "#1F5C2E", textOnPrimary: "white" },
-  nameField: { label: "الاسم الكامل *", placeholder: "د. أحمد محمد" },
-  emailPlaceholder: "supervisor@zuj.edu.jo",
-  phoneLabel: "رقم الهاتف",
-  phonePlaceholder: "07X-XXX-XXXX",
-  showDepartment: true,
-  showPasswordField: true,
-  formHint: {
-    text: "💡 سيستخدم المشرف هذا البريد وكلمة المرور لتسجيل الدخول عبر صفحة /login",
-    bg: "bg-info/10",
-    border: "border-info/30",
-    color: "text-info",
-  },
-  successMessage: "تم إنشاء حساب المشرف بنجاح!",
-  fallbackInitial: "م",
-};
-
-const SPONSOR_CONFIG: UserManagementConfig = {
-  role: "sponsor",
-  pageTitle: "إدارة الداعمين",
-  pageIcon: Building2,
-  formIcon: Star,
-  countLabel: (n) => `${n} داعم مسجل`,
-  emptyTitle: "لا يوجد داعمون",
-  emptyDescription: "ابدأ بإضافة أول داعم للمنصة",
-  addButtonLabel: "إضافة داعم جديد",
-  formTitle: "بيانات الداعم الجديد",
-  color: { primary: "#C9A227", border: "#B7891A", textOnPrimary: "#111" },
-  nameField: { label: "الاسم *", placeholder: "شركة التقنية الأردنية" },
-  emailPlaceholder: "sponsor@company.com",
-  phoneLabel: "رقم الهاتف *",
-  phonePlaceholder: "07XXXXXXXX",
-  showDepartment: false,
-  showPasswordField: true,
-  formHint: {
-    text: "💡 سيستخدم الداعم هذا البريد وكلمة المرور لتسجيل الدخول عبر صفحة /login",
-    bg: "bg-warning/10",
-    border: "border-warning/30",
-    color: "text-warning",
-  },
-  successMessage: "تم إنشاء حساب الداعم بنجاح!",
-  fallbackInitial: "د",
-};
-
-const ROLE_CONFIGS = {
-  supervisor: SUPERVISOR_CONFIG,
-  sponsor: SPONSOR_CONFIG,
-};
-
-interface UserItem {
-  _id: Id<"users">;
-  name?: string | null;
-  email: string;
-  department?: string | null;
-  phone?: string | null;
-  isActive?: boolean | null;
-}
-
-function ProfileModal({ user, config, onClose }: { user: UserItem; config: UserManagementConfig; onClose: () => void }) {
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={onClose}>
-      <Card className="p-6 w-full max-w-sm space-y-4" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between">
-          <h3 className="font-extrabold text-lg">الملف الشخصي</h3>
-          <button onClick={onClose} className="hover:bg-foreground/5 rounded transition-colors p-1"><X className="w-5 h-5" /></button>
-        </div>
-        <div className="flex items-center gap-4">
-          <div
-            className="w-16 h-16 rounded-2xl nb-border flex items-center justify-center font-extrabold text-2xl"
-            style={{ background: config.color.primary, color: config.color.textOnPrimary }}
-          >
-            {user.name?.charAt(0) ?? config.fallbackInitial}
-          </div>
-          <div>
-            <p className="font-extrabold text-lg">{user.name ?? "—"}</p>
-            <p className="text-sm text-muted-foreground">{user.email}</p>
-          </div>
-        </div>
-        <div className="space-y-2 text-sm">
-          {config.showDepartment && (
-            <div className="flex justify-between py-1.5 border-b border-border/40">
-              <span className="text-muted-foreground">التخصص</span>
-              <span className="font-semibold">{user.department ?? "—"}</span>
-            </div>
-          )}
-          <div className="flex justify-between py-1.5 border-b border-border/40">
-            <span className="text-muted-foreground">الهاتف</span>
-            <span className="font-semibold" dir="ltr">{user.phone ?? "—"}</span>
-          </div>
-          <div className="flex justify-between py-1.5">
-            <span className="text-muted-foreground">الحالة</span>
-            <span className={`font-bold ${user.isActive !== false ? "text-success" : "text-destructive"}`}>
-              {user.isActive !== false ? "فعّال" : "مجمّد"}
-            </span>
-          </div>
-        </div>
-      </Card>
-    </div>
-  );
-}
-
-interface UserManagementProps {
-  role: "supervisor" | "sponsor";
-}
-
-export default function UserManagement({ role }: UserManagementProps) {
-  const config = ROLE_CONFIGS[role];
+/**
+ * Rendering shell for the per-role admin user-management pages. Both
+ * `SupervisorManagement` and `SponsorManagement` are thin wrappers that
+ * pass a config — keep all UI here.
+ */
+export default function UserManagementShell({ config }: { config: UserManagementConfig }) {
+  const { role } = config;
   const PageIcon = config.pageIcon;
   const FormIcon = config.formIcon;
 
@@ -212,22 +72,13 @@ export default function UserManagement({ role }: UserManagementProps) {
           department: formData.department || undefined,
           phone: formData.phone || undefined,
         });
-      } else if (role === "sponsor") {
+      } else {
         await createSponsor({
           name: formData.name,
           email: formData.email,
           password: formData.password,
           phone: formData.phone || undefined,
         });
-      } else {
-        const payload: { name: string; email: string; phone: string; role: "supervisor" | "sponsor"; department?: string } = {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          role,
-        };
-        if (config.showDepartment) payload.department = formData.department;
-        await createUser(payload);
       }
       setSuccess(config.successMessage);
       setFormData({ name: "", email: "", department: "", phone: "", password: "" });
@@ -248,6 +99,10 @@ export default function UserManagement({ role }: UserManagementProps) {
       toast.error("حدث خطأ");
     }
   };
+
+  // Reference unused mutation so it stays in the dependency graph if a
+  // future config sets hideAddForm + showPasswordField=false.
+  void createUser;
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -281,7 +136,7 @@ export default function UserManagement({ role }: UserManagementProps) {
         </div>
       )}
 
-      {/* Create Form — only for sponsors */}
+      {/* Create Form */}
       {!config.hideAddForm && showForm && (
         <Card className="p-6 border-[3px] animate-slide-up" style={{ borderColor: config.color.primary }}>
           <h3 className="font-extrabold text-lg mb-4 flex items-center gap-2">
@@ -405,7 +260,7 @@ export default function UserManagement({ role }: UserManagementProps) {
               <thead>
                 <tr className="border-b border-border bg-muted/50">
                   <th className="text-right px-4 py-3 font-extrabold">
-                    {config.role === "supervisor" ? "المشرف" : "الداعم"}
+                    {role === "supervisor" ? "المشرف" : "الداعم"}
                   </th>
                   {config.showDepartment && (
                     <th className="text-right px-4 py-3 font-extrabold hidden md:table-cell">التخصص</th>

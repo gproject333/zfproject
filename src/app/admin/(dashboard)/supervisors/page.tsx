@@ -1,7 +1,7 @@
 "use client";
 
-import UserManagement from "@/features/admin/components/UserManagement";
+import SupervisorManagement from "@/features/admin/components/SupervisorManagement";
 
 export default function AdminSupervisorsPage() {
-  return <UserManagement role="supervisor" />;
+  return <SupervisorManagement />;
 }
