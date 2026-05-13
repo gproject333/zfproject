@@ -26,7 +26,7 @@ const ALLOWED_ELEMENTS = [
 
 /**
  * Full article read view. Used on both /student/articles/[id] and
- * /supervisor/articles/[id] — the Convex `getById` enforces audience
+ * /supervisor/content/articles/[id] — the Convex `getById` enforces audience
  * restrictions for students so we render the same component for both.
  */
 export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {

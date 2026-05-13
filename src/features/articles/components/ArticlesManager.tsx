@@ -129,7 +129,7 @@ export default function ArticlesManager() {
                 <TableCell>
                   <div className="flex items-center gap-1">
                     <Link
-                      href={`/supervisor/articles/${a._id}`}
+                      href={`/supervisor/content/articles/${a._id}`}
                       className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
                       aria-label="معاينة"
                       title="معاينة"

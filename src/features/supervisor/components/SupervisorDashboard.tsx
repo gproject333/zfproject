@@ -58,7 +58,7 @@ export default function SupervisorDashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Link href="/supervisor/entrepreneurial-guide" className="nb-card p-5 flex items-center gap-4 hover:nb-shadow transition-all">
+        <Link href="/supervisor/content/guide" className="nb-card p-5 flex items-center gap-4 hover:nb-shadow transition-all">
           <div className="w-12 h-12 rounded-xl bg-accent/20 nb-border flex items-center justify-center shrink-0">
             <Compass className="w-6 h-6 text-accent" />
           </div>
@@ -67,7 +67,7 @@ export default function SupervisorDashboard() {
             <p className="text-xs text-muted-foreground font-medium">إدارة محتوى الدليل</p>
           </div>
         </Link>
-        <Link href="/supervisor/articles" className="nb-card p-5 flex items-center gap-4 hover:nb-shadow transition-all">
+        <Link href="/supervisor/content/articles" className="nb-card p-5 flex items-center gap-4 hover:nb-shadow transition-all">
           <div className="w-12 h-12 rounded-xl bg-primary/10 nb-border flex items-center justify-center shrink-0">
             <BookOpen className="w-6 h-6 text-primary" />
           </div>
