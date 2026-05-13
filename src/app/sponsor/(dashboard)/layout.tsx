@@ -35,7 +35,7 @@ export default function SponsorLayout({ children }: { children: ReactNode }) {
         style: { background: "#C9A227", color: "#111", borderColor: "#B7891A" },
       },
       showNotifications: false,
-      logoutHref: "/sponsor/login",
+      logoutHref: "/login",
       profileHref: "/sponsor",
     }),
     [user?.name]

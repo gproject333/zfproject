@@ -36,7 +36,7 @@ const adminConfig = {
     style: { background: "#DC2626", borderColor: "#991B1B" },
   },
   showNotifications: true,
-  logoutHref: "/admin/login",
+  logoutHref: "/login",
   profileHref: "/admin",
   backgroundClass: "",
   sidebarLayout: true,
