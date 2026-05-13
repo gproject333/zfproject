@@ -1,6 +1,7 @@
 "use client";
 
 import { Component, type ReactNode } from "react";
+import * as Sentry from "@sentry/nextjs";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 import { Button, Card} from "@/components/ui";
 
@@ -32,8 +33,9 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
   }
 
   componentDidCatch(error: Error, info: { componentStack?: string | null }) {
-    // Log to the browser console for dev visibility. In production this
-    // is where you'd hook up Sentry / a remote logger.
+    Sentry.captureException(error, {
+      contexts: { react: { componentStack: info.componentStack ?? undefined } },
+    });
     console.error("ErrorBoundary caught:", error, info.componentStack);
   }
 
