@@ -7,7 +7,7 @@
  * from "@/lib/toast". The only API rename is `toast.error` → HeroUI's
  * `toast.danger`, which we alias here.
  */
-import { toast as heroToast } from "@heroui/react";
+import { toast as heroToast } from "@/components/ui";
 import type { ReactNode } from "react";
 
 type ToastFn = ReturnType<typeof Object.assign>; // helper alias for any

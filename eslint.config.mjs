@@ -8,4 +8,22 @@ export default defineConfig([
   ...nextTypescript,
   ...convexPlugin.configs.recommended,
   globalIgnores(["convex/_generated"]),
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    ignores: ["src/components/ui/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@heroui/react"],
+              message:
+                "Import UI primitives from `@/components/ui`, not `@heroui/react` directly.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]);

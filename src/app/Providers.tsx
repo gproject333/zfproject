@@ -1,6 +1,6 @@
 "use client";
 
-import { I18nProvider, RouterProvider, Toast } from "@heroui/react";
+import { I18nProvider, RouterProvider, Toast } from "@/components/ui";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 

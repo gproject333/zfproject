@@ -1,14 +1,12 @@
 /**
- * UI primitives barrel.
+ * UI primitives barrel — HeroUI is the foundation. ALL UI consumers MUST
+ * import from here, never from `@heroui/react` directly. An ESLint rule
+ * enforces this.
  *
- * Re-exports HeroUI components used across the app so callers import from
- * `@/components/ui` instead of `@heroui/react` directly. When we wrap a
- * primitive (e.g. to preset a variant), only this file changes — call sites
- * stay untouched.
- *
- * Names that collide with the existing custom wrappers (Dialog, Select,
- * DropdownMenu, Tooltip) are intentionally NOT re-exported yet. They will
- * be added phase-by-phase as the old wrappers are deleted.
+ * Names that collide with custom wrappers (Dialog, Select, DropdownMenu,
+ * Tooltip) are intentionally NOT re-exported from HeroUI — the local
+ * wrappers own that name space. `Skeleton` is similarly owned by the
+ * local wrapper that composes dashboard skeletons.
  */
 export {
   Accordion,
@@ -23,19 +21,21 @@ export {
   CardContent,
   CardFooter,
   Chip,
+  I18nProvider,
   Input,
   InputOTP,
   ListBox,
   ListBoxItem,
   Popover,
+  RouterProvider,
   TextArea,
-  Skeleton,
   Spinner,
   Switch,
   Tabs,
   Tag,
   TagGroup,
   Toast,
+  toast,
 } from "@heroui/react";
 
 export type {
@@ -50,5 +50,6 @@ export type {
   ChipProps,
   InputProps,
   TextAreaProps,
-  SkeletonProps,
 } from "@heroui/react";
+
+export * from "./Skeleton";

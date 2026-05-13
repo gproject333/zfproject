@@ -48,6 +48,14 @@ This is a **Next.js + Convex + Clerk** full-stack app using the Next.js App Rout
 **Middleware** (`src/middleware.ts`)
 - Clerk middleware; protects the `/server` route, all other routes are public
 
+### UI layer (`src/components/ui/`)
+
+HeroUI 3.x is the foundation. **All UI imports MUST go through `@/components/ui`**, never `@heroui/react` directly — an ESLint `no-restricted-imports` rule (`eslint.config.mjs`) enforces this for everything outside `src/components/ui/**`.
+
+- `src/components/ui/index.ts` — barrel that re-exports HeroUI primitives plus the local Skeleton wrapper.
+- Custom wrappers (`Dialog.tsx`, `Select.tsx`, `DropdownMenu.tsx`, `Tooltip.tsx`, `ConfirmDialog.tsx`, `EmptyState.tsx`, `MarkdownToolbar.tsx`, `Table.tsx`, `Skeleton.tsx`) own those names and may import from `@heroui/react` directly.
+- HeroUI 3.x's `<Button>` uses semantic `variant` values: `primary | secondary | tertiary | danger | danger-soft | outline | ghost`. TypeScript enforces this — invalid values fail at compile time.
+
 ### Auth flow
 
 Client → `ConvexProviderWithClerk` fetches a Clerk JWT → Convex validates it against `auth.config.ts` → functions read identity via `ctx.auth.getUserIdentity()`. Use `identity.tokenIdentifier` (not `identity.subject`) as the stable user key.
