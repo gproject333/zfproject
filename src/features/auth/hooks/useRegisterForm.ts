@@ -2,6 +2,15 @@
 
 import { useState, useCallback } from "react";
 import { useSignUp } from "@clerk/nextjs";
+import {
+  isStaffEmail,
+  isStudentEmail,
+  registerStep1Schema,
+  registerStep3Schema,
+  safeParseToFieldErrors,
+} from "@/lib/schemas";
+
+export { isStudentEmail, isStaffEmail };
 
 interface RegisterFormData {
   name: string;
@@ -22,17 +31,6 @@ const EMPTY: RegisterFormData = {
   college: "",
   department: "",
 };
-
-const VALID_EMAIL_DOMAINS = ["@zuj.edu.jo", "@std-zuj.edu.jo", "@std.zuj.edu.jo"];
-const STUDENT_DOMAINS = ["@std-zuj.edu.jo", "@std.zuj.edu.jo"];
-
-export function isStudentEmail(email: string) {
-  return STUDENT_DOMAINS.some((d) => email.endsWith(d));
-}
-
-export function isStaffEmail(email: string) {
-  return email.endsWith("@zuj.edu.jo");
-}
 
 interface UseRegisterFormResult {
   formData: RegisterFormData;
@@ -79,22 +77,17 @@ export function useRegisterForm(): UseRegisterFormResult {
   const goToStep1 = useCallback(() => setStep(1), []);
 
   const validateStep1 = (): boolean => {
-    const e: Record<string, string> = {};
-    if (!formData.name.trim() || formData.name.trim().length < 3) {
-      e.name = "الاسم يجب أن يكون 3 أحرف على الأقل";
+    const result = safeParseToFieldErrors(registerStep1Schema, {
+      name: formData.name,
+      email: formData.email,
+      studentId: formData.studentId,
+    });
+    if (!result.ok) {
+      setErrors(result.errors);
+      return false;
     }
-    if (!formData.email.trim()) {
-      e.email = "البريد الإلكتروني مطلوب";
-    } else if (!VALID_EMAIL_DOMAINS.some((d) => formData.email.endsWith(d))) {
-      e.email = "يجب استخدام البريد الجامعي (@zuj.edu.jo أو @std-zuj.edu.jo)";
-    }
-    if (!formData.studentId.trim()) {
-      e.studentId = "الرقم الجامعي مطلوب";
-    } else if (!/^\d{9}$/.test(formData.studentId)) {
-      e.studentId = "الرقم الجامعي يجب أن يكون 9 أرقام بالضبط";
-    }
-    setErrors(e);
-    return Object.keys(e).length === 0;
+    setErrors({});
+    return true;
   };
 
   /** الخطوة 1: التحقق من البيانات وإرسال OTP */
@@ -162,19 +155,15 @@ export function useRegisterForm(): UseRegisterFormResult {
   /** الخطوة 3: تعيين كلمة المرور (والكلية/التخصص للطلاب) وإتمام التسجيل */
   const submitStep3 = useCallback(
     async (onSuccess: () => void) => {
-      const e: Record<string, string> = {};
-      if (isStudent) {
-        if (!formData.college) e.college = "الكلية مطلوبة";
-        if (!formData.department) e.department = "التخصص مطلوب";
-      }
-      if (!formData.password || formData.password.length < 8) {
-        e.password = "كلمة المرور يجب أن تكون 8 أحرف على الأقل";
-      }
-      if (formData.password !== formData.confirmPassword) {
-        e.confirmPassword = "كلمتا المرور غير متطابقتين";
-      }
-      if (Object.keys(e).length > 0) {
-        setErrors(e);
+      const result = safeParseToFieldErrors(registerStep3Schema, {
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        college: formData.college,
+        department: formData.department,
+        isStudent,
+      });
+      if (!result.ok) {
+        setErrors(result.errors);
         return;
       }
 

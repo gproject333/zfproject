@@ -1,7 +1,9 @@
 /**
- * Shared field validators. Keep rules in one place so the student
- * application form and the profile form cannot drift.
+ * Field validators. Schemas live in `./schemas` (Zod); this file is
+ * kept as a thin compatibility shim so existing callers — which expect
+ * a string-or-null contract — don't have to change.
  */
+import { phoneSchema, optionalPhoneSchema } from "./schemas";
 
 interface PhoneOptions {
   required?: boolean;
@@ -11,18 +13,9 @@ export function validatePhone(
   value: string,
   { required = false }: PhoneOptions = {},
 ): string | null {
-  const trimmed = value.trim();
-  if (!trimmed) return required ? "رقم الهاتف مطلوب" : null;
-
-  if (required) {
-    if (!/^\d+$/.test(trimmed)) return "رقم الهاتف يجب أن يحتوي أرقاماً فقط";
-    if (trimmed.length !== 10) return "رقم الهاتف يجب أن يكون 10 أرقام";
-    if (!trimmed.startsWith("07")) return "رقم الهاتف يجب أن يبدأ بـ 07";
-    return null;
-  }
-
-  if (!/^07\d{8}$/.test(trimmed)) {
-    return "رقم الهاتف يجب أن يكون 10 أرقام ويبدأ بـ 07";
-  }
-  return null;
+  if (!value.trim()) return required ? "رقم الهاتف مطلوب" : null;
+  const schema = required ? phoneSchema : optionalPhoneSchema;
+  const result = schema.safeParse(value);
+  if (result.success) return null;
+  return result.error.issues[0]?.message ?? "رقم الهاتف غير صالح";
 }

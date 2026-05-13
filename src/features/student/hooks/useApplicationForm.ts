@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { FORM_EXTRA_FIELDS } from "@/lib/configs/application";
 import { validatePhone } from "@/lib/validation";
+import { applicationCoreSchema } from "@/lib/schemas";
 import type {
   ApplicationFormData,
   ApplicationType,
@@ -32,28 +33,17 @@ interface UseApplicationFormArgs {
  * `validateField` and the whole-form `validate` so that the rules live
  * in exactly one place.
  */
+const CORE_FIELD_NAMES = ["projectName", "description", "problemStatement", "targetAudience"] as const;
+type CoreFieldName = (typeof CORE_FIELD_NAMES)[number];
+
 function validateFieldValue(
   name: string,
   value: FieldValue | undefined,
   extraFields: readonly ExtraField[],
 ): string | null {
-  if (name === "projectName") {
-    if (typeof value !== "string" || !value.trim()) return "اسم المشروع مطلوب";
-    return null;
-  }
-  if (name === "description") {
-    if (typeof value !== "string" || !value.trim()) return "وصف المشروع مطلوب";
-    if (value.trim().length < 50) return "الوصف يجب أن يكون 50 حرفاً على الأقل";
-    return null;
-  }
-  if (name === "problemStatement") {
-    if (typeof value !== "string" || !value.trim()) return "المشكلة مطلوبة";
-    return null;
-  }
-  if (name === "targetAudience") {
-    if (typeof value !== "string" || !value.trim())
-      return "الجمهور المستهدف مطلوب";
-    return null;
+  if (CORE_FIELD_NAMES.includes(name as CoreFieldName)) {
+    const result = applicationCoreSchema.shape[name as CoreFieldName].safeParse(value ?? "");
+    return result.success ? null : (result.error.issues[0]?.message ?? "قيمة غير صالحة");
   }
   if (name === "phone") {
     return validatePhone(typeof value === "string" ? value : "", { required: true });

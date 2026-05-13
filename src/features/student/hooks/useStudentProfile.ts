@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
-import { validatePhone } from "@/lib/validation";
+import { studentProfileSchema } from "@/lib/schemas";
 
 export interface ProfileFormState {
   name: string;
@@ -87,14 +87,12 @@ export function useStudentProfile() {
     setError(null);
     setSuccess(false);
 
-    if (!form.name.trim()) {
-      setError("الاسم مطلوب");
-      return false;
-    }
-
-    const phoneError = validatePhone(form.phone.trim());
-    if (phoneError) {
-      setError(phoneError);
+    const parsed = studentProfileSchema.safeParse({
+      name: form.name,
+      phone: form.phone,
+    });
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "بيانات غير صالحة");
       return false;
     }
 
