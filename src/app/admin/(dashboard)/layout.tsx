@@ -10,6 +10,7 @@ import {
   GraduationCap,
   BookOpen,
   TrendingUp,
+  Activity,
 } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
@@ -30,6 +31,7 @@ const adminConfig = {
     { label: "إدارة الكليات", href: "/admin/colleges", icon: BookOpen },
     { label: "طلبات الترقية", href: "/admin/upgrade-requests", icon: TrendingUp },
     { label: "روابط التواصل", href: "/admin/social", icon: Share2 },
+    { label: "سجل النشاطات", href: "/admin/audit-log", icon: Activity },
   ],
   active: {
     className: "text-white nb-shadow-sm",
