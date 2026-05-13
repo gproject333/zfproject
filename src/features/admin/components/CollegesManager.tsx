@@ -10,13 +10,13 @@ import {
   ChevronRight,
   Check,
   X,
-  BookOpen,
   Download,
 } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "@/lib/toast";
 import { Button, Input, Card} from "@/components/ui";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function CollegesManager() {
   const data = useQuery(api.colleges.listWithDepartments, {});
@@ -181,10 +181,11 @@ export default function CollegesManager() {
           ))}
         </div>
       ) : data.length === 0 ? (
-        <Card className="p-12 text-center">
-          <BookOpen className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
-          <p className="text-muted-foreground font-medium">لا توجد كليات مضافة بعد</p>
-        </Card>
+        <EmptyState
+          variant="get-started"
+          title="لا توجد كليات مضافة بعد"
+          description="أضف الكلية الأولى لتقدر تربط بها التخصصات والطلاب."
+        />
       ) : (
         <div className="space-y-3">
           {data.map((college) => {

@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
-import { CheckCircle2, XCircle, Clock, TrendingUp } from "lucide-react";
+import { CheckCircle2, XCircle, TrendingUp } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "@/lib/toast";
 import { Tabs, Card} from "@/components/ui";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 const STATUS_LABELS = {
   pending: { label: "معلق", color: "text-warning", bg: "bg-warning/10" },
@@ -84,10 +85,15 @@ export default function UpgradeRequestsManager() {
             ))}
           </div>
         ) : requests.length === 0 ? (
-          <div className="p-12 text-center">
-            <Clock className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
-            <p className="text-muted-foreground font-medium">لا توجد طلبات</p>
-          </div>
+          <EmptyState
+            variant="empty-inbox"
+            title="لا توجد طلبات"
+            description={
+              filter === "pending"
+                ? "ما في طلبات ترقية معلقة بانتظار المراجعة."
+                : "ما في طلبات تطابق الفلتر المختار."
+            }
+          />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

@@ -14,6 +14,7 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "@/lib/toast";
 import { Input, Card} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 interface StudentProfile {
   _id: Id<"users">;
@@ -137,9 +138,11 @@ export default function StudentManagement() {
             ))}
           </div>
         ) : students.length === 0 ? (
-          <div className="p-12 text-center">
-            <p className="text-muted-foreground font-medium">لا يوجد طلاب مطابقون للبحث</p>
-          </div>
+          <EmptyState
+            variant="no-results"
+            title="لا يوجد طلاب مطابقون"
+            description="جرّب تعديل البحث أو إزالة الفلاتر."
+          />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
