@@ -2,15 +2,35 @@
 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Bell, CheckCheck } from "lucide-react";
+import { Bell, CheckCheck, ChevronLeft } from "lucide-react";
 import { Popover, Spinner } from "@/components/ui";
 import NotificationItem from "@/components/NotificationItem";
 
+type RolePrefix = "student" | "supervisor" | "admin" | "sponsor";
+
+function rolePrefixFromPath(pathname: string): RolePrefix {
+  if (pathname.startsWith("/supervisor")) return "supervisor";
+  if (pathname.startsWith("/admin")) return "admin";
+  if (pathname.startsWith("/sponsor")) return "sponsor";
+  return "student";
+}
+
+function applicationHrefFor(role: RolePrefix, applicationId: string): string {
+  if (role === "supervisor" || role === "admin") {
+    return `/supervisor/applications/${applicationId}`;
+  }
+  if (role === "sponsor") return `/sponsor/projects/${applicationId}`;
+  return `/student/applications/${applicationId}`;
+}
+
 export default function NotificationBell() {
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  const role = rolePrefixFromPath(pathname);
 
   const unreadCount = useQuery(api.notifications.unreadCount);
   const notifications = useQuery(api.notifications.myNotifications);
@@ -23,8 +43,13 @@ export default function NotificationBell() {
     if (!n.read) await markAsRead({ id: n._id });
     setOpen(false);
     if (n.applicationId) {
-      router.push(`/student/applications/${n.applicationId}`);
+      router.push(applicationHrefFor(role, n.applicationId));
     }
+  };
+
+  const handleViewAll = () => {
+    setOpen(false);
+    router.push(`/${role}/notifications`);
   };
 
   return (
@@ -81,6 +106,16 @@ export default function NotificationBell() {
               ))
             )}
           </div>
+
+          {/* Footer — view-all link */}
+          <button
+            type="button"
+            onClick={handleViewAll}
+            className="w-full flex items-center justify-center gap-1 px-4 py-2.5 text-xs font-bold border-t-2 border-foreground/10 hover:bg-muted transition-colors"
+          >
+            عرض كل الإشعارات
+            <ChevronLeft className="w-4 h-4" />
+          </button>
         </Popover.Dialog>
       </Popover.Content>
     </Popover>
