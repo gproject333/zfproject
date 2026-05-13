@@ -7,7 +7,6 @@ import {
   ToggleLeft,
   ToggleRight,
   User,
-  ChevronDown,
   X,
 } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";

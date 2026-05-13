@@ -43,6 +43,7 @@ export function useReview(app: Doc<"applications"> | null | undefined) {
   // supervisor navigates to a different review, or Convex pushes a fresh
   // version after saving).
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional resync on doc change
     setNotes(initialNotes);
     setRating(initialRating);
     setStatus(initialStatus);

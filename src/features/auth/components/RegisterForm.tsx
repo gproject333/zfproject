@@ -11,7 +11,7 @@ import {
   FloatingPasswordInput,
   FloatingSelectInput,
 } from "./FloatingFields";
-import { Button, Input, InputOTP, Spinner, Card} from "@/components/ui";
+import { Button, InputOTP, Spinner, Card} from "@/components/ui";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";

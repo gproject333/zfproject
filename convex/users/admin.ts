@@ -260,27 +260,29 @@ export const getStudentsWithStats = query({
       return true;
     });
 
-    return await Promise.all(
-      filtered.map(async (student) => {
-        const apps = await ctx.db
+    const appCounts = await Promise.all(
+      filtered.map((student) =>
+        ctx.db
           .query("applications")
           .withIndex("by_student", (q) => q.eq("studentId", student._id))
-          .collect();
-        return {
-          _id: student._id,
-          name: student.name ?? null,
-          email: student.email,
-          studentId: student.studentId ?? null,
-          college: student.college ?? null,
-          department: student.department ?? null,
-          phone: student.phone ?? null,
-          linkedinUrl: student.linkedinUrl ?? null,
-          isActive: student.isActive ?? true,
-          createdAt: student.createdAt ?? null,
-          applicationCount: apps.length,
-        };
-      }),
+          .collect()
+          .then((apps) => apps.length),
+      ),
     );
+
+    return filtered.map((student, i) => ({
+      _id: student._id,
+      name: student.name ?? null,
+      email: student.email,
+      studentId: student.studentId ?? null,
+      college: student.college ?? null,
+      department: student.department ?? null,
+      phone: student.phone ?? null,
+      linkedinUrl: student.linkedinUrl ?? null,
+      isActive: student.isActive ?? true,
+      createdAt: student.createdAt ?? null,
+      applicationCount: appCounts[i],
+    }));
   },
 });
 

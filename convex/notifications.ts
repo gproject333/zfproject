@@ -51,8 +51,6 @@ export const markAllAsRead = mutation({
         q.eq("userId", user._id).eq("read", false)
       )
       .collect();
-    for (const n of unread) {
-      await ctx.db.patch(n._id, { read: true });
-    }
+    await Promise.all(unread.map((n) => ctx.db.patch(n._id, { read: true })));
   },
 });

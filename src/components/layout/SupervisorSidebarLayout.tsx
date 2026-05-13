@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -46,14 +46,15 @@ const COLLAPSED_KEY = "supervisor-sidebar-collapsed";
 export default function SupervisorSidebarLayout({ navItems, children }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(true);
-  const [hidden, setHidden] = useState(false);
-
-  useEffect(() => {
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === "undefined") return true;
     try {
-      if (window.localStorage.getItem(COLLAPSED_KEY) === "0") setCollapsed(false);
-    } catch { /* ignore */ }
-  }, []);
+      return window.localStorage.getItem(COLLAPSED_KEY) !== "0";
+    } catch {
+      return true;
+    }
+  });
+  const [hidden, setHidden] = useState(false);
 
   const toggleCollapsed = () => {
     setCollapsed((prev) => {

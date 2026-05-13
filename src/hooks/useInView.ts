@@ -25,16 +25,14 @@ export function useInView<T extends Element = HTMLElement>(
 ): readonly [RefObject<T | null>, boolean] {
   const { once = true, threshold = 0.15, rootMargin = "0px" } = options;
   const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(
+    () => typeof IntersectionObserver === "undefined",
+  );
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-
-    if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
+    if (typeof IntersectionObserver === "undefined") return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {

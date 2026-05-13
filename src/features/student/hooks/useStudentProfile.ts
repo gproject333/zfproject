@@ -41,6 +41,7 @@ export function useStudentProfile() {
 
   useEffect(() => {
     if (user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate form once user loads from Convex
       setForm({
         name: user.name ?? "",
         phone: user.phone ?? "",

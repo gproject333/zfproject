@@ -23,18 +23,22 @@ export async function notifyAllSupervisors(
     .collect();
 
   const now = Date.now();
-  for (const user of [...supervisors, ...admins]) {
-    if (args.excludeUserId && user._id === args.excludeUserId) continue;
-    await ctx.db.insert("notifications", {
-      userId: user._id,
-      title: args.title,
-      message: args.message,
-      type: args.type,
-      applicationId: args.applicationId,
-      read: false,
-      createdAt: now,
-    });
-  }
+  const recipients = [...supervisors, ...admins].filter(
+    (u) => !args.excludeUserId || u._id !== args.excludeUserId,
+  );
+  await Promise.all(
+    recipients.map((user) =>
+      ctx.db.insert("notifications", {
+        userId: user._id,
+        title: args.title,
+        message: args.message,
+        type: args.type,
+        applicationId: args.applicationId,
+        read: false,
+        createdAt: now,
+      }),
+    ),
+  );
 }
 
 export async function notifyAllStudents(
@@ -47,15 +51,19 @@ export async function notifyAllStudents(
     .collect();
 
   const now = Date.now();
-  for (const student of students) {
-    if (args.excludeUserId && student._id === args.excludeUserId) continue;
-    await ctx.db.insert("notifications", {
-      userId: student._id,
-      title: args.title,
-      message: args.message,
-      type: args.type,
-      read: false,
-      createdAt: now,
-    });
-  }
+  const recipients = students.filter(
+    (s) => !args.excludeUserId || s._id !== args.excludeUserId,
+  );
+  await Promise.all(
+    recipients.map((student) =>
+      ctx.db.insert("notifications", {
+        userId: student._id,
+        title: args.title,
+        message: args.message,
+        type: args.type,
+        read: false,
+        createdAt: now,
+      }),
+    ),
+  );
 }

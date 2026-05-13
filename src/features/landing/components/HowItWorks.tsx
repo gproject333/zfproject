@@ -70,7 +70,10 @@ export default function HowItWorks() {
 
   // Auto-slide every 5 seconds (Optional but UX friendly)
   useEffect(() => {
-    const timer = setInterval(handleNext, 5000);
+    const timer = setInterval(
+      () => setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1)),
+      5000,
+    );
     return () => clearInterval(timer);
   }, [maxIndex]);
 

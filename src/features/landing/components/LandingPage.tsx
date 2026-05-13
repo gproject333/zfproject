@@ -58,7 +58,10 @@ export default function LandingPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration flag
+    setMounted(true);
+  }, []);
 
   // Scroll-triggered navbar background
   useEffect(() => {

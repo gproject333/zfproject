@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import { GraduationCap, Heart } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { api } from "../../convex/_generated/api";
 import { getPlatformMeta } from "@/lib/configs/socialPlatforms";
 

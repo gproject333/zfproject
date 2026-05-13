@@ -94,6 +94,7 @@ export function useSupervisorListFilters() {
   // Clear row selection whenever server args change so bulk actions
   // can't fire on rows the supervisor can no longer see.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional reset on filter change
     setRowSelection({});
   }, [queryArgs.status, queryArgs.type, queryArgs.sortDir]);
 
