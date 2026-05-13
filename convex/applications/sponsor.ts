@@ -124,6 +124,47 @@ export const getAssignmentByProject = query({
 });
 
 /**
+ * Applications the current sponsor has marked as "interested" — these are
+ * their saved projects. Same shape as `mySponsoredApplications` (full
+ * application doc + signed videoUrl + isInterested: true) so the saved-
+ * projects page can reuse the same ReelSlide / card components.
+ */
+export const mySavedApplications = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getOptionalUser(ctx);
+    if (!user || user.role !== "sponsor") return [];
+
+    const assignments = await ctx.db
+      .query("sponsorAssignments")
+      .withIndex("by_sponsor", (q) => q.eq("sponsorId", user._id))
+      .collect();
+    const savedIds = assignments
+      .filter((a) => a.isInterested === true)
+      .map((a) => a.applicationId);
+
+    if (savedIds.length === 0) return [];
+
+    const apps = await Promise.all(savedIds.map((id) => ctx.db.get(id)));
+    const visible = apps.filter(
+      (a): a is NonNullable<typeof a> => a !== null && a.status !== "draft" && a.status !== "rejected",
+    );
+
+    const withMeta = await Promise.all(
+      visible.map(async (a) => ({
+        ...a,
+        videoUrl: a.videoFileId ? await ctx.storage.getUrl(a.videoFileId) : null,
+        isInterested: true as const,
+      })),
+    );
+    withMeta.sort(
+      (a, b) => (b.submittedAt ?? b.createdAt) - (a.submittedAt ?? a.createdAt),
+    );
+    return withMeta;
+  },
+});
+
+/**
  * Toggle "interested" for the (current sponsor, application) pair.
  * Lazily creates a sponsorAssignments record on first call, so sponsors
  * don't need an admin to pre-assign them — the assignment row now just
