@@ -1,5 +1,6 @@
 import { internalMutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { bumpStats } from "./lib/stats";
 
 export const handleClerkWebhook = internalMutation({
   args: {
@@ -52,6 +53,7 @@ export const handleClerkWebhook = internalMutation({
           createdAt: Date.now(),
           updatedAt: Date.now(),
         });
+        await bumpStats(ctx, { students: 1 });
       }
     }
 

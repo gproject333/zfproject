@@ -1,6 +1,7 @@
 import { query, mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { getOptionalUser, requireAdmin } from "../lib/auth";
+import { bumpStats } from "../lib/stats";
 
 /**
  * Returns every application a sponsor is allowed to see — i.e. anything past
@@ -90,13 +91,15 @@ export const assignSponsor = mutation({
       .first();
     if (existing) throw new Error("هذا السبونسر مربوط بهذا المشروع مسبقاً");
 
-    return await ctx.db.insert("sponsorAssignments", {
+    const id = await ctx.db.insert("sponsorAssignments", {
       sponsorId: args.sponsorId,
       applicationId: args.applicationId,
       assignedBy: admin._id,
       notes: args.notes,
       createdAt: Date.now(),
     });
+    await bumpStats(ctx, { sponsorAssignments: 1 });
+    return id;
   },
 });
 
@@ -104,7 +107,9 @@ export const removeSponsorAssignment = mutation({
   args: { assignmentId: v.id("sponsorAssignments") },
   handler: async (ctx, args) => {
     await requireAdmin(ctx);
+    const existing = await ctx.db.get(args.assignmentId);
     await ctx.db.delete(args.assignmentId);
+    if (existing) await bumpStats(ctx, { sponsorAssignments: -1 });
   },
 });
 
@@ -195,5 +200,6 @@ export const toggleSponsorInterest = mutation({
       createdAt: Date.now(),
       isInterested: true,
     });
+    await bumpStats(ctx, { sponsorAssignments: 1 });
   },
 });

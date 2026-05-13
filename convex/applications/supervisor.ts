@@ -6,6 +6,7 @@ import { getOptionalUser, requireSupervisor } from "../lib/auth";
 import { STATUS_LABELS, canTransition } from "../lib/statuses";
 import { assertMaxLength } from "../lib/validation";
 import { loadUsersMap, loadStudentsMap } from "../lib/users";
+import { bumpStats, counterForApplicationStatus } from "../lib/stats";
 
 export const listApplications = query({
   args: {
@@ -279,6 +280,15 @@ export const updateApplicationStatus = mutation({
 
     await ctx.db.patch(args.id, patch);
 
+    const fromCounter = counterForApplicationStatus(app.status);
+    const toCounter = counterForApplicationStatus(args.status);
+    if (fromCounter !== toCounter) {
+      await bumpStats(ctx, {
+        ...(fromCounter ? { [fromCounter]: -1 } : {}),
+        ...(toCounter ? { [toCounter]: 1 } : {}),
+      });
+    }
+
     await ctx.db.insert("applicationReviews", {
       applicationId: args.id,
       reviewerId: reviewer._id,
@@ -352,6 +362,15 @@ export const bulkUpdateStatus = mutation({
       if (args.rating !== undefined) patch.supervisorRating = args.rating;
 
       await ctx.db.patch(id, patch);
+
+      const fromCounter = counterForApplicationStatus(app.status);
+      const toCounter = counterForApplicationStatus(args.status);
+      if (fromCounter !== toCounter) {
+        await bumpStats(ctx, {
+          ...(fromCounter ? { [fromCounter]: -1 } : {}),
+          ...(toCounter ? { [toCounter]: 1 } : {}),
+        });
+      }
 
       await ctx.db.insert("applicationReviews", {
         applicationId: id,

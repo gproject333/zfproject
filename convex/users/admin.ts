@@ -2,6 +2,7 @@ import { query, mutation, internalMutation } from "../_generated/server";
 import { v } from "convex/values";
 import { requireAdmin, requireSupervisor, getOptionalUser } from "../lib/auth";
 import { internal } from "../_generated/api";
+import { bumpStats, counterForRole, readStats } from "../lib/stats";
 
 export const getStudentByApplication = query({
   args: { applicationId: v.id("applications") },
@@ -77,7 +78,14 @@ export const insertSupervisor = internalMutation({
       .first();
 
     if (existing) {
+      const oldCounter = counterForRole(existing.role);
       await ctx.db.patch(existing._id, { role: "supervisor", updatedAt: Date.now() });
+      if (oldCounter !== "supervisors") {
+        await bumpStats(ctx, {
+          ...(oldCounter ? { [oldCounter]: -1 } : {}),
+          supervisors: 1,
+        });
+      }
       return;
     }
 
@@ -92,6 +100,7 @@ export const insertSupervisor = internalMutation({
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
+    await bumpStats(ctx, { supervisors: 1 });
   },
 });
 
@@ -109,7 +118,14 @@ export const insertSponsor = internalMutation({
       .first();
 
     if (existing) {
+      const oldCounter = counterForRole(existing.role);
       await ctx.db.patch(existing._id, { role: "sponsor", updatedAt: Date.now() });
+      if (oldCounter !== "sponsors") {
+        await bumpStats(ctx, {
+          ...(oldCounter ? { [oldCounter]: -1 } : {}),
+          sponsors: 1,
+        });
+      }
       return;
     }
 
@@ -123,6 +139,7 @@ export const insertSponsor = internalMutation({
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
+    await bumpStats(ctx, { sponsors: 1 });
   },
 });
 
@@ -143,7 +160,7 @@ export const createUserByAdmin = mutation({
       .first();
     if (existing) throw new Error("الإيميل مسجل مسبقاً");
 
-    return await ctx.db.insert("users", {
+    const userId = await ctx.db.insert("users", {
       clerkId: "",
       email: args.email,
       name: args.name,
@@ -154,6 +171,9 @@ export const createUserByAdmin = mutation({
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
+    const counter = counterForRole(args.role);
+    if (counter) await bumpStats(ctx, { [counter]: 1 });
+    return userId;
   },
 });
 
@@ -179,37 +199,20 @@ export const getAdminStats = query({
   args: {},
   handler: async (ctx) => {
     await requireAdmin(ctx);
-
-    const [
-      students,
-      supervisors,
-      sponsors,
-      underReview,
-      accepted,
-      rejected,
-      needsModification,
-      assignments,
-    ] = await Promise.all([
-      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "student")).collect(),
-      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "supervisor")).collect(),
-      ctx.db.query("users").withIndex("by_role", (q) => q.eq("role", "sponsor")).collect(),
-      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "under_review")).collect(),
-      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "accepted")).collect(),
-      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "rejected")).collect(),
-      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "needs_modification")).collect(),
-      ctx.db.query("sponsorAssignments").collect(),
-    ]);
-
+    const s = await readStats(ctx);
     return {
-      totalStudents: students.length,
-      totalSupervisors: supervisors.length,
-      totalSponsors: sponsors.length,
+      totalStudents: s.students,
+      totalSupervisors: s.supervisors,
+      totalSponsors: s.sponsors,
       totalApplications:
-        underReview.length + accepted.length + rejected.length + needsModification.length,
-      underReviewApplications: underReview.length,
-      acceptedApplications: accepted.length,
-      rejectedApplications: rejected.length,
-      totalAssignments: assignments.length,
+        s.applicationsUnderReview +
+        s.applicationsAccepted +
+        s.applicationsRejected +
+        s.applicationsNeedsModification,
+      underReviewApplications: s.applicationsUnderReview,
+      acceptedApplications: s.applicationsAccepted,
+      rejectedApplications: s.applicationsRejected,
+      totalAssignments: s.sponsorAssignments,
     };
   },
 });
@@ -333,17 +336,12 @@ export const getApplicationStatusStats = query({
   args: {},
   handler: async (ctx) => {
     await requireAdmin(ctx);
-    const [underReview, accepted, rejected, needsModification] = await Promise.all([
-      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "under_review")).collect(),
-      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "accepted")).collect(),
-      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "rejected")).collect(),
-      ctx.db.query("applications").withIndex("by_status", (q) => q.eq("status", "needs_modification")).collect(),
-    ]);
+    const s = await readStats(ctx);
     return [
-      { status: "قيد المراجعة", count: underReview.length },
-      { status: "مقبول", count: accepted.length },
-      { status: "مرفوض", count: rejected.length },
-      { status: "يحتاج تعديل", count: needsModification.length },
+      { status: "قيد المراجعة", count: s.applicationsUnderReview },
+      { status: "مقبول", count: s.applicationsAccepted },
+      { status: "مرفوض", count: s.applicationsRejected },
+      { status: "يحتاج تعديل", count: s.applicationsNeedsModification },
     ];
   },
 });

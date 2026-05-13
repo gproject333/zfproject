@@ -4,6 +4,7 @@ import { paginationOptsValidator } from "convex/server";
 import { requireStudent, getOptionalUser } from "../lib/auth";
 import { assertArrayItemsMaxLength, assertMaxLength } from "../lib/validation";
 import { notifyAllSupervisors } from "../lib/notifications";
+import { bumpStats } from "../lib/stats";
 
 export const myApplications = query({
   args: { paginationOpts: paginationOptsValidator },
@@ -76,6 +77,7 @@ export const createApplication = mutation({
     });
 
     if (submitNow) {
+      await bumpStats(ctx, { applicationsUnderReview: 1 });
       await notifyAllSupervisors(ctx, {
         title: "طلب جديد بانتظار المراجعة",
         message: `قدّم ${student.name ?? "طالب"} طلباً جديداً: "${args.projectName}"`,
@@ -162,6 +164,16 @@ export const submitApplication = mutation({
       submittedAt: now,
     });
 
+    if (app.status === "draft") {
+      await bumpStats(ctx, { applicationsUnderReview: 1 });
+    } else {
+      // needs_modification → under_review
+      await bumpStats(ctx, {
+        applicationsNeedsModification: -1,
+        applicationsUnderReview: 1,
+      });
+    }
+
     const isResubmission = app.status === "needs_modification";
     await notifyAllSupervisors(ctx, {
       title: isResubmission ? "إعادة تقديم بعد التعديل" : "طلب جديد بانتظار المراجعة",
@@ -186,5 +198,9 @@ export const deleteApplication = mutation({
       throw new Error("لا يمكن حذف طلب في هذه الحالة");
 
     await ctx.db.delete(args.id);
+
+    if (app.status === "rejected") {
+      await bumpStats(ctx, { applicationsRejected: -1 });
+    }
   },
 });

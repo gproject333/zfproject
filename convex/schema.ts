@@ -286,6 +286,30 @@ export default defineSchema({
     .index("by_user_created", ["userId", "createdAt"]),
 
   // ============================================
+  // إحصائيات معتمدة (denormalized counters)
+  // ============================================
+  // Singleton row keyed by `key: "global"` that aggregates counts used by
+  // the admin dashboard. Maintained incrementally by mutations (user
+  // create, application status change, sponsor assignment) so the
+  // dashboard reads it in O(1) instead of running 8 indexed collects.
+  //
+  // Recompute the row from scratch via `internal.stats.recomputeStats`
+  // after a schema change or backfill.
+  stats: defineTable({
+    key: v.string(),
+    students: v.number(),
+    supervisors: v.number(),
+    sponsors: v.number(),
+    admins: v.number(),
+    applicationsUnderReview: v.number(),
+    applicationsAccepted: v.number(),
+    applicationsRejected: v.number(),
+    applicationsNeedsModification: v.number(),
+    sponsorAssignments: v.number(),
+    updatedAt: v.number(),
+  }).index("by_key", ["key"]),
+
+  // ============================================
   // ربط السبونسر بالمشاريع
   // ============================================
   sponsorAssignments: defineTable({
