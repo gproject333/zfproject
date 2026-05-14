@@ -1,5 +1,6 @@
 import { internalMutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { isUniversityEmail } from "./lib/validation";
 
 export const handleClerkWebhook = internalMutation({
   args: {
@@ -39,6 +40,11 @@ export const handleClerkWebhook = internalMutation({
           updatedAt: Date.now(),
         });
       } else {
+        // Only auto-provision a `student` account for verified university
+        // emails. External identities (e.g. sponsors) are created explicitly
+        // by an admin action that inserts its own row, so a stray Clerk
+        // signup with a non-university email is ignored here.
+        if (!isUniversityEmail(email)) return;
         await ctx.db.insert("users", {
           clerkId,
           email,

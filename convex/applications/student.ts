@@ -2,7 +2,11 @@ import { query, mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import { requireStudent, getOptionalUser } from "../lib/auth";
-import { assertArrayItemsMaxLength, assertMaxLength } from "../lib/validation";
+import {
+  assertArrayItemsMaxLength,
+  assertFileWithinLimit,
+  assertMaxLength,
+} from "../lib/validation";
 import { notifyAllSupervisors } from "../lib/notifications";
 
 export const myApplications = query({
@@ -61,6 +65,9 @@ export const createApplication = mutation({
         assertMaxLength("teamMemberPhone", m.phone);
       }
     }
+
+    await assertFileWithinLimit(ctx, "pdf", args.pdfFileId);
+    await assertFileWithinLimit(ctx, "video", args.videoFileId);
 
     const now = Date.now();
     const { submitNow, ...data } = args;
@@ -125,6 +132,9 @@ export const updateApplication = mutation({
         assertMaxLength("teamMemberPhone", m.phone);
       }
     }
+
+    await assertFileWithinLimit(ctx, "pdf", args.pdfFileId);
+    await assertFileWithinLimit(ctx, "video", args.videoFileId);
 
     const app = await ctx.db.get(args.id);
     if (!app) throw new Error("الطلب غير موجود");

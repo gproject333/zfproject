@@ -34,14 +34,14 @@ The technical scope of the project comprises the following engineering tasks, ea
 3. Enforce a four-role RBAC matrix at the Convex function boundary, with all sensitive operations gated by `ctx.auth.getUserIdentity()`.
 4. Implement the application state machine and immutable review log, ensuring optimistic concurrency control (OCC) safety on concurrent supervisor writes.
 5. Build the real-time presence and notification subsystems backed by Convex live queries.
-6. Implement secure file ingestion for PDF business plans and video pitches via Convex Storage, with client-side PDF previews powered by `react-pdf` and pitch-video playback through the native HTML5 `<video>` element.
+6. Implement secure file ingestion for PDF business plans and video pitches via Convex Storage — with server-enforced upload size caps (10 MB for PDFs, 100 MB for videos), client-side PDF previews powered by `react-pdf`, and pitch-video playback through the native HTML5 `<video>` element.
 7. Develop the markdown-authoring pipeline for articles (rich text rendering via `react-markdown` with `remark-gfm`) and the audience-targeting model.
 8. Construct the Instagram-style sponsor reels feed for accepted projects as a CSS scroll-snap vertical feed.
 9. Deliver the administrative dashboards using `recharts` for analytics and `@tanstack/react-table` for tabular management.
 10. Produce a fully RTL, accessible Arabic user interface using Tailwind CSS v4, HeroUI 3, and the Tajawal typeface.
 11. Execute a system-wide migration from custom legacy components to the HeroUI 3 component library to standardize UI behavior.
 12. Configure the production deployment pipeline, including a Vercel build hook that deploys the Convex backend on each release.
-13. Enforce end-to-end type safety and code quality through TypeScript strict mode and ESLint (including the `@convex-dev/eslint-plugin` Convex ruleset).
+13. Enforce end-to-end type safety and code quality through TypeScript strict mode and ESLint (the `@convex-dev/eslint-plugin` Convex ruleset), and author automated backend tests with Vitest and `convex-test` in the `edge-runtime` environment covering the RBAC matrix, the application state machine, and the upload-size and university-email guards.
 
 ## 1.4 Project Planning
 
@@ -70,7 +70,7 @@ Within the Scrum cadence above, the work is conceptually organized into the foll
 1. **Requirements Analysis.** Elicitation of functional and non-functional requirements through interviews with the university incubator office, faculty supervisors, and a sample of prospective sponsors. Outputs: prioritized product backlog, user-story map, and SRS (IEEE 830–style).
 2. **System Design.** Architectural design of the Next.js / Convex / Clerk stack; Convex schema and index design; entity-relationship diagram; high-fidelity UI mockups in HeroUI; definition of the RBAC matrix and the application state machine.
 3. **Implementation.** Iterative construction across Sprints 1 through 8, organised as vertical slices that deliver an end-to-end feature per sprint. Continuous integration is enforced through automated Convex deploys on the Vercel build pipeline.
-4. **Testing.** Static verification of Convex functions and UI code through TypeScript strict-mode compilation and ESLint (with the `@convex-dev/eslint-plugin` Convex ruleset); manual functional testing of critical UI flows; manual User Acceptance Testing per role with representatives of the incubator office.
+4. **Testing.** Static verification of Convex functions and UI code through TypeScript strict-mode compilation and ESLint (with the `@convex-dev/eslint-plugin` Convex ruleset); automated backend tests of Convex functions using Vitest with `convex-test` under the `edge-runtime` environment, covering the RBAC matrix, the application state machine, and the upload-size and university-email guards; manual functional testing of critical UI flows; manual User Acceptance Testing per role with representatives of the incubator office.
 5. **Deployment and Handover.** Provisioning of production Convex and Clerk environments, configuration of live API keys and Clerk JWT issuer, deployment to Vercel, runbook delivery, and stakeholder training.
 
 ## 1.6 The Scope of the Work
@@ -155,9 +155,10 @@ The following references correspond to the technologies, libraries, and methodol
 10. react-markdown and remark-gfm. https://github.com/remarkjs/react-markdown
 11. Recharts — *Recharts Charting Library*. https://recharts.org
 12. TanStack Table — *@tanstack/react-table v8*. https://tanstack.com/table
-13. Vercel — *Vercel Deployment Documentation*. https://vercel.com/docs
-14. Schwaber, K., & Sutherland, J. (2020). *The Scrum Guide*. https://scrumguides.org
-15. IEEE Std 830-1998 — *IEEE Recommended Practice for Software Requirements Specifications*.
+13. Vitest and convex-test — *Convex Function Testing*. https://docs.convex.dev/functions/testing
+14. Vercel — *Vercel Deployment Documentation*. https://vercel.com/docs
+15. Schwaber, K., & Sutherland, J. (2020). *The Scrum Guide*. https://scrumguides.org
+16. IEEE Std 830-1998 — *IEEE Recommended Practice for Software Requirements Specifications*.
 
 ## 1.11 Overview
 
@@ -394,10 +395,10 @@ The product is engineered under the following explicit assumptions:
 |---|---|---|
 | A1 | End users have continuous access to the public internet over HTTPS. | The system has no offline mode and relies on Convex live queries for real-time behaviour. |
 | A2 | Users access the platform from an evergreen browser (Chrome, Edge, Safari, or Firefox — latest two major versions). | Next.js 16, Tailwind v4, and HeroUI v3 target modern browsers; legacy browsers are not supported. |
-| A3 | Each user possesses a unique, verifiable email address or phone number accepted by Clerk. | Clerk is the sole identity provider; account creation is gated by Clerk's verification flows. |
+| A3 | Each self-registering user possesses a unique Al-Zaytoonah email address (`@zuj.edu.jo`, `@std-zuj.edu.jo`, or `@std.zuj.edu.jo`), verified by Clerk's email-code (OTP) flow. | Both the registration form and the Convex Clerk-webhook restrict self-service `student` accounts to university domains; non-university identities (e.g. external sponsors) are provisioned administratively. |
 | A4 | Al-Zaytoonah University formally endorses the platform and provides at least one administrator account during onboarding. | An empty `users` table with `role = "admin"` cannot bootstrap itself; the first admin is seeded manually. |
 | A5 | Sponsors are vetted and onboarded by an administrator rather than self-registering as sponsors. | Sponsor role is created administratively (see `convex/users/`) to preserve trust in the reels feed. |
-| A6 | Application content (PDFs and videos) does not exceed the file-size limits of the configured Convex Storage tier. | The platform delegates file persistence to Convex Storage rather than implementing its own storage layer. |
+| A6 | Application content stays within the platform's upload caps — 10 MB per PDF business plan and 100 MB per pitch video — enforced both client-side and server-side in the application mutations. | The platform delegates file persistence to Convex Storage; the caps keep storage growth and reviewer download times predictable. |
 | A7 | Arabic is the primary content language and Latin scripts may occur within technical terms. | The Tajawal font and RTL layout are tuned for Arabic with mixed-direction tolerance. |
 
 ### 4.3.2 Dependencies
@@ -453,6 +454,14 @@ The product depends on the following external services, frameworks, and librarie
 | Library | Role |
 |---|---|
 | svix v1.92.2 | Verification of incoming Clerk webhooks at `convex/http.ts`. |
+
+**Testing.**
+
+| Library | Role |
+|---|---|
+| Vitest v4.1.6 | Test runner for the Convex backend test suite (`pnpm test`). |
+| convex-test v0.0.52 | In-memory Convex backend mock for exercising queries, mutations, and actions. |
+| `@edge-runtime/vm` v5.0.0 | Edge-runtime environment that mirrors the Convex function runtime under test. |
 
 A breaking change in any of these dependencies — particularly Convex, Clerk, or Next.js — would constitute a material risk and would require a corresponding update sprint.
 
@@ -549,7 +558,7 @@ The features below collectively cover every capability implemented within **ZUJ 
 
 ### F-01. User Authentication and Identity Management
 
-- **Description.** Issues and validates user identity through Clerk, with sign-in, sign-up, email/phone verification, password recovery, and session management. JWTs issued by Clerk are validated by Convex against the issuer domain configured in `convex/auth.config.ts`, and incoming Clerk webhooks are verified with `svix` at `convex/http.ts` to synchronise user lifecycle events into the `users` table.
+- **Description.** Issues and validates user identity through Clerk, with sign-in, sign-up, email-code verification, password recovery, and session management. Self-service sign-up is restricted to Al-Zaytoonah email domains (`@zuj.edu.jo`, `@std-zuj.edu.jo`, `@std.zuj.edu.jo`) and confirmed through Clerk's email-code (OTP) flow. JWTs issued by Clerk are validated by Convex against the issuer domain configured in `convex/auth.config.ts`, and incoming Clerk webhooks are verified with `svix` at `convex/http.ts` to synchronise user lifecycle events into the `users` table — auto-provisioning a `student` record only for verified university emails.
 - **Priority.** High.
 - **Users Affected.** All authenticated user types (Student, Supervisor, Sponsor, Administrator).
 
@@ -585,13 +594,13 @@ The features below collectively cover every capability implemented within **ZUJ 
 
 ### F-07. PDF Business-Plan Upload and Preview
 
-- **Description.** Accepts PDF business-plan documents through a `react-dropzone` interface, persists them in Convex Storage, and renders an in-browser preview through `react-pdf` for reviewers and authorised viewers.
+- **Description.** Accepts PDF business-plan documents up to 10 MB — a cap enforced both client-side and in the Convex application mutation — through a `react-dropzone` interface, persists them in Convex Storage, and renders an in-browser preview through `react-pdf` for reviewers and authorised viewers.
 - **Priority.** High.
 - **Users Affected.** Student (upload), Supervisor, Sponsor, Administrator (view).
 
 ### F-08. Video Pitch Upload and Preview
 
-- **Description.** Accepts pitch videos (uploaded by students), stores them in Convex Storage, and plays them back through the native HTML5 `<video>` element both in the supervisor review screen and in the sponsor reels feed.
+- **Description.** Accepts pitch videos uploaded by students up to 100 MB — a cap enforced both client-side and in the Convex application mutation — stores them in Convex Storage, and plays them back through the native HTML5 `<video>` element both in the supervisor review screen and in the sponsor reels feed.
 - **Priority.** High.
 - **Users Affected.** Student (upload), Supervisor, Sponsor, Administrator (view).
 
@@ -687,7 +696,7 @@ The features below collectively cover every capability implemented within **ZUJ 
 
 ### F-24. Clerk Webhook Synchronisation
 
-- **Description.** Receives signed Clerk lifecycle webhooks (`user.created`, `user.updated`, `user.deleted`, etc.) at the Convex HTTP endpoint defined in `convex/http.ts`, verifies them with `svix`, and reconciles the `users` table accordingly, ensuring that Clerk and Convex never diverge.
+- **Description.** Receives signed Clerk lifecycle webhooks (`user.created`, `user.updated`, `user.deleted`, etc.) at the Convex HTTP endpoint defined in `convex/http.ts`, verifies them with `svix`, and reconciles the `users` table accordingly, ensuring that Clerk and Convex never diverge. New `student` accounts are auto-provisioned only for verified Al-Zaytoonah email domains; a stray Clerk sign-up with a non-university email is ignored, so application accounts cannot be created outside the registration flow.
 - **Priority.** High.
 - **Users Affected.** All authenticated user types (indirectly); operated by the system.
 
@@ -807,7 +816,7 @@ This chapter defines the non-functional quality targets that **ZUJ Incubator (ح
 | Mean Time To Recovery (MTTR) | **≤ 4 hours** for production-affecting defects. | Incident log during pilot. |
 | Data durability | **No** loss of any record in `applications`, `applicationReviews`, or `activityLogs` under normal operation; recovery via Convex point-in-time snapshots. | Convex platform guarantees + tabletop drill. |
 | Defect escape rate | **≤ 5 %** of defects shall escape from staging into production. | Defect-tracking audit at the end of Sprint 10. |
-| Audit-log completeness | **100 %** of state transitions shall produce a corresponding `applicationReviews` entry. | Code review of the state-machine mutations plus manual verification during UAT. |
+| Audit-log completeness | **100 %** of state transitions shall produce a corresponding `applicationReviews` entry. | Automated `convex-test` assertion that a legal transition writes an `applicationReviews` record (`convex/incubator.test.ts`), plus manual verification during UAT. |
 
 ## 7.4 Scalability
 
@@ -824,7 +833,7 @@ This chapter defines the non-functional quality targets that **ZUJ Incubator (ح
 | Quality Attribute | Target | Verification Method |
 |---|---|---|
 | Authentication | **100 %** of non-public endpoints shall reject anonymous or invalid Clerk JWTs. | Automated test calling each Convex function without a token. |
-| Authorisation (RBAC) | **0 %** of cross-role privilege escalations shall succeed in a structured penetration test. | Manual RBAC matrix test. |
+| Authorisation (RBAC) | **0 %** of cross-role privilege escalations shall succeed in a structured penetration test. | Automated `convex-test` RBAC suite (`convex/incubator.test.ts`) plus a manual RBAC matrix test. |
 | Transport security | **100 %** of HTTP traffic shall be served over HTTPS with TLS 1.2+ enforced by Vercel. | TLS scan. |
 | Webhook integrity | **100 %** of Clerk webhooks shall be verified via `svix` signatures before any database mutation. | Code review of `convex/http.ts`. |
 | Input validation | **100 %** of Convex functions shall declare argument validators (`v.*`). | Static check in CI. |
