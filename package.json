@@ -7,7 +7,8 @@
     "build": "convex deploy --cmd 'next build'",
     "start": "next start",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@clerk/backend": "^3.4.2",
@@ -44,6 +45,7 @@
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.1.6",
     "convex-test": "^0.0.52",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",

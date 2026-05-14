@@ -4,5 +4,11 @@ export default defineConfig({
   test: {
     environment: "edge-runtime",
     server: { deps: { inline: ["convex-test"] } },
+    coverage: {
+      provider: "v8",
+      include: ["convex/**/*.ts"],
+      exclude: ["convex/_generated/**", "convex/**/*.test.ts"],
+      reporter: ["text", "json-summary"],
+    },
   },
 });
