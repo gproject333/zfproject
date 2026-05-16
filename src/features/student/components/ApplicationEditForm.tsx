@@ -32,6 +32,7 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
       <FormError message={form.errors.form} className="mb-5" />
 
       <ApplicationFormFields
+        type={app.type}
         formData={form.formData}
         errors={form.errors}
         updateField={form.updateField}

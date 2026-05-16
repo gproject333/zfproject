@@ -15,10 +15,10 @@ import { useQuickAction } from "@/features/supervisor/hooks/useQuickAction";
 import { useBulkAction } from "@/features/supervisor/hooks/useBulkAction";
 import { useApplicationListColumns } from "@/features/supervisor/hooks/useApplicationListColumns";
 import {
-  useSupervisorListFilters,
+  useApplicationFilters,
   SUPERVISOR_STATUS_KEYS,
   SUPERVISOR_TYPE_KEYS,
-} from "@/features/supervisor/hooks/useSupervisorListFilters";
+} from "@/features/supervisor/hooks/useApplicationFilters";
 import {
   Select,
   SelectTrigger,
@@ -37,7 +37,7 @@ import {
 
 /**
  * Supervisor applications list. Filter state / paginated fetch /
- * selection lives in useSupervisorListFilters. CSV export in
+ * selection lives in useApplicationFilters. CSV export in
  * useApplicationCsvExport. Per-row and bulk action flows in their own
  * hooks. This component wires them into the react-table instance and
  * the UI.
@@ -68,7 +68,7 @@ export default function SupervisorApplicationList() {
     activeFilterCount,
     selectedIds,
     clearFilters,
-  } = useSupervisorListFilters();
+  } = useApplicationFilters();
 
   const quickAction = useQuickAction();
   const bulkAction = useBulkAction(() => setRowSelection({}));

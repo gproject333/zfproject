@@ -44,7 +44,7 @@ const PAGE_SIZE = 50;
  * plus handlers the component wires into the UI. The table instance
  * (useReactTable) stays in the component since its API is not memo-safe.
  */
-export function useSupervisorListFilters() {
+export function useApplicationFilters() {
   const searchParams = useSearchParams();
 
   // Coerce the URL ?status= value through the valid keys so a stale

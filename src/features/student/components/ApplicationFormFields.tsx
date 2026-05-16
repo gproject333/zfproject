@@ -1,25 +1,26 @@
 "use client";
 
-import { Plus, X, Info, Check } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import FormField from "@/features/applications/components/FormField";
-import { Tooltip } from "@/components/ui/Tooltip";
 import { Button, Input, TextArea } from "@/components/ui";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/Select";
-import type { FORM_EXTRA_FIELDS } from "@/lib/configs/application";
 import type {
   ApplicationFormData,
+  ApplicationType,
+  ExtraField,
   TeamMember,
-} from "@/features/student/hooks/useApplicationForm";
-
-type ExtraField = (typeof FORM_EXTRA_FIELDS)[keyof typeof FORM_EXTRA_FIELDS][number];
+} from "@/features/student/types/application-form";
+import EntrepreneurialFields from "./applicationForm/EntrepreneurialFields";
+import ItGraduationFields from "./applicationForm/ItGraduationFields";
+import UniversityFields from "./applicationForm/UniversityFields";
+import {
+  HintIcon,
+  pickField,
+  type FieldSlot,
+  type TypeFieldsProps,
+} from "./applicationForm/shared";
 
 interface ApplicationFormFieldsProps {
+  type: ApplicationType;
   formData: ApplicationFormData;
   errors: Record<string, string>;
   updateField: (name: string, value: string | string[] | TeamMember[]) => void;
@@ -27,22 +28,16 @@ interface ApplicationFormFieldsProps {
   extraFields: readonly ExtraField[];
 }
 
-function HintIcon({ text }: { text: string }) {
-  return (
-    <Tooltip content={text}>
-      <button
-        type="button"
-        className="inline-flex items-center justify-center cursor-help text-muted-foreground hover:text-foreground"
-        aria-label={text}
-        onClick={(e) => e.preventDefault()}
-      >
-        <Info className="w-4 h-4" />
-      </button>
-    </Tooltip>
-  );
-}
-
+/**
+ * Shared scaffold for all three application variants. Renders the
+ * core fields that every variant has in common (name, description,
+ * problem, audience, team, phone) and delegates the type-specific
+ * extras (`projectGoals`, `projectCategory`, `supervisor`,
+ * `universityBenefit`, `targetLocation`) to a per-type component
+ * via the `slot` prop.
+ */
 export default function ApplicationFormFields({
+  type,
   formData,
   errors,
   updateField,
@@ -63,96 +58,29 @@ export default function ApplicationFormFields({
   const removeMember = (index: number) => {
     updateField(
       "teamMembers",
-      teamMembers.filter((_, i) => i !== index)
+      teamMembers.filter((_, i) => i !== index),
     );
   };
 
-  const getField = (name: string) => extraFields.find((f) => f.name === name);
-  const goalsField = getField("projectGoals");
-  const categoryField = getField("projectCategory");
-  const phoneField = getField("phone");
-  const otherExtras = extraFields.filter(
-    (f) => f.name !== "projectGoals" && f.name !== "projectCategory" && f.name !== "phone"
-  );
+  const typeFieldsProps: TypeFieldsProps = {
+    formData,
+    errors,
+    updateField,
+    validateField,
+    extraFields,
+  };
 
-  const renderExtra = (field: ExtraField) => (
-    <FormField
-      key={field.name}
-      label={field.label}
-      required={field.required}
-      error={errors[field.name]}
-      hint={field.hint ? <HintIcon text={field.hint} /> : undefined}
-    >
-      {field.type === "multiselect" ? (
-        <div className="flex flex-wrap gap-2">
-          {field.options.map((opt) => {
-            const current = (formData[field.name] as string[] | undefined) ?? [];
-            const selected = Array.isArray(current) && current.includes(opt);
-            return (
-              <button
-                key={opt}
-                type="button"
-                onClick={() => {
-                  const next = selected
-                    ? current.filter((v) => v !== opt)
-                    : [...current, opt];
-                  updateField(field.name, next);
-                  validateField(field.name, next);
-                }}
-                aria-pressed={selected}
-                className={`nb-badge px-4 py-2 text-sm font-bold transition-colors cursor-pointer ${
-                  selected
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted hover:bg-muted/70"
-                }`}
-              >
-                {selected && <Check className="w-3.5 h-3.5" />}
-                {opt}
-              </button>
-            );
-          })}
-        </div>
-      ) : field.type === "select" ? (
-        <Select
-          value={(formData[field.name] as string) ?? ""}
-          onValueChange={(val) => {
-            updateField(field.name, val);
-            validateField(field.name, val);
-          }}
-        >
-          <SelectTrigger hasError={!!errors[field.name]}>
-            <SelectValue placeholder="اختر..." />
-          </SelectTrigger>
-          <SelectContent>
-            {field.options.map((opt) => (
-              <SelectItem key={opt} value={opt}>
-                {opt}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      ) : field.type === "textarea" ? (
-        <TextArea
-          rows={3}
-          fullWidth
-          className={`resize-none ${errors[field.name] ? "!border-destructive" : ""}`}
-          placeholder={field.placeholder}
-          value={(formData[field.name] as string) ?? ""}
-          onChange={(e) => updateField(field.name, e.target.value)}
-          onBlur={() => validateField(field.name)}
-        />
-      ) : (
-        <Input
-          fullWidth
-          className={errors[field.name] ? "!border-destructive" : ""}
-          placeholder={field.placeholder}
-          value={(formData[field.name] as string) ?? ""}
-          onChange={(e) => updateField(field.name, e.target.value)}
-          onBlur={() => validateField(field.name)}
-        />
-      )}
-    </FormField>
-  );
+  const renderTypeSlot = (slot: FieldSlot) => {
+    if (type === "entrepreneurial_idea") {
+      return <EntrepreneurialFields slot={slot} {...typeFieldsProps} />;
+    }
+    if (type === "it_graduation") {
+      return <ItGraduationFields slot={slot} {...typeFieldsProps} />;
+    }
+    return <UniversityFields slot={slot} {...typeFieldsProps} />;
+  };
+
+  const phoneField = pickField(extraFields, "phone");
 
   return (
     <div className="space-y-4">
@@ -199,8 +127,8 @@ export default function ApplicationFormFields({
         />
       </FormField>
 
-      {/* 3. Goals (type-specific, optional slot) */}
-      {goalsField && renderExtra(goalsField)}
+      {/* 3. Type-specific: goals (or nothing for university variant) */}
+      {renderTypeSlot("afterDescription")}
 
       {/* 4. Problem statement */}
       <FormField label="المشكلة التي يحلها المشروع" required error={errors.problemStatement}>
@@ -227,13 +155,10 @@ export default function ApplicationFormFields({
         />
       </FormField>
 
-      {/* 6. Project category */}
-      {categoryField && renderExtra(categoryField)}
+      {/* 6. Type-specific: projectCategory + supervisor / universityBenefit / targetLocation */}
+      {renderTypeSlot("beforeTeam")}
 
-      {/* 7. Other type-specific extras (supervisor, universityBenefit, targetLocation...) */}
-      {otherExtras.map(renderExtra)}
-
-      {/* 8. Team members */}
+      {/* 7. Team members */}
       <FormField label="أعضاء الفريق" error={errors.teamMembers}>
         <div className="space-y-2">
           {teamMembers.map((member, i) => (
@@ -277,7 +202,7 @@ export default function ApplicationFormFields({
         </div>
       </FormField>
 
-      {/* 9. Phone — dedicated slot with digits-only filter */}
+      {/* 8. Phone — dedicated slot with digits-only filter, shared across all variants */}
       {phoneField && (
         <FormField
           label="رقم الهاتف"

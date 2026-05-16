@@ -82,6 +82,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
               المعلومات الأساسية
             </h3>
             <ApplicationFormFields
+              type={type}
               formData={form.formData}
               errors={form.errors}
               updateField={form.updateField}
