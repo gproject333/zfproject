@@ -23,7 +23,7 @@ export default function RegisterForm() {
 
   const [otpCode, setOtpCode] = useState("");
 
-  // كليات وتخصصات من DB
+  // Colleges + departments loaded from the database.
   const colleges = useQuery(api.colleges.list, {});
   const selectedCollege = colleges?.find((c) => c.name === formData.college);
   const departments = useQuery(
@@ -104,7 +104,7 @@ export default function RegisterForm() {
 
           <div id="clerk-captcha" />
 
-          {/* Step 1 — البيانات الأساسية */}
+          {/* Step 1 — basic info */}
           {step === 1 && (
             <div className="space-y-5">
               <FloatingTextInput
@@ -160,7 +160,7 @@ export default function RegisterForm() {
             </div>
           )}
 
-          {/* Step 2 — التحقق من البريد OTP */}
+          {/* Step 2 — email OTP verification */}
           {step === 2 && (
             <div className="space-y-5">
               <div className="text-center py-2">
@@ -234,7 +234,7 @@ export default function RegisterForm() {
             </div>
           )}
 
-          {/* Step 3 — الأمان والقسم */}
+          {/* Step 3 — password + (for students) college/department */}
           {step === 3 && (
             <div className="space-y-5">
               {isStudent && (

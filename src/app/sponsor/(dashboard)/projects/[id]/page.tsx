@@ -16,7 +16,7 @@ export default function SponsorProjectReelsPage() {
   const appId = params.id as Id<"applications">;
 
   const { app, videoUrl } = useApplication(appId);
-  // الجلب الجديد للربط بين الراعي والمشروع بناءً على التصميم السينمائي
+  // Sponsor↔project link used by the cinematic reels design.
   const assignment = useQuery(api.applications.sponsor.getAssignmentByProject, { applicationId: appId });
   const toggleInterest = useMutation(api.applications.sponsor.toggleSponsorInterest);
 
@@ -49,20 +49,19 @@ export default function SponsorProjectReelsPage() {
 
   return (
     <div className="flex justify-center items-center h-full sm:-mt-2">
-      {/* 
-        تصميم Reels السينمائي: يأخذ شكل هاتف 
-        ويحوي الفيديو بكامل مساحته مع أزرار الإعجاب الجانبية والمحتوى على الأسفل 
-      */}
+      {/* Cinematic reels frame: a phone-shaped card that fills with the
+          project video and floats interest buttons + a description block
+          on top, TikTok-style. */}
       <div 
         className="relative w-full max-w-[420px] aspect-[9/16] max-h-[85vh] rounded-3xl overflow-hidden bg-black nb-border-thick shadow-2xl flex flex-col justify-center animate-fade-in mx-auto"
         dir="rtl"
       >
-        {/* ملف الفيديو الخلفي */}
+        {/* Background video */}
         {videoUrl ? (
-          <video 
-            controls 
-            // autoPlay 
-            // muted // ينصح بـ muted في حال تفعيل الـ Autoplay 
+          <video
+            controls
+            // autoPlay
+            // muted // Required if autoPlay is re-enabled (browser autoplay policy).
             playsInline
             src={videoUrl} 
             className="absolute inset-0 w-full h-full object-cover z-0" 
@@ -74,10 +73,10 @@ export default function SponsorProjectReelsPage() {
           </div>
         )}
 
-        {/* طبقة التدرج اللوني للوضوح */}
+        {/* Gradient overlay so the bottom text stays readable. */}
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/30 to-transparent pointer-events-none opacity-80" />
 
-        {/* الشريط العلوي */}
+        {/* Top bar */}
         <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
           <span className="text-[10px] font-bold text-white/60 bg-black/40 px-3 py-1 rounded-full backdrop-blur-md">
             تصفح المشاريع
@@ -91,7 +90,7 @@ export default function SponsorProjectReelsPage() {
           </button>
         </div>
 
-        {/* قائمة الأفعال الجانبية (Style TikTok Actions) */}
+        {/* TikTok-style side action column. */}
         <div className="absolute bottom-32 left-4 z-20 flex flex-col items-center gap-5">
           <button 
             onClick={handleToggle}
@@ -115,22 +114,22 @@ export default function SponsorProjectReelsPage() {
           </button>
         </div>
 
-        {/* تفاصيل المشروع العائمة في الأسفل */}
+        {/* Floating project details at the bottom. */}
         <div className="absolute bottom-0 left-0 right-0 p-6 z-20 text-white pointer-events-none pb-8 pr-6 pl-20">
-          
-          {/* النوع */}
+
+          {/* Type badge */}
           <div className="inline-flex mb-3 pointer-events-auto">
             <span className="text-[10px] font-extrabold px-3 py-1.5 bg-primary/90 text-primary-foreground backdrop-blur-md nb-border rounded-lg shadow-lg">
               {typeCfg?.label}
             </span>
           </div>
           
-          {/* العنوان */}
+          {/* Title */}
           <h2 className="text-2xl sm:text-3xl font-black mb-3 leading-tight drop-shadow-xl w-[90%]">
             {app.projectName}
           </h2>
           
-          {/* الوصف (ملخص قصير) */}
+          {/* Short description */}
           <div className="relative">
             <p className="text-sm font-medium text-white/90 leading-relaxed drop-shadow-lg line-clamp-4 max-h-[80px] overflow-hidden">
               {app.description}

@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { useConvexAuth } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { getRoleHomepage } from "@/lib/roles";
 
 /**
- * بعد تسجيل الدخول أو التحقق من الإيميل، Clerk يُنشئ الجلسة فوراً لكن
- * webhook Convex قد يتأخر بضع ثوانٍ. نتظر حتى 8 ثوانٍ قبل الاستسلام.
+ * After login or email verification, Clerk has a session immediately but
+ * the Convex webhook can lag a few seconds. We wait up to 8 seconds for
+ * the user document to land before giving up and bouncing back to /login.
  */
 export default function LoginRedirectPage() {
   const router = useRouter();
@@ -24,24 +26,19 @@ export default function LoginRedirectPage() {
   useEffect(() => {
     if (authLoading) return;
 
-    // غير مسجل دخول في Clerk
+    // Not signed in with Clerk — bounce to the login page.
     if (!isAuthenticated) {
       router.replace("/login");
       return;
     }
 
-    // مسجل دخول لكن Convex لم يجد المستخدم بعد — ننتظر الـ webhook
+    // Signed in, but Convex hasn't seen the user yet — wait for the webhook.
     if (user === undefined || user === null) {
       if (timedOut) router.replace("/login");
       return;
     }
 
-    switch (user.role) {
-      case "supervisor": router.replace("/supervisor"); break;
-      case "admin":      router.replace("/admin");      break;
-      case "sponsor":    router.replace("/sponsor");    break;
-      default:           router.replace("/student");    break;
-    }
+    router.replace(getRoleHomepage(user.role));
   }, [authLoading, isAuthenticated, user, timedOut, router]);
 
   return (

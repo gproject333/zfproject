@@ -38,7 +38,7 @@ interface UseRegisterFormResult {
   formData: RegisterFormData;
   errors: Record<string, string>;
   loading: boolean;
-  /** 1=بيانات، 2=OTP، 3=أمان والقسم */
+  /** 1 = basic info, 2 = OTP, 3 = password + college/department. */
   step: 1 | 2 | 3;
   showPassword: boolean;
   isStudent: boolean;
@@ -97,7 +97,7 @@ export function useRegisterForm(): UseRegisterFormResult {
     return Object.keys(e).length === 0;
   };
 
-  /** الخطوة 1: التحقق من البيانات وإرسال OTP */
+  /** Step 1: validate the basic-info form and send the OTP email. */
   const submitStep1 = useCallback(async () => {
     if (!validateStep1()) return;
     setLoading(true);
@@ -131,7 +131,7 @@ export function useRegisterForm(): UseRegisterFormResult {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.name, formData.email, formData.studentId, signUp]);
 
-  /** الخطوة 2: التحقق من كود OTP */
+  /** Step 2: verify the OTP code submitted by the user. */
   const submitOtp = useCallback(
     async (code: string) => {
       if (!code || code.length < 6) {
@@ -159,7 +159,7 @@ export function useRegisterForm(): UseRegisterFormResult {
     [signUp],
   );
 
-  /** الخطوة 3: تعيين كلمة المرور (والكلية/التخصص للطلاب) وإتمام التسجيل */
+  /** Step 3: set the password (and college/department for students) and finalise sign-up. */
   const submitStep3 = useCallback(
     async (onSuccess: () => void) => {
       const e: Record<string, string> = {};

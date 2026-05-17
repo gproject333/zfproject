@@ -45,7 +45,7 @@ export default function ChartsRow({
 }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Bar Chart — توزيع الطلاب */}
+      {/* Bar chart — students per college */}
       <Card className="p-5 lg:col-span-1">
         <h3 className="font-extrabold text-base mb-4 flex items-center gap-2">
           <GraduationCap className="w-5 h-5 text-info" />
@@ -58,7 +58,7 @@ export default function ChartsRow({
         )}
       </Card>
 
-      {/* Line Chart — معدل التسجيل الشهري */}
+      {/* Line chart — monthly student registrations */}
       <Card className="p-5 lg:col-span-1">
         <h3 className="font-extrabold text-base mb-4 flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-success" />
@@ -79,7 +79,7 @@ export default function ChartsRow({
         )}
       </Card>
 
-      {/* Pie Chart — حالة المشاريع */}
+      {/* Pie chart — applications by status */}
       <Card className="p-5 lg:col-span-1">
         <h3 className="font-extrabold text-base mb-4 flex items-center gap-2">
           <FileText className="w-5 h-5 text-warning" />
