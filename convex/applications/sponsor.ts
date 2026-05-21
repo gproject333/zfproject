@@ -1,6 +1,7 @@
 import { query, mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { getOptionalUser, requireAdmin } from "../lib/auth";
+import { assertMaxLength } from "../lib/validation";
 
 /**
  * Returns every application a sponsor is allowed to see — i.e. anything past
@@ -81,6 +82,7 @@ export const assignSponsor = mutation({
   },
   handler: async (ctx, args) => {
     const admin = await requireAdmin(ctx);
+    assertMaxLength("assignmentNotes", args.notes);
 
     const existing = await ctx.db
       .query("sponsorAssignments")

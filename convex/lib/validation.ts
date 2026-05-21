@@ -34,6 +34,9 @@ export const FIELD_LIMITS = {
   // entrepreneurial guide
   guideTitle: 200,
   guideUrl: 500,
+
+  // sponsor assignments
+  assignmentNotes: 1000,
 } as const;
 
 export type FieldLimitKey = keyof typeof FIELD_LIMITS;
@@ -62,6 +65,7 @@ const FIELD_LABELS: Record<FieldLimitKey, string> = {
   bannerLinkLabel: "نص الرابط",
   guideTitle: "عنوان المورد",
   guideUrl: "رابط المورد",
+  assignmentNotes: "ملاحظات التعيين",
 };
 
 export function assertMaxLength(
