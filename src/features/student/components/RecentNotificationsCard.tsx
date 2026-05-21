@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import {Bell} from "lucide-react";
-import { Spinner, Card} from "@/components/ui";
+import { Card } from "@/components/ui";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { api } from "../../../../convex/_generated/api";
 import NotificationItem from "@/components/NotificationItem";
 import { useRecentNotifications } from "@/features/student/hooks/useRecentNotifications";
@@ -30,20 +31,28 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
   return (
     <Card className="p-0 overflow-hidden">
       <div className="flex items-center justify-between px-5 py-3.5 border-b-2 border-foreground/10">
-        <h3 className="font-extrabold flex items-center gap-2">
+        <h3 className="font-semibold flex items-center gap-2">
           <Bell className="w-4 h-4 text-accent" />
           آخر الإشعارات
         </h3>
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10">
-          <Spinner size="md" color="current" className="text-muted-foreground" />
+        <div className="divide-y divide-foreground/10">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex items-center gap-3 px-5 py-3.5">
+              <Skeleton className="w-8 h-8 rounded-lg" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-3.5 w-2/3" />
+                <Skeleton className="h-3 w-1/3" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : notifications.length === 0 ? (
         <div className="text-center py-10 px-5">
           <Bell className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm font-bold text-muted-foreground">لا توجد إشعارات</p>
+          <p className="text-sm font-medium text-muted-foreground">لا توجد إشعارات</p>
         </div>
       ) : (
         <div>

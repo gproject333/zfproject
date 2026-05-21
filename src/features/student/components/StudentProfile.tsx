@@ -45,7 +45,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
   return (
     <div className="animate-fade-in flex justify-center">
       <div className="w-full max-w-xl space-y-6">
-        <h2 className="text-2xl font-extrabold text-center">ملفي الشخصي</h2>
+        <h2 className="text-2xl font-bold text-center">ملفي الشخصي</h2>
 
         {/* ─── بطاقة البيانات الشخصية ─── */}
         <Card className="p-6 space-y-6">
@@ -64,7 +64,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-3xl font-black text-muted-foreground">
+                <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-muted-foreground">
                   {profile.user?.name?.charAt(0) ?? "?"}
                 </div>
               )}
@@ -79,7 +79,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                 onChange={handleAvatarChange}
               />
             </button>
-            <p className="text-xs text-muted-foreground font-bold">
+            <p className="text-xs text-muted-foreground">
               اضغط لتغيير الصورة
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
           {/* حقول النموذج */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold mb-1.5">
+              <label className="block text-xs font-medium mb-1.5">
                 الاسم الكامل
               </label>
               <Input
@@ -99,7 +99,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             </div>
 
             <div>
-              <label className="block text-xs font-bold mb-1.5">
+              <label className="block text-xs font-medium mb-1.5">
                 البريد الإلكتروني
               </label>
               <Input
@@ -112,7 +112,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             </div>
 
             <div>
-              <label className="block text-xs font-bold mb-1.5">
+              <label className="block text-xs font-medium mb-1.5">
                 الرقم الجامعي
               </label>
               <Input
@@ -127,7 +127,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             {showAcademicFields && (
               <>
                 <div>
-                  <label className="block text-xs font-bold mb-1.5">الكلية</label>
+                  <label className="block text-xs font-medium mb-1.5">الكلية</label>
                   <Select
                     value={profile.form.college}
                     onValueChange={(v) => {
@@ -149,7 +149,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold mb-1.5">التخصص</label>
+                  <label className="block text-xs font-medium mb-1.5">التخصص</label>
                   <Select
                     value={profile.form.department}
                     onValueChange={(v) => profile.setField("department", v)}
@@ -173,7 +173,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             )}
 
             <div>
-              <label className="block text-xs font-bold mb-1.5">
+              <label className="block text-xs font-medium mb-1.5">
                 رقم الهاتف
               </label>
               <Input
@@ -197,7 +197,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             </div>
 
             <div>
-              <label className="block text-xs font-bold mb-1.5 flex items-center gap-1.5">
+              <label className="block text-xs font-medium mb-1.5 flex items-center gap-1.5">
                 <Link2 className="w-3.5 h-3.5 text-[#0A66C2]" />
                 رابط LinkedIn
               </label>
@@ -243,7 +243,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
 
         {/* ─── بطاقة الأمان ─── */}
         <Card className="p-6 space-y-4">
-          <h3 className="font-extrabold text-base flex items-center gap-2">
+          <h3 className="font-semibold text-base flex items-center gap-2">
             <Shield className="w-5 h-5 text-accent" />
             الأمان
           </h3>
@@ -275,7 +275,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold mb-1.5">
+                  <label className="block text-xs font-medium mb-1.5">
                     رمز التحقق
                   </label>
                   <Input
@@ -290,7 +290,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold mb-1.5">
+                  <label className="block text-xs font-medium mb-1.5">
                     كلمة المرور الجديدة
                   </label>
                   <Input

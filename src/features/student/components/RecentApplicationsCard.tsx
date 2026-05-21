@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {FileText, ChevronLeft} from "lucide-react";
-import { Spinner, Card} from "@/components/ui";
+import { Card } from "@/components/ui";
+import { Skeleton } from "@/components/ui/Skeleton";
 import ApplicationCard from "@/features/applications/components/ApplicationCard";
 import { useRecentApplications } from "@/features/student/hooks/useRecentApplications";
 
@@ -19,7 +20,7 @@ export default function RecentApplicationsCard({ limit = 3 }: { limit?: number }
   return (
     <Card className="p-0 overflow-hidden">
       <div className="flex items-center justify-between px-5 py-3.5 border-b-2 border-foreground/10">
-        <h3 className="font-extrabold flex items-center gap-2">
+        <h3 className="font-semibold flex items-center gap-2">
           <FileText className="w-4 h-4 text-accent" />
           آخر طلباتي
         </h3>
@@ -33,13 +34,22 @@ export default function RecentApplicationsCard({ limit = 3 }: { limit?: number }
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10">
-          <Spinner size="md" color="current" className="text-muted-foreground" />
+        <div className="p-3 space-y-3">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="nb-card p-5 flex items-center gap-4">
+              <Skeleton className="h-7 w-20 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+              </div>
+              <Skeleton className="w-5 h-5 rounded" />
+            </div>
+          ))}
         </div>
       ) : applications.length === 0 ? (
         <div className="text-center py-10 px-5">
           <FileText className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm font-bold text-muted-foreground">لا توجد طلبات بعد</p>
+          <p className="text-sm font-medium text-muted-foreground">لا توجد طلبات بعد</p>
         </div>
       ) : (
         <div className="p-3 space-y-3">

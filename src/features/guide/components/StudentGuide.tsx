@@ -112,12 +112,12 @@ export default function StudentGuide() {
   return (
     <div className="animate-fade-in max-w-3xl mx-auto">
       <div className="mb-8 flex items-start gap-4">
-        <div className="w-12 h-12 bg-primary nb-border rounded-xl flex items-center justify-center shrink-0">
-          <HelpCircle className="w-6 h-6 text-white" />
+        <div className="w-12 h-12 bg-muted nb-border rounded-xl flex items-center justify-center shrink-0">
+          <HelpCircle className="w-6 h-6 text-primary" />
         </div>
         <div>
-          <h1 className="text-2xl font-extrabold mb-1">دليل تقديم الطلب</h1>
-          <p className="text-sm text-muted-foreground font-bold">
+          <h1 className="text-2xl font-bold mb-1">دليل تقديم الطلب</h1>
+          <p className="text-sm text-muted-foreground">
             نصائح عملية لرفع ملف المشروع والفيديو التعريفي بأفضل جودة
           </p>
         </div>
@@ -127,18 +127,14 @@ export default function StudentGuide() {
         {SECTIONS.map((section) => {
           const Icon = section.icon;
           return (
-            <section
-              key={section.title}
-              className="nb-card p-6 animate-slide-up"
-              style={{ opacity: 0 }}
-            >
+            <section key={section.title} className="nb-card p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div
                   className={`w-11 h-11 ${section.iconBg} nb-border rounded-lg flex items-center justify-center shrink-0`}
                 >
                   <Icon className="w-5 h-5 text-white" />
                 </div>
-                <h2 className="text-lg font-extrabold">{section.title}</h2>
+                <h2 className="text-lg font-semibold">{section.title}</h2>
               </div>
               <ul className="space-y-3">
                 {section.tips.map((tip, i) => (

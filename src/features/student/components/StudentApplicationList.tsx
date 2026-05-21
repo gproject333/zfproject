@@ -29,7 +29,7 @@ export default function StudentApplicationList() {
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
-            <h2 className="text-2xl font-extrabold flex items-center gap-2">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
               <FileText className="w-6 h-6 text-primary" />
               طلباتي
             </h2>
@@ -44,22 +44,22 @@ export default function StudentApplicationList() {
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-extrabold flex items-center gap-2">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
             <FileText className="w-6 h-6 text-primary" />
             طلباتي
           </h2>
-          <p className="text-sm text-muted-foreground font-medium">
+          <p className="text-sm text-muted-foreground">
             تابع حالة طلباتك واقرأ ملاحظات المشرف
           </p>
         </div>
-        <Button onPress={() => router.push("/student/new")} variant="secondary" size="sm">
+        <Button onPress={() => router.push("/student/new")} variant="primary" size="sm">
           <Plus className="w-4 h-4" />
           طلب جديد
         </Button>
       </div>
 
-      <div className="relative mb-4">
-        <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+      <div className="relative mb-4 max-w-sm">
+        <Search className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
           type="text"
           placeholder="ابحث عن طلب..."
@@ -67,7 +67,7 @@ export default function StudentApplicationList() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           fullWidth
-          className="pr-11"
+          className="pr-9 py-1.5 rounded-lg text-sm"
         />
       </div>
 
@@ -104,32 +104,33 @@ export default function StudentApplicationList() {
               : "جرّب فلتراً آخر أو قدّم طلباً جديداً."
           }
           action={
-            <Button onPress={() => router.push("/student/new")} variant="secondary">
+            <Button onPress={() => router.push("/student/new")} variant="primary">
               <Plus className="w-5 h-5" />
               تقديم طلب جديد
             </Button>
           }
         />
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredApps.map((app, i) => (
             <ApplicationCard
               key={app._id}
               application={app}
               index={i}
+              square
               onClick={() => router.push(`/student/applications/${app._id}`)}
             />
           ))}
 
           {status === "CanLoadMore" && (
-            <div className="flex justify-center pt-2">
+            <div className="col-span-full flex justify-center pt-2">
               <Button onPress={loadMore} variant="outline">
                 تحميل المزيد
               </Button>
             </div>
           )}
           {status === "LoadingMore" && (
-            <div className="flex justify-center pt-2">
+            <div className="col-span-full flex justify-center pt-2">
               <Spinner size="md" color="current" className="text-primary" />
             </div>
           )}

@@ -9,14 +9,14 @@
 /* --- CSS Variables (Light) — ألوان جامعة الزيتونة --- */
 :root {
   --background: #F5F9F5;
-  --foreground: #1A1A1A;
-  --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
+  --foreground: #13201A;
+  --card: #FCFEFC;
+  --card-foreground: #13201A;
 
   --primary: #1F5C2E;
   --primary-foreground: #FFFFFF;
   --secondary: #C9A227;
-  --secondary-foreground: #1A1A1A;
+  --secondary-foreground: #13201A;
   --accent: #2D7A3E;
   --accent-foreground: #FFFFFF;
 
@@ -25,7 +25,7 @@
   --success: #16A34A;
   --success-foreground: #FFFFFF;
   --warning: #EAB308;
-  --warning-foreground: #1A1A1A;
+  --warning-foreground: #13201A;
   --info: #2563EB;
   --info-foreground: #FFFFFF;
 
@@ -36,9 +36,8 @@
   --status-modification: #EA580C;
 
   --muted: #E8F0E8;
-  --muted-foreground: #6B7280;
-  --border: #1A1A1A;
-  --input: #FFFFFF;
+  --muted-foreground: #5F6B62;
+  --input: #FCFEFC;
   --ring: #1F5C2E;
 
   --shadow-offset: 3px;

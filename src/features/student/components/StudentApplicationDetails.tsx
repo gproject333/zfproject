@@ -1,7 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import {Edit3, Send, X, Trash2} from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import {Edit3, Send, X, Trash2, FileQuestion} from "lucide-react";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import PdfViewer from "@/components/PdfViewerLazy";
 import ApplicationDetailsView from "@/features/applications/components/ApplicationDetailsView";
@@ -10,7 +10,8 @@ import StatusStepper from "@/features/applications/components/StatusStepper";
 import { useStudentApplicationDetails } from "@/features/student/hooks/useStudentApplicationDetails";
 import ApplicationEditForm from "./ApplicationEditForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
-import { Breadcrumbs, Button, Spinner } from "@/components/ui";
+import { Breadcrumbs, Button, Card } from "@/components/ui";
+import { SkeletonApplicationDetail } from "@/components/ui/Skeleton";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 /**
@@ -20,6 +21,7 @@ import { Tooltip } from "@/components/ui/Tooltip";
  */
 export default function StudentApplicationDetails() {
   const params = useParams();
+  const router = useRouter();
   const appId = params.id as Id<"applications">;
   const {
     app,
@@ -41,14 +43,30 @@ export default function StudentApplicationDetails() {
 
   if (app === undefined) {
     return (
-      <div className="flex justify-center py-20">
-        <Spinner size="lg" color="current" className="text-primary" />
+      <div className="max-w-4xl mx-auto">
+        <SkeletonApplicationDetail />
       </div>
     );
   }
 
   if (app === null) {
-    return <div className="text-center py-20 font-bold">الطلب غير موجود</div>;
+    return (
+      <Card className="max-w-md mx-auto mt-12 p-10 text-center">
+        <div className="w-16 h-16 rounded-2xl bg-muted nb-border flex items-center justify-center mx-auto mb-4">
+          <FileQuestion className="w-8 h-8 text-muted-foreground" />
+        </div>
+        <h2 className="text-lg font-semibold mb-1">الطلب غير موجود</h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          قد يكون الطلب محذوفاً أو أن الرابط غير صحيح.
+        </p>
+        <Button
+          onPress={() => router.push("/student/applications")}
+          variant="primary"
+        >
+          العودة إلى طلباتي
+        </Button>
+      </Card>
+    );
   }
 
   return (

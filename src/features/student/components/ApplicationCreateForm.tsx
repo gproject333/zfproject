@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import {ArrowLeft, Save, Send, FileText, AlertCircle, CheckCircle2} from "lucide-react";
+import {ArrowRight, Save, Send, FileText, AlertCircle, CheckCircle2} from "lucide-react";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import FileUploadFields from "@/features/applications/components/FileUploadFields";
 import FormError from "@/features/applications/components/FormError";
@@ -51,16 +51,17 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
       <div className="flex items-center gap-3 mb-6">
         <button
           onClick={() => router.push("/student/new")}
+          aria-label="رجوع"
           className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover shrink-0"
         >
-          <ArrowLeft className="w-5 h-5 rotate-180" />
+          <ArrowRight className="w-5 h-5" />
         </button>
         <div className={`w-12 h-12 ${config.bgColor} nb-border rounded-xl flex items-center justify-center shrink-0`}>
           <Icon className="w-6 h-6" />
         </div>
         <div>
-          <h2 className="text-xl font-extrabold">{config.formTitle}</h2>
-          <p className="text-sm text-muted-foreground font-medium">{config.formSubtitle}</p>
+          <h2 className="text-xl font-bold">{config.formTitle}</h2>
+          <p className="text-sm text-muted-foreground">{config.formSubtitle}</p>
         </div>
       </div>
 

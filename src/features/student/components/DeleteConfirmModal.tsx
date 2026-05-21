@@ -27,7 +27,7 @@ export default function DeleteConfirmModal({
             <Trash2 className="w-6 h-6 text-destructive" />
           </div>
           <div>
-            <h3 className="font-extrabold">حذف الطلب</h3>
+            <h3 className="font-semibold">حذف الطلب</h3>
             <p className="text-sm text-muted-foreground">هذا الإجراء لا يمكن التراجع عنه</p>
           </div>
         </div>
