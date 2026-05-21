@@ -1,23 +1,24 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import {Edit3, Send, X, Trash2, FileQuestion} from "lucide-react";
+import { Edit3, X, Trash2, FileQuestion } from "lucide-react";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import PdfViewer from "@/components/PdfViewerLazy";
-import ApplicationDetailsView from "@/features/applications/components/ApplicationDetailsView";
-import ApplicationHeader from "@/features/applications/components/ApplicationHeader";
-import StatusStepper from "@/features/applications/components/StatusStepper";
+import ProjectDetailsCard from "@/features/applications/components/ProjectDetailsCard";
+import AttachmentsSection from "@/features/applications/components/AttachmentsSection";
+import SupervisorFeedbackCard from "@/features/applications/components/SupervisorFeedbackCard";
 import { useStudentApplicationDetails } from "@/features/student/hooks/useStudentApplicationDetails";
 import ApplicationEditForm from "./ApplicationEditForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
-import { Breadcrumbs, Button, Card } from "@/components/ui";
+import StudentApplicationHero from "./StudentApplicationHero";
+import { Button, Card } from "@/components/ui";
 import { SkeletonApplicationDetail } from "@/components/ui/Skeleton";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 /**
  * Top-level orchestrator for the student application details page.
  * All state, mutations, and navigation live in useStudentApplicationDetails.
- * This component composes header + stepper + details/edit body.
+ * This component composes hero + feedback + details/edit body.
  */
 export default function StudentApplicationDetails() {
   const params = useParams();
@@ -43,7 +44,7 @@ export default function StudentApplicationDetails() {
 
   if (app === undefined) {
     return (
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <SkeletonApplicationDetail />
       </div>
     );
@@ -69,14 +70,48 @@ export default function StudentApplicationDetails() {
     );
   }
 
-  return (
-    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-      <Breadcrumbs>
-        <Breadcrumbs.Item href="/student">الرئيسية</Breadcrumbs.Item>
-        <Breadcrumbs.Item href="/student/applications">الطلبات</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{app.projectName}</Breadcrumbs.Item>
-      </Breadcrumbs>
+  const actions = (
+    <div className="flex items-center gap-2">
+      {!isEditing && (
+        <>
+          <Tooltip
+            content={
+              !canDelete ? "يمكن حذف المسودات والمرفوضة فقط" : "حذف الطلب"
+            }
+          >
+            <Button
+              onPress={() => canDelete && setShowDeleteConfirm(true)}
+              isDisabled={!canDelete}
+              variant="danger-soft"
+              size="sm"
+            >
+              <Trash2 className="w-4 h-4" />
+              حذف
+            </Button>
+          </Tooltip>
+          {canEdit && (
+            <Button
+              onPress={() => setIsEditing(true)}
+              variant="primary"
+              size="sm"
+            >
+              <Edit3 className="w-4 h-4" />
+              تعديل
+            </Button>
+          )}
+        </>
+      )}
+      {isEditing && (
+        <Button onPress={() => setIsEditing(false)} variant="ghost" size="sm">
+          <X className="w-4 h-4" />
+          إلغاء التعديل
+        </Button>
+      )}
+    </div>
+  );
 
+  return (
+    <div className="max-w-5xl mx-auto space-y-5 animate-fade-in">
       <DeleteConfirmModal
         open={showDeleteConfirm}
         onOpenChange={setShowDeleteConfirm}
@@ -86,78 +121,51 @@ export default function StudentApplicationDetails() {
       />
 
       {showPdf && pdfUrl && (
-        <PdfViewer url={pdfUrl} title={app.projectName} onClose={() => setShowPdf(false)} />
+        <PdfViewer
+          url={pdfUrl}
+          title={app.projectName}
+          onClose={() => setShowPdf(false)}
+        />
       )}
 
-      <ApplicationHeader
+      <StudentApplicationHero
         app={app}
         presenceOthers={presenceOthers}
         onBack={goBack}
-        rightSlot={
-          <div className="grid grid-cols-2 gap-2 w-full sm:w-auto sm:flex sm:items-center">
-            {!isEditing && (
-              <Tooltip content={!canDelete ? "يمكن حذف المسودات والمرفوضة فقط" : "حذف الطلب"}>
-                <Button
-                  onPress={() => canDelete && setShowDeleteConfirm(true)}
-                  isDisabled={!canDelete}
-                  variant="danger-soft"
-                  size="sm"
-                  className="col-span-1 justify-center"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span className="sm:hidden">حذف</span>
-                </Button>
-              </Tooltip>
-            )}
-            {canEdit && !isEditing && (
-              <Button
-                onPress={() => setIsEditing(true)}
-                variant="primary"
-                size="sm"
-                className={`col-span-1 justify-center ${!canDelete ? "col-span-2" : ""}`}
-              >
-                <Edit3 className="w-4 h-4" />
-                تعديل
-              </Button>
-            )}
-            {isEditing && (
-              <Button
-                onPress={() => setIsEditing(false)}
-                variant="ghost"
-                size="sm"
-                className="col-span-2 justify-center"
-              >
-                <X className="w-4 h-4" />
-                إلغاء التعديل
-              </Button>
-            )}
-          </div>
-        }
+        actions={actions}
+        showStepper={!isEditing}
       />
 
-      {!isEditing && <StatusStepper status={app.status} />}
+      {/* Supervisor feedback sits above the body: when an application is
+          returned for changes it is the first thing the student should
+          read, and it stays visible while editing. */}
+      <SupervisorFeedbackCard
+        app={app}
+        canEdit={canEdit && !isEditing}
+        onEdit={() => setIsEditing(true)}
+      />
 
       {isEditing ? (
         <ApplicationEditForm app={app} onSaved={() => setIsEditing(false)} />
       ) : (
-        <>
-          <ApplicationDetailsView
-            app={app}
-            pdfUrl={pdfUrl}
-            videoUrl={videoUrl}
-            onShowPdf={() => setShowPdf(true)}
-            canEdit={canEdit}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          {/* Main column — the submitted project details */}
+          <div className="lg:col-span-2">
+            <ProjectDetailsCard app={app} />
+          </div>
 
-          {canEdit && (
-            <div className="flex gap-3">
-              <Button onPress={() => setIsEditing(true)} variant="secondary" className="flex-1">
-                <Send className="w-5 h-5" />
-                تعديل وإعادة التقديم
-              </Button>
-            </div>
-          )}
-        </>
+          {/* Sidebar — attachments stay in view alongside the details */}
+          <div className="lg:sticky lg:top-6 self-start">
+            <AttachmentsSection
+              pdfFileId={app.pdfFileId}
+              videoFileId={app.videoFileId}
+              pdfUrl={pdfUrl}
+              videoUrl={videoUrl}
+              onShowPdf={() => setShowPdf(true)}
+              stack
+            />
+          </div>
+        </div>
       )}
     </div>
   );

@@ -30,6 +30,12 @@
       "source": "get-convex/agent-skills",
       "sourceType": "github",
       "computedHash": "f60559165edd5b616fda726ed5726c798e33f905361ed9892ab6013e53ab2588"
+    },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "skillPath": "skill/SKILL.md",
+      "computedHash": "34e59a34b9705187e87039faa5d9585aebe0056ef657f761b905afef276a3362"
     }
   }
 }

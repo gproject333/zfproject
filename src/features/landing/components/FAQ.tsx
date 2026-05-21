@@ -1,8 +1,7 @@
 "use client";
 
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Sparkles } from "lucide-react";
 import { Accordion } from "@/components/ui";
-import { DecorationsB } from "./SectionDecorations";
 
 const ITEMS = [
   {
@@ -31,41 +30,55 @@ const ITEMS = [
   },
 ];
 
+/**
+ * Frequently asked questions. Each Accordion.Item is wrapped in a glass card
+ * so the stack reads as premium without changing the shared Accordion
+ * primitive (other places in the app still rely on its default chrome).
+ */
 export default function FAQ() {
   return (
-    <section className="relative px-4 py-16 overflow-hidden">
-      <DecorationsB />
+    <section className="relative px-4 py-20 sm:py-28 overflow-hidden">
       <div className="relative z-[1] max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 nb-badge bg-primary/10 text-primary mb-4 text-sm px-4 py-1.5">
-            <HelpCircle className="w-4 h-4" />
+        <div className="text-center mb-14">
+          <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
+            <HelpCircle className="w-3.5 h-3.5" />
             أسئلة شائعة
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black">
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
             كل ما تحتاج{" "}
-            <span className="relative inline-block">
-              معرفته
-              <span className="absolute bottom-0 left-0 right-0 h-3 bg-secondary/30 -z-10" />
-            </span>
+            <span className="gradient-text">معرفته</span>
           </h2>
+          <p className="text-foreground/60 mt-4 text-base sm:text-lg">
+            أجوبة سريعة لأكثر الأسئلة شيوعاً. لم تجد سؤالك؟ تواصل معنا مباشرة.
+          </p>
         </div>
 
-        <Accordion>
-          {ITEMS.map((item, i) => (
-            <Accordion.Item key={i} id={`faq-${i}`}>
-              <Accordion.Heading>
-                <Accordion.Trigger className="text-right font-bold text-sm">
-                  {item.q}
-                </Accordion.Trigger>
-              </Accordion.Heading>
-              <Accordion.Panel>
-                <Accordion.Body className="text-sm text-foreground/70 dark:text-foreground/80 font-medium leading-relaxed">
-                  {item.a}
-                </Accordion.Body>
-              </Accordion.Panel>
-            </Accordion.Item>
-          ))}
-        </Accordion>
+        <div className="space-y-3">
+          <Accordion>
+            {ITEMS.map((item, i) => (
+              <div
+                key={i}
+                className="rounded-2xl glass ring-1 ring-foreground/10 px-4 sm:px-6 transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5 mb-3 last:mb-0 overflow-hidden"
+              >
+                <Accordion.Item id={`faq-${i}`}>
+                  <Accordion.Heading>
+                    <Accordion.Trigger className="text-right font-bold text-sm sm:text-base py-1">
+                      <span className="flex items-center gap-2.5">
+                        <Sparkles className="w-3.5 h-3.5 text-primary/60 shrink-0" />
+                        {item.q}
+                      </span>
+                    </Accordion.Trigger>
+                  </Accordion.Heading>
+                  <Accordion.Panel>
+                    <Accordion.Body className="text-sm sm:text-base text-foreground/70 dark:text-foreground/80 font-medium leading-relaxed">
+                      {item.a}
+                    </Accordion.Body>
+                  </Accordion.Panel>
+                </Accordion.Item>
+              </div>
+            ))}
+          </Accordion>
+        </div>
       </div>
     </section>
   );

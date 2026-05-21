@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
 @import "tailwindcss";
 @import "@heroui/styles/css";
 
@@ -117,7 +116,7 @@
   --color-status-accepted: var(--status-accepted);
   --color-status-rejected: var(--status-rejected);
   --color-status-modification: var(--status-modification);
-  --font-sans: 'Tajawal', sans-serif;
+  --font-sans: var(--font-tajawal), sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 4px);
@@ -138,7 +137,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Tajawal', sans-serif;
+  font-family: var(--font-tajawal), sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -223,7 +222,7 @@ body {
 
 /* --- Inputs --- */
 .nb-input {
-  font-family: 'Tajawal', sans-serif;
+  font-family: var(--font-tajawal), sans-serif;
   border: var(--border-width) solid var(--border);
   border-radius: var(--radius);
   padding: 0.625rem 1rem;
@@ -243,6 +242,23 @@ body {
 
 .nb-input::placeholder {
   color: var(--muted-foreground);
+}
+
+/* HeroUI inputs ship a very faint placeholder — darken it to
+   var(--muted-foreground) so example text inside form fields is readable. */
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted-foreground);
+  opacity: 1;
+}
+
+/* HeroUI tabs colour inactive tab labels with --muted — which this app
+   repurposes as a light surface tint, leaving the labels near-invisible.
+   Force every tab label to the standard foreground colour. !important is
+   required: HeroUI's .tabs__tab lives in @layer components, which outranks
+   this rule's layer regardless of specificity. */
+[role="tab"] {
+  color: var(--foreground) !important;
 }
 
 /* --- Badges ---
@@ -296,6 +312,31 @@ body {
 
 .nb-tag:hover {
   transform: scale(1.03);
+}
+
+/* ============================================
+   Gradient text
+   ============================================ */
+
+/* Brand gradient applied to text. `background-clip: text` clips the gradient
+   to the glyph shapes — but with tight line-heights the paint box ends up
+   shorter than tall Arabic glyphs, clipping their tops. The vertical padding
+   enlarges the paint box so the whole glyph is covered; the matching negative
+   margin cancels the layout growth. */
+.gradient-text {
+  display: inline-block;
+  background-image: linear-gradient(
+    to left,
+    var(--color-primary),
+    var(--color-accent),
+    var(--color-secondary)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  padding-block: 0.16em;
+  margin-block: -0.16em;
 }
 
 /* ============================================
@@ -395,6 +436,94 @@ body {
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Olive-tree gentle sway. Origin is set on the .tree-sway element itself. */
+@keyframes sway {
+  from { transform: rotate(-1deg); }
+  to   { transform: rotate(1deg); }
+}
+.tree-sway {
+  transform-origin: 50% 100%;
+  animation: sway 6s ease-in-out infinite alternate;
+  /* Delay the sway so it begins after the GSAP draw-in finishes (~2.4s). */
+  animation-delay: 2.4s;
+}
+
+/* Vertical drift used by floating leaf particles in the hero column. */
+@keyframes leafDriftUp {
+  0%   { transform: translate3d(0, 100%, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translate3d(var(--drift-x, 30px), -120%, 0) rotate(var(--drift-rot, 180deg)); opacity: 0; }
+}
+.animate-leaf-drift {
+  animation: leafDriftUp var(--drift-duration, 14s) linear infinite;
+  animation-delay: var(--drift-delay, 0s);
+}
+
+/* Cinematic Ken Burns — a very slow zoom + drift used by the olive-grove
+   background of the scroll-storytelling scenes. */
+@keyframes kenburns {
+  0%   { transform: scale(1.08) translate3d(0, 0, 0); }
+  100% { transform: scale(1.2) translate3d(1.5%, -2%, 0); }
+}
+.animate-kenburns {
+  animation: kenburns 34s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Slowly rotating volumetric god-rays around the cinematic sun. */
+@keyframes godrays {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-godrays {
+  animation: godrays 140s linear infinite;
+}
+
+/* Honour the user's reduced-motion preference: kill all ambient loops. */
+@media (prefers-reduced-motion: reduce) {
+  .tree-sway,
+  .animate-float,
+  .animate-leaf-drift,
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-pulse-slow,
+  .animate-pulse-border,
+  .animate-bounce-x,
+  .animate-kenburns,
+  .animate-godrays {
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   Lenis smooth scroll
+   ============================================ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Dark mode: brand gradient orbs need a touch more opacity to read against the
+   darker background. Components using these classes opt in by adding
+   `.landing-orb` alongside any inline `opacity` style — the override below
+   wins because it's later in the cascade. */
+.dark .landing-orb {
+  opacity: 0.35 !important;
 }
 
 .animate-float        { animation: float       3s   ease-in-out infinite; }

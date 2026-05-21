@@ -19,8 +19,8 @@ export default function AppFooter() {
           {/* Brand row */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary nb-border-thick rounded-xl flex items-center justify-center nb-shadow-sm shrink-0 animate-pulse-border">
-                <GraduationCap className="w-6 h-6 text-foreground" />
+              <div className="w-12 h-12 bg-white nb-border-thick rounded-xl flex items-center justify-center nb-shadow-sm shrink-0 animate-pulse-border">
+                <GraduationCap className="w-6 h-6 text-primary" />
               </div>
               <div>
                 <p className="font-extrabold text-lg leading-tight text-background">حاضنة الزيتونة</p>

@@ -67,8 +67,8 @@ export default function HeroCarousel() {
       <Shell>
         <div className="aspect-video rounded-2xl overflow-hidden border border-white/10">
           <div className="w-full h-full bg-gradient-to-br from-primary/20 via-transparent to-accent/15 flex flex-col items-center justify-center text-center px-6">
-            <div className="w-16 h-16 bg-primary/80 rounded-2xl flex items-center justify-center mb-4">
-              <GraduationCap className="w-8 h-8 text-white" />
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-4">
+              <GraduationCap className="w-8 h-8 text-primary" />
             </div>
             <h2 className="text-xl md:text-2xl font-extrabold text-white mb-1">
               حاضنة الزيتونة

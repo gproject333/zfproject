@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Breadcrumbs, Spinner } from "@/components/ui";
+import { Spinner } from "@/components/ui";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import PdfViewer from "@/components/PdfViewerLazy";
 import ApplicationDetailsView from "@/features/applications/components/ApplicationDetailsView";
@@ -13,7 +13,7 @@ import { usePresence } from "@/features/applications/hooks/usePresence";
 import { useReview } from "@/features/supervisor/hooks/useReview";
 import ReviewPanel from "./ReviewPanel";
 import ReviewHistoryTimeline from "./ReviewHistoryTimeline";
-import StudentProfileCard from "./StudentProfileCard";
+import StudentProfileButton from "./StudentProfileButton";
 
 /**
  * Supervisor application review page. Composes a hero card (title +
@@ -48,12 +48,6 @@ export default function SupervisorApplicationReview() {
         <PdfViewer url={pdfUrl} title={app.projectName} onClose={() => setShowPdf(false)} />
       )}
 
-      <Breadcrumbs>
-        <Breadcrumbs.Item href="/supervisor">الرئيسية</Breadcrumbs.Item>
-        <Breadcrumbs.Item href="/supervisor/applications">الطلبات</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{app.projectName}</Breadcrumbs.Item>
-      </Breadcrumbs>
-
       <ApplicationHeader
         app={app}
         presenceOthers={presenceOthers}
@@ -68,14 +62,12 @@ export default function SupervisorApplicationReview() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left column - Profile + Details */}
         <div className="lg:col-span-2 space-y-6">
-          <StudentProfileCard applicationId={app._id} />
+          <StudentProfileButton applicationId={app._id} />
           <ApplicationDetailsView
             app={app}
             pdfUrl={pdfUrl}
             videoUrl={videoUrl}
             onShowPdf={() => setShowPdf(true)}
-            canEdit={false}
-            hideSupervisorFeedback
           />
         </div>
 

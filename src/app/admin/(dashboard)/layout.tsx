@@ -1,16 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
-import {
-  Crown,
-  LayoutDashboard,
-  Users,
-  Building2,
-  Share2,
-  GraduationCap,
-  BookOpen,
-  TrendingUp,
-} from "lucide-react";
+import { Crown } from "lucide-react";
+import { adminNavItems } from "@/components/layout/navItems";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 const adminConfig = {
@@ -22,15 +14,7 @@ const adminConfig = {
     subtitle: "لوحة مشرف النظام",
     subtitleStyle: { color: "#DC2626" },
   },
-  navItems: [
-    { label: "لوحة التحكم", href: "/admin", icon: LayoutDashboard },
-    { label: "الطلاب", href: "/admin/students", icon: GraduationCap },
-    { label: "المشرفون", href: "/admin/supervisors", icon: Users },
-    { label: "الرعاة", href: "/admin/sponsors", icon: Building2 },
-    { label: "إدارة الكليات", href: "/admin/colleges", icon: BookOpen },
-    { label: "طلبات الترقية", href: "/admin/upgrade-requests", icon: TrendingUp },
-    { label: "روابط التواصل", href: "/admin/social", icon: Share2 },
-  ],
+  navItems: adminNavItems,
   active: {
     className: "text-white nb-shadow-sm",
     style: { background: "#DC2626", borderColor: "#991B1B" },

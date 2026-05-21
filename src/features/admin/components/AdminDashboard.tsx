@@ -202,7 +202,7 @@ export default function AdminDashboard() {
             className={`nb-card-interactive p-5 flex flex-col items-center text-center ${stat.border} border-[3px] group`}
           >
             <div
-              className={`w-12 h-12 rounded-xl nb-border flex items-center justify-center mb-3 ${stat.bg} group-hover:scale-110 transition-transform`}
+              className="w-12 h-12 rounded-xl nb-border flex items-center justify-center mb-3 bg-white group-hover:scale-110 transition-transform"
             >
               <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
             </div>
@@ -360,10 +360,9 @@ export default function AdminDashboard() {
             <Link key={a.href} href={a.href} className="nb-card-interactive p-5 text-right group">
               <div className="flex items-center gap-3">
                 <div
-                  className="w-12 h-12 rounded-xl nb-border flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform"
-                  style={{ background: a.color }}
+                  className="w-12 h-12 rounded-xl nb-border flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform bg-white"
                 >
-                  <a.icon className="w-5 h-5 text-white" />
+                  <a.icon className="w-5 h-5" style={{ color: a.color }} />
                 </div>
                 <div>
                   <h4 className="font-extrabold text-base">{a.label}</h4>

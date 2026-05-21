@@ -91,7 +91,7 @@ export default function SupervisorApplicationList() {
     <div className="animate-fade-in">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <h2 className="text-2xl font-extrabold flex items-center gap-2 flex-wrap">
-          <FileText className="w-6 h-6 text-accent" />
+          <FileText className="w-6 h-6 text-muted-foreground" />
           إدارة الطلبات
           {!loading && (
             <span className="text-base font-bold text-muted-foreground">

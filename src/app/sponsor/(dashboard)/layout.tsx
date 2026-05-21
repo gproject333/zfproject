@@ -2,7 +2,8 @@
 
 import { ReactNode, useMemo } from "react";
 import { useQuery } from "convex/react";
-import { Building2, Briefcase, Star } from "lucide-react";
+import { Building2, Star } from "lucide-react";
+import { sponsorNavItems } from "@/components/layout/navItems";
 import { api } from "../../../../convex/_generated/api";
 import DashboardLayout, { type DashboardLayoutConfig } from "@/components/layout/DashboardLayout";
 
@@ -29,10 +30,10 @@ export default function SponsorLayout({ children }: { children: ReactNode }) {
         subtitle: user?.name ? `مرحباً، ${user.name}` : "بوابة الرعاة",
         subtitleStyle: { color: "#C9A227" },
       },
-      navItems: [{ label: "مشاريعي", href: "/sponsor", icon: Briefcase }],
+      navItems: sponsorNavItems,
       active: {
         className: "text-white nb-shadow-sm",
-        style: { background: "#C9A227", color: "#111", borderColor: "#B7891A" },
+        style: { background: "#C9A227", borderColor: "#B7891A" },
       },
       showNotifications: false,
       logoutHref: "/sponsor/login",

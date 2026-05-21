@@ -1,158 +1,141 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { ChevronRight, ChevronLeft } from "lucide-react";
-import Reveal from "@/components/Reveal";
-import { Card } from "@/components/ui";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { Sprout, Leaf, Trees, Award, type LucideIcon } from "lucide-react";
 
 /**
- * Four-step "how it works" process section.
+ * Growth-metaphor timeline. Each stage of the student journey mirrors a
+ * stage in the life of an olive tree: seed → sapling → mature tree → harvest.
+ * A vertical line on the start-edge (right in RTL) fills as the user scrolls
+ * through the section. Steps fade-up individually as they enter view.
  */
-const STEPS = [
-  { num: "١", title: "سجّل حسابك", desc: "أنشئ حسابك بإيميل الجامعة" },
-  { num: "٢", title: "قدّم فكرتك", desc: "اختر نوع الاحتضان وأدخل مشروعك" },
-  { num: "٣", title: "احصل على التقييم", desc: "المشرف يراجع طلبك ويرد عليك" },
-  { num: "٤", title: "ابدأ الرحلة", desc: "انطلق بمشروعك بدعم كامل" },
+
+interface Stage {
+  num: string;
+  title: string;
+  desc: string;
+  metaphor: string;
+  icon: LucideIcon;
+}
+
+const STAGES: Stage[] = [
+  {
+    num: "١",
+    title: "سجّل حسابك",
+    desc: "أنشئ حسابك بإيميل الجامعة الرسمي للوصول إلى لوحة الطالب.",
+    metaphor: "ازرع البذرة",
+    icon: Sprout,
+  },
+  {
+    num: "٢",
+    title: "قدّم فكرتك",
+    desc: "اختر نوع الاحتضان (ريادي / تقني / أكاديمي) واملأ نموذج الطلب.",
+    metaphor: "اسقِ الفكرة",
+    icon: Leaf,
+  },
+  {
+    num: "٣",
+    title: "احصل على التقييم",
+    desc: "يراجع المشرف الأكاديمي طلبك ويرد عليك خلال أيام قليلة.",
+    metaphor: "تنمو الفروع",
+    icon: Trees,
+  },
+  {
+    num: "٤",
+    title: "ابدأ الرحلة",
+    desc: "انطلق بمشروعك بدعم كامل من الفريق الأكاديمي وأدوات المنصة.",
+    metaphor: "اقطف الثمرة",
+    icon: Award,
+  },
 ];
 
 export default function HowItWorks() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [itemsPerView, setItemsPerView] = useState(1);
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
 
-  // Swipe state
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setItemsPerView(window.innerWidth >= 1024 ? 2 : 1);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const totalSlides = Math.ceil(STEPS.length / itemsPerView);
-  const maxIndex = Math.max(0, STEPS.length - itemsPerView);
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
-  };
-
-  // RTL Swipe handling
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-    setTouchEnd(null);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStart === null || touchEnd === null) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    // In RTL, sliding finger left (distance > 0) means pushing content to the left, revealing the right side (Previous).
-    // Sliding finger right (distance < 0) means pushing content to the right, revealing the left side (Next).
-    if (isRightSwipe) {
-      handleNext();
-    } else if (isLeftSwipe) {
-      handlePrev();
-    }
-  };
-
-  // Auto-slide every 5 seconds (Optional but UX friendly)
-  useEffect(() => {
-    const timer = setInterval(handleNext, 5000);
-    return () => clearInterval(timer);
-  }, [maxIndex]);
+  // Drive the line fill from this section's own scroll position.
+  // Start filling when the section's top hits 80% of viewport, finish when
+  // bottom reaches the centre — feels natural with the stage spacing.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 70%", "end 50%"],
+  });
+  const lineScaleY = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [0, 1]);
 
   return (
-    <section className="px-4 py-16 bg-checker overflow-hidden">
-      <div className="max-w-5xl mx-auto">
-        <Reveal animation="fade-in" className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-black">أربع خطوات، ومشروعك ينطلق</h2>
-        </Reveal>
-
-        {/* Carousel Container */}
-        <div className="relative group">
-          {/* Main Slider Window */}
-          <div
-            className="overflow-hidden touch-pan-y"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              // translateX is positive in RTL to slide to left items
-              style={{ transform: `translateX(${currentIndex * (100 / itemsPerView)}%)` }}
-            >
-              {STEPS.map((step, i) => (
-                <div
-                  key={i}
-                  className={`w-full shrink-0 px-3 ${itemsPerView === 2 ? 'lg:w-1/2' : ''}`}
-                >
-                  <Reveal animation="slide-up" delay={i * 150} className="h-full">
-                    <Card className="p-8 sm:p-10 text-center h-full transition-transform duration-300 hover:-translate-y-1 hover:shadow-[6px_8px_0px_0px_var(--shadow-color)]">
-                      <div className="w-20 h-20 bg-primary nb-border-thick rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-[4px_4px_0px_0px_var(--shadow-color)] rotate-3 hover:rotate-0 transition-transform">
-                        <span className="text-4xl font-black">{step.num}</span>
-                      </div>
-                      <h3 className="font-black text-xl mb-3 text-foreground">{step.title}</h3>
-                      <p className="text-base text-foreground/70 dark:text-foreground/80 font-bold">{step.desc}</p>
-                    </Card>
-                  </Reveal>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={handleNext}
-            className="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-12 w-12 h-12 bg-card nb-border-thick rounded-xl flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110 active:scale-95 transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] z-10"
-            aria-label="التالي"
-          >
-            {/* The Left arrow pushes to the left visually (meaning Next in RTL) */}
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-
-          <button
-            onClick={handlePrev}
-            className="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-12 w-12 h-12 bg-card nb-border-thick rounded-xl flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110 active:scale-95 transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] z-10"
-            aria-label="السابق"
-          >
-            {/* The Right arrow pushes to the right visually (meaning Prev in RTL) */}
-            <ChevronRight className="w-6 h-6" />
-          </button>
+    <section ref={sectionRef} className="relative px-4 py-20 sm:py-28 overflow-hidden">
+      <div className="max-w-3xl mx-auto relative">
+        <div className="text-center mb-14">
+          <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
+            <Sprout className="w-3.5 h-3.5" />
+            رحلة النمو
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
+            من البذرة{" "}
+            <span className="gradient-text">إلى الثمرة</span>
+          </h2>
+          <p className="text-foreground/60 mt-4 text-base sm:text-lg">
+            أربع مراحل بسيطة تأخذك من فكرة عابرة إلى مشروع حقيقي.
+          </p>
         </div>
 
-        {/* Pagination Dots */}
-        <div className="flex justify-center items-center gap-3 mt-10">
-          {Array.from({ length: totalSlides }).map((_, idx) => {
-            // Due to itemsPerView logic, actual slide dot might represent currentIndex roughly
-            const actualIndex = itemsPerView === 2 ? Math.floor(currentIndex / 2) : currentIndex;
-            const isActive = actualIndex === idx;
+        {/* Timeline: absolute line on the right (start-edge in RTL) + stages */}
+        <div className="relative">
+          {/* Background line (always visible, dimmed) */}
+          <div
+            aria-hidden
+            className="absolute top-8 bottom-8 right-[23px] sm:right-[27px] w-0.5 bg-foreground/10 rounded-full"
+          />
+          {/* Foreground line (gradient, height driven by scroll) */}
+          <motion.div
+            aria-hidden
+            className="absolute top-8 right-[23px] sm:right-[27px] w-0.5 origin-top rounded-full shadow-[0_0_12px_rgba(31,92,46,0.4)]"
+            style={{
+              bottom: 32,
+              scaleY: lineScaleY,
+              background: "linear-gradient(to bottom, var(--color-primary), var(--color-accent), var(--color-secondary))",
+            }}
+          />
 
-            return (
-              <button
-                key={idx}
-                onClick={() => setCurrentIndex(idx * itemsPerView)}
-                className={`transition-all duration-300 nb-border rounded-full ${isActive
-                    ? "w-10 h-3 bg-primary shadow-[2px_2px_0px_0px_var(--shadow-color)]"
-                    : "w-3 h-3 bg-muted-foreground/30 hover:bg-secondary cursor-pointer"
-                  }`}
-                aria-label={`انتقل إلى الشريحة ${idx + 1}`}
-              />
-            );
-          })}
+          <ul className="space-y-12 sm:space-y-14">
+            {STAGES.map((stage, i) => {
+              const Icon = stage.icon;
+              return (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: reduce ? 0 : 24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative flex items-start gap-5 pr-16 sm:pr-20"
+                >
+                  {/* Icon on the line — sized so its centre lines up with the rail */}
+                  <div className="absolute right-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white ring-2 ring-primary/25 flex items-center justify-center shadow-lg shadow-primary/15">
+                    <Icon className="relative w-5 h-5 sm:w-6 sm:h-6 text-primary" strokeWidth={2} />
+                  </div>
+
+                  {/* Step content */}
+                  <div className="flex-1 pt-1">
+                    <div className="flex items-center gap-3 mb-1.5 flex-wrap">
+                      <span className="text-xs font-black text-primary tracking-widest">
+                        {stage.metaphor}
+                      </span>
+                      <span className="text-[10px] font-bold text-foreground/40 bg-foreground/5 px-2 py-0.5 rounded-full">
+                        المرحلة {stage.num}
+                      </span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-black mb-2 leading-tight">
+                      {stage.title}
+                    </h3>
+                    <p className="text-foreground/65 dark:text-foreground/75 text-sm sm:text-base font-medium leading-relaxed">
+                      {stage.desc}
+                    </p>
+                  </div>
+                </motion.li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     </section>

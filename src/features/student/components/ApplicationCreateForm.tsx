@@ -56,8 +56,8 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
         >
           <ArrowRight className="w-5 h-5" />
         </button>
-        <div className={`w-12 h-12 ${config.bgColor} nb-border rounded-xl flex items-center justify-center shrink-0`}>
-          <Icon className="w-6 h-6" />
+        <div className="w-12 h-12 bg-muted nb-border rounded-xl flex items-center justify-center shrink-0">
+          <Icon className={`w-6 h-6 ${config.color}`} />
         </div>
         <div>
           <h2 className="text-xl font-bold">{config.formTitle}</h2>

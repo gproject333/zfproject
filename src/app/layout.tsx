@@ -37,10 +37,7 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={arSA}>
       <html lang="ar" dir="rtl" className={`${tajawal.variable} h-full`} suppressHydrationWarning>
-        <body
-          className="min-h-full flex flex-col antialiased"
-          style={{ fontFamily: "'Tajawal', sans-serif" }}
-        >
+        <body className="min-h-full flex flex-col antialiased">
           <ThemeProvider>
             <Providers>
               <TooltipProvider delayDuration={150}>

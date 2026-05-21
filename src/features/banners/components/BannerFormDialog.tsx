@@ -59,7 +59,7 @@ export function BannerFormDialog({
             : "أضف إعلاناً مرئياً يظهر في قسم الهيرو في جميع الصفحات."
         }
       >
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-[60dvh] overflow-y-auto pe-1">
           <div>
             <label className="block text-xs font-bold mb-1.5">العنوان</label>
             <Input
@@ -361,41 +361,41 @@ export function BannerFormDialog({
             />
             <span className="text-sm font-bold">نشط — يظهر فوراً</span>
           </label>
+        </div>
 
-          {admin.formError && (
-            <p className="text-xs font-semibold text-destructive">
-              {admin.formError}
-            </p>
-          )}
+        {admin.formError && (
+          <p className="text-xs font-semibold text-destructive mt-3">
+            {admin.formError}
+          </p>
+        )}
 
-          <div className="flex gap-2 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1"
-              onPress={() => {
-                admin.resetForm();
-                onOpenChange(false);
-              }}
-            >
-              إلغاء
-            </Button>
-            <Button
-              type="button"
-              onPress={() => void onSubmit()}
-              isDisabled={admin.saving}
-              variant="secondary"
-              className="flex-1"
-            >
-              {admin.saving ? (
-                <Spinner size="sm" color="current" />
-              ) : admin.editingId ? (
-                "حفظ التعديلات"
-              ) : (
-                "إنشاء الإعلان"
-              )}
-            </Button>
-          </div>
+        <div className="flex gap-2 pt-4 mt-4 border-t border-border">
+          <Button
+            type="button"
+            variant="outline"
+            className="flex-1"
+            onPress={() => {
+              admin.resetForm();
+              onOpenChange(false);
+            }}
+          >
+            إلغاء
+          </Button>
+          <Button
+            type="button"
+            onPress={() => void onSubmit()}
+            isDisabled={admin.saving}
+            variant="primary"
+            className="flex-1"
+          >
+            {admin.saving ? (
+              <Spinner size="sm" color="current" />
+            ) : admin.editingId ? (
+              "حفظ التعديلات"
+            ) : (
+              "إنشاء الإعلان"
+            )}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

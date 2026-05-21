@@ -3,6 +3,7 @@ import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import { requireStudent, getOptionalUser } from "../lib/auth";
 import { assertArrayItemsMaxLength, assertMaxLength } from "../lib/validation";
+import { assertPdfWithinLimit, assertVideoWithinLimit } from "../lib/uploads";
 import { notifyAllSupervisors } from "../lib/notifications";
 
 export const myApplications = query({
@@ -61,6 +62,8 @@ export const createApplication = mutation({
         assertMaxLength("teamMemberPhone", m.phone);
       }
     }
+    if (args.pdfFileId) await assertPdfWithinLimit(ctx, args.pdfFileId);
+    if (args.videoFileId) await assertVideoWithinLimit(ctx, args.videoFileId);
 
     const now = Date.now();
     const { submitNow, ...data } = args;
@@ -125,6 +128,8 @@ export const updateApplication = mutation({
         assertMaxLength("teamMemberPhone", m.phone);
       }
     }
+    if (args.pdfFileId) await assertPdfWithinLimit(ctx, args.pdfFileId);
+    if (args.videoFileId) await assertVideoWithinLimit(ctx, args.videoFileId);
 
     const app = await ctx.db.get(args.id);
     if (!app) throw new Error("الطلب غير موجود");

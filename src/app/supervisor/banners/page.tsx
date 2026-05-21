@@ -28,7 +28,7 @@ export default function SupervisorBannersPage() {
         <div className="flex items-center gap-2">
           <Button
             onPress={form.openScrollingDialog}
-            variant="secondary"
+            variant="primary"
             size="sm"
           >
             <Type className="w-4 h-4" />
@@ -36,7 +36,7 @@ export default function SupervisorBannersPage() {
           </Button>
           <Button
             onPress={form.openHeroDialog}
-            variant="outline"
+            variant="primary"
             size="sm"
           >
             <ImageIcon className="w-4 h-4" />
@@ -57,7 +57,7 @@ export default function SupervisorBannersPage() {
           action={
             <Button
               onPress={form.openScrollingDialog}
-              variant="secondary"
+              variant="primary"
             >
               <Plus className="w-5 h-5" />
               إنشاء إعلان

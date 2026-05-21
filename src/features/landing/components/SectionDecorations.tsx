@@ -7,7 +7,7 @@
  */
 
 /** Dotted diamond shape */
-function DottedDiamond({
+export function DottedDiamond({
   className = "",
   size = 80,
 }: {
@@ -63,7 +63,7 @@ function DottedDiamond({
 }
 
 /** Simple rotated square outline */
-function RotatedSquare({
+export function RotatedSquare({
   className = "",
   size = 48,
 }: {
@@ -98,7 +98,7 @@ function RotatedSquare({
 }
 
 /** Corner bracket decoration */
-function CornerBracket({
+export function CornerBracket({
   className = "",
   size = 60,
 }: {

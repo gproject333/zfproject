@@ -15,7 +15,6 @@ import type { Doc } from "../../../../convex/_generated/dataModel";
 import { canTransition } from "../../../../convex/lib/statuses";
 import { STATUS_CONFIG, TYPE_CONFIG } from "@/lib/configs/application";
 import { formatArabicDate } from "@/lib/formatters";
-import StatusBadge from "@/features/applications/components/StatusBadge";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -31,6 +30,20 @@ type Row = Doc<"applications"> & {
 };
 type StatusKey = keyof typeof STATUS_CONFIG;
 type TypeKey = keyof typeof TYPE_CONFIG;
+
+/**
+ * Muted, soft-tinted status colors — a restrained, "official" palette
+ * (slate / blue / amber / emerald / red) on light tints rather than
+ * loud solid fills. The project-type column is rendered neutral (icon
+ * + label, no color) so status is the only colored signal in a row.
+ */
+const STATUS_BADGE_CLASS: Record<StatusKey, string> = {
+  draft: "bg-slate-500/15 text-slate-600 dark:text-slate-300",
+  under_review: "bg-blue-500/15 text-blue-700 dark:text-blue-300",
+  needs_modification: "bg-amber-500/15 text-amber-700 dark:text-amber-300",
+  accepted: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+  rejected: "bg-red-500/15 text-red-700 dark:text-red-300",
+};
 
 /**
  * Encapsulates the react-table column definitions for the supervisor
@@ -110,8 +123,10 @@ export function useApplicationListColumns(
         cell: ({ row }) => {
           const type = row.getValue("type") as TypeKey;
           const cfg = TYPE_CONFIG[type];
+          const Icon = cfg.icon;
           return (
-            <span className={`nb-badge-soft !text-white ${cfg.bgColor}`}>
+            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground/80">
+              <Icon className="w-3.5 h-3.5 text-muted-foreground" />
               {cfg.label}
             </span>
           );
@@ -120,16 +135,24 @@ export function useApplicationListColumns(
       {
         accessorKey: "status",
         header: "الحالة",
-        cell: ({ row }) => (
-          <StatusBadge status={row.getValue("status") as StatusKey} soft />
-        ),
+        cell: ({ row }) => {
+          const status = row.getValue("status") as StatusKey;
+          const cfg = STATUS_CONFIG[status];
+          const Icon = cfg.icon;
+          return (
+            <span className={`nb-badge-soft ${STATUS_BADGE_CLASS[status]}`}>
+              <Icon className="w-3 h-3" />
+              {cfg.label}
+            </span>
+          );
+        },
       },
       {
         accessorKey: "createdAt",
         header: ({ column }) => (
           <button
             type="button"
-            className="flex items-center gap-1 font-extrabold text-xs hover:text-accent"
+            className="flex items-center gap-1 font-extrabold text-xs hover:text-foreground"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             التاريخ

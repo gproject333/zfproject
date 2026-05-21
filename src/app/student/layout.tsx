@@ -1,14 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import {
-  Home,
-  LayoutDashboard,
-  Plus,
-  FileText,
-  BookOpen,
-  HelpCircle,
-} from "lucide-react";
+import { studentNavItems } from "@/components/layout/navItems";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import OliveLogo from "@/components/OliveLogo";
 
@@ -19,16 +12,9 @@ const studentConfig = {
     homeHref: "/student",
     subtitle: "لوحة الطالب",
   },
-  navItems: [
-    { label: "الصفحة الرئيسية", href: "/", icon: Home },
-    { label: "لوحة التحكم", href: "/student", icon: LayoutDashboard },
-    { label: "طلب جديد", href: "/student/new", icon: Plus },
-    { label: "طلباتي", href: "/student/applications", icon: FileText },
-    { label: "المقالات", href: "/student/articles", icon: BookOpen },
-    { label: "دليل التقديم", href: "/student/guide", icon: HelpCircle },
-  ],
+  navItems: studentNavItems,
   active: {
-    className: "bg-primary nb-shadow-sm",
+    className: "bg-primary text-white nb-shadow-sm",
   },
   showNotifications: true,
   logoutHref: "/login",

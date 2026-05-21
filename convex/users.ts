@@ -1,6 +1,17 @@
 import { internalMutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
+const UNIVERSITY_EMAIL_DOMAINS = [
+  "@zuj.edu.jo",
+  "@std-zuj.edu.jo",
+  "@std.zuj.edu.jo",
+] as const;
+
+function isUniversityEmail(email: string): boolean {
+  const lower = email.toLowerCase();
+  return UNIVERSITY_EMAIL_DOMAINS.some((d) => lower.endsWith(d));
+}
+
 export const handleClerkWebhook = internalMutation({
   args: {
     type: v.string(),
@@ -39,6 +50,13 @@ export const handleClerkWebhook = internalMutation({
           updatedAt: Date.now(),
         });
       } else {
+        // Self-registration is restricted to university email domains.
+        // Sponsors/supervisors are provisioned administratively via
+        // convex/users/admin.ts (insertSponsor / insertSupervisor) which
+        // creates the row directly; the webhook for those users hits the
+        // `existing` branch above and only syncs profile fields.
+        if (!isUniversityEmail(email)) return;
+
         await ctx.db.insert("users", {
           clerkId,
           email,

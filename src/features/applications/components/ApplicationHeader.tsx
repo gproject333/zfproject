@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import { formatArabicDate } from "@/lib/formatters";
@@ -42,11 +42,11 @@ export default function ApplicationHeader({
           className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover shrink-0 mt-1"
           aria-label="رجوع"
         >
-          <ArrowLeft className="w-5 h-5 rotate-180" />
+          <ArrowRight className="w-5 h-5" />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <h2 className={`${titleClass} font-extrabold break-words`}>
+            <h2 className={`${titleClass} font-bold break-words`}>
               {app.projectName}
             </h2>
             <StatusBadge status={app.status} />
@@ -59,7 +59,7 @@ export default function ApplicationHeader({
             <span className="hidden sm:inline">•</span>
             <span className="flex items-center gap-1 whitespace-nowrap">
               <Calendar className="w-4 h-4" />
-              {formatArabicDate(app.createdAt)}
+              {formatArabicDate(app.submittedAt ?? app.createdAt)}
             </span>
           </div>
           {presenceOthers.length > 0 && (

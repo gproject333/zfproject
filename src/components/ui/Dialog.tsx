@@ -44,8 +44,10 @@ export function DialogContent({
       <Modal.Container placement="center">
         <Modal.Dialog className={className} dir="rtl">
           {title || description || showClose ? (
-            <Modal.Header className="flex items-start justify-between gap-3 mb-4">
-              <div className="flex-1">
+            <Modal.Header
+              className={`flex items-start gap-3 mb-4 ${showClose ? "ps-12" : ""}`}
+            >
+              <div className="flex-1 min-w-0">
                 {title ? (
                   <Modal.Heading className="text-lg font-extrabold">{title}</Modal.Heading>
                 ) : (
@@ -57,7 +59,7 @@ export function DialogContent({
               </div>
               {showClose && (
                 <ModalCloseTrigger
-                  className="w-8 h-8 rounded-lg flex items-center justify-center bg-card hover:bg-muted shrink-0"
+                  className="w-8 h-8 rounded-lg flex items-center justify-center bg-muted text-foreground hover:bg-foreground/10 transition-colors"
                   aria-label="إغلاق"
                 >
                   <X className="w-4 h-4" />

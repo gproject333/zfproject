@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, type ReactNode } from "react";
+import { Component, useEffect, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { useScrollingAnnouncements } from "../hooks/useScrollingAnnouncements";
 
@@ -10,10 +10,16 @@ interface ScrollingAnnouncementBarProps {
    * "static" (default) — normal document flow, used inside sticky/fixed
    * layouts like DashboardLayout and SupervisorSidebarLayout.
    *
-   * "fixed" — fixed below a `fixed top-0` navbar (landing page). Renders
-   * a spacer div so content below is pushed down.
+   * "above-navbar" — pinned to the very top of the viewport, above a
+   * fixed navbar (landing page). The parent must offset its navbar and
+   * page content by the bar's height (40px) using `onVisibilityChange`.
    */
-  variant?: "static" | "fixed";
+  variant?: "static" | "above-navbar";
+  /**
+   * Fires whenever the bar appears or disappears. Lets the landing page
+   * shift its fixed navbar down while an announcement is showing.
+   */
+  onVisibilityChange?: (visible: boolean) => void;
 }
 
 /**
@@ -37,8 +43,15 @@ class SafeBoundary extends Component<
 function ScrollingAnnouncementBarInner({
   audience,
   variant = "static",
+  onVisibilityChange,
 }: ScrollingAnnouncementBarProps) {
   const { announcement, dismiss } = useScrollingAnnouncements(audience);
+
+  // Report visibility up so a fixed-navbar parent can offset itself.
+  const isVisible = !!announcement;
+  useEffect(() => {
+    onVisibilityChange?.(isVisible);
+  }, [isVisible, onVisibilityChange]);
 
   if (!announcement) return null;
 
@@ -60,12 +73,12 @@ function ScrollingAnnouncementBarInner({
     </span>
   );
 
-  const isFixed = variant === "fixed";
-
   const bar = (
     <div
-      className={`relative w-full bg-primary text-white z-40 overflow-hidden ${
-        isFixed ? "fixed top-[56px] left-0 right-0" : ""
+      className={`w-full bg-primary text-white overflow-hidden ${
+        variant === "above-navbar"
+          ? "fixed top-0 left-0 right-0 z-50"
+          : "relative z-40"
       }`}
       role="marquee"
       aria-label="إعلان"
@@ -105,16 +118,6 @@ function ScrollingAnnouncementBarInner({
       </div>
     </div>
   );
-
-  if (isFixed) {
-    return (
-      <>
-        {bar}
-        {/* Spacer so content below isn't hidden behind the fixed bar */}
-        <div className="h-10" />
-      </>
-    );
-  }
 
   return bar;
 }
