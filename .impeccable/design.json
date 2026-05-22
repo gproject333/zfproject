@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-23T00:00:00Z",
+  "title": "Design System: Smart-ZUJ",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Deep Olive",
+        "canonical": "#1F5C2E",
+        "tonalRamp": ["#0E2C16", "#143A1D", "#1A4824", "#1F5C2E", "#247139", "#2D7A3E", "#4CAF50", "#A4D7AA"]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Mid Olive",
+        "canonical": "#2D7A3E",
+        "tonalRamp": ["#143A1D", "#1A4824", "#225A2E", "#2D7A3E", "#3F9151", "#4CAF50", "#7CC183", "#C4E2C8"]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Warm Gold",
+        "canonical": "#C9A227",
+        "tonalRamp": ["#4A3A0E", "#6B5414", "#8C6E1A", "#A88420", "#C9A227", "#D4AF37", "#E0C265", "#F0DDA0"]
+      },
+      "status-pending": {
+        "role": "tertiary",
+        "displayName": "Pending Yellow",
+        "canonical": "#EAB308"
+      },
+      "status-review": {
+        "role": "tertiary",
+        "displayName": "Review Blue",
+        "canonical": "#2563EB"
+      },
+      "status-accepted": {
+        "role": "tertiary",
+        "displayName": "Accepted Green",
+        "canonical": "#16A34A"
+      },
+      "status-rejected": {
+        "role": "tertiary",
+        "displayName": "Rejected Red",
+        "canonical": "#DC2626"
+      },
+      "status-modification": {
+        "role": "tertiary",
+        "displayName": "Modification Orange",
+        "canonical": "#EA580C"
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Olive Mist",
+        "canonical": "#F5F9F5",
+        "tonalRamp": ["#0F1A12", "#13201A", "#1A2E1F", "#2A3F2F", "#5F6B62", "#B8C4BA", "#E8F0E8", "#F5F9F5"]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Deep Forest",
+        "canonical": "#13201A"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Quiet Sage",
+        "canonical": "#E8F0E8"
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Sage Stone",
+        "canonical": "#5F6B62"
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Forest Border",
+        "canonical": "#2A3530"
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page-level headings, used once per page." },
+      "headline": { "displayName": "Headline", "purpose": "Section headers within a page." },
+      "title": { "displayName": "Title", "purpose": "Card titles, modal headers, form group headers." },
+      "body": { "displayName": "Body", "purpose": "Default running text. Capped at 65–75ch in prose contexts." },
+      "label": { "displayName": "Label", "purpose": "Form labels, button text, table headers, chip labels." }
+    },
+    "shadows": [
+      {
+        "name": "ambient",
+        "value": "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03)",
+        "purpose": "Default rest state for cards and panels."
+      },
+      {
+        "name": "hover-lift",
+        "value": "0 6px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04)",
+        "purpose": "Interactive cards on hover. Pair with translateY(-2px)."
+      },
+      {
+        "name": "floating",
+        "value": "0 10px 24px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.05)",
+        "purpose": "Dropdowns, popovers, modal surfaces."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px rgba(31, 92, 46, 0.12)",
+        "purpose": "Applied to focused inputs alongside a border-color shift to primary."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default easing for state transitions (200ms)."
+      },
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.25, 1, 0.5, 1)",
+        "purpose": "Preferred easing for entrance/reveal animations."
+      },
+      {
+        "name": "duration-quick",
+        "value": "150ms",
+        "purpose": "Hover-state color/shadow transitions."
+      },
+      {
+        "name": "duration-standard",
+        "value": "200ms",
+        "purpose": "Default for state transitions and card hover lift."
+      },
+      {
+        "name": "duration-reveal",
+        "value": "300ms",
+        "purpose": "Fade-in / scale-in on first paint."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1536px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Dominant action on a screen. Olive ground, white label.",
+      "html": "<button class=\"ds-btn-primary\">إرسال الطلب</button>",
+      "css": ".ds-btn-primary { background: var(--primary, #1F5C2E); color: #FFFFFF; font-family: Tajawal, system-ui, sans-serif; font-weight: 700; font-size: 14px; padding: 10px 18px; border: 1px solid color-mix(in srgb, #13201A 8%, transparent); border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 200ms cubic-bezier(0.4,0,0.2,1), box-shadow 200ms cubic-bezier(0.4,0,0.2,1); cursor: pointer; } .ds-btn-primary:hover { background: #2D7A3E; box-shadow: 0 4px 12px rgba(0,0,0,0.08); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(31,92,46,0.12); } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Secondary Button (Sponsor)",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Sponsor-surface CTA. Warm gold ground, dark label. Off-limits outside sponsor surfaces.",
+      "html": "<button class=\"ds-btn-sponsor\">اهتمام</button>",
+      "css": ".ds-btn-sponsor { background: #C9A227; color: #13201A; font-family: Tajawal, system-ui, sans-serif; font-weight: 700; font-size: 14px; padding: 10px 18px; border: 1px solid #B7891A; border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 200ms cubic-bezier(0.4,0,0.2,1); cursor: pointer; } .ds-btn-sponsor:hover { background: #D4AF37; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary actions inside forms and dialogs.",
+      "html": "<button class=\"ds-btn-ghost\">إلغاء</button>",
+      "css": ".ds-btn-ghost { background: #E8F0E8; color: #13201A; font-family: Tajawal, system-ui, sans-serif; font-weight: 600; font-size: 14px; padding: 10px 18px; border: 1px solid color-mix(in srgb, #13201A 8%, transparent); border-radius: 10px; transition: background 200ms cubic-bezier(0.4,0,0.2,1); cursor: pointer; } .ds-btn-ghost:hover { background: color-mix(in srgb, #E8F0E8 70%, #FCFEFC); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Default panel for grouping related content. Hairline border + ambient shadow. Never nested.",
+      "html": "<article class=\"ds-card\"><h3 class=\"ds-card-title\">حالة الطلبات</h3><p class=\"ds-card-body\">12 طلب قيد المراجعة.</p></article>",
+      "css": ".ds-card { background: #FCFEFC; color: #13201A; padding: 20px; border: 1px solid color-mix(in srgb, #13201A 8%, transparent); border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03); font-family: Tajawal, system-ui, sans-serif; } .ds-card-title { font-weight: 800; font-size: 18px; margin: 0 0 8px 0; } .ds-card-body { font-weight: 500; font-size: 15px; line-height: 1.6; margin: 0; color: #5F6B62; }"
+    },
+    {
+      "name": "Interactive Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Cards that act as links. Lift on hover; return to flat on press.",
+      "html": "<a class=\"ds-card-interactive\" href=\"#\"><h3 class=\"ds-card-title\">إدارة الطلاب</h3><p class=\"ds-card-body\">عرض البيانات وإدارة الحسابات.</p></a>",
+      "css": ".ds-card-interactive { display: block; background: #FCFEFC; color: #13201A; padding: 20px; border: 1px solid color-mix(in srgb, #13201A 8%, transparent); border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03); text-decoration: none; font-family: Tajawal, system-ui, sans-serif; transition: box-shadow 200ms cubic-bezier(0.4,0,0.2,1), transform 200ms cubic-bezier(0.4,0,0.2,1); } .ds-card-interactive:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04); transform: translateY(-2px); } .ds-card-interactive:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(0,0,0,0.05); } .ds-card-interactive .ds-card-title { font-weight: 800; font-size: 18px; margin: 0 0 6px 0; } .ds-card-interactive .ds-card-body { font-weight: 500; font-size: 14px; line-height: 1.5; margin: 0; color: #5F6B62; }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Form field. Hairline border at rest; primary olive border + focus ring on focus.",
+      "html": "<label class=\"ds-input-label\">البريد الإلكتروني<input class=\"ds-input\" type=\"email\" dir=\"ltr\" placeholder=\"student@zuj.edu.jo\" /></label>",
+      "css": ".ds-input-label { display: block; font-family: Tajawal, system-ui, sans-serif; font-weight: 700; font-size: 12px; color: #13201A; } .ds-input { display: block; width: 100%; margin-top: 6px; padding: 10px 16px; background: #FCFEFC; color: #13201A; border: 1.5px solid #2A3530; border-radius: 10px; font-family: Tajawal, system-ui, sans-serif; font-size: 15px; outline: none; transition: border-color 200ms cubic-bezier(0.4,0,0.2,1), box-shadow 200ms cubic-bezier(0.4,0,0.2,1); } .ds-input::placeholder { color: #5F6B62; opacity: 1; } .ds-input:focus-visible { border-color: #1F5C2E; box-shadow: 0 0 0 3px rgba(31,92,46,0.12); }"
+    },
+    {
+      "name": "Status Chip — Accepted",
+      "kind": "chip",
+      "refersTo": "chip-status-accepted",
+      "description": "Signature status indicator. The application's status enum drives both the chip color and the label.",
+      "html": "<span class=\"ds-chip-accepted\"><svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 6 9 17l-5-5\"/></svg>مقبول</span>",
+      "css": ".ds-chip-accepted { display: inline-flex; align-items: center; gap: 6px; font-family: Tajawal, system-ui, sans-serif; font-weight: 700; font-size: 12px; padding: 5px 12px; background: rgba(22,163,74,0.12); color: #16A34A; border: 1px solid rgba(22,163,74,0.25); border-radius: 9999px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); white-space: nowrap; letter-spacing: 0.01em; }"
+    },
+    {
+      "name": "Status Chip — Needs Modification",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Same shape and rule as Accepted; different status token. All five status chips share the formula.",
+      "html": "<span class=\"ds-chip-modification\">يحتاج تعديل</span>",
+      "css": ".ds-chip-modification { display: inline-flex; align-items: center; gap: 6px; font-family: Tajawal, system-ui, sans-serif; font-weight: 700; font-size: 12px; padding: 5px 12px; background: rgba(234,88,12,0.12); color: #EA580C; border: 1px solid rgba(234,88,12,0.25); border-radius: 9999px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); white-space: nowrap; letter-spacing: 0.01em; }"
+    },
+    {
+      "name": "Sidebar Nav Item",
+      "kind": "nav",
+      "refersTo": "card",
+      "description": "Single entry in the AppSidebar. Right-aligned (RTL canonical). Colored ground when active.",
+      "html": "<a class=\"ds-nav-item ds-nav-item-active\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><polyline points=\"9 22 9 12 15 12 15 22\"/></svg><span>الرئيسية</span></a>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; font-family: Tajawal, system-ui, sans-serif; font-weight: 700; font-size: 14px; color: #13201A; text-decoration: none; transition: background 150ms cubic-bezier(0.4,0,0.2,1), color 150ms cubic-bezier(0.4,0,0.2,1); direction: rtl; } .ds-nav-item:hover { background: #E8F0E8; } .ds-nav-item-active { background: #2D7A3E; color: #FFFFFF; box-shadow: 0 1px 2px rgba(0,0,0,0.05); } .ds-nav-item-active:hover { background: #2D7A3E; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Olive Reading Room",
+    "overview": "The system reads like a quiet university reading room: tinted-warm light surface, soft hairline borders, the olive-green of the university tucked into primary actions, and a single warm gold reserved for one persona (sponsors). Type is Tajawal — one family carrying every label, heading, table cell, button, and form field. Motion exists but never performs: state changes get a 200ms ease-out reveal, and decorative animation is reserved exclusively for the public landing surface. The product surface (admin, supervisor, student, sponsor dashboards) is HeroUI-aligned: soft drop shadows, 1px hairline borders, generous radii (10–16px), and a hierarchy carried by weight and color tokens rather than by elevation.",
+    "keyCharacteristics": [
+      "Olive-green primary + warm gold sponsor accent; everything else is semantic state color",
+      "One Arabic-first sans (Tajawal); no display/body pairing",
+      "Soft drop shadows (no colored offsets); hairline borders (1px, 8% foreground tint)",
+      "Generous radii (10px base, 16px on cards, pill on chips)",
+      "HeroUI primitives as the floor; custom CSS extends, never replaces",
+      "Real dark mode with a separately-tuned palette, not inverted light"
+    ],
+    "rules": [
+      { "name": "The Olive-First Rule", "body": "Every neutral on the light surface is tinted toward #1F5C2E at low chroma. Pure greys, pure white, pure black are prohibited.", "section": "colors" },
+      { "name": "The Sponsor-Only Gold Rule", "body": "The warm gold #C9A227 is reserved for sponsor surfaces. It never appears in the student, supervisor, or admin dashboards.", "section": "colors" },
+      { "name": "The Status-Five Rule", "body": "Application chips use exactly the five tertiary tokens. New status visualizations draw from the same palette by status key, never by index.", "section": "colors" },
+      { "name": "The One-Family Rule", "body": "Tajawal carries every role. Do not introduce a display serif, monospace, or secondary sans for variety.", "section": "typography" },
+      { "name": "The No-Uppercase-Arabic Rule", "body": "Arabic has no case. CSS text-transform: uppercase applied to Arabic glyphs degrades them.", "section": "typography" },
+      { "name": "The Soft-Only Rule", "body": "Drop shadows are diffuse and uncolored. Hard-edged offset shadows are forbidden in the product surface.", "section": "elevation" },
+      { "name": "The Lift-On-Hover Rule", "body": "Cards rest flat (ambient shadow only). Hover adds the second elevation tier and a 2px Y-translation.", "section": "elevation" },
+      { "name": "The 1px-Border Rule", "body": "Every interactive surface carries a 1px hairline border at 8% foreground mix. Borders thicker than 1.5px are reserved for focused inputs.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do anchor every primary action in olive (#1F5C2E). The hover state goes to mid-olive (#2D7A3E), not to a brighter or different hue.",
+      "Do reserve the warm gold (#C9A227) for sponsor surfaces only.",
+      "Do keep all neutrals tinted toward olive at low chroma. Never #000 or #fff.",
+      "Do use HeroUI primitives (Button, Input, Card, Spinner, Modal) as the foundation. Custom CSS extends, never replaces.",
+      "Do size body text at 14–15px (Tajawal at smaller sizes loses legibility).",
+      "Do convey application status with chip color + Arabic label + (where useful) icon — three signals, never one alone.",
+      "Do transition state changes in 150–250ms with ease-out.",
+      "Do honor prefers-reduced-motion: reduce — all ambient animations must self-disable.",
+      "Do apply dir=\"ltr\" to specific elements containing emails, URLs, and numeric IDs while keeping the document RTL.",
+      "Do use the soft drop-shadow vocabulary in Elevation. Hairline 1px borders pair with shadows; don't choose one or the other."
+    ],
+    "donts": [
+      "Don't reintroduce neobrutalism patterns: hard colored offset shadows, 2-3px chunky black borders, raw outline-everywhere blocks. The migration to HeroUI-soft is finished.",
+      "Don't use background-clip: text with a gradient. Solid color, weight contrast, or size contrast carries emphasis instead.",
+      "Don't use glassmorphism as a default surface treatment. It's reserved for the landing hero composition.",
+      "Don't ship the hero-metric template: 8 identical icon-number-label cards in a 4×2 grid.",
+      "Don't ship identical card grids: 4 same-sized cards with icon + heading + text. Vary the visual weight.",
+      "Don't animate decorative properties on static product UI. Motion conveys state changes only.",
+      "Don't hard-code hex colors inline. Reference the token. The CSS variable is the single source of truth.",
+      "Don't uppercase Arabic text via text-transform. Arabic has no case.",
+      "Don't invent new status colors. The five-step palette is fixed at the schema level.",
+      "Don't use generic SaaS blue-everywhere or Material defaults. The system has explicit institutional Arabic identity.",
+      "Don't nest cards inside cards. Use background tint shift, hairline border, or simple spacing to convey grouping instead.",
+      "Don't add a custom scrollbar to draw attention to itself."
+    ]
+  }
+}
