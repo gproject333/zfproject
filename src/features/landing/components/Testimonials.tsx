@@ -105,7 +105,7 @@ export default function Testimonials() {
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
             قصص نجاح{" "}
-            <span className="gradient-text">ملهمة</span>
+            <span className="text-primary">ملهمة</span>
           </h2>
         </div>
       </div>

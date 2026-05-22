@@ -150,7 +150,7 @@ export default function FeaturesSection() {
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
             مسار مختلف،{" "}
-            <span className="gradient-text">لكل طموح</span>
+            <span className="text-primary">لكل طموح</span>
           </h2>
           <p className="text-foreground/60 mt-4 text-base sm:text-lg">
             اختر المسار الذي يناسب فكرتك وابدأ رحلتك مع أحد المشرفين الأكاديميين.

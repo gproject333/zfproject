@@ -73,7 +73,7 @@ export default function HowItWorks() {
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
             من البذرة{" "}
-            <span className="gradient-text">إلى الثمرة</span>
+            <span className="text-primary">إلى الثمرة</span>
           </h2>
           <p className="text-foreground/60 mt-4 text-base sm:text-lg">
             أربع مراحل بسيطة تأخذك من فكرة عابرة إلى مشروع حقيقي.

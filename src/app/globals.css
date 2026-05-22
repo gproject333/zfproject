@@ -294,7 +294,10 @@ textarea::placeholder {
   letter-spacing: 0.01em;
 }
 
-/* --- Tags (compact uppercase labels) --- */
+/* --- Tags (compact labels — Latin script only)
+   Soft surface matching the rest of the system. The `text-transform:
+   uppercase` rule belongs on Latin glyphs only: per DESIGN.md's
+   No-Uppercase-Arabic Rule, do not apply .nb-tag to Arabic labels. */
 .nb-tag {
   display: inline-flex;
   align-items: center;
@@ -302,41 +305,11 @@ textarea::placeholder {
   font-size: 0.7rem;
   font-weight: 800;
   padding: 0.15rem 0.5rem;
-  border: 1.5px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
   border-radius: 6px;
-  box-shadow: 2px 2px 0px var(--shadow-color), 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  transition: transform 0.18s ease;
-}
-
-.nb-tag:hover {
-  transform: scale(1.03);
-}
-
-/* ============================================
-   Gradient text
-   ============================================ */
-
-/* Brand gradient applied to text. `background-clip: text` clips the gradient
-   to the glyph shapes — but with tight line-heights the paint box ends up
-   shorter than tall Arabic glyphs, clipping their tops. The vertical padding
-   enlarges the paint box so the whole glyph is covered; the matching negative
-   margin cancels the layout growth. */
-.gradient-text {
-  display: inline-block;
-  background-image: linear-gradient(
-    to left,
-    var(--color-primary),
-    var(--color-accent),
-    var(--color-secondary)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  padding-block: 0.16em;
-  margin-block: -0.16em;
 }
 
 /* ============================================
@@ -594,14 +567,6 @@ html.lenis body {
   background-size: 16px 16px;
   background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
 }
-
-/* ============================================
-   Scrollbar
-   ============================================ */
-::-webkit-scrollbar        { width: 8px; }
-::-webkit-scrollbar-track  { background: var(--muted); }
-::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
 
 /* ============================================
    Selection

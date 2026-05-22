@@ -26,7 +26,7 @@ export default function Partners() {
         </span>
         <h3 className="text-xl sm:text-2xl font-black text-foreground/80">
           نعمل بالشراكة مع{" "}
-          <span className="gradient-text">أفضل المؤسسات</span>
+          <span className="text-primary">أفضل المؤسسات</span>
         </h3>
       </div>
 

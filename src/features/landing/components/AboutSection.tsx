@@ -86,7 +86,7 @@ export default function AboutSection() {
               className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground mb-6 leading-tight"
             >
               بوابتك{" "}
-              <span className="gradient-text">الرقمية</span>{" "}
+              <span className="text-primary">الرقمية</span>{" "}
               نحو الريادة
             </h2>
             <p className="text-base sm:text-lg text-foreground/70 dark:text-foreground/80 font-medium max-w-2xl leading-relaxed">

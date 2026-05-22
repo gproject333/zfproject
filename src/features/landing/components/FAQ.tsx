@@ -46,7 +46,7 @@ export default function FAQ() {
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
             كل ما تحتاج{" "}
-            <span className="gradient-text">معرفته</span>
+            <span className="text-primary">معرفته</span>
           </h2>
           <p className="text-foreground/60 mt-4 text-base sm:text-lg">
             أجوبة سريعة لأكثر الأسئلة شيوعاً. لم تجد سؤالك؟ تواصل معنا مباشرة.

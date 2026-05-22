@@ -124,7 +124,7 @@ export default function Hero({
                   className="inline-block"
                 >
                   {w === GRADIENT_WORD ? (
-                    <span className="gradient-text">{w}</span>
+                    <span className="text-primary">{w}</span>
                   ) : (
                     w
                   )}
