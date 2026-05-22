@@ -45,7 +45,7 @@ export default function UpgradeRequestsManager() {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h2 className="text-2xl font-extrabold mb-1 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6" style={{ color: "#DC2626" }} />
+            <TrendingUp className="w-6 h-6 text-primary" />
             طلبات الترقية إلى مشرف
           </h2>
           <p className="text-muted-foreground font-medium">

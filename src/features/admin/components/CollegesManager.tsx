@@ -144,7 +144,6 @@ export default function CollegesManager() {
             onPress={() => setShowNewCollege(!showNewCollege)}
             variant="primary"
             size="sm"
-            style={{ background: "#DC2626" }}
           >
             {showNewCollege ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             إضافة كلية

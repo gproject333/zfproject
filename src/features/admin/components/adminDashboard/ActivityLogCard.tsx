@@ -24,7 +24,7 @@ export default function ActivityLogCard({ logs }: { logs: ActivityLog[] | undefi
   return (
     <Card className="p-5">
       <h3 className="font-extrabold text-base mb-3 flex items-center gap-2">
-        <Activity className="w-4 h-4" style={{ color: "#DC2626" }} />
+        <Activity className="w-4 h-4 text-primary" />
         آخر النشاطات
       </h3>
       {logs === undefined ? (

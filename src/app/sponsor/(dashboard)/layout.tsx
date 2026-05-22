@@ -18,22 +18,21 @@ export default function SponsorLayout({ children }: { children: ReactNode }) {
           <div className="relative">
             <Building2 className="w-5 h-5 text-white" />
             <div
-              className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center"
-              style={{ background: "#1F5C2E", border: "1px solid #164520" }}
+              className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center bg-primary border border-primary/70"
             >
               <Star className="w-2 h-2 text-white" fill="currentColor" />
             </div>
           </div>
         ),
-        iconBgStyle: { background: "#C9A227" },
+        iconBgStyle: { background: "var(--secondary)" },
         homeHref: "/sponsor",
         subtitle: user?.name ? `مرحباً، ${user.name}` : "بوابة الرعاة",
-        subtitleStyle: { color: "#C9A227" },
+        subtitleStyle: { color: "var(--secondary)" },
       },
       navItems: sponsorNavItems,
       active: {
         className: "text-white nb-shadow-sm",
-        style: { background: "#C9A227", borderColor: "#B7891A" },
+        style: { background: "var(--secondary)", borderColor: "var(--secondary-border)" },
       },
       showNotifications: false,
       logoutHref: "/sponsor/login",

@@ -16,18 +16,20 @@ import {
 import { Card } from "@/components/ui";
 
 /**
- * Each project status keyed to its own semantic color. Looking the
- * color up by status (not by array index) keeps green=accepted and
- * red=rejected fixed — previously a zero-count slice being filtered
- * out shifted every remaining color by one.
+ * Each project status keyed to its own semantic color. Hex values mirror
+ * the --status-* tokens in src/app/globals.css; Recharts requires literal
+ * colors so we cannot reference var(--token) directly here. Keep in sync
+ * with the schema's `applications.status` enum and DESIGN.md's Status-Five
+ * Rule. Looking the color up by status (not by array index) keeps
+ * accepted=green / rejected=red fixed when a zero-count slice is filtered.
  */
 const STATUS_COLORS: Record<string, string> = {
-  "قيد المراجعة": "#F59E0B",
-  "مقبول": "#22C55E",
-  "مرفوض": "#EF4444",
-  "يحتاج تعديل": "#64748B",
+  "قيد المراجعة": "#EAB308", // --status-pending
+  "مقبول":        "#16A34A", // --status-accepted
+  "مرفوض":         "#DC2626", // --status-rejected
+  "يحتاج تعديل":   "#EA580C", // --status-modification
 };
-const STATUS_FALLBACK = "#94A3B8";
+const STATUS_FALLBACK = "#5F6B62"; // --muted-foreground
 
 /** Drop the redundant "كلية " prefix — the card title already says حسب الكلية. */
 function collegeLabel(name: string) {
@@ -71,7 +73,8 @@ export default function ChartsRow({
               <XAxis dataKey="month" tick={{ fontSize: 9, fontFamily: "inherit" }} />
               <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
               <Tooltip formatter={(v) => [`${v} طالب`, "التسجيلات"]} />
-              <Line type="monotone" dataKey="count" stroke="#22C55E" strokeWidth={2} dot={{ r: 3 }} />
+              {/* Line stroke mirrors --status-accepted token for visual continuity. */}
+              <Line type="monotone" dataKey="count" stroke="#16A34A" strokeWidth={2} dot={{ r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
         ) : (

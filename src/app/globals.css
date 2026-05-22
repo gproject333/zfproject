@@ -39,6 +39,10 @@
   --input: #FCFEFC;
   --ring: #1F5C2E;
 
+  /* Darker variants of brand tokens, used as borders on filled role
+     buttons (sponsor gold needs a darker gold edge for legibility). */
+  --secondary-border: #B7891A;
+
   --shadow-offset: 3px;
   --shadow-color: rgba(31, 92, 46, 0.55);
   --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.07);
@@ -81,6 +85,7 @@
   --border: #2A3F2F;
   --input: #1A2E1F;
   --ring: #4CAF50;
+  --secondary-border: #A0822A;
 
   --shadow-offset: 3px;
   --shadow-color: rgba(76, 175, 80, 0.5);

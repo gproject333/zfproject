@@ -42,7 +42,13 @@ export const SUPERVISOR_CONFIG: UserManagementConfig = {
   emptyDescription: "ابدأ بإضافة أول مشرف للمنصة",
   addButtonLabel: "إضافة مشرف جديد",
   formTitle: "بيانات المشرف الجديد",
-  color: { primary: "#2D7A3E", border: "#1F5C2E", textOnPrimary: "white" },
+  // CSS variables resolve through the theme system, so theme switching
+  // (light/dark) works without rewriting these values.
+  color: {
+    primary: "var(--accent)",
+    border: "var(--primary)",
+    textOnPrimary: "var(--accent-foreground)",
+  },
   nameField: { label: "الاسم الكامل *", placeholder: "د. أحمد محمد" },
   emailPlaceholder: "supervisor@zuj.edu.jo",
   phoneLabel: "رقم الهاتف",
@@ -69,7 +75,13 @@ export const SPONSOR_CONFIG: UserManagementConfig = {
   emptyDescription: "ابدأ بإضافة أول داعم للمنصة",
   addButtonLabel: "إضافة داعم جديد",
   formTitle: "بيانات الداعم الجديد",
-  color: { primary: "#C9A227", border: "#B7891A", textOnPrimary: "#111" },
+  // Sponsor gold token + darker gold token (--secondary-border) for the
+  // legible edge on filled buttons. See DESIGN.md "Sponsor-Only Gold Rule".
+  color: {
+    primary: "var(--secondary)",
+    border: "var(--secondary-border)",
+    textOnPrimary: "var(--secondary-foreground)",
+  },
   nameField: { label: "الاسم *", placeholder: "شركة التقنية الأردنية" },
   emailPlaceholder: "sponsor@company.com",
   phoneLabel: "رقم الهاتف *",

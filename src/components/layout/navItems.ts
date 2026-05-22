@@ -82,13 +82,15 @@ export const adminSidebarConfig: AppSidebarConfig = {
   navItems: adminNavItems,
   homeHref: "/admin",
   brandIcon: Crown,
-  brandBadgeStyle: { background: "#DC2626" },
+  brandBadgeStyle: { background: "var(--accent)" },
   brandIconClassName: "text-white",
   subtitle: "لوحة مشرف النظام",
   profileHref: "/admin",
   logoutHref: "/admin/login",
-  activeClassName: "text-white nb-shadow-sm",
-  activeStyle: { background: "#DC2626", borderColor: "#991B1B" },
+  // Admin uses the mid-olive accent (per DESIGN.md), one step brighter
+  // than supervisor's primary so the two sidebars are distinguishable
+  // without breaking the olive identity.
+  activeClassName: "bg-accent text-accent-foreground nb-shadow-sm border-foreground",
   storageKey: "admin-sidebar-collapsed",
 };
 
