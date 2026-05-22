@@ -87,7 +87,7 @@ export default function GuideFormDialog({
           </div>
 
           {formError && (
-            <div className="nb-border border-destructive bg-destructive/10 text-destructive px-3 py-2 rounded-lg text-sm font-bold">
+            <div className="ds-border border-destructive bg-destructive/10 text-destructive px-3 py-2 rounded-lg text-sm font-bold">
               {formError}
             </div>
           )}

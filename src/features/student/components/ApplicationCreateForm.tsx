@@ -52,11 +52,11 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
         <button
           onClick={() => router.push("/student/new")}
           aria-label="رجوع"
-          className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover shrink-0"
+          className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card ds-shadow-hover shrink-0"
         >
           <ArrowRight className="w-5 h-5" />
         </button>
-        <div className="w-12 h-12 bg-muted nb-border rounded-xl flex items-center justify-center shrink-0">
+        <div className="w-12 h-12 bg-muted ds-border rounded-xl flex items-center justify-center shrink-0">
           <Icon className={`w-6 h-6 ${config.color}`} />
         </div>
         <div>
@@ -128,7 +128,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
       </Card>
 
       {/* Tips */}
-      <div className="mt-6 nb-card p-5 bg-muted/50">
+      <div className="mt-6 ds-card p-5 bg-muted/50">
         <h4 className="font-bold text-sm mb-2 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-success" />
           نصائح لطلب ناجح

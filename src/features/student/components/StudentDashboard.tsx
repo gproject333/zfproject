@@ -64,7 +64,7 @@ export default function StudentDashboard() {
       {stats.needsModification > 0 && <AttentionSection />}
 
       {/* Compact status overview — one clickable strip, not hero cards */}
-      <div className="nb-card overflow-hidden">
+      <div className="ds-card overflow-hidden">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-foreground/10">
           {statCards.map((stat) => (
             <button
@@ -93,7 +93,7 @@ export default function StudentDashboard() {
       {/* Supervisor upgrade banner — for @zuj.edu.jo emails only */}
       {isZujStaff && (
         <Card className="p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-muted nb-border flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-muted ds-border flex items-center justify-center shrink-0">
             <ArrowUpCircle className="w-6 h-6 text-primary" />
           </div>
           <div className="flex-1 min-w-0">

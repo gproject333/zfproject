@@ -130,7 +130,7 @@ export default function UserManagementShell({ config }: { config: UserManagement
       </div>
 
       {success && (
-        <div className="flex items-center gap-2 p-3 bg-success/10 nb-border rounded-lg border-success">
+        <div className="flex items-center gap-2 p-3 bg-success/10 ds-border rounded-lg border-success">
           <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
           <p className="text-sm font-semibold text-success">{success}</p>
         </div>
@@ -145,7 +145,7 @@ export default function UserManagementShell({ config }: { config: UserManagement
           </h3>
           <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {error && (
-              <div className="md:col-span-2 flex items-center gap-2 p-3 bg-destructive/10 nb-border rounded-lg border-destructive">
+              <div className="md:col-span-2 flex items-center gap-2 p-3 bg-destructive/10 ds-border rounded-lg border-destructive">
                 <AlertCircle className="w-4 h-4 text-destructive shrink-0" />
                 <p className="text-sm font-semibold text-destructive">{error}</p>
               </div>
@@ -200,7 +200,7 @@ export default function UserManagementShell({ config }: { config: UserManagement
               </div>
             </div>
             <div className="md:col-span-2">
-              <div className={`p-3 rounded-lg ${config.formHint.bg} nb-border ${config.formHint.border} text-sm font-medium ${config.formHint.color} mb-4`}>
+              <div className={`p-3 rounded-lg ${config.formHint.bg} ds-border ${config.formHint.border} text-sm font-medium ${config.formHint.color} mb-4`}>
                 {config.formHint.text}
               </div>
               <Button type="submit" isDisabled={loading} variant="primary" className="w-full md:w-auto" style={{ background: config.color.primary, color: config.color.textOnPrimary, borderColor: config.color.border }}>
@@ -276,7 +276,7 @@ export default function UserManagementShell({ config }: { config: UserManagement
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-9 h-9 rounded-xl nb-border flex items-center justify-center shrink-0 font-extrabold text-sm"
+                          className="w-9 h-9 rounded-xl ds-border flex items-center justify-center shrink-0 font-extrabold text-sm"
                           style={{ background: config.color.primary, color: config.color.textOnPrimary }}
                         >
                           {user.name?.charAt(0) ?? config.fallbackInitial}
@@ -297,7 +297,7 @@ export default function UserManagementShell({ config }: { config: UserManagement
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`nb-badge font-bold ${
+                        className={`ds-badge font-bold ${
                           user.isActive !== false
                             ? "bg-success/10 text-success"
                             : "bg-destructive/10 text-destructive"

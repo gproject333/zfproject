@@ -66,7 +66,7 @@ export default function NotificationItem({
       }`}
     >
       <div
-        className={`w-8 h-8 rounded-lg nb-border flex items-center justify-center shrink-0 mt-0.5 ${
+        className={`w-8 h-8 rounded-lg ds-border flex items-center justify-center shrink-0 mt-0.5 ${
           !n.read ? "bg-primary" : "bg-muted"
         }`}
       >

@@ -157,48 +157,48 @@ body {
 
 /* --- Shadows ---
    HeroUI-aligned soft drop shadows (no colored offset). */
-.nb-shadow {
+.ds-shadow {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
-.nb-shadow-sm {
+.ds-shadow-sm {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.nb-shadow-lg {
+.ds-shadow-lg {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.nb-shadow-xl {
+.ds-shadow-xl {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.nb-shadow-hover {
+.ds-shadow-hover {
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.nb-shadow-hover:hover {
+.ds-shadow-hover:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
 }
 
-.nb-shadow-hover:active {
+.ds-shadow-hover:active {
   transform: translateY(0);
 }
 
 /* --- Borders ---
    Subtle 1px hairline borders. */
-.nb-border {
+.ds-border {
   border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
 }
 
-.nb-border-thick {
+.ds-border-thick {
   border: 1.5px solid color-mix(in srgb, var(--foreground) 12%, transparent);
 }
 
 /* --- Cards ---
    Soft surface look matching HeroUI's Card defaults. */
-.nb-card {
+.ds-card {
   background: var(--card);
   border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03);
@@ -206,7 +206,7 @@ body {
   transition: box-shadow 0.18s ease, transform 0.18s ease;
 }
 
-.nb-card-interactive {
+.ds-card-interactive {
   background: var(--card);
   border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03);
@@ -215,18 +215,18 @@ body {
   cursor: pointer;
 }
 
-.nb-card-interactive:hover {
+.ds-card-interactive:hover {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);
 }
 
-.nb-card-interactive:active {
+.ds-card-interactive:active {
   transform: translateY(0);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* --- Inputs --- */
-.nb-input {
+.ds-input {
   font-family: var(--font-tajawal), sans-serif;
   border: var(--border-width) solid var(--border);
   border-radius: var(--radius);
@@ -239,13 +239,13 @@ body {
   outline: none;
 }
 
-.nb-input:focus {
+.ds-input:focus {
   box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--shadow-color),
               0 0 0 3px rgba(31, 92, 46, 0.12);
   border-color: var(--primary);
 }
 
-.nb-input::placeholder {
+.ds-input::placeholder {
   color: var(--muted-foreground);
 }
 
@@ -257,18 +257,22 @@ textarea::placeholder {
   opacity: 1;
 }
 
-/* HeroUI tabs colour inactive tab labels with --muted — which this app
-   repurposes as a light surface tint, leaving the labels near-invisible.
-   Force every tab label to the standard foreground colour. !important is
-   required: HeroUI's .tabs__tab lives in @layer components, which outranks
-   this rule's layer regardless of specificity. */
-[role="tab"] {
-  color: var(--foreground) !important;
+/* HeroUI 3 inherits tab text color from the surrounding context; when the
+   surrounding context resolves to --muted (which this app repurposes as a
+   light surface tint, not muted-foreground), the labels read near-invisible.
+   Force the standard foreground colour. Placed inside @layer utilities so
+   it outranks HeroUI's @layer components rules without resorting to
+   !important. If a future HeroUI release manages tab text via its own data
+   attributes, narrow this selector accordingly. */
+@layer utilities {
+  [role="tab"] {
+    color: var(--foreground);
+  }
 }
 
 /* --- Badges ---
    Soft pill style — matches the HeroUI Chip aesthetic. */
-.nb-badge {
+.ds-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -284,8 +288,8 @@ textarea::placeholder {
 
 /* Soft badge variant — lighter border + subtle shadow for a modern
    soft-UI look. Preserves the same padding/size so it slots in for
-   .nb-badge without layout shift. */
-.nb-badge-soft {
+   .ds-badge without layout shift. */
+.ds-badge-soft {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -302,8 +306,8 @@ textarea::placeholder {
 /* --- Tags (compact labels — Latin script only)
    Soft surface matching the rest of the system. The `text-transform:
    uppercase` rule belongs on Latin glyphs only: per DESIGN.md's
-   No-Uppercase-Arabic Rule, do not apply .nb-tag to Arabic labels. */
-.nb-tag {
+   No-Uppercase-Arabic Rule, do not apply .ds-tag to Arabic labels. */
+.ds-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -416,49 +420,10 @@ textarea::placeholder {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Olive-tree gentle sway. Origin is set on the .tree-sway element itself. */
-@keyframes sway {
-  from { transform: rotate(-1deg); }
-  to   { transform: rotate(1deg); }
-}
-.tree-sway {
-  transform-origin: 50% 100%;
-  animation: sway 6s ease-in-out infinite alternate;
-  /* Delay the sway so it begins after the GSAP draw-in finishes (~2.4s). */
-  animation-delay: 2.4s;
-}
-
-/* Vertical drift used by floating leaf particles in the hero column. */
-@keyframes leafDriftUp {
-  0%   { transform: translate3d(0, 100%, 0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 0.7; }
-  90%  { opacity: 0.7; }
-  100% { transform: translate3d(var(--drift-x, 30px), -120%, 0) rotate(var(--drift-rot, 180deg)); opacity: 0; }
-}
-.animate-leaf-drift {
-  animation: leafDriftUp var(--drift-duration, 14s) linear infinite;
-  animation-delay: var(--drift-delay, 0s);
-}
-
-/* Cinematic Ken Burns — a very slow zoom + drift used by the olive-grove
-   background of the scroll-storytelling scenes. */
-@keyframes kenburns {
-  0%   { transform: scale(1.08) translate3d(0, 0, 0); }
-  100% { transform: scale(1.2) translate3d(1.5%, -2%, 0); }
-}
-.animate-kenburns {
-  animation: kenburns 34s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-/* Slowly rotating volumetric god-rays around the cinematic sun. */
-@keyframes godrays {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-.animate-godrays {
-  animation: godrays 140s linear infinite;
-}
+/* Landing-only ambient loops (sway / leafDriftUp / kenburns / godrays) live
+   in src/features/landing/landing.css. The reduced-motion block below still
+   references those class names so the same reduced-motion contract holds
+   when the landing CSS is loaded. */
 
 /* Honour the user's reduced-motion preference: kill all ambient loops. */
 @media (prefers-reduced-motion: reduce) {
@@ -476,33 +441,9 @@ textarea::placeholder {
   }
 }
 
-/* ============================================
-   Lenis smooth scroll
-   ============================================ */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
-/* Dark mode: brand gradient orbs need a touch more opacity to read against the
-   darker background. Components using these classes opt in by adding
-   `.landing-orb` alongside any inline `opacity` style — the override below
-   wins because it's later in the cascade. */
-.dark .landing-orb {
-  opacity: 0.35 !important;
-}
+/* Lenis smooth-scroll hooks and the .landing-orb dark override moved to
+   src/features/landing/landing.css alongside the other landing-only
+   ambient pieces. */
 
 .animate-float        { animation: float       3s   ease-in-out infinite; }
 .animate-pulse-slow   { animation: pulseSlow   4s   ease-in-out infinite; }
@@ -529,8 +470,8 @@ html.lenis body {
 }
 
 /* Pause on hover */
-.nb-marquee-track:hover .animate-marquee,
-.nb-marquee-track:hover .animate-marquee-reverse {
+.ds-marquee-track:hover .animate-marquee,
+.ds-marquee-track:hover .animate-marquee-reverse {
   animation-play-state: paused;
 }
 
@@ -561,16 +502,6 @@ html.lenis body {
 .bg-dots {
   background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
   background-size: 24px 24px;
-}
-
-.bg-checker {
-  background-image:
-    linear-gradient(45deg,  rgba(26,26,46,0.04) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(26,26,46,0.04) 25%, transparent 25%),
-    linear-gradient(45deg,  transparent 75%, rgba(26,26,46,0.04) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(26,26,46,0.04) 75%);
-  background-size: 16px 16px;
-  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
 }
 
 /* ============================================

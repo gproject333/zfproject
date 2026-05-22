@@ -141,7 +141,7 @@ export default function ArticleFormDialog({
                 />
               </label>
               {previewSrc && (
-                <div className="relative w-24 h-16 nb-border rounded-lg overflow-hidden">
+                <div className="relative w-24 h-16 ds-border rounded-lg overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={previewSrc}
@@ -232,7 +232,7 @@ export default function ArticleFormDialog({
             </div>
             <div>
               <label className="text-xs font-extrabold mb-1 block">الحالة</label>
-              <label className="nb-border rounded-lg px-3 py-2.5 flex items-center gap-2 text-sm font-bold bg-card cursor-pointer">
+              <label className="ds-border rounded-lg px-3 py-2.5 flex items-center gap-2 text-sm font-bold bg-card cursor-pointer">
                 <input
                   type="checkbox"
                   checked={formState.isPublished}
@@ -247,7 +247,7 @@ export default function ArticleFormDialog({
           </div>
 
           {formError && (
-            <div className="nb-border border-destructive bg-destructive/10 text-destructive px-3 py-2 rounded-lg text-sm font-bold">
+            <div className="ds-border border-destructive bg-destructive/10 text-destructive px-3 py-2 rounded-lg text-sm font-bold">
               {formError}
             </div>
           )}

@@ -14,7 +14,7 @@ const studentConfig = {
   },
   navItems: studentNavItems,
   active: {
-    className: "bg-primary text-white nb-shadow-sm",
+    className: "bg-primary text-white ds-shadow-sm",
   },
   showNotifications: true,
   logoutHref: "/login",

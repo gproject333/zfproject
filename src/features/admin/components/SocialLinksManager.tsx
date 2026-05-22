@@ -148,7 +148,7 @@ export default function SocialLinksManager() {
       {showForm && (
         <form
           onSubmit={submit}
-          className="nb-card p-6 border-[3px] border-info/50 animate-slide-up space-y-4"
+          className="ds-card p-6 border-[3px] border-info/50 animate-slide-up space-y-4"
         >
           <h3 className="font-extrabold text-lg">
             {editingId ? "تعديل الرابط" : "رابط جديد"}
@@ -253,7 +253,7 @@ export default function SocialLinksManager() {
         {links === undefined ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 bg-muted rounded-lg nb-border animate-pulse" />
+              <div key={i} className="h-16 bg-muted rounded-lg ds-border animate-pulse" />
             ))}
           </div>
         ) : links.length === 0 ? (
@@ -272,11 +272,11 @@ export default function SocialLinksManager() {
               return (
                 <div
                   key={link._id}
-                  className={`nb-card p-4 flex items-center gap-4 ${
+                  className={`ds-card p-4 flex items-center gap-4 ${
                     link.isActive ? "" : "opacity-60"
                   }`}
                 >
-                  <div className="w-10 h-10 bg-muted nb-border rounded-lg flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 bg-muted ds-border rounded-lg flex items-center justify-center shrink-0">
                     <Icon className="w-5 h-5" aria-hidden="true" />
                   </div>
 
@@ -303,7 +303,7 @@ export default function SocialLinksManager() {
                       onClick={() => void toggleActive(link._id, !link.isActive)}
                       title={link.isActive ? "إخفاء" : "إظهار"}
                       aria-label={link.isActive ? "إخفاء الرابط" : "إظهار الرابط"}
-                      className="w-9 h-9 nb-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
+                      className="w-9 h-9 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
                     >
                       {link.isActive ? (
                         <Eye className="w-4 h-4" />
@@ -316,7 +316,7 @@ export default function SocialLinksManager() {
                       onClick={() => startEdit(link._id)}
                       title="تعديل"
                       aria-label="تعديل الرابط"
-                      className="w-9 h-9 nb-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
+                      className="w-9 h-9 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
                     >
                       <Edit3 className="w-4 h-4" />
                     </button>
@@ -325,7 +325,7 @@ export default function SocialLinksManager() {
                       onClick={() => setPendingDeleteId(link._id)}
                       title="حذف"
                       aria-label="حذف الرابط"
-                      className="w-9 h-9 nb-border rounded-lg flex items-center justify-center hover:bg-destructive/10 hover:border-destructive transition-colors"
+                      className="w-9 h-9 ds-border rounded-lg flex items-center justify-center hover:bg-destructive/10 hover:border-destructive transition-colors"
                     >
                       <Trash2 className="w-4 h-4 text-destructive" />
                     </button>

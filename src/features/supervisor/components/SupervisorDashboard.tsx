@@ -44,10 +44,10 @@ export default function SupervisorDashboard() {
                   : "/supervisor/applications"
               )
             }
-            className="nb-card-interactive p-6 flex flex-col items-center text-center w-full"
+            className="ds-card-interactive p-6 flex flex-col items-center text-center w-full"
           >
             <div
-              className="w-12 h-12 rounded-xl nb-border flex items-center justify-center mb-4 bg-white"
+              className="w-12 h-12 rounded-xl ds-border flex items-center justify-center mb-4 bg-white"
             >
               <stat.icon className={`w-6 h-6 ${stat.color}`} />
             </div>
@@ -58,8 +58,8 @@ export default function SupervisorDashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Link href="/supervisor/entrepreneurial-guide" className="nb-card p-5 flex items-center gap-4 hover:nb-shadow transition-all">
-          <div className="w-12 h-12 rounded-xl bg-white nb-border flex items-center justify-center shrink-0">
+        <Link href="/supervisor/entrepreneurial-guide" className="ds-card p-5 flex items-center gap-4 hover:ds-shadow transition-all">
+          <div className="w-12 h-12 rounded-xl bg-white ds-border flex items-center justify-center shrink-0">
             <Compass className="w-6 h-6 text-accent" />
           </div>
           <div>
@@ -67,8 +67,8 @@ export default function SupervisorDashboard() {
             <p className="text-xs text-muted-foreground font-medium">إدارة محتوى الدليل</p>
           </div>
         </Link>
-        <Link href="/supervisor/articles" className="nb-card p-5 flex items-center gap-4 hover:nb-shadow transition-all">
-          <div className="w-12 h-12 rounded-xl bg-white nb-border flex items-center justify-center shrink-0">
+        <Link href="/supervisor/articles" className="ds-card p-5 flex items-center gap-4 hover:ds-shadow transition-all">
+          <div className="w-12 h-12 rounded-xl bg-white ds-border flex items-center justify-center shrink-0">
             <BookOpen className="w-6 h-6 text-primary" />
           </div>
           <div>

@@ -132,7 +132,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
 
       {/* Panel */}
       <div
-        className="relative flex flex-col bg-card nb-border nb-shadow-lg rounded-xl overflow-hidden w-full max-w-[calc(100vw-32px)]"
+        className="relative flex flex-col bg-card ds-border ds-shadow-lg rounded-xl overflow-hidden w-full max-w-[calc(100vw-32px)]"
         style={{
           width: panelWidth,
           height: "min(90vh, 900px)",
@@ -146,7 +146,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
 
         {/* Header */}
         <div className="flex items-center gap-3 px-5 py-3 border-b-2 border-foreground/10 shrink-0">
-          <div className="w-8 h-8 bg-destructive/10 nb-border rounded-lg flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 bg-destructive/10 ds-border rounded-lg flex items-center justify-center shrink-0">
             <FileText className="w-4 h-4 text-destructive" />
           </div>
           <div className="flex-1 min-w-0">
@@ -156,13 +156,13 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
             </p>
           </div>
           <div className="flex items-center gap-1 shrink-0">
-            <a href={url} download className="w-8 h-8 nb-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="تحميل">
+            <a href={url} download className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="تحميل">
               <Download className="w-4 h-4" />
             </a>
-            <a href={url} target="_blank" rel="noopener noreferrer" className="w-8 h-8 nb-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="فتح في تبويب جديد">
+            <a href={url} target="_blank" rel="noopener noreferrer" className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="فتح في تبويب جديد">
               <ExternalLink className="w-4 h-4" />
             </a>
-            <button onClick={handleClose} className="w-8 h-8 nb-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="إغلاق">
+            <button onClick={handleClose} className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="إغلاق">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -171,7 +171,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
         {/* Toolbar */}
         <div className="flex items-center justify-between gap-3 px-5 py-2 border-b border-foreground/10 bg-muted/30 shrink-0">
           <div className="flex items-center gap-1">
-            <button onClick={() => goTo(page - 1)} disabled={page <= 1} className="w-7 h-7 nb-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
+            <button onClick={() => goTo(page - 1)} disabled={page <= 1} className="w-7 h-7 ds-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
               <ChevronRight className="w-4 h-4" />
             </button>
             <div className="flex items-center gap-1 text-xs font-bold">
@@ -184,23 +184,23 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
                 key={page}
                 onBlur={handlePageInputBlur}
                 onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
-                className="w-10 text-center nb-border rounded-md px-1 py-0.5 bg-card text-xs font-bold [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+                className="w-10 text-center ds-border rounded-md px-1 py-0.5 bg-card text-xs font-bold [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
               />
               <span className="text-muted-foreground">/ {numPages || "—"}</span>
             </div>
-            <button onClick={() => goTo(page + 1)} disabled={page >= numPages} className="w-7 h-7 nb-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
+            <button onClick={() => goTo(page + 1)} disabled={page >= numPages} className="w-7 h-7 ds-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
               <ChevronLeft className="w-4 h-4" />
             </button>
           </div>
 
           <div className="flex items-center gap-1">
-            <button onClick={() => setZoomIndex((i) => Math.max(0, i - 1))} disabled={zoomIndex === 0} className="w-7 h-7 nb-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="تصغير">
+            <button onClick={() => setZoomIndex((i) => Math.max(0, i - 1))} disabled={zoomIndex === 0} className="w-7 h-7 ds-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="تصغير">
               <ZoomOut className="w-4 h-4" />
             </button>
-            <button onClick={() => setZoomIndex(DEFAULT_ZOOM_INDEX)} className="px-2 py-0.5 nb-border rounded-md text-xs font-bold hover:bg-muted transition-colors min-w-[48px] text-center" title="إعادة تعيين الحجم">
+            <button onClick={() => setZoomIndex(DEFAULT_ZOOM_INDEX)} className="px-2 py-0.5 ds-border rounded-md text-xs font-bold hover:bg-muted transition-colors min-w-[48px] text-center" title="إعادة تعيين الحجم">
               {Math.round(scale * 100)}%
             </button>
-            <button onClick={() => setZoomIndex((i) => Math.min(ZOOM_STEPS.length - 1, i + 1))} disabled={zoomIndex === ZOOM_STEPS.length - 1} className="w-7 h-7 nb-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="تكبير">
+            <button onClick={() => setZoomIndex((i) => Math.min(ZOOM_STEPS.length - 1, i + 1))} disabled={zoomIndex === ZOOM_STEPS.length - 1} className="w-7 h-7 ds-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="تكبير">
               <ZoomIn className="w-4 h-4" />
             </button>
           </div>
@@ -238,7 +238,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
               scale={scale}
               width={containerWidth > 0 ? containerWidth - 32 : undefined}
               renderTextLayer
-              className="nb-border rounded-lg overflow-hidden nb-shadow"
+              className="ds-border rounded-lg overflow-hidden ds-shadow"
             />
           </Document>
         </div>

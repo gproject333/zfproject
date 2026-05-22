@@ -114,7 +114,7 @@ export function ApplicationsDonut({
             {data.map((d) => (
               <div key={d.name} className="flex items-center gap-1.5 text-xs font-bold">
                 <span
-                  className="w-3 h-3 rounded-sm nb-border"
+                  className="w-3 h-3 rounded-sm ds-border"
                   style={{ background: d.color }}
                 />
                 {d.name}

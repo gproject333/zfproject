@@ -19,7 +19,7 @@ export default function ArticleCard({ article, href, index = 0 }: ArticleCardPro
   return (
     <Link
       href={href}
-      className="nb-card-interactive overflow-hidden flex flex-col animate-slide-up"
+      className="ds-card-interactive overflow-hidden flex flex-col animate-slide-up"
       style={{ opacity: 0, animationDelay: `${(index + 1) * 0.08}s` }}
     >
       {article.coverUrl && (
@@ -46,7 +46,7 @@ export default function ArticleCard({ article, href, index = 0 }: ArticleCardPro
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">
             {article.tags.slice(0, 4).map((tag) => (
-              <span key={tag} className="nb-badge-soft text-[11px] !bg-muted">
+              <span key={tag} className="ds-badge-soft text-[11px] !bg-muted">
                 #{tag}
               </span>
             ))}

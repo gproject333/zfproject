@@ -92,7 +92,7 @@ export default function GuideView() {
                 href={r.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="nb-card-interactive overflow-hidden flex flex-col animate-slide-up"
+                className="ds-card-interactive overflow-hidden flex flex-col animate-slide-up"
                 style={{ opacity: 0, animationDelay: `${(index + 1) * 0.08}s` }}
               >
                 <div
@@ -101,7 +101,7 @@ export default function GuideView() {
                   <Icon className={`w-10 h-10 ${TYPE_COLOR[r.type]}`} />
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <span className="nb-badge-soft !bg-muted text-xs mb-2 self-start">
+                  <span className="ds-badge-soft !bg-muted text-xs mb-2 self-start">
                     {TYPE_LABEL[r.type]}
                   </span>
                   <h3 className="font-extrabold text-base leading-snug line-clamp-2 flex-1">

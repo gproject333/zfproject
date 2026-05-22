@@ -36,7 +36,7 @@ export default function StudentApplicationHero({
   const isSubmitted = !!app.submittedAt;
 
   return (
-    <div className="nb-card overflow-hidden">
+    <div className="ds-card overflow-hidden">
       <div className="p-5 sm:p-6">
         {/* Back link + audience actions */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-5">

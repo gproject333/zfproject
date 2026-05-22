@@ -33,10 +33,10 @@ export default function ApplicationCard({
     return (
       <button
         onClick={onClick}
-        className="nb-card-interactive p-4 text-right aspect-square flex flex-col gap-2"
+        className="ds-card-interactive p-4 text-right aspect-square flex flex-col gap-2"
       >
         <div className="flex items-start justify-between gap-2">
-          <div className={`nb-badge ${statusCfg.bg} ${statusCfg.text}`}>
+          <div className={`ds-badge ${statusCfg.bg} ${statusCfg.text}`}>
             <StatusIcon className="w-3 h-3" />
             {statusCfg.label}
           </div>
@@ -65,10 +65,10 @@ export default function ApplicationCard({
   return (
     <button
       onClick={onClick}
-      className="nb-card-interactive p-5 w-full text-right"
+      className="ds-card-interactive p-5 w-full text-right"
     >
       <div className="flex items-center gap-4">
-        <div className={`nb-badge ${statusCfg.bg} ${statusCfg.text}`}>
+        <div className={`ds-badge ${statusCfg.bg} ${statusCfg.text}`}>
           <StatusIcon className="w-3 h-3" />
           {statusCfg.label}
         </div>

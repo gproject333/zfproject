@@ -78,7 +78,7 @@ export default function TypeSelector() {
           <button
             onClick={() => router.push("/student")}
             aria-label="رجوع"
-            className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover"
+            className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card ds-shadow-hover"
           >
             <ArrowRight className="w-5 h-5" />
           </button>
@@ -98,11 +98,11 @@ export default function TypeSelector() {
           <button
             key={type.id}
             onClick={() => router.push(`/student/new/${type.id}`)}
-            className={`nb-card-interactive p-6 text-right group ${type.borderColor}`}
+            className={`ds-card-interactive p-6 text-right group ${type.borderColor}`}
           >
             {/* Icon */}
             <div className="mb-5">
-              <div className="w-16 h-16 bg-muted nb-border rounded-xl flex items-center justify-center">
+              <div className="w-16 h-16 bg-muted ds-border rounded-xl flex items-center justify-center">
                 <type.icon className={`w-8 h-8 ${type.color}`} />
               </div>
             </div>

@@ -44,7 +44,7 @@ export default function StudentProfileButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="nb-card-interactive w-full p-4 flex items-center gap-3 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+        className="ds-card-interactive w-full p-4 flex items-center gap-3 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
       >
         <span className="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
           <UserIcon className="w-5 h-5" />
@@ -91,7 +91,7 @@ function StudentProfileBody({ student }: { student: Student }) {
     <div className="space-y-4">
       {/* Avatar + name + email */}
       <div className="flex items-center gap-3">
-        <div className="w-16 h-16 rounded-full nb-border overflow-hidden bg-muted shrink-0 flex items-center justify-center nb-shadow-sm">
+        <div className="w-16 h-16 rounded-full ds-border overflow-hidden bg-muted shrink-0 flex items-center justify-center ds-shadow-sm">
           {student.avatarUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img

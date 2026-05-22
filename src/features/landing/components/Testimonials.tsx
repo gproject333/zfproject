@@ -5,7 +5,7 @@ import { Quote, GraduationCap, Leaf } from "lucide-react";
 /**
  * Auto-scrolling testimonials carousel. Two duplicated tracks slide
  * horizontally via the existing `marquee` keyframes so the loop is
- * seamless. Hovering pauses motion (handled by `.nb-marquee-track:hover`).
+ * seamless. Hovering pauses motion (handled by `.ds-marquee-track:hover`).
  * Cards are glass with a tone-tinted left border and a small olive-leaf
  * accent — keeping the page's olive identity even in social proof.
  */
@@ -111,7 +111,7 @@ export default function Testimonials() {
       </div>
 
       {/* Marquee row — full-bleed, with edge fades */}
-      <div className="relative nb-marquee-track">
+      <div className="relative ds-marquee-track">
         <div className="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-muted/30 dark:from-muted/40 to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 left-0  w-24 sm:w-40 bg-gradient-to-r from-muted/30 dark:from-muted/40 to-transparent z-10 pointer-events-none" />
 

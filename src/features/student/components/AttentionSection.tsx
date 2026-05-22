@@ -18,7 +18,7 @@ export default function AttentionSection() {
   if (loading || applications.length === 0) return null;
 
   return (
-    <section className="nb-card overflow-hidden">
+    <section className="ds-card overflow-hidden">
       <div className="flex items-center gap-2.5 px-5 py-3.5 bg-status-modification/10 border-b border-foreground/10">
         <AlertTriangle className="w-5 h-5 text-status-modification shrink-0" />
         <div>

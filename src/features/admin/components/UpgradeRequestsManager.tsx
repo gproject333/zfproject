@@ -53,7 +53,7 @@ export default function UpgradeRequestsManager() {
           </p>
         </div>
         {pending > 0 && (
-          <span className="nb-badge bg-warning/20 text-warning font-extrabold text-sm px-3 py-1.5">
+          <span className="ds-badge bg-warning/20 text-warning font-extrabold text-sm px-3 py-1.5">
             {pending} طلب معلق
           </span>
         )}
@@ -111,7 +111,7 @@ export default function UpgradeRequestsManager() {
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-primary/10 nb-border flex items-center justify-center shrink-0 font-extrabold text-primary text-sm">
+                          <div className="w-9 h-9 rounded-xl bg-primary/10 ds-border flex items-center justify-center shrink-0 font-extrabold text-primary text-sm">
                             {(req.studentName ?? req.studentEmail)[0]?.toUpperCase()}
                           </div>
                           <span className="font-bold">{req.studentName ?? "—"}</span>
@@ -124,7 +124,7 @@ export default function UpgradeRequestsManager() {
                         {new Date(req.createdAt).toLocaleDateString("ar-JO")}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`nb-badge font-bold ${statusInfo.bg} ${statusInfo.color}`}>
+                        <span className={`ds-badge font-bold ${statusInfo.bg} ${statusInfo.color}`}>
                           {statusInfo.label}
                         </span>
                       </td>

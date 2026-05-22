@@ -128,7 +128,7 @@ export default function MarkdownToolbar({ textareaRef, value, onChange }: Markdo
           key={action.label}
           type="button"
           onClick={handle(action)}
-          className="w-7 h-7 nb-border rounded-md flex items-center justify-center bg-card hover:bg-muted text-foreground"
+          className="w-7 h-7 ds-border rounded-md flex items-center justify-center bg-card hover:bg-muted text-foreground"
           title={action.label}
           aria-label={action.label}
         >

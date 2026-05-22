@@ -31,7 +31,7 @@ export default function PresenceChips({ others }: PresenceChipsProps) {
         {others.map((u) => (
           <li
             key={u.userId}
-            className="nb-badge bg-info/10 text-foreground text-xs px-2 py-0.5"
+            className="ds-badge bg-info/10 text-foreground text-xs px-2 py-0.5"
             title={u.role ? `${u.name} (${u.role})` : u.name}
           >
             {u.name}

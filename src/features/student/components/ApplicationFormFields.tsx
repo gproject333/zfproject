@@ -183,7 +183,7 @@ export default function ApplicationFormFields({
               <button
                 type="button"
                 onClick={() => removeMember(i)}
-                className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card shrink-0 hover:bg-destructive hover:text-white transition-colors"
+                className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card shrink-0 hover:bg-destructive hover:text-white transition-colors"
                 aria-label="حذف عضو"
               >
                 <X className="w-4 h-4" />

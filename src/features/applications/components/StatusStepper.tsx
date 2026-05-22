@@ -17,7 +17,7 @@ interface StatusStepperProps {
 
 /**
  * Horizontal progression through the three visual phases of an
- * application: تقديم → مراجعة → قرار. Uses the project's nb-* utility
+ * application: تقديم → مراجعة → قرار. Uses the project's ds-* utility
  * classes and status colors defined in globals.css.
  */
 export default function StatusStepper({
@@ -64,11 +64,11 @@ export default function StatusStepper({
             )}
 
             <div
-              className={`relative z-10 ${sz.circle} rounded-full nb-border flex items-center justify-center shrink-0 transition-transform ${
+              className={`relative z-10 ${sz.circle} rounded-full ds-border flex items-center justify-center shrink-0 transition-transform ${
                 isDone
-                  ? `${step.bg} text-white nb-shadow-sm`
+                  ? `${step.bg} text-white ds-shadow-sm`
                   : isCurrent
-                    ? `${step.bg} text-white nb-shadow scale-105`
+                    ? `${step.bg} text-white ds-shadow scale-105`
                     : "bg-muted text-muted-foreground"
               }`}
             >

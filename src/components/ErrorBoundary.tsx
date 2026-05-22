@@ -48,7 +48,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
       return (
         <div className="min-h-[60vh] flex items-center justify-center p-4">
           <Card className="p-6 max-w-md w-full text-center">
-            <div className="w-14 h-14 bg-destructive/10 nb-border rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 bg-destructive/10 ds-border rounded-xl flex items-center justify-center mx-auto mb-4">
               <AlertTriangle className="w-7 h-7 text-destructive" />
             </div>
             <h2 className="text-xl font-extrabold mb-2">حدث خطأ غير متوقع</h2>
@@ -56,7 +56,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
               نأسف على الإزعاج. حاول إعادة تحميل الصفحة أو العودة لاحقاً.
             </p>
             {this.state.error?.message && (
-              <pre className="text-xs text-left bg-muted/50 p-3 rounded-lg nb-border mb-5 overflow-auto whitespace-pre-wrap break-words">
+              <pre className="text-xs text-left bg-muted/50 p-3 rounded-lg ds-border mb-5 overflow-auto whitespace-pre-wrap break-words">
                 {this.state.error.message}
               </pre>
             )}

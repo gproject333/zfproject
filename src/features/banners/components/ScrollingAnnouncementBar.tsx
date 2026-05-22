@@ -93,7 +93,7 @@ function ScrollingAnnouncementBarInner({
       </button>
 
       {/* Marquee track */}
-      <div className="nb-marquee-track py-2.5 pr-10">
+      <div className="ds-marquee-track py-2.5 pr-10">
         <div className="animate-marquee motion-reduce:hidden font-bold text-sm">
           {textContent}
           {textContent}

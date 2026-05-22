@@ -90,7 +90,7 @@ function SkeletonApplicationDetail() {
   return (
     <div className="animate-fade-in space-y-5">
       {/* Hero — identity block + status band */}
-      <div className="nb-card overflow-hidden">
+      <div className="ds-card overflow-hidden">
         <div className="p-6 space-y-3">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-8 w-3/4" />

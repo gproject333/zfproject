@@ -112,7 +112,7 @@ export default function StudentGuide() {
   return (
     <div className="animate-fade-in max-w-3xl mx-auto">
       <div className="mb-8 flex items-start gap-4">
-        <div className="w-12 h-12 bg-muted nb-border rounded-xl flex items-center justify-center shrink-0">
+        <div className="w-12 h-12 bg-muted ds-border rounded-xl flex items-center justify-center shrink-0">
           <HelpCircle className="w-6 h-6 text-primary" />
         </div>
         <div>
@@ -127,10 +127,10 @@ export default function StudentGuide() {
         {SECTIONS.map((section) => {
           const Icon = section.icon;
           return (
-            <section key={section.title} className="nb-card p-6">
+            <section key={section.title} className="ds-card p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div
-                  className={`w-11 h-11 ${section.iconBg} nb-border rounded-lg flex items-center justify-center shrink-0`}
+                  className={`w-11 h-11 ${section.iconBg} ds-border rounded-lg flex items-center justify-center shrink-0`}
                 >
                   <Icon className="w-5 h-5 text-white" />
                 </div>

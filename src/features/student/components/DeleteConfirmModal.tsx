@@ -23,7 +23,7 @@ export default function DeleteConfirmModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showClose={false}>
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-destructive/10 nb-border rounded-xl flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 bg-destructive/10 ds-border rounded-xl flex items-center justify-center shrink-0">
             <Trash2 className="w-6 h-6 text-destructive" />
           </div>
           <div>

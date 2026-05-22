@@ -115,7 +115,7 @@ export default function ChartsRow({
                 .map((d) => (
                   <span key={d.status} className="flex items-center gap-1.5 text-xs font-bold">
                     <span
-                      className="w-3 h-3 rounded-full inline-block nb-border"
+                      className="w-3 h-3 rounded-full inline-block ds-border"
                       style={{ background: STATUS_COLORS[d.status] ?? STATUS_FALLBACK }}
                     />
                     {d.status} ({d.count})
@@ -143,7 +143,7 @@ function CollegeDistribution({ data }: { data: { college: string; count: number 
             <span className="text-xs font-bold leading-snug">{collegeLabel(c.college)}</span>
             <span className="text-xs font-extrabold shrink-0 tabular-nums text-info">{c.count}</span>
           </div>
-          <div className="h-2.5 bg-muted rounded-full nb-border overflow-hidden">
+          <div className="h-2.5 bg-muted rounded-full ds-border overflow-hidden">
             <div
               className="h-full w-full bg-info origin-right transition-transform duration-500"
               style={{ transform: `scaleX(${c.count / max})` }}

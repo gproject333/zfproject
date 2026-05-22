@@ -114,7 +114,7 @@ function ConfirmDialogBody({
         <div className="flex items-start gap-3 mb-4">
           {icon && (
             <div
-              className={`w-12 h-12 nb-border rounded-xl flex items-center justify-center shrink-0 ${
+              className={`w-12 h-12 ds-border rounded-xl flex items-center justify-center shrink-0 ${
                 destructive ? "bg-destructive/10" : "bg-accent/10"
               }`}
               aria-hidden="true"

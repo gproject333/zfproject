@@ -47,9 +47,9 @@ export function BannerMediaSelector({
                   admin.setFormField("mediaFile", null);
                   if (fileInputRef.current) fileInputRef.current.value = "";
                 }}
-                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all nb-border ${
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all ds-border ${
                   active
-                    ? "bg-accent text-accent-foreground nb-shadow-sm border-foreground"
+                    ? "bg-accent text-accent-foreground ds-shadow-sm border-foreground"
                     : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
                 }`}
               >
@@ -65,7 +65,7 @@ export function BannerMediaSelector({
         <div className="space-y-3">
           <div>
             <label className="block text-xs font-bold mb-1.5">رفع صورة</label>
-            <label className="flex items-center justify-center gap-2 py-6 nb-border rounded-xl border-dashed bg-muted/30 hover:bg-muted/50 cursor-pointer transition-colors">
+            <label className="flex items-center justify-center gap-2 py-6 ds-border rounded-xl border-dashed bg-muted/30 hover:bg-muted/50 cursor-pointer transition-colors">
               <Upload className="w-5 h-5 text-muted-foreground" />
               <span className="text-sm font-bold text-muted-foreground">
                 {admin.formState.mediaFile
@@ -109,7 +109,7 @@ export function BannerMediaSelector({
       {admin.formState.mediaType === "video" && (
         <div>
           <label className="block text-xs font-bold mb-1.5">رفع فيديو</label>
-          <label className="flex items-center justify-center gap-2 py-6 nb-border rounded-xl border-dashed bg-muted/30 hover:bg-muted/50 cursor-pointer transition-colors">
+          <label className="flex items-center justify-center gap-2 py-6 ds-border rounded-xl border-dashed bg-muted/30 hover:bg-muted/50 cursor-pointer transition-colors">
             <Upload className="w-5 h-5 text-muted-foreground" />
             <span className="text-sm font-bold text-muted-foreground">
               {admin.formState.mediaFile

@@ -1,5 +1,6 @@
 "use client";
 
+import "../landing.css";
 import { useConvexAuth, useQuery } from "convex/react";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
@@ -106,7 +107,7 @@ export default function LandingPage() {
               hasAnnouncement ? "top-[40px]" : "top-0"
             } right-0 left-0 w-full z-50 transition-all duration-300 ${
               showAuthNav
-                ? "bg-card nb-border-thick border-t-0 border-x-0 text-foreground"
+                ? "bg-card ds-border-thick border-t-0 border-x-0 text-foreground"
                 : isScrolled
                   ? "glass border-b border-white/20 dark:border-white/5 text-foreground"
                   : "bg-transparent border-transparent text-white"
@@ -153,9 +154,9 @@ export default function LandingPage() {
                       <Link
                         key={href}
                         href={href}
-                        className={`flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all nb-border ${
+                        className={`flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ds-border ${
                           isActive
-                            ? "bg-primary nb-shadow-sm"
+                            ? "bg-primary ds-shadow-sm"
                             : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
                         }`}
                       >
@@ -224,9 +225,9 @@ export default function LandingPage() {
                         key={href}
                         href={href}
                         onClick={() => setSidebarOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all nb-border ${
+                        className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all ds-border ${
                           isActive
-                            ? "bg-primary nb-shadow-sm"
+                            ? "bg-primary ds-shadow-sm"
                             : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
                         }`}
                       >

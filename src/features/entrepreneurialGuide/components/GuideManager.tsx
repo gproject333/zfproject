@@ -98,7 +98,7 @@ export default function GuideManager() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className="nb-badge-soft !bg-muted">{TYPE_LABEL[r.type]}</span>
+                    <span className="ds-badge-soft !bg-muted">{TYPE_LABEL[r.type]}</span>
                   </TableCell>
                   <TableCell>
                     <a
@@ -122,7 +122,7 @@ export default function GuideManager() {
                         href={r.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                        className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
                         aria-label="فتح"
                         title="فتح"
                       >
@@ -131,7 +131,7 @@ export default function GuideManager() {
                       <button
                         type="button"
                         onClick={() => form.openEditDialog(r)}
-                        className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                        className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
                         aria-label="تعديل"
                         title="تعديل"
                       >
@@ -140,7 +140,7 @@ export default function GuideManager() {
                       <button
                         type="button"
                         onClick={() => form.setToDelete(r._id)}
-                        className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-destructive/10 hover:border-destructive text-destructive"
+                        className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-destructive/10 hover:border-destructive text-destructive"
                         aria-label="حذف"
                         title="حذف"
                       >

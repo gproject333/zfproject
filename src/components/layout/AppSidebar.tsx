@@ -98,7 +98,7 @@ export default function AppSidebar({ config }: Props) {
         variant="outline"
         size="sm"
         isIconOnly
-        className="md:hidden fixed top-4 right-4 z-40 nb-shadow-lg"
+        className="md:hidden fixed top-4 right-4 z-40 ds-shadow-lg"
         aria-label="فتح القائمة"
       >
         <Menu className="w-5 h-5" />
@@ -123,7 +123,7 @@ export default function AppSidebar({ config }: Props) {
         <nav
           className={`relative flex flex-col w-72 ${
             collapsed ? "md:w-20 md:p-3" : "md:w-64 md:p-5"
-          } p-5 h-screen md:h-auto md:min-h-screen md:sticky md:top-0 bg-card nb-border-thick border-y-0 border-r-0 md:border-l-[3px] border-l-0 transition-all duration-200 ${
+          } p-5 h-screen md:h-auto md:min-h-screen md:sticky md:top-0 bg-card ds-border-thick border-y-0 border-r-0 md:border-l-[3px] border-l-0 transition-all duration-200 ${
             open ? "ml-auto" : ""
           }`}
         >
@@ -150,7 +150,7 @@ export default function AppSidebar({ config }: Props) {
             }`}
           >
             <div
-              className={`w-12 h-12 nb-border rounded-xl flex items-center justify-center nb-shadow-sm shrink-0 ${config.brandBadgeClassName ?? ""}`}
+              className={`w-12 h-12 ds-border rounded-xl flex items-center justify-center ds-shadow-sm shrink-0 ${config.brandBadgeClassName ?? ""}`}
               style={config.brandBadgeStyle}
             >
               <BrandIcon className={`w-6 h-6 ${config.brandIconClassName}`} />
@@ -168,7 +168,7 @@ export default function AppSidebar({ config }: Props) {
             {config.navItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
-              const linkClass = `flex items-center gap-3 rounded-lg text-sm font-bold transition-all nb-border ${
+              const linkClass = `flex items-center gap-3 rounded-lg text-sm font-bold transition-all ds-border ${
                 collapsed ? "md:justify-center md:px-2 md:py-3 px-4 py-3" : "px-4 py-3"
               } ${
                 isActive

@@ -36,7 +36,7 @@ export default function RecentApplicationsCard({ limit = 3 }: { limit?: number }
       {loading ? (
         <div className="p-3 space-y-3">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="nb-card p-5 flex items-center gap-4">
+            <div key={i} className="ds-card p-5 flex items-center gap-4">
               <Skeleton className="h-7 w-20 rounded-full" />
               <div className="flex-1 space-y-2">
                 <Skeleton className="h-4 w-3/4" />

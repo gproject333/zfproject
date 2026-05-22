@@ -39,7 +39,7 @@ export default function ApplicationHeader({
       <div className="flex items-start gap-3 flex-1 min-w-0">
         <button
           onClick={onBack}
-          className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover shrink-0 mt-1"
+          className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card ds-shadow-hover shrink-0 mt-1"
           aria-label="رجوع"
         >
           <ArrowRight className="w-5 h-5" />

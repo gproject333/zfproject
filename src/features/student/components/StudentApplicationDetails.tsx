@@ -53,7 +53,7 @@ export default function StudentApplicationDetails() {
   if (app === null) {
     return (
       <Card className="max-w-md mx-auto mt-12 p-10 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-muted nb-border flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 rounded-2xl bg-muted ds-border flex items-center justify-center mx-auto mb-4">
           <FileQuestion className="w-8 h-8 text-muted-foreground" />
         </div>
         <h2 className="text-lg font-semibold mb-1">الطلب غير موجود</h2>

@@ -119,11 +119,11 @@ export function BannerTable({
                             : thumbUrl
                         }
                         alt={b.title}
-                        className="w-12 h-12 rounded-lg object-cover nb-border shrink-0"
+                        className="w-12 h-12 rounded-lg object-cover ds-border shrink-0"
                       />
                     )}
                   {bannerType === "hero" && b.mediaType === "video" && (
-                    <div className="w-12 h-12 rounded-lg nb-border shrink-0 bg-muted flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-lg ds-border shrink-0 bg-muted flex items-center justify-center">
                       <Video className="w-5 h-5 text-muted-foreground" />
                     </div>
                   )}
@@ -137,7 +137,7 @@ export function BannerTable({
               </TableCell>
               <TableCell>
                 <span
-                  className={`nb-badge text-xs ${
+                  className={`ds-badge text-xs ${
                     bannerType === "scrolling"
                       ? "bg-primary/20 text-primary"
                       : bannerType === "hero"
@@ -150,11 +150,11 @@ export function BannerTable({
               </TableCell>
               <TableCell>
                 {b.mediaType ? (
-                  <span className="nb-badge bg-muted text-xs">
+                  <span className="ds-badge bg-muted text-xs">
                     {MEDIA_LABELS[b.mediaType] ?? b.mediaType}
                   </span>
                 ) : (
-                  <span className="nb-badge bg-muted text-xs">
+                  <span className="ds-badge bg-muted text-xs">
                     {VARIANT_LABELS[b.variant]}
                   </span>
                 )}
@@ -191,7 +191,7 @@ export function BannerTable({
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger
-                    className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                    className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
                     aria-label="الإجراءات"
                   >
                     …

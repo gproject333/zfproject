@@ -1,0 +1,98 @@
+/* ============================================
+   Landing-only styles
+   ============================================
+   Decorative animations and helpers that only render on the public
+   landing page. Imported from LandingPage.tsx so they don't ship
+   with the authenticated product surfaces.
+
+   All ambient loops respect prefers-reduced-motion: reduce (handled
+   by the global block at the bottom of globals.css that targets these
+   class names — moving the keyframes here does not change the
+   reduced-motion contract).
+*/
+
+/* --- Olive-tree gentle sway ---
+   Origin is set on the .tree-sway element itself. Delay matches the
+   GSAP draw-in finishing (~2.4s). */
+@keyframes sway {
+  from { transform: rotate(-1deg); }
+  to   { transform: rotate(1deg); }
+}
+.tree-sway {
+  transform-origin: 50% 100%;
+  animation: sway 6s ease-in-out infinite alternate;
+  animation-delay: 2.4s;
+}
+
+/* --- Vertical drift for floating leaf particles in the hero column. --- */
+@keyframes leafDriftUp {
+  0%   { transform: translate3d(0, 100%, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translate3d(var(--drift-x, 30px), -120%, 0) rotate(var(--drift-rot, 180deg)); opacity: 0; }
+}
+.animate-leaf-drift {
+  animation: leafDriftUp var(--drift-duration, 14s) linear infinite;
+  animation-delay: var(--drift-delay, 0s);
+}
+
+/* --- Cinematic Ken Burns ---
+   Very slow zoom + drift used by the olive-grove background of the
+   scroll-storytelling scenes. */
+@keyframes kenburns {
+  0%   { transform: scale(1.08) translate3d(0, 0, 0); }
+  100% { transform: scale(1.2) translate3d(1.5%, -2%, 0); }
+}
+.animate-kenburns {
+  animation: kenburns 34s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* --- Slowly rotating volumetric god-rays around the cinematic sun. --- */
+@keyframes godrays {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-godrays {
+  animation: godrays 140s linear infinite;
+}
+
+/* --- Brand gradient orbs scattered across landing sections.
+   Dark mode needs a touch more opacity to read against the darker
+   background. Components opt in by adding `.landing-orb` alongside
+   any inline `opacity` style. */
+.dark .landing-orb {
+  opacity: 0.35 !important;
+}
+
+/* --- Subtle checker background used on one landing section only. --- */
+.bg-checker {
+  background-image:
+    linear-gradient(45deg,  rgba(26,26,46,0.04) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(26,26,46,0.04) 25%, transparent 25%),
+    linear-gradient(45deg,  transparent 75%, rgba(26,26,46,0.04) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(26,26,46,0.04) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+}
+
+/* --- Lenis smooth-scroll setup.
+   Lenis is used only by the landing's scroll-driven storytelling
+   sections, so its CSS hooks live with the rest of the landing
+   styles instead of polluting the global stylesheet. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}

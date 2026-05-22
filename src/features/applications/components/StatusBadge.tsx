@@ -20,7 +20,7 @@ export default function StatusBadge({
 }: StatusBadgeProps) {
   const cfg = STATUS_CONFIG[status];
   const Icon = cfg.icon;
-  const base = soft ? "nb-badge-soft" : "nb-badge";
+  const base = soft ? "ds-badge-soft" : "ds-badge";
   const sizeClass = !soft && size === "sm" ? "text-xs px-2 py-0.5" : "";
   return (
     <div className={`${base} ${cfg.bg} ${cfg.text} ${sizeClass}`}>

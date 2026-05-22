@@ -97,7 +97,7 @@ export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-4">
             {article.tags.map((tag) => (
-              <span key={tag} className="nb-badge-soft text-xs !bg-muted">
+              <span key={tag} className="ds-badge-soft text-xs !bg-muted">
                 #{tag}
               </span>
             ))}

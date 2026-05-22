@@ -91,7 +91,7 @@ export function FloatingTextInput({
           maxLength={maxLength}
           inputMode={inputMode}
           dir={resolvedDir}
-          className={`peer nb-input ${error ? "!border-destructive" : ""}`}
+          className={`peer ds-input ${error ? "!border-destructive" : ""}`}
           style={{
             paddingTop: "1.5rem",
             paddingBottom: "0.5rem",
@@ -194,7 +194,7 @@ export function FloatingEmailInput({
           required={required}
           autoComplete={autoComplete}
           dir="ltr"
-          className={`peer nb-input pr-12 ${error ? "!border-destructive" : ""}`}
+          className={`peer ds-input pr-12 ${error ? "!border-destructive" : ""}`}
           style={{
             paddingTop: "1.5rem",
             paddingBottom: "0.5rem",
@@ -207,7 +207,7 @@ export function FloatingEmailInput({
 
         {showDropdown && (
           <ul
-            className="absolute z-20 top-full mt-2 right-0 left-0 p-1 rounded-md nb-border nb-shadow max-h-48 overflow-y-auto"
+            className="absolute z-20 top-full mt-2 right-0 left-0 p-1 rounded-md ds-border ds-shadow max-h-48 overflow-y-auto"
             style={{ background: labelBg }}
             role="listbox"
           >
@@ -266,7 +266,7 @@ export function FloatingPasswordInput({
           required={required}
           autoComplete={autoComplete}
           dir="ltr"
-          className={`peer nb-input ${error ? "!border-destructive" : ""}`}
+          className={`peer ds-input ${error ? "!border-destructive" : ""}`}
           style={{
             paddingTop: "1.5rem",
             paddingBottom: "0.5rem",
@@ -329,7 +329,7 @@ export function FloatingSelectInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           required={required}
-          className={`peer nb-input pr-12 pl-10 appearance-none cursor-pointer ${error ? "!border-destructive" : ""}`}
+          className={`peer ds-input pr-12 pl-10 appearance-none cursor-pointer ${error ? "!border-destructive" : ""}`}
           style={
             {
               paddingTop: "1.5rem",

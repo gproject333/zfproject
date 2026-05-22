@@ -39,7 +39,7 @@ export default function SupervisorFeedbackCard({
 
   return (
     <div
-      className={`nb-card p-5 sm:p-6 ${
+      className={`ds-card p-5 sm:p-6 ${
         needsModification
           ? "border-2 border-status-modification/50 bg-status-modification/[0.045]"
           : ""
@@ -70,7 +70,7 @@ export default function SupervisorFeedbackCard({
           </p>
         </div>
         {app.supervisorRating && (
-          <span className="nb-badge-soft bg-muted text-foreground shrink-0">
+          <span className="ds-badge-soft bg-muted text-foreground shrink-0">
             {RATING_CONFIG[app.supervisorRating as SupervisorRating].label}
           </span>
         )}

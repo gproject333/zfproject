@@ -67,7 +67,7 @@ export default function RecentActivity() {
                   className="w-full text-right flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors border border-transparent hover:border-foreground/20"
                 >
                   <div
-                    className={`w-8 h-8 rounded-lg nb-border flex items-center justify-center shrink-0 mt-0.5 ${cfg.bg} ${cfg.text}`}
+                    className={`w-8 h-8 rounded-lg ds-border flex items-center justify-center shrink-0 mt-0.5 ${cfg.bg} ${cfg.text}`}
                     role="img"
                     aria-label={STATUS_LABELS[a.status as StatusKey]}
                   >

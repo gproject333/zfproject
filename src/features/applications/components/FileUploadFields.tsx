@@ -72,8 +72,8 @@ export default function FileUploadFields({
             )}
           </label>
           {pdfFile ? (
-            <div className={`nb-card flex items-center gap-3 ${isCreate ? "p-4" : "p-3"}`}>
-              <div className={`bg-destructive/10 nb-border rounded-lg flex items-center justify-center shrink-0 ${isCreate ? "w-10 h-10" : ""}`}>
+            <div className={`ds-card flex items-center gap-3 ${isCreate ? "p-4" : "p-3"}`}>
+              <div className={`bg-destructive/10 ds-border rounded-lg flex items-center justify-center shrink-0 ${isCreate ? "w-10 h-10" : ""}`}>
                 <FileText className={`text-destructive ${isCreate ? "w-5 h-5" : "w-5 h-5"}`} />
               </div>
               <div className="flex-1 min-w-0">
@@ -85,7 +85,7 @@ export default function FileUploadFields({
               <button
                 type="button"
                 onClick={clearPdf}
-                className={`nb-border rounded flex items-center justify-center hover:bg-destructive/10 ${isCreate ? "w-8 h-8" : "w-6 h-6"}`}
+                className={`ds-border rounded flex items-center justify-center hover:bg-destructive/10 ${isCreate ? "w-8 h-8" : "w-6 h-6"}`}
               >
                 <X className={isCreate ? "w-4 h-4" : "w-3 h-3"} />
               </button>
@@ -93,7 +93,7 @@ export default function FileUploadFields({
           ) : (
             <div
               {...getPdfRootProps()}
-              className={`nb-border border-dashed rounded-lg text-center cursor-pointer transition-colors ${
+              className={`ds-border border-dashed rounded-lg text-center cursor-pointer transition-colors ${
                 isCreate ? "p-6" : "p-4"
               } ${isPdfDragActive ? "bg-primary/10 border-primary" : "hover:bg-muted"}`}
             >
@@ -133,8 +133,8 @@ export default function FileUploadFields({
             )}
           </label>
           {videoFile ? (
-            <div className={`nb-card flex items-center gap-3 ${isCreate ? "p-4" : "p-3"}`}>
-              <div className={`bg-info/10 nb-border rounded-lg flex items-center justify-center shrink-0 ${isCreate ? "w-10 h-10" : ""}`}>
+            <div className={`ds-card flex items-center gap-3 ${isCreate ? "p-4" : "p-3"}`}>
+              <div className={`bg-info/10 ds-border rounded-lg flex items-center justify-center shrink-0 ${isCreate ? "w-10 h-10" : ""}`}>
                 <Video className={`text-info ${isCreate ? "w-5 h-5" : "w-5 h-5"}`} />
               </div>
               <div className="flex-1 min-w-0">
@@ -146,7 +146,7 @@ export default function FileUploadFields({
               <button
                 type="button"
                 onClick={clearVideo}
-                className={`nb-border rounded flex items-center justify-center hover:bg-destructive/10 ${isCreate ? "w-8 h-8" : "w-6 h-6"}`}
+                className={`ds-border rounded flex items-center justify-center hover:bg-destructive/10 ${isCreate ? "w-8 h-8" : "w-6 h-6"}`}
               >
                 <X className={isCreate ? "w-4 h-4" : "w-3 h-3"} />
               </button>
@@ -154,7 +154,7 @@ export default function FileUploadFields({
           ) : (
             <div
               {...getVideoRootProps()}
-              className={`nb-border border-dashed rounded-lg text-center cursor-pointer transition-colors ${
+              className={`ds-border border-dashed rounded-lg text-center cursor-pointer transition-colors ${
                 isCreate ? "p-6" : "p-4"
               } ${isVideoDragActive ? "bg-info/10 border-info" : "hover:bg-muted"}`}
             >

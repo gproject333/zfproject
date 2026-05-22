@@ -175,7 +175,7 @@ export default function StudentManagement() {
                   <tr key={student._id} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-info/20 nb-border flex items-center justify-center shrink-0 font-extrabold text-info text-sm">
+                        <div className="w-9 h-9 rounded-xl bg-info/20 ds-border flex items-center justify-center shrink-0 font-extrabold text-info text-sm">
                           {(student.name ?? student.email)[0]?.toUpperCase()}
                         </div>
                         <div className="min-w-0">
@@ -191,13 +191,13 @@ export default function StudentManagement() {
                       {student.department ?? "—"}
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell">
-                      <span className="nb-badge bg-primary/10 text-primary font-bold">
+                      <span className="ds-badge bg-primary/10 text-primary font-bold">
                         {student.applicationCount} مشروع
                       </span>
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`nb-badge font-bold ${
+                        className={`ds-badge font-bold ${
                           student.isActive
                             ? "bg-success/10 text-success"
                             : "bg-destructive/10 text-destructive"
@@ -253,7 +253,7 @@ export default function StudentManagement() {
               </button>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-info/20 nb-border flex items-center justify-center font-extrabold text-info text-2xl">
+              <div className="w-16 h-16 rounded-2xl bg-info/20 ds-border flex items-center justify-center font-extrabold text-info text-2xl">
                 {(profileStudent.name ?? profileStudent.email)[0]?.toUpperCase()}
               </div>
               <div>

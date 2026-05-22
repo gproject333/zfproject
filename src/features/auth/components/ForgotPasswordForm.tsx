@@ -79,14 +79,14 @@ export default function ForgotPasswordForm() {
 
   return (
     <div className="min-h-screen bg-pattern flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute top-16 left-16 w-24 h-24 bg-secondary nb-border rounded-xl -rotate-6 animate-float opacity-50 hidden md:block" />
-      <div className="absolute bottom-16 right-16 w-16 h-16 bg-accent nb-border rounded-full animate-float opacity-40 hidden md:block" style={{ animationDelay: "1.5s" }} />
-      <div className="absolute top-1/2 right-12 w-10 h-10 bg-primary nb-border rotate-45 animate-float opacity-50 hidden md:block" style={{ animationDelay: "0.7s" }} />
+      <div className="absolute top-16 left-16 w-24 h-24 bg-secondary ds-border rounded-xl -rotate-6 animate-float opacity-50 hidden md:block" />
+      <div className="absolute bottom-16 right-16 w-16 h-16 bg-accent ds-border rounded-full animate-float opacity-40 hidden md:block" style={{ animationDelay: "1.5s" }} />
+      <div className="absolute top-1/2 right-12 w-10 h-10 bg-primary ds-border rotate-45 animate-float opacity-50 hidden md:block" style={{ animationDelay: "0.7s" }} />
       <div className="absolute inset-0 bg-dots opacity-[0.03]" />
 
       <div className="w-full max-w-md animate-scale-in relative z-10">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-primary nb-border-thick rounded-2xl nb-shadow-lg mb-4 mx-auto">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-primary ds-border-thick rounded-2xl ds-shadow-lg mb-4 mx-auto">
             <GraduationCap className="w-10 h-10 text-primary-foreground" />
           </div>
           <h1 className="text-3xl font-extrabold text-foreground mb-2">استعادة كلمة المرور</h1>
@@ -98,9 +98,9 @@ export default function ForgotPasswordForm() {
         <Card className="p-8">
           <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-foreground">
             <div className="flex gap-1.5">
-              <span className="w-3 h-3 rounded-full bg-destructive nb-border" />
-              <span className="w-3 h-3 rounded-full bg-warning nb-border" />
-              <span className="w-3 h-3 rounded-full bg-success nb-border" />
+              <span className="w-3 h-3 rounded-full bg-destructive ds-border" />
+              <span className="w-3 h-3 rounded-full bg-warning ds-border" />
+              <span className="w-3 h-3 rounded-full bg-success ds-border" />
             </div>
             <span className="font-bold text-sm mr-2">
               {step === "email" ? "البريد الإلكتروني" : "رمز التحقق وكلمة المرور"}
@@ -108,7 +108,7 @@ export default function ForgotPasswordForm() {
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 p-3 bg-destructive/10 nb-border rounded-lg mb-5">
+            <div className="flex items-center gap-2 p-3 bg-destructive/10 ds-border rounded-lg mb-5">
               <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
               <p className="text-sm font-semibold text-destructive">{error}</p>
             </div>
@@ -135,7 +135,7 @@ export default function ForgotPasswordForm() {
 
           {step === "verify" && (
             <form onSubmit={handleVerify} className="space-y-5">
-              <div className="flex items-center gap-2 p-3 bg-success/10 nb-border rounded-lg text-sm font-medium">
+              <div className="flex items-center gap-2 p-3 bg-success/10 ds-border rounded-lg text-sm font-medium">
                 <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
                 تم إرسال الرمز إلى <strong className="text-foreground">{email}</strong>
               </div>

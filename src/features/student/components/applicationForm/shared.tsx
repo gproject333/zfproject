@@ -102,7 +102,7 @@ export function renderExtraField(
                   validateField(field.name, next);
                 }}
                 aria-pressed={selected}
-                className={`nb-badge px-4 py-2 text-sm font-bold transition-colors cursor-pointer ${
+                className={`ds-badge px-4 py-2 text-sm font-bold transition-colors cursor-pointer ${
                   selected
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted hover:bg-muted/70"

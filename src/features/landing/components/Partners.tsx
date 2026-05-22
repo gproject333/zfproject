@@ -30,7 +30,7 @@ export default function Partners() {
         </h3>
       </div>
 
-      <div className="relative nb-marquee-track">
+      <div className="relative ds-marquee-track">
         <div className="absolute inset-y-0 right-0 w-24 sm:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 left-0  w-24 sm:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
 

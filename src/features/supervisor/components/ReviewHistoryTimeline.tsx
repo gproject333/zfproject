@@ -40,7 +40,7 @@ export default function ReviewHistoryTimeline({ applicationId }: ReviewHistoryTi
       <h3 className="font-bold text-base mb-4 flex items-center gap-2">
         <History className="w-5 h-5 text-accent" />
         سجل المراجعات
-        <span className="nb-badge bg-muted text-xs mr-auto">{items.length}</span>
+        <span className="ds-badge bg-muted text-xs mr-auto">{items.length}</span>
       </h3>
       <ol className="space-y-3" aria-label="سجل تغييرات الحالة">
         {items.map((item) => (

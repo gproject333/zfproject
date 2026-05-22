@@ -140,7 +140,7 @@ export function useApplicationListColumns(
           const cfg = STATUS_CONFIG[status];
           const Icon = cfg.icon;
           return (
-            <span className={`nb-badge-soft ${STATUS_BADGE_CLASS[status]}`}>
+            <span className={`ds-badge-soft ${STATUS_BADGE_CLASS[status]}`}>
               <Icon className="w-3 h-3" />
               {cfg.label}
             </span>
@@ -183,7 +183,7 @@ export function useApplicationListColumns(
           return (
             <DropdownMenu>
               <DropdownMenuTrigger
-                className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
                 aria-label="القائمة"
               >
                 <MoreHorizontal className="w-4 h-4" />

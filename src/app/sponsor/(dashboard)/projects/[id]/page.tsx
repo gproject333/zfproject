@@ -53,7 +53,7 @@ export default function SponsorProjectReelsPage() {
           project video and floats interest buttons + a description block
           on top, TikTok-style. */}
       <div 
-        className="relative w-full max-w-[420px] aspect-[9/16] max-h-[85vh] rounded-3xl overflow-hidden bg-black nb-border-thick shadow-2xl flex flex-col justify-center animate-fade-in mx-auto"
+        className="relative w-full max-w-[420px] aspect-[9/16] max-h-[85vh] rounded-3xl overflow-hidden bg-black ds-border-thick shadow-2xl flex flex-col justify-center animate-fade-in mx-auto"
         dir="rtl"
       >
         {/* Background video */}
@@ -119,7 +119,7 @@ export default function SponsorProjectReelsPage() {
 
           {/* Type badge */}
           <div className="inline-flex mb-3 pointer-events-auto">
-            <span className="text-[10px] font-extrabold px-3 py-1.5 bg-primary/90 text-primary-foreground backdrop-blur-md nb-border rounded-lg shadow-lg">
+            <span className="text-[10px] font-extrabold px-3 py-1.5 bg-primary/90 text-primary-foreground backdrop-blur-md ds-border rounded-lg shadow-lg">
               {typeCfg?.label}
             </span>
           </div>

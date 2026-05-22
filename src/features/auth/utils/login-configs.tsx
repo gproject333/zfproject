@@ -17,21 +17,21 @@ const STUDENT_CONFIG: LoginVariantConfig = {
   redirectTo: "/login-redirect",
   brand: {
     icon: <GraduationCap className="w-10 h-10 text-primary-foreground" />,
-    iconBoxClassName: "bg-primary nb-border-thick rounded-2xl nb-shadow-lg",
+    iconBoxClassName: "bg-primary ds-border-thick rounded-2xl ds-shadow-lg",
     title: "حاضنة الزيتونة",
     subtitle: "منصة احتضان المشاريع الريادية",
   },
   pageClassName: "min-h-screen bg-pattern flex items-center justify-center p-4 relative overflow-hidden",
   decorations: (
     <>
-      <div className="absolute top-10 right-10 w-20 h-20 bg-primary nb-border rounded-lg rotate-12 animate-float opacity-60 hidden md:block" />
-      <div className="absolute bottom-20 left-10 w-16 h-16 bg-secondary nb-border rounded-full animate-float opacity-50 hidden md:block" style={{ animationDelay: "1s" }} />
-      <div className="absolute top-1/3 left-20 w-12 h-12 bg-accent nb-border rotate-45 animate-float opacity-40 hidden md:block" style={{ animationDelay: "2s" }} />
-      <div className="absolute bottom-10 right-1/4 w-14 h-14 bg-warning nb-border rounded-lg -rotate-12 animate-float opacity-50 hidden md:block" style={{ animationDelay: "0.5s" }} />
+      <div className="absolute top-10 right-10 w-20 h-20 bg-primary ds-border rounded-lg rotate-12 animate-float opacity-60 hidden md:block" />
+      <div className="absolute bottom-20 left-10 w-16 h-16 bg-secondary ds-border rounded-full animate-float opacity-50 hidden md:block" style={{ animationDelay: "1s" }} />
+      <div className="absolute top-1/3 left-20 w-12 h-12 bg-accent ds-border rotate-45 animate-float opacity-40 hidden md:block" style={{ animationDelay: "2s" }} />
+      <div className="absolute bottom-10 right-1/4 w-14 h-14 bg-warning ds-border rounded-lg -rotate-12 animate-float opacity-50 hidden md:block" style={{ animationDelay: "0.5s" }} />
       <div className="absolute inset-0 bg-dots opacity-[0.03]" />
     </>
   ),
-  cardClassName: "nb-card p-8",
+  cardClassName: "ds-card p-8",
   titleBarLabel: "تسجيل الدخول",
   titleBarDots: [
     { background: "var(--destructive)" },
@@ -39,7 +39,7 @@ const STUDENT_CONFIG: LoginVariantConfig = {
     { background: "var(--success)" },
   ],
   cardSubtitle: "أدخل بريدك الجامعي وكلمة المرور",
-  inputClassName: "nb-input pr-12 !py-3",
+  inputClassName: "ds-input pr-12 !py-3",
   labelClassName: "block text-sm font-bold text-foreground",
   emailPlaceholder: "ahmed@std-zuj.edu.jo",
   passwordPlaceholder: "كلمة المرور",

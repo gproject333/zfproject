@@ -73,7 +73,7 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
     <RoleGuard allowedRoles={[...config.roles]}>
       <div className={`min-h-screen ${backgroundClass} flex flex-col`}>
         {/* Top Navbar */}
-        <nav className="sticky top-0 z-50 bg-card nb-border-thick border-t-0 border-x-0">
+        <nav className="sticky top-0 z-50 bg-card ds-border-thick border-t-0 border-x-0">
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             {/* Right Side: hamburger + brand */}
             <div className="flex items-center gap-3">
@@ -91,7 +91,7 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
                 <div
                   className={`w-12 h-12 flex items-center justify-center ${
                     config.brand.iconBgClass || config.brand.iconBgStyle
-                      ? `nb-border rounded-lg ${config.brand.iconBgClass ?? ""}`
+                      ? `ds-border rounded-lg ${config.brand.iconBgClass ?? ""}`
                       : ""
                   }`}
                   style={config.brand.iconBgStyle}
@@ -118,7 +118,7 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all nb-border ${
+                    className={`flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ds-border ${
                       isActive
                         ? config.active.className ?? ""
                         : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
@@ -159,7 +159,7 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
                     key={item.href}
                     href={item.href}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all nb-border ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all ds-border ${
                       isActive
                         ? config.active.className ?? ""
                         : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"

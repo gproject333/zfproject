@@ -96,20 +96,20 @@ export default function ArticlesManager() {
                       <img
                         src={a.coverUrl}
                         alt=""
-                        className="w-12 h-8 object-cover rounded nb-border shrink-0"
+                        className="w-12 h-8 object-cover rounded ds-border shrink-0"
                       />
                     )}
                     <span className="font-bold line-clamp-1">{a.title}</span>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="nb-badge-soft !bg-muted">
+                  <span className="ds-badge-soft !bg-muted">
                     {AUDIENCE_LABEL[a.audience]}
                   </span>
                 </TableCell>
                 <TableCell>
                   <span
-                    className={`nb-badge-soft ${
+                    className={`ds-badge-soft ${
                       a.isPublished
                         ? "!bg-success !text-white"
                         : "!bg-muted text-muted-foreground"
@@ -130,7 +130,7 @@ export default function ArticlesManager() {
                   <div className="flex items-center gap-1">
                     <Link
                       href={`/supervisor/articles/${a._id}`}
-                      className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                      className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
                       aria-label="معاينة"
                       title="معاينة"
                     >
@@ -139,7 +139,7 @@ export default function ArticlesManager() {
                     <button
                       type="button"
                       onClick={() => void admin.toggle(a._id, !a.isPublished)}
-                      className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                      className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
                       aria-label={a.isPublished ? "إخفاء" : "نشر"}
                       title={a.isPublished ? "إخفاء" : "نشر"}
                     >
@@ -152,7 +152,7 @@ export default function ArticlesManager() {
                     <button
                       type="button"
                       onClick={() => form.openEditDialog(a)}
-                      className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
+                      className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-muted"
                       aria-label="تعديل"
                       title="تعديل"
                     >
@@ -161,7 +161,7 @@ export default function ArticlesManager() {
                     <button
                       type="button"
                       onClick={() => form.setToDelete(a._id)}
-                      className="w-8 h-8 nb-border rounded-lg flex items-center justify-center bg-card hover:bg-destructive/10 hover:border-destructive text-destructive"
+                      className="w-8 h-8 ds-border rounded-lg flex items-center justify-center bg-card hover:bg-destructive/10 hover:border-destructive text-destructive"
                       aria-label="حذف"
                       title="حذف"
                     >

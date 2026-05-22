@@ -31,7 +31,7 @@ export default function SponsorLayout({ children }: { children: ReactNode }) {
       },
       navItems: sponsorNavItems,
       active: {
-        className: "text-white nb-shadow-sm",
+        className: "text-white ds-shadow-sm",
         style: { background: "var(--secondary)", borderColor: "var(--secondary-border)" },
       },
       showNotifications: false,

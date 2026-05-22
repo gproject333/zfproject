@@ -54,7 +54,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="relative w-24 h-24 rounded-full nb-border overflow-hidden bg-muted group shrink-0"
+              className="relative w-24 h-24 rounded-full ds-border overflow-hidden bg-muted group shrink-0"
             >
               {profile.avatarPreviewUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element

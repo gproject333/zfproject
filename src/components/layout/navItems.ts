@@ -74,7 +74,7 @@ export const supervisorSidebarConfig: AppSidebarConfig = {
   brandIconClassName: "text-accent",
   subtitle: "لوحة المشرف الأكاديمي",
   profileHref: "/supervisor/profile",
-  activeClassName: "bg-accent text-accent-foreground nb-shadow-sm border-foreground",
+  activeClassName: "bg-accent text-accent-foreground ds-shadow-sm border-foreground",
   storageKey: "supervisor-sidebar-collapsed",
 };
 
@@ -90,7 +90,7 @@ export const adminSidebarConfig: AppSidebarConfig = {
   // Admin uses the mid-olive accent (per DESIGN.md), one step brighter
   // than supervisor's primary so the two sidebars are distinguishable
   // without breaking the olive identity.
-  activeClassName: "bg-accent text-accent-foreground nb-shadow-sm border-foreground",
+  activeClassName: "bg-accent text-accent-foreground ds-shadow-sm border-foreground",
   storageKey: "admin-sidebar-collapsed",
 };
 

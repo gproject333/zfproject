@@ -26,7 +26,7 @@ export function EmptyState({
 }) {
   return (
     <Card className="p-12 text-center">
-      <div className="w-20 h-20 bg-muted nb-border rounded-2xl flex items-center justify-center mx-auto mb-6">
+      <div className="w-20 h-20 bg-muted ds-border rounded-2xl flex items-center justify-center mx-auto mb-6">
         {VARIANT_ICON[variant]}
       </div>
 

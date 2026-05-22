@@ -266,7 +266,7 @@ function FloatingEmailInput({
       <FloatingLabel htmlFor={id} config={config}>{label}</FloatingLabel>
 
       {showDropdown && (
-        <ul className="absolute z-20 top-full mt-2 right-0 left-0 p-1 rounded-md nb-border nb-shadow max-h-48 overflow-y-auto" style={{ background: config.floatLabelBg }} role="listbox">
+        <ul className="absolute z-20 top-full mt-2 right-0 left-0 p-1 rounded-md ds-border ds-shadow max-h-48 overflow-y-auto" style={{ background: config.floatLabelBg }} role="listbox">
           {suggestions.map((domain, i) => (
             <li key={domain}>
               <button
@@ -304,7 +304,7 @@ function FloatingPasswordInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder=" "
-        className="peer nb-input"
+        className="peer ds-input"
         required
         dir="ltr"
         autoComplete="current-password"
@@ -337,7 +337,7 @@ function ErrorBanner({ message, dark }: { message: string; dark: boolean }) {
     );
   }
   return (
-    <div className="flex items-center gap-2 p-3 bg-destructive/10 nb-border rounded-lg">
+    <div className="flex items-center gap-2 p-3 bg-destructive/10 ds-border rounded-lg">
       <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
       <p className="text-sm font-semibold text-destructive">{message}</p>
     </div>

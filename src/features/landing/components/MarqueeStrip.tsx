@@ -8,7 +8,7 @@ import { Sprout } from "lucide-react";
  * page a moment of subtle motion before the static content sections begin.
  *
  * Uses the existing `marquee` keyframes from globals.css. The track is
- * duplicated so the loop is seamless. Pause-on-hover via `.nb-marquee-track`.
+ * duplicated so the loop is seamless. Pause-on-hover via `.ds-marquee-track`.
  */
 
 const ITEMS = [
@@ -30,7 +30,7 @@ export default function MarqueeStrip() {
   return (
     <section
       aria-label="مجالات المشاريع"
-      className="relative w-full py-8 nb-marquee-track overflow-hidden border-y border-foreground/5 bg-foreground/[0.015]"
+      className="relative w-full py-8 ds-marquee-track overflow-hidden border-y border-foreground/5 bg-foreground/[0.015]"
     >
       {/* Edge fade — content fades into the background at the strip ends. */}
       <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />

@@ -39,7 +39,7 @@ This product should never look like:
 
 - **Generic SaaS dashboards** — Material defaults, blue-everywhere, slate-gray sidebars, identical metric cards grid 4×2. Stripe and Linear are inspirations for *patterns*; their visual language is not the target.
 - **AI-tool marketing aesthetics** — purple-to-pink gradients, glassmorphism panels, gradient-clipped text, neon accents on dark canvas, "v0-style" hero cards. None of these belong in a university platform.
-- **Heavy neobrutalism** — thick black borders, hard colored drop-shadows, raw chunky type. The app previously experimented with this look and migrated away to a calmer HeroUI-aligned surface. Legacy `nb-*` CSS class names remain as scaffolding; the visual system they implement is now soft, not brutalist.
+- **Heavy neobrutalism** — thick black borders, hard colored drop-shadows, raw chunky type. The app previously experimented with this look and migrated away to a calmer HeroUI-aligned surface. Legacy `ds-*` CSS class names remain as scaffolding; the visual system they implement is now soft, not brutalist.
 - **Generic "academic intranet"** — beige tables on Times New Roman, bright royal blue links, 2008 portal layouts. Familiar is good. Dated is not.
 - **Decorative motion** — bouncing icons on stat cards, gratuitous hover-rotate on static links, orchestrated page-load sequences. Motion conveys state, not personality.
 

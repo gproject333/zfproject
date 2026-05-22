@@ -134,7 +134,7 @@ export default function ProjectDetailsCard({ app }: ProjectDetailsCardProps) {
                   {categories.map((cat) => (
                     <span
                       key={cat}
-                      className="nb-badge-soft bg-card text-foreground"
+                      className="ds-badge-soft bg-card text-foreground"
                     >
                       {cat}
                     </span>

@@ -127,7 +127,7 @@ components:
 
 The system reads like a quiet university reading room: tinted-warm light surface, soft hairline borders, the olive-green of the university tucked into primary actions, and a single warm gold reserved for one persona (sponsors). Type is Tajawal — one family carrying every label, heading, table cell, button, and form field. Motion exists but never performs: state changes get a 200ms ease-out reveal, and decorative animation is reserved exclusively for the public landing surface.
 
-The product surface (admin, supervisor, student, sponsor dashboards) is HeroUI-aligned: soft drop shadows, 1px hairline borders, generous radii (10–16px), and a hierarchy carried by weight and color tokens rather than by elevation. This is intentional and was a migration. An earlier neobrutalism experiment (thick black borders, hard colored offset shadows) was removed; legacy `nb-*` utility class names remain as scaffolding, but the visual system they implement is now uniformly soft.
+The product surface (admin, supervisor, student, sponsor dashboards) is HeroUI-aligned: soft drop shadows, 1px hairline borders, generous radii (10–16px), and a hierarchy carried by weight and color tokens rather than by elevation. This is intentional and was a migration. An earlier neobrutalism experiment (thick black borders, hard colored offset shadows) was removed; the utility-class family was renamed from `nb-*` to `ds-*` to drop the legacy hint, and the visual system the classes implement is now uniformly soft.
 
 What this system rejects, from PRODUCT.md's anti-references: SaaS dashboard generics, AI-tool gradient marketing, glassmorphism as default, decorative motion on static UI, the hero-metric card-grid template, and any return to thick-border neobrutalism.
 
@@ -203,7 +203,7 @@ A separately tuned palette, not the light palette inverted. The dark surface (`#
 
 **The One-Family Rule.** Tajawal carries every role. Do not introduce a display serif, a monospace, or a secondary sans "for variety." The visual rhythm comes from weight and scale, not from family contrast.
 
-**The No-Uppercase-Arabic Rule.** Arabic has no case. CSS `text-transform: uppercase` applied to Arabic glyphs degrades them. The `.nb-tag` utility uppercases text — only use it on Latin-script tags (status enums in code, English category labels). Never apply to Arabic labels.
+**The No-Uppercase-Arabic Rule.** Arabic has no case. CSS `text-transform: uppercase` applied to Arabic glyphs degrades them. The `.ds-tag` utility uppercases text — only use it on Latin-script tags (status enums in code, English category labels). Never apply to Arabic labels.
 
 **The Numbers-In-Place Rule.** Arabic-Indic and Western digits both appear in this product. Use Western digits (0–9) for IDs, prices, counts, timestamps — they read better in LTR-bounded contexts. Reserve Arabic-Indic (٠–٩) for marketing/landing surfaces where the cultural register matters.
 
@@ -228,7 +228,7 @@ The system uses **soft drop shadows only, no colored offsets.** Depth is conveye
 
 ## 5. Components
 
-All components are built on HeroUI primitives (`@heroui/react`). Custom utility classes (the `nb-*` family in `globals.css`) extend HeroUI defaults; they do not replace HeroUI components.
+All components are built on HeroUI primitives (`@heroui/react`). Custom utility classes (the `ds-*` family in `globals.css`) extend HeroUI defaults; they do not replace HeroUI components.
 
 ### Buttons
 
@@ -242,14 +242,14 @@ All components are built on HeroUI primitives (`@heroui/react`). Custom utility 
 ### Chips
 
 - **Style:** Pill (`border-radius: 9999px`), 1px hairline border, soft 1px-2px drop shadow, 5×12px padding.
-- **Status chips (`nb-badge` + status-color modifiers):** Background uses the status token at 10% opacity; text uses the status token at full opacity. Result is a soft tinted pill that reads as "label colored by state."
-- **Soft variant (`nb-badge-soft`):** Identical size, lighter border, no semantic color — used for neutral labels and counts.
+- **Status chips (`ds-badge` + status-color modifiers):** Background uses the status token at 10% opacity; text uses the status token at full opacity. Result is a soft tinted pill that reads as "label colored by state."
+- **Soft variant (`ds-badge-soft`):** Identical size, lighter border, no semantic color — used for neutral labels and counts.
 
 ### Cards / Containers
 
-- **Corner Style:** 16px radius on the base `nb-card`. 10px on smaller embedded panels (filter rows, search bars).
+- **Corner Style:** 16px radius on the base `ds-card`. 10px on smaller embedded panels (filter rows, search bars).
 - **Background:** `#FCFEFC` light, `#1A2E1F` dark. One step lighter than page background.
-- **Shadow Strategy:** Ambient at rest. Interactive variants (`nb-card-interactive`) add Hover Lift on hover.
+- **Shadow Strategy:** Ambient at rest. Interactive variants (`ds-card-interactive`) add Hover Lift on hover.
 - **Border:** 1px hairline at 8% foreground mix.
 - **Internal Padding:** 20–24px on dashboard cards. 16px on dense list rows. Do not nest cards inside cards.
 

@@ -15,7 +15,7 @@ export function BannerPreview({
 }: BannerPreviewProps) {
   if (mediaType === "image" && (mediaFile || imageUrl)) {
     return (
-      <div className="nb-border rounded-lg overflow-hidden bg-muted/30 max-h-40">
+      <div className="ds-border rounded-lg overflow-hidden bg-muted/30 max-h-40">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={mediaFile ? URL.createObjectURL(mediaFile) : imageUrl}
@@ -31,7 +31,7 @@ export function BannerPreview({
 
   if (mediaType === "youtube" && youtubeThumb) {
     return (
-      <div className="nb-border rounded-lg overflow-hidden bg-muted/30 max-h-40">
+      <div className="ds-border rounded-lg overflow-hidden bg-muted/30 max-h-40">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={youtubeThumb}

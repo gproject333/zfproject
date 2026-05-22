@@ -48,11 +48,11 @@ export default function Banner({ banner }: BannerProps) {
 
   return (
     <div
-      className={`nb-card flex items-start gap-3 p-4 border-r-[6px] ${style.borderColor} ${style.accentBg}`}
+      className={`ds-card flex items-start gap-3 p-4 border-r-[6px] ${style.borderColor} ${style.accentBg}`}
       role="status"
     >
       <div
-        className={`w-10 h-10 rounded-lg nb-border flex items-center justify-center shrink-0 bg-card ${style.iconColor}`}
+        className={`w-10 h-10 rounded-lg ds-border flex items-center justify-center shrink-0 bg-card ${style.iconColor}`}
       >
         <Icon className="w-5 h-5" />
       </div>

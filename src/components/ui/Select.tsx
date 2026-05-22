@@ -55,7 +55,7 @@ export function SelectTrigger({
 }: SelectTriggerProps) {
   return (
     <HSelect.Trigger
-      className={`nb-input flex items-center justify-between w-full cursor-pointer ${
+      className={`ds-input flex items-center justify-between w-full cursor-pointer ${
         hasError ? "!border-destructive" : ""
       } ${className}`}
       {...rest}

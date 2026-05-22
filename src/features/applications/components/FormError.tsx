@@ -18,7 +18,7 @@ export default function FormError({ message, shake = false, className = "" }: Fo
   if (!message) return null;
   return (
     <div
-      className={`flex items-center gap-2 p-3 bg-destructive/10 nb-border rounded-lg ${
+      className={`flex items-center gap-2 p-3 bg-destructive/10 ds-border rounded-lg ${
         shake ? "animate-shake" : ""
       } ${className}`}
       role="alert"

@@ -55,7 +55,7 @@ export default function SettingsMenu({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className="w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover"
+          className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card ds-shadow-hover"
           aria-label="الإعدادات"
         >
           <Settings className="w-5 h-5" />

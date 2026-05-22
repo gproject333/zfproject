@@ -34,7 +34,7 @@ export default function ProfileModal({
         </div>
         <div className="flex items-center gap-4">
           <div
-            className="w-16 h-16 rounded-2xl nb-border flex items-center justify-center font-extrabold text-2xl"
+            className="w-16 h-16 rounded-2xl ds-border flex items-center justify-center font-extrabold text-2xl"
             style={{ background: config.color.primary, color: config.color.textOnPrimary }}
           >
             {user.name?.charAt(0) ?? config.fallbackInitial}

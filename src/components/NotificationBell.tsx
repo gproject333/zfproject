@@ -30,12 +30,12 @@ export default function NotificationBell() {
   return (
     <Popover isOpen={open} onOpenChange={setOpen}>
       <Popover.Trigger
-        className="relative w-10 h-10 nb-border rounded-lg flex items-center justify-center bg-card nb-shadow-hover cursor-pointer"
+        className="relative w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card ds-shadow-hover cursor-pointer"
         aria-label="الإشعارات"
       >
         <Bell className="w-5 h-5" />
         {(unreadCount ?? 0) > 0 && (
-          <span className="absolute -top-1.5 -left-1.5 min-w-5 h-5 px-1 bg-destructive nb-border rounded-full text-[10px] font-bold text-white flex items-center justify-center">
+          <span className="absolute -top-1.5 -left-1.5 min-w-5 h-5 px-1 bg-destructive ds-border rounded-full text-[10px] font-bold text-white flex items-center justify-center">
             {unreadCount! > 99 ? "99+" : unreadCount}
           </span>
         )}

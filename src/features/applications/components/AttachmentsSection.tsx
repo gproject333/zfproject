@@ -85,7 +85,7 @@ function AttachmentTile({ kind, present, url, onPreview }: TileProps) {
   return (
     <div className="rounded-xl border border-foreground/[0.08] p-4 flex items-center gap-3 bg-card">
       <div
-        className={`w-11 h-11 rounded-lg ${iconBg} text-white flex items-center justify-center shrink-0 nb-shadow-sm`}
+        className={`w-11 h-11 rounded-lg ${iconBg} text-white flex items-center justify-center shrink-0 ds-shadow-sm`}
       >
         <Icon className="w-5 h-5" strokeWidth={2.25} />
       </div>
