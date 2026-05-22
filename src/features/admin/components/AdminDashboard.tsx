@@ -4,16 +4,22 @@ import { useQuery } from "convex/react";
 import { BarChart3 } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { SkeletonStatCards } from "@/components/ui/Skeleton";
-import StatsGrid from "./adminDashboard/StatsGrid";
-import QuickLinks from "./adminDashboard/QuickLinks";
+import StatsHero from "./adminDashboard/StatsHero";
+import PendingActions from "./adminDashboard/PendingActions";
 import ChartsRow from "./adminDashboard/ChartsRow";
-import AcceptanceRateCard from "./adminDashboard/AcceptanceRateCard";
 import ActivityLogCard from "./adminDashboard/ActivityLogCard";
 
 /**
  * Top-level composer for the admin landing dashboard. Owns data fetching;
  * each panel below is presentational — keep new sections in their own file
  * under ./adminDashboard.
+ *
+ * Layout (top-to-bottom):
+ *   1. Header
+ *   2. StatsHero — acceptance-rate hero + role counts
+ *   3. PendingActions — only renders work that needs the admin's attention
+ *   4. ChartsRow — distribution / trends / status breakdown
+ *   5. ActivityLogCard — recent audit-log tail
  */
 export default function AdminDashboard() {
   const stats = useQuery(api.users.admin.getAdminStats, {});
@@ -47,27 +53,28 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div>
-        <h2 className="text-2xl font-extrabold flex items-center gap-2 mb-2">
-          <BarChart3 className="w-7 h-7" style={{ color: "#DC2626" }} />
+      <header>
+        <h2 className="text-2xl font-extrabold flex items-center gap-2 mb-2 text-foreground">
+          <BarChart3 className="w-7 h-7 text-primary" />
           لوحة تحكم النظام
         </h2>
         <p className="text-muted-foreground font-medium">
-          نظرة شاملة على منصة حاضنة الزيتونة — جميع الإحصائيات
+          نظرة شاملة على منصة حاضنة الزيتونة
         </p>
-      </div>
+      </header>
 
-      <StatsGrid stats={stats} pendingUpgradeCount={pendingUpgradeCount} />
-      <QuickLinks />
-      <ChartsRow collegeStats={collegeStats} monthlyStats={monthlyStats} appStatusStats={appStatusStats} />
+      <StatsHero stats={stats} />
 
-      {stats.totalApplications > 0 && (
-        <AcceptanceRateCard
-          accepted={stats.acceptedApplications}
-          rejected={stats.rejectedApplications}
-          pending={stats.totalApplications - stats.acceptedApplications - stats.rejectedApplications}
-        />
-      )}
+      <PendingActions
+        pendingUpgrades={pendingUpgradeCount}
+        underReviewApplications={stats.underReviewApplications}
+      />
+
+      <ChartsRow
+        collegeStats={collegeStats}
+        monthlyStats={monthlyStats}
+        appStatusStats={appStatusStats}
+      />
 
       <ActivityLogCard logs={activityLogs} />
     </div>
