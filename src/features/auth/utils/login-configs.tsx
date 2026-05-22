@@ -1,211 +1,93 @@
-import Link from "next/link";
 import {
   GraduationCap,
-  ShieldAlert,
+  Crown,
   Building2,
   Star,
-  Sparkles,
-  BookUser,
+  ShieldCheck,
 } from "lucide-react";
 import { buttonVariants } from "@/components/ui";
 import type { LoginVariant, LoginVariantConfig } from "../types/login-variants";
 
 export const EMAIL_DOMAIN_SUGGESTIONS = ["std-zuj.edu.jo", "zuj.edu.jo"];
 
+/**
+ * Sponsor's submit button is the only place in the product surface that
+ * uses warm gold (DESIGN.md Sponsor-Only Gold Rule). HeroUI's default
+ * `variant="primary"` resolves to olive; we hand-roll a gold equivalent
+ * here rather than introduce a global `variant="secondary"` that would
+ * leak gold into other personas' surfaces.
+ */
+const SPONSOR_SUBMIT_CLASSES =
+  "inline-flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-base font-bold " +
+  "bg-secondary text-secondary-foreground border border-[var(--secondary-border)] " +
+  "ds-shadow-sm transition-colors duration-200 " +
+  "hover:bg-secondary/90 disabled:opacity-60 disabled:cursor-not-allowed";
+
 const STUDENT_CONFIG: LoginVariantConfig = {
-  theme: "light",
   redirectTo: "/login-redirect",
   brand: {
-    icon: <GraduationCap className="w-10 h-10 text-primary-foreground" />,
-    iconBoxClassName: "bg-primary ds-border-thick rounded-2xl ds-shadow-lg",
+    icon: <GraduationCap className="w-9 h-9 text-primary-foreground" />,
+    iconBgClass: "bg-primary",
     title: "حاضنة الزيتونة",
-    subtitle: "منصة احتضان المشاريع الريادية",
+    subtitle: "منصة احتضان المشاريع الريادية في الجامعة",
   },
-  pageClassName: "min-h-screen bg-pattern flex items-center justify-center p-4 relative overflow-hidden",
-  decorations: (
-    <>
-      <div className="absolute top-10 right-10 w-20 h-20 bg-primary ds-border rounded-lg rotate-12 animate-float opacity-60 hidden md:block" />
-      <div className="absolute bottom-20 left-10 w-16 h-16 bg-secondary ds-border rounded-full animate-float opacity-50 hidden md:block" style={{ animationDelay: "1s" }} />
-      <div className="absolute top-1/3 left-20 w-12 h-12 bg-accent ds-border rotate-45 animate-float opacity-40 hidden md:block" style={{ animationDelay: "2s" }} />
-      <div className="absolute bottom-10 right-1/4 w-14 h-14 bg-warning ds-border rounded-lg -rotate-12 animate-float opacity-50 hidden md:block" style={{ animationDelay: "0.5s" }} />
-      <div className="absolute inset-0 bg-dots opacity-[0.03]" />
-    </>
-  ),
-  cardClassName: "ds-card p-8",
-  titleBarLabel: "تسجيل الدخول",
-  titleBarDots: [
-    { background: "var(--destructive)" },
-    { background: "var(--warning)" },
-    { background: "var(--success)" },
-  ],
-  cardSubtitle: "أدخل بريدك الجامعي وكلمة المرور",
-  inputClassName: "ds-input pr-12 !py-3",
-  labelClassName: "block text-sm font-bold text-foreground",
   emailPlaceholder: "ahmed@std-zuj.edu.jo",
   passwordPlaceholder: "كلمة المرور",
-  floatLabelBg: "var(--card)",
-  floatLabelRestColor: "var(--muted-foreground)",
-  floatLabelActiveColor: "var(--primary)",
-  submitButtonClassName: buttonVariants({ variant: "primary", fullWidth: true }),
   submitText: "تسجيل الدخول",
-  footerNode: (
-    <>
-      <div className="flex items-center gap-3 my-6">
-        <div className="flex-1 h-0.5 bg-foreground/10" />
-        <span className="text-xs font-bold text-muted-foreground">أو</span>
-        <div className="flex-1 h-0.5 bg-foreground/10" />
-      </div>
-      <Link href="/register" className={buttonVariants({ variant: "outline", fullWidth: true })}>
-        <Sparkles className="w-5 h-5" />
-        إنشاء حساب جديد
-      </Link>
-    </>
-  ),
+  submitButtonClass: buttonVariants({ variant: "primary", fullWidth: true }),
+  showStudentLinks: true,
+};
+
+const SUPERVISOR_CONFIG: LoginVariantConfig = {
+  redirectTo: "/login-redirect",
+  brand: {
+    icon: <ShieldCheck className="w-9 h-9 text-primary-foreground" />,
+    iconBgClass: "bg-primary",
+    title: "بوابة المشرفين",
+    subtitle: "دخول المشرفين الأكاديميين",
+  },
+  emailPlaceholder: "supervisor@zuj.edu.jo",
+  passwordPlaceholder: "كلمة مرور المشرف",
+  submitText: "دخول لوحة المشرف",
+  submitButtonClass: buttonVariants({ variant: "primary", fullWidth: true }),
+  footerNote: "حسابك أنشأه فريق حاضنة الزيتونة — تواصل معهم لأي مساعدة",
 };
 
 const ADMIN_CONFIG: LoginVariantConfig = {
-  theme: "dark",
   redirectTo: "/login-redirect",
   brand: {
-    icon: <ShieldAlert className="w-10 h-10 text-white" />,
-    iconBoxStyle: { background: "#DC2626", border: "3px solid #991B1B", boxShadow: "6px 6px 0 #7F1D1D" },
+    icon: <Crown className="w-9 h-9 text-accent-foreground" />,
+    iconBgClass: "bg-accent",
     title: "لوحة الإدارة",
-    subtitle: "دخول المشرفين العامين فقط",
-    subtitleColor: "#FCA5A5",
-    titleColor: "white",
+    subtitle: "دخول مشرفي النظام",
   },
-  pageStyle: { background: "linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%)" },
-  pageClassName: "min-h-screen flex items-center justify-center p-4 relative overflow-hidden",
-  decorations: (
-    <>
-      <div className="absolute inset-0 bg-dots opacity-[0.04]" />
-      <div className="absolute top-10 left-10 w-24 h-24 rounded-lg rotate-12 animate-float opacity-20" style={{ background: "#DC2626", border: "2px solid #DC2626" }} />
-      <div className="absolute bottom-16 right-16 w-16 h-16 rounded-full animate-float opacity-15" style={{ background: "#991B1B", border: "2px solid #7F1D1D", animationDelay: "1.2s" }} />
-      <div className="absolute top-1/2 right-12 w-10 h-10 rotate-45 animate-float opacity-10" style={{ background: "#B91C1C", border: "2px solid #991B1B", animationDelay: "0.6s" }} />
-    </>
-  ),
-  cardStyle: { background: "#1C1C1C", border: "3px solid #DC2626", boxShadow: "6px 6px 0 #7F1D1D" },
-  cardClassName: "p-8 rounded-lg",
-  cardBorderStyle: { borderBottom: "2px solid #333" },
-  titleBarLabel: "تسجيل دخول — Admin",
-  titleBarLabelColor: "white",
-  titleBarDots: [
-    { background: "#DC2626", border: "1px solid #991B1B" },
-    { background: "#B45309", border: "1px solid #92400E" },
-    { background: "#15803D", border: "1px solid #14532D" },
-  ],
-  inputStyle: { background: "#111", border: "2px solid #333", color: "white", borderRadius: "5px", padding: "0.75rem 3rem 0.75rem 1rem", width: "100%", fontFamily: "Tajawal, sans-serif" },
-  inputIconColor: "#9CA3AF",
-  labelClassName: "block text-sm font-bold text-white",
   emailPlaceholder: "admin@zuj.edu.jo",
   passwordPlaceholder: "كلمة مرور Admin",
-  floatLabelBg: "#1C1C1C",
-  floatLabelRestColor: "#9CA3AF",
-  floatLabelActiveColor: "#FCA5A5",
-  submitButtonStyle: { background: "#DC2626", color: "white", border: "2px solid #991B1B", boxShadow: "4px 4px 0 #7F1D1D", fontFamily: "Tajawal, sans-serif" },
-  submitButtonClassName: "w-full flex items-center justify-center gap-2 font-bold text-base py-3 rounded-lg transition-all",
   submitText: "دخول لوحة الإدارة",
-  submitHoverShadow: { from: "4px 4px 0 #7F1D1D", to: "2px 2px 0 #7F1D1D" },
-  footerNode: <p className="text-center mt-4 text-xs" style={{ color: "#6B7280" }}>هذه الصفحة مخصصة لمشرفي النظام فقط</p>,
+  submitButtonClass: buttonVariants({ variant: "primary", fullWidth: true }),
+  footerNote: "هذه الصفحة مخصّصة لمشرفي النظام فقط",
 };
 
 const SPONSOR_CONFIG: LoginVariantConfig = {
-  theme: "dark",
   redirectTo: "/login-redirect",
   brand: {
     icon: (
       <div className="relative">
-        <Building2 className="w-10 h-10 text-white" />
-        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center" style={{ background: "#1F5C2E", border: "2px solid #164520" }}>
-          <Star className="w-3 h-3 text-white" fill="currentColor" />
+        <Building2 className="w-9 h-9 text-secondary-foreground" />
+        <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center bg-primary border border-primary/70">
+          <Star className="w-2.5 h-2.5 text-white" fill="currentColor" />
         </div>
       </div>
     ),
-    iconBoxStyle: { background: "#C9A227", border: "3px solid #B7891A", boxShadow: "6px 6px 0 #966E14" },
+    iconBgClass: "bg-secondary",
     title: "بوابة الرعاة",
     subtitle: "مرحباً بشركائنا في نجاح المشاريع",
-    subtitleColor: "#FDE68A",
-    titleColor: "white",
   },
-  pageStyle: { background: "linear-gradient(135deg, #0a0d0a 0%, #0d1a0a 50%, #0a0d0a 100%)" },
-  pageClassName: "min-h-screen flex items-center justify-center p-4 relative overflow-hidden",
-  decorations: (
-    <>
-      <div className="absolute inset-0 bg-dots opacity-[0.04]" />
-      <div className="absolute top-12 right-12 w-20 h-20 rounded-lg rotate-12 animate-float opacity-25" style={{ background: "#C9A227", border: "2px solid #B7891A" }} />
-      <div className="absolute bottom-20 left-12 w-14 h-14 rounded-full animate-float opacity-20" style={{ background: "#1F5C2E", border: "2px solid #164520", animationDelay: "1s" }} />
-      <div className="absolute top-2/3 right-20 w-8 h-8 rotate-45 animate-float opacity-15" style={{ background: "#C9A227", animationDelay: "0.7s" }} />
-    </>
-  ),
-  cardStyle: { background: "#141a14", border: "3px solid #C9A227", boxShadow: "6px 6px 0 #966E14" },
-  cardClassName: "p-8 rounded-lg",
-  cardBorderStyle: { borderBottom: "2px solid #2a2a2a" },
-  titleBarLabel: "تسجيل دخول — Sponsor",
-  titleBarLabelColor: "white",
-  titleBarDots: [
-    { background: "#DC2626" },
-    { background: "#C9A227" },
-    { background: "#1F5C2E" },
-  ],
-  inputStyle: { background: "#0d0d0d", border: "2px solid #333", color: "white", borderRadius: "5px", padding: "0.75rem 3rem 0.75rem 1rem", width: "100%", fontFamily: "Tajawal, sans-serif" },
-  inputIconColor: "#9CA3AF",
-  labelClassName: "block text-sm font-bold text-white",
   emailPlaceholder: "sponsor@company.com",
   passwordPlaceholder: "كلمة مرور الراعي",
-  floatLabelBg: "#141a14",
-  floatLabelRestColor: "#9CA3AF",
-  floatLabelActiveColor: "#FDE68A",
-  submitButtonStyle: { background: "#C9A227", color: "#111", border: "2px solid #B7891A", boxShadow: "4px 4px 0 #966E14", fontFamily: "Tajawal, sans-serif" },
-  submitButtonClassName: "w-full flex items-center justify-center gap-2 font-bold text-base py-3 rounded-lg transition-all",
   submitText: "الدخول إلى البوابة",
-  submitHoverShadow: { from: "4px 4px 0 #966E14", to: "2px 2px 0 #966E14" },
-  footerNode: <p className="text-center mt-4 text-xs" style={{ color: "#6B7280" }}>حسابك أنشأه فريق حاضنة الزيتونة — تواصل معهم لأي مساعدة</p>,
-};
-
-const SUPERVISOR_CONFIG: LoginVariantConfig = {
-  theme: "dark",
-  redirectTo: "/login-redirect",
-  brand: {
-    icon: <BookUser className="w-10 h-10 text-white" />,
-    iconBoxStyle: { background: "#1F5C2E", border: "3px solid #164520", boxShadow: "6px 6px 0 #0d2e16" },
-    title: "بوابة المشرفين",
-    subtitle: "دخول المشرفين الأكاديميين",
-    subtitleColor: "#86efac",
-    titleColor: "white",
-  },
-  pageStyle: { background: "linear-gradient(135deg, #0a0d0a 0%, #0a150a 50%, #0a0d0a 100%)" },
-  pageClassName: "min-h-screen flex items-center justify-center p-4 relative overflow-hidden",
-  decorations: (
-    <>
-      <div className="absolute inset-0 bg-dots opacity-[0.04]" />
-      <div className="absolute top-10 left-10 w-24 h-24 rounded-lg rotate-12 animate-float opacity-20" style={{ background: "#1F5C2E", border: "2px solid #164520" }} />
-      <div className="absolute bottom-16 right-16 w-16 h-16 rounded-full animate-float opacity-15" style={{ background: "#14532D", border: "2px solid #0d2e16", animationDelay: "1.2s" }} />
-      <div className="absolute top-1/2 right-12 w-10 h-10 rotate-45 animate-float opacity-10" style={{ background: "#166534", border: "2px solid #14532D", animationDelay: "0.6s" }} />
-    </>
-  ),
-  cardStyle: { background: "#111a11", border: "3px solid #1F5C2E", boxShadow: "6px 6px 0 #0d2e16" },
-  cardClassName: "p-8 rounded-lg",
-  cardBorderStyle: { borderBottom: "2px solid #1a2a1a" },
-  titleBarLabel: "تسجيل دخول — Supervisor",
-  titleBarLabelColor: "white",
-  titleBarDots: [
-    { background: "#DC2626", border: "1px solid #991B1B" },
-    { background: "#B45309", border: "1px solid #92400E" },
-    { background: "#1F5C2E", border: "1px solid #14532D" },
-  ],
-  inputStyle: { background: "#0d0d0d", border: "2px solid #1a2a1a", color: "white", borderRadius: "5px", padding: "0.75rem 3rem 0.75rem 1rem", width: "100%", fontFamily: "Tajawal, sans-serif" },
-  inputIconColor: "#9CA3AF",
-  labelClassName: "block text-sm font-bold text-white",
-  emailPlaceholder: "supervisor@zuj.edu.jo",
-  passwordPlaceholder: "كلمة مرور المشرف",
-  floatLabelBg: "#111a11",
-  floatLabelRestColor: "#9CA3AF",
-  floatLabelActiveColor: "#86efac",
-  submitButtonStyle: { background: "#1F5C2E", color: "white", border: "2px solid #164520", boxShadow: "4px 4px 0 #0d2e16", fontFamily: "Tajawal, sans-serif" },
-  submitButtonClassName: "w-full flex items-center justify-center gap-2 font-bold text-base py-3 rounded-lg transition-all",
-  submitText: "دخول لوحة المشرف",
-  submitHoverShadow: { from: "4px 4px 0 #0d2e16", to: "2px 2px 0 #0d2e16" },
-  footerNode: <p className="text-center mt-4 text-xs" style={{ color: "#6B7280" }}>حسابك أنشأه فريق حاضنة الزيتونة — تواصل معهم لأي مساعدة</p>,
+  submitButtonClass: SPONSOR_SUBMIT_CLASSES,
+  footerNote: "حسابك أنشأه فريق حاضنة الزيتونة — تواصل معهم لأي مساعدة",
 };
 
 export const LOGIN_VARIANTS: Record<LoginVariant, LoginVariantConfig> = {

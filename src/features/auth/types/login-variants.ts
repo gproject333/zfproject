@@ -1,49 +1,33 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export type LoginVariant = "student" | "admin" | "sponsor" | "supervisor";
 
+/**
+ * Each login route picks one of four LoginVariantConfigs. All four share
+ * the same calm light-surface layout (DESIGN.md "The Olive Reading Room")
+ * and differ only in:
+ *
+ *  - brand identity (icon, icon background, title, subtitle)
+ *  - submit button color (per Sponsor-Only Gold Rule, only sponsor gets gold)
+ *  - optional footer note (e.g. "this page is for admins only")
+ *  - whether forgot-password + register links render (student only)
+ */
 export interface LoginVariantConfig {
-  theme: "light" | "dark";
   redirectTo: string;
-
   brand: {
     icon: ReactNode;
-    iconBoxStyle?: CSSProperties;
-    iconBoxClassName?: string;
+    /** Tailwind class for the icon's rounded-square background — `bg-primary` / `bg-accent` / `bg-secondary`. */
+    iconBgClass: string;
     title: string;
     subtitle: string;
-    subtitleColor?: string;
-    subtitleClassName?: string;
-    titleColor?: string;
   };
-
-  pageStyle?: CSSProperties;
-  pageClassName?: string;
-  decorations: ReactNode;
-
-  cardStyle?: CSSProperties;
-  cardClassName?: string;
-  cardBorderStyle?: CSSProperties;
-  titleBarLabel: string;
-  titleBarLabelColor?: string;
-  titleBarDots: Array<{ background: string; border?: string }>;
-
-  cardSubtitle?: string;
-
-  inputStyle?: CSSProperties;
-  inputClassName?: string;
-  inputIconColor?: string;
-  labelClassName?: string;
   emailPlaceholder: string;
   passwordPlaceholder: string;
-  floatLabelBg: string;
-  floatLabelRestColor: string;
-  floatLabelActiveColor: string;
-
-  submitButtonStyle?: CSSProperties;
-  submitButtonClassName?: string;
   submitText: string;
-  submitHoverShadow?: { from: string; to: string };
-
-  footerNode?: ReactNode;
+  /** Tailwind class for the submit button — usually a `buttonVariants(...)` call or equivalent. */
+  submitButtonClass: string;
+  /** Optional small note rendered below the card. */
+  footerNote?: string;
+  /** Show "forgot password" and "create account" links — student only. */
+  showStudentLinks?: boolean;
 }
