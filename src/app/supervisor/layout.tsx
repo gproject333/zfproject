@@ -1,9 +1,17 @@
 "use client";
 
 import { ReactNode } from "react";
-import { supervisorNavItems } from "@/components/layout/navItems";
-import SupervisorSidebarLayout from "@/components/layout/SupervisorSidebarLayout";
+import { supervisorSidebarConfig } from "@/components/layout/navItems";
+import AppSidebarLayout from "@/components/layout/AppSidebarLayout";
 
 export default function SupervisorLayout({ children }: { children: ReactNode }) {
-  return <SupervisorSidebarLayout navItems={supervisorNavItems}>{children}</SupervisorSidebarLayout>;
+  return (
+    <AppSidebarLayout
+      config={supervisorSidebarConfig}
+      allowedRoles={["supervisor"]}
+      announcementAudience="supervisor"
+    >
+      {children}
+    </AppSidebarLayout>
+  );
 }

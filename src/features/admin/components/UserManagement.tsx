@@ -6,7 +6,6 @@ import {Users, Building2, Plus, X, Mail, User, Building, Phone, KeyRound, CheckC
 import type { LucideIcon } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { SkeletonApplicationList } from "@/components/ui/Skeleton";
 import { Button, Input, Spinner, Card} from "@/components/ui";
 import { toast } from "@/lib/toast";
 
@@ -358,74 +357,129 @@ export default function UserManagement({ role }: UserManagementProps) {
         </Card>
       )}
 
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="بحث بالاسم أو البريد..."
-          fullWidth
-          className="pr-9"
-        />
-      </div>
-
-      {/* Users List */}
-      {users === undefined ? (
-        <SkeletonApplicationList count={4} />
-      ) : filtered.length === 0 ? (
-        <Card className="p-12 text-center">
-          <PageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-          <h3 className="font-extrabold text-lg mb-1">{config.emptyTitle}</h3>
-          <p className="text-sm text-muted-foreground">{config.emptyDescription}</p>
-        </Card>
-      ) : (
-        <div className="space-y-3">
-          {filtered.map((user, i) => (
-            <Card key={user._id} className="p-4 flex items-center gap-4 animate-slide-up" style={{ animationDelay: `${i * 0.05}s`, opacity: 0 }}>
-              <div className="w-12 h-12 rounded-xl nb-border flex items-center justify-center shrink-0 font-extrabold text-lg" style={{ background: config.color.primary, color: config.color.textOnPrimary }}>
-                {user.name?.charAt(0) ?? config.fallbackInitial}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h4 className="font-bold text-base">{user.name ?? "—"}</h4>
-                  <span className={`nb-badge text-xs ${user.isActive !== false ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"}`}>
-                    {user.isActive !== false ? "نشط" : "معطل"}
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground font-medium">{user.email}</p>
-                {config.showDepartment && user.department && (
-                  <p className="text-xs text-muted-foreground">{user.department}</p>
-                )}
-                {!config.showDepartment && user.phone && (
-                  <p className="text-xs text-muted-foreground" dir="ltr">{user.phone}</p>
-                )}
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <button
-                  onClick={() => setProfileUser(user)}
-                  className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
-                  title="عرض الملف الشخصي"
-                >
-                  <User className="w-3.5 h-3.5" />
-                  الملف
-                </button>
-                <button
-                  title={user.isActive !== false ? "تجميد الحساب" : "تفعيل الحساب"}
-                  onClick={() => handleToggle(user._id, user.isActive === false)}
-                  className="p-2 rounded-lg nb-border hover:bg-muted transition-colors"
-                >
-                  {user.isActive !== false ? (
-                    <ToggleRight className="w-6 h-6 text-success" />
-                  ) : (
-                    <ToggleLeft className="w-6 h-6 text-muted-foreground" />
-                  )}
-                </button>
-              </div>
-            </Card>
-          ))}
+      {/* Filters */}
+      <Card className="p-3 sm:p-4">
+        <div className="relative">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="بحث بالاسم أو البريد..."
+            fullWidth
+            className="px-9 text-sm"
+          />
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              aria-label="مسح البحث"
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
-      )}
+      </Card>
+
+      {/* Users Table */}
+      <Card className="overflow-hidden">
+        {users === undefined ? (
+          <div className="p-8 space-y-3">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-12 bg-muted rounded-lg animate-pulse" />
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="p-12 text-center">
+            <PageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+            <h3 className="font-extrabold text-lg mb-1">
+              {search ? "لا توجد نتائج مطابقة" : config.emptyTitle}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {search ? "جرّب تعديل كلمة البحث" : config.emptyDescription}
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-muted/50">
+                  <th className="text-right px-4 py-3 font-extrabold">
+                    {config.role === "supervisor" ? "المشرف" : "الداعم"}
+                  </th>
+                  {config.showDepartment && (
+                    <th className="text-right px-4 py-3 font-extrabold hidden md:table-cell">التخصص</th>
+                  )}
+                  <th className="text-right px-4 py-3 font-extrabold hidden sm:table-cell">الهاتف</th>
+                  <th className="text-right px-4 py-3 font-extrabold">الحالة</th>
+                  <th className="text-right px-4 py-3 font-extrabold">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((user) => (
+                  <tr key={user._id} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-9 h-9 rounded-xl nb-border flex items-center justify-center shrink-0 font-extrabold text-sm"
+                          style={{ background: config.color.primary, color: config.color.textOnPrimary }}
+                        >
+                          {user.name?.charAt(0) ?? config.fallbackInitial}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-bold truncate">{user.name ?? "—"}</p>
+                          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    {config.showDepartment && (
+                      <td className="px-4 py-3 hidden md:table-cell text-muted-foreground">
+                        {user.department ?? "—"}
+                      </td>
+                    )}
+                    <td className="px-4 py-3 hidden sm:table-cell text-muted-foreground">
+                      <span dir="ltr">{user.phone ?? "—"}</span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`nb-badge font-bold ${
+                          user.isActive !== false
+                            ? "bg-success/10 text-success"
+                            : "bg-destructive/10 text-destructive"
+                        }`}
+                      >
+                        {user.isActive !== false ? "فعّال" : "مجمّد"}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setProfileUser(user)}
+                          className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
+                        >
+                          <User className="w-3.5 h-3.5" />
+                          الملف
+                        </button>
+                        <button
+                          onClick={() => handleToggle(user._id, user.isActive === false)}
+                          className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
+                        >
+                          {user.isActive !== false ? (
+                            <ToggleRight className="w-4 h-4 text-success" />
+                          ) : (
+                            <ToggleLeft className="w-4 h-4 text-muted-foreground" />
+                          )}
+                          {user.isActive !== false ? "تجميد" : "تفعيل"}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
 
       {profileUser && (
         <ProfileModal user={profileUser} config={config} onClose={() => setProfileUser(null)} />

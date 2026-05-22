@@ -1,41 +1,76 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import { Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
 import SettingsMenu from "@/components/SettingsMenu";
 import { Button } from "@/components/ui";
 import { Tooltip } from "@/components/ui/Tooltip";
 
-export interface SupervisorNavItem {
+export interface SidebarNavItem {
   label: string;
   href: string;
   icon: LucideIcon;
 }
 
-interface Props {
-  navItems: SupervisorNavItem[];
+/**
+ * Everything a role needs to render its app-shell sidebar — brand badge,
+ * nav items, active-link styling, and the settings/profile targets. Both
+ * the supervisor and admin pass one of these (see `navItems.ts`).
+ */
+export interface AppSidebarConfig {
+  /** Nav links shown in the sidebar. */
+  navItems: SidebarNavItem[];
+  /** Brand link target. */
+  homeHref: string;
+  /** Lucide icon shown in the 48px brand badge. */
+  brandIcon: LucideIcon;
+  /** Extra classes for the brand badge wrapper (background). */
+  brandBadgeClassName?: string;
+  /** Inline style for the brand badge wrapper (background color). */
+  brandBadgeStyle?: CSSProperties;
+  /** Classes for the brand icon glyph (color). */
+  brandIconClassName: string;
+  /** Caption shown under "حاضنة الزيتونة". */
+  subtitle: string;
+  /** Profile + logout targets handed to the settings menu. */
+  profileHref: string;
+  logoutHref?: string;
+  /** Classes applied to the active nav link. */
+  activeClassName: string;
+  /** Inline style applied to the active nav link (e.g. background). */
+  activeStyle?: CSSProperties;
+  /** localStorage key persisting the collapsed preference per role. */
+  storageKey: string;
 }
 
-const COLLAPSED_KEY = "supervisor-sidebar-collapsed";
+interface Props {
+  config: AppSidebarConfig;
+}
 
 /**
- * The supervisor app-shell sidebar — a right-aligned panel (RTL start)
+ * The shared app-shell sidebar — a right-aligned panel (RTL start)
  * holding the brand, nav items, and a foot with notifications, settings,
- * and the collapse toggle. Desktop supports a collapsed icon-rail mode
- * (persisted in localStorage); mobile shows it as a slide-in drawer
- * opened by a floating button.
+ * and the collapse toggle. No top navbar: every chrome control lives in
+ * the sidebar. Desktop supports a collapsed icon-rail mode (persisted in
+ * localStorage); mobile shows it as a slide-in drawer opened by a
+ * floating button.
  *
  * Renders as a flex child meant to sit next to a `flex-1` content area,
- * so it can wrap both the supervisor dashboard and the landing page.
+ * so it can wrap both a role's dashboard and the landing page. The
+ * {@link AppSidebarConfig} makes it role-agnostic — supervisor and admin
+ * both feed it their own brand, nav items, and accent.
  */
-export default function SupervisorSidebar({ navItems }: Props) {
+export default function AppSidebar({ config }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
+
+  const BrandIcon = config.brandIcon;
 
   useEffect(() => {
     // Read the persisted preference only after mount — a lazy useState
@@ -43,14 +78,14 @@ export default function SupervisorSidebar({ navItems }: Props) {
     // hydration.
     try {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time sync from a browser-only API
-      if (window.localStorage.getItem(COLLAPSED_KEY) === "0") setCollapsed(false);
+      if (window.localStorage.getItem(config.storageKey) === "0") setCollapsed(false);
     } catch { /* ignore */ }
-  }, []);
+  }, [config.storageKey]);
 
   const toggleCollapsed = () => {
     setCollapsed((prev) => {
       const next = !prev;
-      try { window.localStorage.setItem(COLLAPSED_KEY, next ? "1" : "0"); } catch { /* ignore */ }
+      try { window.localStorage.setItem(config.storageKey, next ? "1" : "0"); } catch { /* ignore */ }
       return next;
     });
   };
@@ -108,33 +143,36 @@ export default function SupervisorSidebar({ navItems }: Props) {
 
           {/* Brand */}
           <Link
-            href="/supervisor"
+            href={config.homeHref}
             onClick={() => setOpen(false)}
             className={`flex items-center gap-3 mb-8 pt-1 ${
               collapsed ? "md:justify-center" : ""
             }`}
           >
-            <div className="w-12 h-12 bg-white nb-border rounded-xl flex items-center justify-center nb-shadow-sm shrink-0">
-              <ShieldCheck className="w-6 h-6 text-accent" />
+            <div
+              className={`w-12 h-12 nb-border rounded-xl flex items-center justify-center nb-shadow-sm shrink-0 ${config.brandBadgeClassName ?? ""}`}
+              style={config.brandBadgeStyle}
+            >
+              <BrandIcon className={`w-6 h-6 ${config.brandIconClassName}`} />
             </div>
             <div className={collapsed ? "md:hidden" : ""}>
               <p className="font-extrabold text-base leading-tight">حاضنة الزيتونة</p>
               <p className="text-[11px] text-muted-foreground font-bold">
-                لوحة المشرف الأكاديمي
+                {config.subtitle}
               </p>
             </div>
           </Link>
 
           {/* Nav items */}
           <div className="space-y-1.5 flex-1">
-            {navItems.map((item) => {
+            {config.navItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
               const linkClass = `flex items-center gap-3 rounded-lg text-sm font-bold transition-all nb-border ${
                 collapsed ? "md:justify-center md:px-2 md:py-3 px-4 py-3" : "px-4 py-3"
               } ${
                 isActive
-                  ? "bg-accent text-accent-foreground nb-shadow-sm border-foreground"
+                  ? config.activeClassName
                   : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
               }`;
               const content = (
@@ -143,6 +181,7 @@ export default function SupervisorSidebar({ navItems }: Props) {
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className={linkClass}
+                  style={isActive ? config.activeStyle : undefined}
                   aria-label={item.label}
                 >
                   <Icon className="w-5 h-5 shrink-0" />
@@ -167,7 +206,7 @@ export default function SupervisorSidebar({ navItems }: Props) {
               }`}
             >
               <NotificationBell />
-              <SettingsMenu profileHref="/supervisor/profile" />
+              <SettingsMenu profileHref={config.profileHref} logoutHref={config.logoutHref} />
             </div>
 
             <Button

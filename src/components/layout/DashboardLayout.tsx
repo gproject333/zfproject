@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
-import { Menu, X, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
+import { Menu, X, ChevronLeft } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui";
 import NotificationBell from "@/components/NotificationBell";
@@ -12,8 +12,6 @@ import SettingsMenu from "@/components/SettingsMenu";
 import RoleGuard from "@/components/RoleGuard";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnnouncementBar";
-import { useClerk } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import type { CSSProperties } from "react";
 
 export interface NavItem {
@@ -53,8 +51,6 @@ export interface DashboardLayoutConfig {
   profileHref: string;
   /** Optional override for the page background class */
   backgroundClass?: string;
-  /** Use sidebar layout instead of top navbar (for admin) */
-  sidebarLayout?: boolean;
 }
 
 interface DashboardLayoutProps {
@@ -63,153 +59,15 @@ interface DashboardLayoutProps {
 }
 
 /**
- * Unified dashboard layout used by all role-based routes.
- * Renders RoleGuard, sticky navbar, mobile sidebar, content area, and footer.
+ * Top-navbar dashboard layout used by the student and sponsor routes.
+ * Renders RoleGuard, sticky navbar, mobile sidebar, content area, and
+ * footer. Supervisor and admin use the navbar-less {@link AppSidebarLayout}.
  */
 export default function DashboardLayout({ config, children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
-  const { signOut } = useClerk();
-  const router = useRouter();
 
   const backgroundClass = config.backgroundClass ?? "bg-pattern";
-
-  const handleLogout = async () => {
-    await signOut();
-    router.push(config.logoutHref);
-  };
-
-  if (config.sidebarLayout) {
-    return (
-      <RoleGuard allowedRoles={[...config.roles]}>
-        <div className={`min-h-screen ${backgroundClass} flex`} dir="rtl">
-
-          {/* Mobile overlay backdrop */}
-          {sidebarOpen && (
-            <div
-              className="fixed inset-0 z-30 bg-black/50 md:hidden"
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
-
-          {/* Sidebar */}
-          <aside
-            className={`fixed top-0 right-0 h-full z-40 bg-card nb-border border-t-0 border-r-0 flex flex-col transition-all duration-300
-              ${sidebarOpen ? "translate-x-0 w-64" : `translate-x-full md:translate-x-0 ${sidebarCollapsed ? "md:w-20" : "md:w-64"}`}`}
-          >
-            {/* Brand */}
-            <div className={`p-3 border-b border-border/60 ${sidebarCollapsed ? "md:flex md:justify-center" : ""}`}>
-              <Link
-                href={config.brand.homeHref}
-                onClick={() => setSidebarOpen(false)}
-                className="flex items-center gap-3"
-              >
-                <div
-                  className={`w-10 h-10 flex items-center justify-center nb-border rounded-lg shrink-0 ${config.brand.iconBgClass ?? ""}`}
-                  style={config.brand.iconBgStyle}
-                >
-                  {config.brand.icon}
-                </div>
-                <div className={sidebarCollapsed ? "md:hidden" : ""}>
-                  <p className="font-extrabold text-sm leading-tight">حاضنة الزيتونة</p>
-                  <p className="text-[10px] font-bold" style={config.brand.subtitleStyle}>
-                    {config.brand.subtitle}
-                  </p>
-                </div>
-              </Link>
-            </div>
-
-            {/* Nav Items */}
-            <nav className={`flex-1 overflow-y-auto space-y-1 ${sidebarCollapsed ? "md:p-2 p-3" : "p-3"}`}>
-              {config.navItems.map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setSidebarOpen(false)}
-                    title={sidebarCollapsed ? item.label : undefined}
-                    className={`flex items-center gap-3 rounded-lg text-sm font-bold transition-all nb-border
-                      ${sidebarCollapsed ? "md:justify-center md:px-2 md:py-3 px-3 py-2.5" : "px-3 py-2.5"}
-                      ${isActive
-                        ? config.active.className ?? ""
-                        : "bg-transparent border-transparent hover:bg-muted hover:border-foreground/30"
-                      }`}
-                    style={isActive ? config.active.style : undefined}
-                  >
-                    <item.icon className="w-4 h-4 shrink-0" />
-                    <span className={sidebarCollapsed ? "md:hidden" : ""}>{item.label}</span>
-                    {isActive && !sidebarCollapsed && <ChevronLeft className="w-3.5 h-3.5 mr-auto opacity-70" />}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* Bottom buttons */}
-            <div className={`border-t border-border/60 space-y-1 ${sidebarCollapsed ? "md:p-2 p-3" : "p-3"}`}>
-              {/* Collapse toggle */}
-              <Button
-                onPress={() => setSidebarCollapsed(p => !p)}
-                aria-label={sidebarCollapsed ? "توسيع" : "تصغير"}
-                variant="ghost"
-                size="sm"
-                fullWidth
-                className={`hidden md:flex ${sidebarCollapsed ? "justify-center" : "justify-between"}`}
-              >
-                {!sidebarCollapsed && <span className="text-xs">تصغير</span>}
-                {sidebarCollapsed ? <ChevronLeft className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
-              </Button>
-              {/* Logout */}
-              <Button
-                onPress={() => void handleLogout()}
-                aria-label="تسجيل الخروج"
-                variant="ghost"
-                size="sm"
-                fullWidth
-                className={`text-destructive hover:bg-destructive/10 ${sidebarCollapsed ? "md:justify-center" : "justify-start"}`}
-              >
-                <LogOut className="w-4 h-4 shrink-0" />
-                <span className={sidebarCollapsed ? "md:hidden" : ""}>تسجيل الخروج</span>
-              </Button>
-            </div>
-          </aside>
-
-          {/* Main content — offset by sidebar width on desktop */}
-          <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarCollapsed ? "md:mr-20" : "md:mr-64"}`}>
-            {/* Top bar */}
-            <header className="sticky top-0 z-20 bg-card nb-border border-t-0 border-x-0 px-4 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {/* Mobile hamburger */}
-                <Button
-                  onPress={() => setSidebarOpen(true)}
-                  variant="outline"
-                  size="sm"
-                  isIconOnly
-                  className="md:hidden"
-                  aria-label="فتح القائمة"
-                >
-                  <Menu className="w-5 h-5" />
-                </Button>
-              </div>
-              <div className="flex items-center gap-2">
-                {config.showNotifications && <NotificationBell />}
-                <SettingsMenu profileHref={config.profileHref} logoutHref={config.logoutHref} />
-              </div>
-            </header>
-
-            <ScrollingAnnouncementBar audience="student" />
-
-            <main className="flex-1 p-4 md:p-6">
-              <ErrorBoundary>{children}</ErrorBoundary>
-            </main>
-
-            <AppFooter />
-          </div>
-        </div>
-      </RoleGuard>
-    );
-  }
 
   return (
     <RoleGuard allowedRoles={[...config.roles]}>

@@ -16,8 +16,6 @@ import {
   Activity,
 } from "lucide-react";
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -33,7 +31,19 @@ import { api } from "../../../../convex/_generated/api";
 import { SkeletonStatCards } from "@/components/ui/Skeleton";
 import { Card } from "@/components/ui";
 
-const PIE_COLORS = ["#F59E0B", "#22C55E", "#EF4444", "#6B7280"];
+/**
+ * Each project status keyed to its own semantic color. Looking the
+ * color up by status (not by array index) keeps green=accepted and
+ * red=rejected fixed — previously a zero-count slice being filtered
+ * out shifted every remaining color by one.
+ */
+const STATUS_COLORS: Record<string, string> = {
+  "قيد المراجعة": "#F59E0B",
+  "مقبول": "#22C55E",
+  "مرفوض": "#EF4444",
+  "يحتاج تعديل": "#64748B",
+};
+const STATUS_FALLBACK = "#94A3B8";
 
 function timeAgo(ts: number): string {
   const diff = Date.now() - ts;
@@ -45,13 +55,14 @@ function timeAgo(ts: number): string {
   return `منذ ${Math.floor(hrs / 24)} يوم`;
 }
 
-function shortenCollege(name: string) {
-  return name.replace("كلية ", "").slice(0, 12);
+/** Drop the redundant "كلية " prefix — the card title already says حسب الكلية. */
+function collegeLabel(name: string) {
+  return name.replace(/^كلية\s+/, "").trim() || name;
 }
 
 export default function AdminDashboard() {
   const stats = useQuery(api.users.admin.getAdminStats, {});
-  const activityLogs = useQuery(api.activityLogs.recentLogs, { limit: 10 });
+  const activityLogs = useQuery(api.activityLogs.recentLogs, { limit: 6 });
   const collegeStats = useQuery(api.users.admin.getStudentDistributionByCollege, {});
   const monthlyStats = useQuery(api.users.admin.getMonthlyRegistrationStats, {});
   const appStatusStats = useQuery(api.users.admin.getApplicationStatusStats, {});
@@ -165,6 +176,13 @@ export default function AdminDashboard() {
       icon: GraduationCap,
     },
     {
+      label: "إدارة المشرفين",
+      desc: "متابعة المشرفين الأكاديميين وصلاحياتهم",
+      href: "/admin/supervisors",
+      color: "#7C3AED",
+      icon: Users,
+    },
+    {
       label: "إنشاء حساب راعٍ",
       desc: "إضافة شركة أو جهة راعية جديدة",
       href: "/admin/sponsors",
@@ -212,6 +230,28 @@ export default function AdminDashboard() {
         ))}
       </div>
 
+      {/* Quick Actions */}
+      <div>
+        <h3 className="text-xl font-extrabold mb-4">الإجراءات السريعة</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {QUICK_LINKS.map((a) => (
+            <Link key={a.href} href={a.href} className="nb-card-interactive p-5 text-right group">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-12 h-12 rounded-xl nb-border flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform bg-white"
+                >
+                  <a.icon className="w-5 h-5" style={{ color: a.color }} />
+                </div>
+                <div className="min-w-0">
+                  <h4 className="font-extrabold text-base">{a.label}</h4>
+                  <p className="text-xs text-muted-foreground font-medium mt-0.5">{a.desc}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Bar Chart — توزيع الطلاب */}
@@ -221,14 +261,7 @@ export default function AdminDashboard() {
             توزيع الطلاب حسب الكلية
           </h3>
           {collegeStats && collegeStats.length > 0 ? (
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={collegeStats.map((d) => ({ ...d, college: shortenCollege(d.college) }))} layout="vertical">
-                <XAxis type="number" hide />
-                <YAxis type="category" dataKey="college" width={80} tick={{ fontSize: 10, fontFamily: "inherit" }} />
-                <Tooltip formatter={(v) => [`${v} طالب`, "العدد"]} />
-                <Bar dataKey="count" fill="#3B82F6" radius={[0, 4, 4, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <CollegeDistribution data={collegeStats} />
           ) : (
             <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">لا توجد بيانات</div>
           )}
@@ -275,21 +308,24 @@ export default function AdminDashboard() {
                   >
                     {appStatusStats
                       .filter((d) => d.count > 0)
-                      .map((_, idx) => (
-                        <Cell key={idx} fill={PIE_COLORS[idx % PIE_COLORS.length]} />
+                      .map((d) => (
+                        <Cell
+                          key={d.status}
+                          fill={STATUS_COLORS[d.status] ?? STATUS_FALLBACK}
+                        />
                       ))}
                   </Pie>
                   <Tooltip formatter={(v, n) => [`${v}`, n]} />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="flex flex-wrap gap-2 justify-center mt-2">
+              <div className="flex flex-wrap gap-x-3 gap-y-1.5 justify-center mt-2">
                 {appStatusStats
                   .filter((d) => d.count > 0)
-                  .map((d, idx) => (
-                    <span key={idx} className="flex items-center gap-1 text-xs font-bold">
+                  .map((d) => (
+                    <span key={d.status} className="flex items-center gap-1.5 text-xs font-bold">
                       <span
-                        className="w-3 h-3 rounded-full inline-block"
-                        style={{ background: PIE_COLORS[idx % PIE_COLORS.length] }}
+                        className="w-3 h-3 rounded-full inline-block nb-border"
+                        style={{ background: STATUS_COLORS[d.status] ?? STATUS_FALLBACK }}
                       />
                       {d.status} ({d.count})
                     </span>
@@ -302,100 +338,160 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
-      {/* Acceptance Rate */}
+      {/* Acceptance Rate — accepted / (accepted + rejected). Applications
+          still under review, needing changes, or in draft have no decision
+          yet, so they stay out of the denominator. */}
       {stats.totalApplications > 0 && (
         <Card className="p-6">
           <h3 className="font-extrabold text-lg mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-success" />
             معدل القبول
           </h3>
-          <div className="space-y-3">
-            <RateBar label="مقبول" labelColor="text-success" barColor="bg-success" value={stats.acceptedApplications} total={stats.totalApplications} />
-            <RateBar label="مرفوض" labelColor="text-destructive" barColor="bg-destructive" value={stats.rejectedApplications} total={stats.totalApplications} />
-            <RateBar label="قيد المراجعة" labelColor="text-warning" barColor="bg-status-pending" value={stats.underReviewApplications} total={stats.totalApplications} />
-          </div>
+          <AcceptanceRate
+            accepted={stats.acceptedApplications}
+            rejected={stats.rejectedApplications}
+            pending={
+              stats.totalApplications -
+              stats.acceptedApplications -
+              stats.rejectedApplications
+            }
+          />
         </Card>
       )}
 
-      {/* Activity Log */}
-      <Card className="p-6">
-        <h3 className="font-extrabold text-lg mb-4 flex items-center gap-2">
-          <Activity className="w-5 h-5" style={{ color: "#DC2626" }} />
+      {/* Activity Log — compact, one line per entry */}
+      <Card className="p-5">
+        <h3 className="font-extrabold text-base mb-3 flex items-center gap-2">
+          <Activity className="w-4 h-4" style={{ color: "#DC2626" }} />
           آخر النشاطات
         </h3>
         {activityLogs === undefined ? (
-          <div className="space-y-3">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-10 bg-muted rounded-lg animate-pulse" />
+          <div className="space-y-1.5">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-7 bg-muted rounded-md animate-pulse" />
             ))}
           </div>
         ) : activityLogs.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-6">لا توجد نشاطات مسجّلة بعد</p>
+          <p className="text-sm text-muted-foreground text-center py-5">لا توجد نشاطات مسجّلة بعد</p>
         ) : (
-          <div className="space-y-2">
+          <ul className="divide-y divide-border/50">
             {activityLogs.map((log) => (
-              <div
+              <li
                 key={log._id}
-                className="flex items-start justify-between gap-3 py-2 border-b border-border/50 last:border-0"
+                className="flex items-center justify-between gap-3 py-1.5"
               >
-                <div className="flex items-start gap-2 min-w-0">
-                  <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
-                  <div className="min-w-0">
-                    <span className="font-bold text-sm">{log.actorName} </span>
-                    <span className="text-sm text-muted-foreground">{log.action}</span>
-                  </div>
-                </div>
-                <span className="text-xs text-muted-foreground shrink-0 mt-1">{timeAgo(log.createdAt)}</span>
-              </div>
+                <span className="flex items-center gap-2 min-w-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  <span className="truncate text-xs min-w-0">
+                    <span className="font-bold">{log.actorName}</span>{" "}
+                    <span className="text-muted-foreground">{log.action}</span>
+                  </span>
+                </span>
+                <span className="text-[11px] text-muted-foreground shrink-0">
+                  {timeAgo(log.createdAt)}
+                </span>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </Card>
-
-      {/* Quick Links */}
-      <div>
-        <h3 className="text-xl font-extrabold mb-4">الإجراءات السريعة</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {QUICK_LINKS.map((a) => (
-            <Link key={a.href} href={a.href} className="nb-card-interactive p-5 text-right group">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-12 h-12 rounded-xl nb-border flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform bg-white"
-                >
-                  <a.icon className="w-5 h-5" style={{ color: a.color }} />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-base">{a.label}</h4>
-                  <p className="text-xs text-muted-foreground font-medium mt-0.5">{a.desc}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
 
-interface RateBarProps {
-  label: string;
-  labelColor: string;
-  barColor: string;
-  value: number;
-  total: number;
+/** Ranked horizontal bars — each college relative to the largest one. */
+function CollegeDistribution({
+  data,
+}: {
+  data: { college: string; count: number }[];
+}) {
+  const sorted = [...data].sort((a, b) => b.count - a.count);
+  const max = Math.max(...sorted.map((c) => c.count), 1);
+  return (
+    <ul className="space-y-3.5">
+      {sorted.map((c) => (
+        <li key={c.college}>
+          <div className="flex items-baseline justify-between gap-3 mb-1.5">
+            <span className="text-xs font-bold leading-snug">{collegeLabel(c.college)}</span>
+            <span className="text-xs font-extrabold shrink-0 tabular-nums text-info">
+              {c.count}
+            </span>
+          </div>
+          <div className="h-2.5 bg-muted rounded-full nb-border overflow-hidden">
+            <div
+              className="h-full w-full bg-info origin-right transition-transform duration-500"
+              style={{ transform: `scaleX(${c.count / max})` }}
+            />
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
 }
 
-function RateBar({ label, labelColor, barColor, value, total }: RateBarProps) {
-  const pct = Math.round((value / total) * 100);
+/**
+ * Acceptance rate over *decided* applications only — accepted vs.
+ * rejected. Pending applications (under review / needs changes / draft)
+ * have no verdict yet and would deflate the rate if counted, so they
+ * are reported separately instead.
+ */
+function AcceptanceRate({
+  accepted,
+  rejected,
+  pending,
+}: {
+  accepted: number;
+  rejected: number;
+  pending: number;
+}) {
+  const decided = accepted + rejected;
+
+  if (decided === 0) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        لم يُتَّخذ قرار في أي طلب بعد
+        {pending > 0 ? ` — ${pending} طلب قيد المعالجة.` : "."}
+      </p>
+    );
+  }
+
+  const rate = Math.round((accepted / decided) * 100);
+
   return (
-    <div>
-      <div className="flex justify-between text-sm font-bold mb-1">
-        <span className={labelColor}>{label}</span>
-        <span>{pct}%</span>
+    <div className="space-y-4">
+      <div className="flex items-baseline gap-2 flex-wrap">
+        <span className="text-4xl font-extrabold text-success tabular-nums leading-none">
+          {rate}%
+        </span>
+        <span className="text-sm font-bold text-muted-foreground">
+          من {decided} طلبًا اتُّخذ فيها قرار
+        </span>
       </div>
-      <div className="h-3 bg-muted rounded-full nb-border overflow-hidden">
-        <div className={`h-full ${barColor} transition-all duration-500`} style={{ width: `${pct}%` }} />
+
+      {/* Decision split — green accepted, red rejected, summing to 100% */}
+      <div className="flex h-8 rounded-lg nb-border overflow-hidden">
+        <div className="bg-success" style={{ width: `${rate}%` }} />
+        <div className="bg-destructive" style={{ width: `${100 - rate}%` }} />
       </div>
+
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm font-bold">
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-sm bg-success nb-border inline-block" />
+          مقبول
+          <span className="tabular-nums text-muted-foreground">{accepted}</span>
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-sm bg-destructive nb-border inline-block" />
+          مرفوض
+          <span className="tabular-nums text-muted-foreground">{rejected}</span>
+        </span>
+      </div>
+
+      {pending > 0 && (
+        <p className="text-xs text-muted-foreground">
+          {pending} طلب لم يُقيَّم بعد، غير محتسب ضمن المعدل.
+        </p>
+      )}
     </div>
   );
 }

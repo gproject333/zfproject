@@ -8,7 +8,7 @@ interface ScrollingAnnouncementBarProps {
   audience: "student" | "landing" | "supervisor";
   /**
    * "static" (default) — normal document flow, used inside sticky/fixed
-   * layouts like DashboardLayout and SupervisorSidebarLayout.
+   * layouts like DashboardLayout and AppSidebarLayout.
    *
    * "above-navbar" — pinned to the very top of the viewport, above a
    * fixed navbar (landing page). The parent must offset its navbar and

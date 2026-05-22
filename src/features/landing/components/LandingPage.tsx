@@ -5,8 +5,8 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Sparkles, LogIn, Menu, X } from "lucide-react";
-import { navItemsForRole, supervisorNavItems } from "@/components/layout/navItems";
-import SupervisorSidebar from "@/components/layout/SupervisorSidebar";
+import { navItemsForRole, sidebarConfigForRole } from "@/components/layout/navItems";
+import AppSidebar from "@/components/layout/AppSidebar";
 import OliveLogo from "@/components/OliveLogo";
 import SettingsMenu from "@/components/SettingsMenu";
 import NotificationBell from "@/components/NotificationBell";
@@ -61,8 +61,8 @@ function useHydrated(): boolean {
  * Landing page orchestrator. Visible to both guests and signed-in
  * users so the marketing sections, hero carousel, and announcement
  * banners remain reachable after login. Guests and signed-in students
- * / admins / sponsors get the top navbar; signed-in supervisors get
- * their sidebar instead, matching the rest of the supervisor app.
+ * / sponsors get the top navbar; signed-in supervisors and admins get
+ * their app-shell sidebar instead, matching the rest of their app.
  */
 export default function LandingPage() {
   useConvexAuth();
@@ -90,32 +90,33 @@ export default function LandingPage() {
   const authReady   = mounted && clerkLoaded;
   const showGuestCtas = authReady && !isSignedIn;
   const showAuthNav   = authReady && !!isSignedIn;
-  // A signed-in supervisor gets the supervisor sidebar in place of the
-  // navbar — consistent with their dashboard shell.
-  const isSupervisor = showAuthNav && user?.role === "supervisor";
+  // A signed-in supervisor or admin gets their app-shell sidebar in
+  // place of the navbar — consistent with their dashboard.
+  const sidebarConfig = showAuthNav ? sidebarConfigForRole(user?.role) : null;
+  const usesSidebar = sidebarConfig !== null;
 
   return (
     <div
       className="min-h-screen bg-pattern flex flex-col md:flex-row overflow-x-hidden"
       dir="rtl"
     >
-      {isSupervisor && <SupervisorSidebar navItems={supervisorNavItems} />}
+      {sidebarConfig && <AppSidebar config={sidebarConfig} />}
 
       <div
         className={`flex-1 min-w-0 flex flex-col ${
-          isSupervisor ? "" : hasAnnouncement ? "pt-[108px]" : "pt-[68px]"
+          usesSidebar ? "" : hasAnnouncement ? "pt-[108px]" : "pt-[68px]"
         }`}
       >
         {/* Scrolling announcement ticker — fixed above the navbar for the
-            navbar layout, in-flow at the top of the column for supervisors. */}
+            navbar layout, in-flow at the top of the column for sidebars. */}
         <ScrollingAnnouncementBar
           audience="landing"
-          variant={isSupervisor ? undefined : "above-navbar"}
-          onVisibilityChange={isSupervisor ? undefined : setHasAnnouncement}
+          variant={usesSidebar ? undefined : "above-navbar"}
+          onVisibilityChange={usesSidebar ? undefined : setHasAnnouncement}
         />
 
-        {/* Navbar — guests + signed-in students / admins / sponsors */}
-        {!isSupervisor && (
+        {/* Navbar — guests + signed-in students / sponsors */}
+        {!usesSidebar && (
           <nav
             className={`fixed ${
               hasAnnouncement ? "top-[40px]" : "top-0"

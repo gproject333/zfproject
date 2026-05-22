@@ -13,8 +13,11 @@ import {
   TrendingUp,
   Share2,
   Briefcase,
+  ShieldCheck,
+  Crown,
 } from "lucide-react";
 import type { NavItem } from "./DashboardLayout";
+import type { AppSidebarConfig } from "./AppSidebar";
 
 /**
  * Single source of truth for role-based navigation items.
@@ -43,6 +46,7 @@ export const supervisorNavItems: NavItem[] = [
 ];
 
 export const adminNavItems: NavItem[] = [
+  { label: "الصفحة الرئيسية", href: "/", icon: Home },
   { label: "لوحة التحكم", href: "/admin", icon: LayoutDashboard },
   { label: "الطلاب", href: "/admin/students", icon: GraduationCap },
   { label: "المشرفون", href: "/admin/supervisors", icon: Users },
@@ -55,6 +59,52 @@ export const adminNavItems: NavItem[] = [
 export const sponsorNavItems: NavItem[] = [
   { label: "مشاريعي", href: "/sponsor", icon: Briefcase },
 ];
+
+/**
+ * App-shell sidebar config per role. The supervisor and admin both run
+ * the navbar-less {@link AppSidebar}; these supply each one's brand,
+ * nav items, and accent so the same component serves both — in their
+ * dashboard AND on the landing page.
+ */
+export const supervisorSidebarConfig: AppSidebarConfig = {
+  navItems: supervisorNavItems,
+  homeHref: "/supervisor",
+  brandIcon: ShieldCheck,
+  brandBadgeClassName: "bg-white",
+  brandIconClassName: "text-accent",
+  subtitle: "لوحة المشرف الأكاديمي",
+  profileHref: "/supervisor/profile",
+  activeClassName: "bg-accent text-accent-foreground nb-shadow-sm border-foreground",
+  storageKey: "supervisor-sidebar-collapsed",
+};
+
+export const adminSidebarConfig: AppSidebarConfig = {
+  navItems: adminNavItems,
+  homeHref: "/admin",
+  brandIcon: Crown,
+  brandBadgeStyle: { background: "#DC2626" },
+  brandIconClassName: "text-white",
+  subtitle: "لوحة مشرف النظام",
+  profileHref: "/admin",
+  logoutHref: "/admin/login",
+  activeClassName: "text-white nb-shadow-sm",
+  activeStyle: { background: "#DC2626", borderColor: "#991B1B" },
+  storageKey: "admin-sidebar-collapsed",
+};
+
+/** Pick the sidebar config matching a user's role (null = no sidebar). */
+export function sidebarConfigForRole(
+  role: string | null | undefined,
+): AppSidebarConfig | null {
+  switch (role) {
+    case "admin":
+      return adminSidebarConfig;
+    case "supervisor":
+      return supervisorSidebarConfig;
+    default:
+      return null;
+  }
+}
 
 /** Pick the nav items matching a user's role (defaults to student). */
 export function navItemsForRole(role: string | null | undefined): NavItem[] {
