@@ -40,15 +40,15 @@ export default function FAQ() {
     <section className="relative px-4 py-20 sm:py-28 overflow-hidden">
       <div className="relative z-[1] max-w-3xl mx-auto">
         <div className="text-center mb-14">
-          <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
+          <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-5 bg-primary/10 rounded-full px-3 py-1.5">
             <HelpCircle className="w-3.5 h-3.5" />
             أسئلة شائعة
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight">
             كل ما تحتاج{" "}
             <span className="text-primary">معرفته</span>
           </h2>
-          <p className="text-foreground/60 mt-4 text-base sm:text-lg">
+          <p className="text-foreground/65 mt-5 text-lg sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
             أجوبة سريعة لأكثر الأسئلة شيوعاً. لم تجد سؤالك؟ تواصل معنا مباشرة.
           </p>
         </div>
