@@ -315,6 +315,10 @@ export default defineSchema({
     assignedBy: v.id("users"),
     notes: v.optional(v.string()),
     isInterested: v.optional(v.boolean()),
+    // When set, a supervisor/admin has reached out to the sponsor about
+    // this interest. Drives the "تم التواصل" pill in the sponsor's
+    // interests grid; unset means the request is still pending review.
+    adminContactedAt: v.optional(v.number()),
     createdAt: v.number(),
   })
     .index("by_sponsor", ["sponsorId"])

@@ -12,9 +12,12 @@ import {
   Building2,
   TrendingUp,
   Share2,
-  Briefcase,
   ShieldCheck,
   Crown,
+  Sparkles,
+  Heart,
+  Bell,
+  UserRound,
 } from "lucide-react";
 import type { NavItem } from "./DashboardLayout";
 import type { AppSidebarConfig } from "./AppSidebar";
@@ -57,7 +60,10 @@ export const adminNavItems: NavItem[] = [
 ];
 
 export const sponsorNavItems: NavItem[] = [
-  { label: "مشاريعي", href: "/sponsor", icon: Briefcase },
+  { label: "استكشف", href: "/sponsor", icon: Sparkles },
+  { label: "اهتماماتي", href: "/sponsor/interests", icon: Heart },
+  { label: "الإشعارات", href: "/sponsor/notifications", icon: Bell },
+  { label: "بروفايلي", href: "/sponsor/profile", icon: UserRound },
 ];
 
 /**

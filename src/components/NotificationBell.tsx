@@ -12,6 +12,7 @@ export default function NotificationBell() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
+  const currentUser = useQuery(api.users.shared.currentUser);
   const unreadCount = useQuery(api.notifications.unreadCount);
   const notifications = useQuery(api.notifications.myNotifications);
   const markAsRead = useMutation(api.notifications.markAsRead);
@@ -22,8 +23,19 @@ export default function NotificationBell() {
   ) => {
     if (!n.read) await markAsRead({ id: n._id });
     setOpen(false);
-    if (n.applicationId) {
-      router.push(`/student/applications/${n.applicationId}`);
+    if (!n.applicationId) return;
+    // Route to the right per-role application surface so the click lands
+    // somewhere the user actually has permission to open.
+    switch (currentUser?.role) {
+      case "sponsor":
+        router.push("/sponsor/interests");
+        break;
+      case "supervisor":
+      case "admin":
+        router.push(`/supervisor/applications/${n.applicationId}`);
+        break;
+      default:
+        router.push(`/student/applications/${n.applicationId}`);
     }
   };
 
