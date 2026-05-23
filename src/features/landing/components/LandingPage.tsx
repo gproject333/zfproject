@@ -20,6 +20,7 @@ import CinematicHero from "./CinematicHero";
 import FeaturesSection from "./FeaturesSection";
 import HeroCarousel from "@/features/banners/components/HeroCarousel";
 import HowItWorks from "./HowItWorks";
+import ProductPreview from "./ProductPreview";
 import AboutSection from "./AboutSection";
 import Testimonials from "./Testimonials";
 import FAQ from "./FAQ";
@@ -263,6 +264,7 @@ export default function LandingPage() {
           </div>
         </RevealOnScroll>
         <RevealOnScroll><FeaturesSection /></RevealOnScroll>
+        <RevealOnScroll><ProductPreview /></RevealOnScroll>
         <RevealOnScroll><HowItWorks /></RevealOnScroll>
         <RevealOnScroll><AboutSection /></RevealOnScroll>
         <RevealOnScroll><Testimonials /></RevealOnScroll>

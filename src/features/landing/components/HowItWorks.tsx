@@ -1,14 +1,17 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactElement } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { Sprout, Leaf, Trees, Award, type LucideIcon } from "lucide-react";
+import { Sprout, Leaf, Trees, Award, type LucideIcon, Mail, FileText, CheckCircle2, Bell, Sparkles, Lightbulb, GraduationCap } from "lucide-react";
 
 /**
  * Growth-metaphor timeline. Each stage of the student journey mirrors a
  * stage in the life of an olive tree: seed → sapling → mature tree → harvest.
  * A vertical line on the start-edge (right in RTL) fills as the user scrolls
- * through the section. Steps fade-up individually as they enter view.
+ * through the section. Steps fade-up individually as they enter view; each
+ * step pairs its descriptive copy with a small product snippet (signup card,
+ * form field, status notification, dashboard tile) so the visitor sees the
+ * actual screens, not just abstract icons.
  */
 
 interface Stage {
@@ -17,6 +20,7 @@ interface Stage {
   desc: string;
   metaphor: string;
   icon: LucideIcon;
+  snippet: () => ReactElement;
 }
 
 const STAGES: Stage[] = [
@@ -26,6 +30,7 @@ const STAGES: Stage[] = [
     desc: "أنشئ حسابك بإيميل الجامعة الرسمي للوصول إلى لوحة الطالب.",
     metaphor: "ازرع البذرة",
     icon: Sprout,
+    snippet: SignupSnippet,
   },
   {
     num: "٢",
@@ -33,6 +38,7 @@ const STAGES: Stage[] = [
     desc: "اختر نوع الاحتضان (ريادي / تقني / أكاديمي) واملأ نموذج الطلب.",
     metaphor: "اسقِ الفكرة",
     icon: Leaf,
+    snippet: ApplicationSnippet,
   },
   {
     num: "٣",
@@ -40,6 +46,7 @@ const STAGES: Stage[] = [
     desc: "يراجع المشرف الأكاديمي طلبك ويرد عليك خلال أيام قليلة.",
     metaphor: "تنمو الفروع",
     icon: Trees,
+    snippet: ReviewSnippet,
   },
   {
     num: "٤",
@@ -47,6 +54,7 @@ const STAGES: Stage[] = [
     desc: "انطلق بمشروعك بدعم كامل من الفريق الأكاديمي وأدوات المنصة.",
     metaphor: "اقطف الثمرة",
     icon: Award,
+    snippet: DashboardSnippet,
   },
 ];
 
@@ -54,9 +62,6 @@ export default function HowItWorks() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
-  // Drive the line fill from this section's own scroll position.
-  // Start filling when the section's top hits 80% of viewport, finish when
-  // bottom reaches the centre — feels natural with the stage spacing.
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start 70%", "end 50%"],
@@ -65,7 +70,7 @@ export default function HowItWorks() {
 
   return (
     <section ref={sectionRef} className="relative px-4 py-20 sm:py-28 overflow-hidden">
-      <div className="max-w-3xl mx-auto relative">
+      <div className="max-w-4xl mx-auto relative">
         <div className="text-center mb-14">
           <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
             <Sprout className="w-3.5 h-3.5" />
@@ -80,14 +85,11 @@ export default function HowItWorks() {
           </p>
         </div>
 
-        {/* Timeline: absolute line on the right (start-edge in RTL) + stages */}
         <div className="relative">
-          {/* Background line (always visible, dimmed) */}
           <div
             aria-hidden
             className="absolute top-8 bottom-8 right-[23px] sm:right-[27px] w-0.5 bg-foreground/10 rounded-full"
           />
-          {/* Foreground line (gradient, height driven by scroll) */}
           <motion.div
             aria-hidden
             className="absolute top-8 right-[23px] sm:right-[27px] w-0.5 origin-top rounded-full shadow-[0_0_12px_rgba(31,92,46,0.4)]"
@@ -101,6 +103,7 @@ export default function HowItWorks() {
           <ul className="space-y-12 sm:space-y-14">
             {STAGES.map((stage, i) => {
               const Icon = stage.icon;
+              const Snippet = stage.snippet;
               return (
                 <motion.li
                   key={i}
@@ -108,29 +111,34 @@ export default function HowItWorks() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.5 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative flex items-start gap-5 pr-16 sm:pr-20"
+                  className="relative pr-16 sm:pr-20"
                 >
-                  {/* Icon on the line — sized so its centre lines up with the rail */}
                   <div className="absolute right-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white ring-2 ring-primary/25 flex items-center justify-center shadow-lg shadow-primary/15">
                     <Icon className="relative w-5 h-5 sm:w-6 sm:h-6 text-primary" strokeWidth={2} />
                   </div>
 
-                  {/* Step content */}
-                  <div className="flex-1 pt-1">
-                    <div className="flex items-center gap-3 mb-1.5 flex-wrap">
-                      <span className="text-xs font-black text-primary tracking-widest">
-                        {stage.metaphor}
-                      </span>
-                      <span className="text-[10px] font-bold text-foreground/40 bg-foreground/5 px-2 py-0.5 rounded-full">
-                        المرحلة {stage.num}
-                      </span>
+                  <div className="grid sm:grid-cols-[1fr_auto] gap-5 sm:gap-8 items-start">
+                    <div className="pt-1">
+                      <div className="flex items-center gap-3 mb-1.5 flex-wrap">
+                        <span className="text-xs font-black text-primary tracking-widest">
+                          {stage.metaphor}
+                        </span>
+                        <span className="text-[10px] font-bold text-foreground/40 bg-foreground/5 px-2 py-0.5 rounded-full">
+                          المرحلة {stage.num}
+                        </span>
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black mb-2 leading-tight">
+                        {stage.title}
+                      </h3>
+                      <p className="text-foreground/65 dark:text-foreground/75 text-sm sm:text-base font-medium leading-relaxed">
+                        {stage.desc}
+                      </p>
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-black mb-2 leading-tight">
-                      {stage.title}
-                    </h3>
-                    <p className="text-foreground/65 dark:text-foreground/75 text-sm sm:text-base font-medium leading-relaxed">
-                      {stage.desc}
-                    </p>
+
+                    {/* Product snippet — sits beside the text on desktop, below on mobile. */}
+                    <div className="w-full sm:w-72" aria-hidden>
+                      <Snippet />
+                    </div>
                   </div>
                 </motion.li>
               );
@@ -139,5 +147,146 @@ export default function HowItWorks() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ─────────────────────── Stage snippets ─────────────────────── */
+
+function SnippetCard({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-xl bg-card ds-border p-4 shadow-[0_4px_16px_-8px_rgba(31,92,46,0.15)]">
+      {children}
+    </div>
+  );
+}
+
+function SignupSnippet() {
+  return (
+    <SnippetCard>
+      <div className="text-[10px] font-extrabold text-foreground/55 tracking-wide mb-3">
+        إنشاء حساب
+      </div>
+      <div className="space-y-2.5">
+        <MiniField icon={Mail} value="ahmed@std-zuj.edu.jo" mono />
+        <MiniField icon={GraduationCap} value="••••••••" />
+        <div className="inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 rounded-md bg-primary text-primary-foreground font-bold text-xs">
+          <Sparkles className="w-3.5 h-3.5" />
+          إنشاء الحساب
+        </div>
+      </div>
+    </SnippetCard>
+  );
+}
+
+function ApplicationSnippet() {
+  return (
+    <SnippetCard>
+      <div className="text-[10px] font-extrabold text-foreground/55 tracking-wide mb-3">
+        تقديم طلب جديد
+      </div>
+      <div className="grid grid-cols-3 gap-1.5 mb-3">
+        <TypeChip icon={Lightbulb} label="ريادي" active />
+        <TypeChip icon={FileText} label="تقني" />
+        <TypeChip icon={GraduationCap} label="جامعي" />
+      </div>
+      <div className="space-y-2">
+        <div className="text-[10px] font-bold text-foreground/60">اسم المشروع</div>
+        <div className="text-[11px] font-medium px-3 py-2 ds-border rounded-md bg-card text-foreground truncate">
+          بستان الزيتون الذكي
+        </div>
+      </div>
+    </SnippetCard>
+  );
+}
+
+function ReviewSnippet() {
+  return (
+    <SnippetCard>
+      <div className="flex items-center gap-2 mb-3">
+        <Bell className="w-3.5 h-3.5 text-primary" />
+        <span className="text-[10px] font-extrabold text-foreground/65 tracking-wide">
+          إشعار جديد
+        </span>
+      </div>
+      <p className="text-xs font-bold text-foreground mb-2 leading-snug">
+        تم قبول طلبك &quot;بستان الزيتون الذكي&quot;
+      </p>
+      <p className="text-[11px] text-muted-foreground font-medium mb-3 leading-relaxed line-clamp-2">
+        راجع د. أحمد محمد الطلب ووافق عليه. تابع التحديثات في لوحتك.
+      </p>
+      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full border bg-status-accepted/15 text-status-accepted border-status-accepted/30">
+        <CheckCircle2 className="w-3 h-3" />
+        مقبول
+      </span>
+    </SnippetCard>
+  );
+}
+
+function DashboardSnippet() {
+  return (
+    <SnippetCard>
+      <div className="text-[10px] font-extrabold text-foreground/55 tracking-wide mb-3">
+        لوحة الطالب
+      </div>
+      <div className="bg-muted/40 rounded-lg p-3 ds-border mb-3">
+        <p className="text-[10px] font-bold text-foreground/60 mb-1">مشروعك الحالي</p>
+        <p className="text-xs font-extrabold text-foreground mb-2">بستان الزيتون الذكي</p>
+        <div className="flex h-1 rounded-full overflow-hidden bg-muted">
+          <div className="bg-status-accepted" style={{ width: "100%" }} />
+        </div>
+        <p className="text-[10px] font-bold text-success mt-1.5">قُبل بنجاح ✓</p>
+      </div>
+      <div className="flex items-center justify-between text-[10px] font-bold">
+        <span className="text-muted-foreground">الخطوة التالية</span>
+        <span className="text-primary">ابدأ التنفيذ ←</span>
+      </div>
+    </SnippetCard>
+  );
+}
+
+/* ─────────────────────── Shared primitives ─────────────────────── */
+
+function MiniField({
+  icon: Icon,
+  value,
+  mono = false,
+}: {
+  icon: LucideIcon;
+  value: string;
+  mono?: boolean;
+}) {
+  return (
+    <div className="relative">
+      <Icon className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+      <div
+        className={`text-[11px] font-medium px-3 pr-8 py-2 ds-border rounded-md bg-card text-foreground truncate ${
+          mono ? "font-mono" : ""
+        }`}
+        dir={mono ? "ltr" : "rtl"}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function TypeChip({
+  icon: Icon,
+  label,
+  active = false,
+}: {
+  icon: LucideIcon;
+  label: string;
+  active?: boolean;
+}) {
+  return (
+    <div
+      className={`flex flex-col items-center gap-0.5 py-1.5 px-1 rounded-md text-[9px] font-bold transition-colors ${
+        active ? "bg-primary text-primary-foreground" : "bg-muted/50 text-foreground/70 ds-border"
+      }`}
+    >
+      <Icon className="w-3.5 h-3.5" />
+      {label}
+    </div>
   );
 }
