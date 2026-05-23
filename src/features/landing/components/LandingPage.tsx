@@ -28,7 +28,6 @@ import FinalCTA from "./FinalCTA";
 import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnnouncementBar";
 import RevealOnScroll from "./RevealOnScroll";
 import AmbientOlives from "./AmbientOlives";
-import MarqueeStrip from "./MarqueeStrip";
 import SectionDivider from "./SectionDivider";
 
 /** Stable no-op subscriber — the hydration flag never changes after mount. */
@@ -253,7 +252,6 @@ export default function LandingPage() {
           isSignedIn={!!isSignedIn}
         />
 
-        <MarqueeStrip />
         <SectionDivider />
 
         {/* Hero carousel — supervisor-managed banners (images/video only) */}
