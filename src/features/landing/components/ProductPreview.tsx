@@ -10,16 +10,20 @@ import {
   Sparkles,
   TrendingUp,
   GraduationCap,
-  Building2,
-  ShieldCheck,
-  Users,
+  BookOpen,
+  PlayCircle,
+  Compass,
+  type LucideIcon,
 } from "lucide-react";
 
 /**
- * Landing's "show, don't tell" section. Three stylised previews — one per
- * persona — of the actual product screens (application form, supervisor
- * review queue, admin stats). The previews are React markup, not real
- * screenshots, so they stay in sync with the design tokens automatically.
+ * Landing's "show, don't tell" section. Three stylised previews of the
+ * actual student-facing screens — submit, track, learn. The landing is
+ * public and student-led, so the previews focus on what a prospective
+ * student will actually use (not on supervisor/admin internals).
+ *
+ * The previews are React markup, not real screenshots, so they stay in
+ * sync with the design tokens automatically.
  *
  * DESIGN.md context:
  *  - Stays light (Olive Reading Room), no dark gradient backdrop.
@@ -31,10 +35,14 @@ import {
 export default function ProductPreview() {
   const reduce = useReducedMotion();
 
-  const items = [
-    { component: <StudentFormPreview />, persona: "للطالب", icon: GraduationCap },
-    { component: <SupervisorReviewPreview />, persona: "للمشرف الأكاديمي", icon: ShieldCheck },
-    { component: <AdminStatsPreview />, persona: "لمشرف النظام", icon: Sparkles },
+  const items: Array<{
+    component: () => React.ReactElement;
+    label: string;
+    icon: LucideIcon;
+  }> = [
+    { component: SubmitApplicationPreview, label: "قدّم فكرتك", icon: Send },
+    { component: TrackApplicationsPreview, label: "تابع طلباتك", icon: TrendingUp },
+    { component: LearnFromSupervisorsPreview, label: "تعلّم من الخبراء", icon: BookOpen },
   ];
 
   return (
@@ -43,43 +51,46 @@ export default function ProductPreview() {
         <header className="text-center mb-14">
           <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
             <Sparkles className="w-3.5 h-3.5" />
-            نظرة على المنصة
+            ماذا ستفعل على المنصة
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
-            هكذا تبدو رحلتك على{" "}
-            <span className="text-primary">حاضنة الزيتونة</span>
+            ثلاث خطوات من فكرة{" "}
+            <span className="text-primary">إلى مشروع</span>
           </h2>
           <p className="text-foreground/60 mt-4 text-base sm:text-lg max-w-2xl mx-auto">
-            ثلاث شاشات حقيقية من المنصة، واحدة لكل دور — لتعرف ما الذي ستراه قبل أن تسجّل.
+            هذه الشاشات الثلاث الأساسية اللي رح تستعملها كطالب — قدّم، تابع، تعلّم.
           </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {items.map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: reduce ? 0 : 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
-              className="flex flex-col gap-3"
-            >
-              <div className="text-xs font-extrabold text-foreground/55 flex items-center gap-1.5 tracking-wide">
-                <item.icon className="w-3.5 h-3.5" />
-                {item.persona}
-              </div>
-              {item.component}
-            </motion.div>
-          ))}
+          {items.map((item, i) => {
+            const Preview = item.component;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: reduce ? 0 : 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
+                className="flex flex-col gap-3"
+              >
+                <div className="text-xs font-extrabold text-foreground/55 flex items-center gap-1.5 tracking-wide">
+                  <item.icon className="w-3.5 h-3.5" />
+                  {item.label}
+                </div>
+                <Preview />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
 
-/* ───────────────────────────── Preview 1: Student form ─────────────────── */
+/* ──────────────────── Preview 1: Submit your application ───────────────── */
 
-function StudentFormPreview() {
+function SubmitApplicationPreview() {
   return (
     <PreviewFrame>
       <PreviewHeader title="تقديم طلب احتضان" subtitle="املأ التفاصيل وأرسلها للمراجعة" />
@@ -110,48 +121,48 @@ function StudentFormPreview() {
   );
 }
 
-/* ─────────────────────── Preview 2: Supervisor review ──────────────────── */
+/* ──────────────────── Preview 2: Track your applications ───────────────── */
 
-function SupervisorReviewPreview() {
+function TrackApplicationsPreview() {
   return (
     <PreviewFrame>
-      <PreviewHeader title="طلبات بانتظار مراجعتك" subtitle="3 طلبات جديدة هذا الأسبوع" />
+      <PreviewHeader title="طلباتي" subtitle="تابع حالة كل مشاريعك في مكان واحد" />
       <ul className="divide-y divide-border/40">
-        <ApplicationRow
-          name="منصة دروس تفاعلية"
-          student="أحمد محمد"
-          status="under_review"
-          time="قبل ساعتين"
-        />
-        <ApplicationRow
-          name="تطبيق إدارة الفعاليات"
-          student="ليلى ياسين"
-          status="needs_modification"
-          time="أمس"
-        />
-        <ApplicationRow
-          name="نظام تخطيط الرحلات"
-          student="عمر الخطيب"
+        <MyApplicationRow
+          name="بستان الزيتون الذكي"
+          type="ريادي"
           status="accepted"
-          time="قبل 3 أيام"
+          time="قُبل قبل يومين"
+        />
+        <MyApplicationRow
+          name="منصة دروس تفاعلية"
+          type="تخرّج IT"
+          status="under_review"
+          time="بانتظار المراجعة"
+        />
+        <MyApplicationRow
+          name="نظام إدارة الفعاليات"
+          type="جامعي"
+          status="needs_modification"
+          time="يحتاج تعديل"
         />
       </ul>
       <div className="p-3 border-t border-border/40 bg-muted/40 flex items-center justify-between text-[11px] font-bold">
-        <span className="text-muted-foreground">عرض 3 من 12</span>
-        <span className="text-primary">عرض الكل ←</span>
+        <span className="text-muted-foreground">3 طلبات</span>
+        <span className="text-primary">طلب جديد +</span>
       </div>
     </PreviewFrame>
   );
 }
 
-function ApplicationRow({
+function MyApplicationRow({
   name,
-  student,
+  type,
   status,
   time,
 }: {
   name: string;
-  student: string;
+  type: string;
   status: "under_review" | "accepted" | "needs_modification";
   time: string;
 }) {
@@ -176,16 +187,11 @@ function ApplicationRow({
 
   return (
     <li className="flex items-center justify-between gap-3 p-3 hover:bg-muted/30 transition-colors">
-      <div className="flex items-center gap-2.5 min-w-0">
-        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-          <span className="text-[11px] font-extrabold text-primary">{student.charAt(0)}</span>
-        </div>
-        <div className="min-w-0">
-          <p className="text-xs font-bold truncate text-foreground">{name}</p>
-          <p className="text-[10px] text-muted-foreground truncate">
-            {student} · {time}
-          </p>
-        </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-xs font-bold truncate text-foreground">{name}</p>
+        <p className="text-[10px] text-muted-foreground truncate font-medium mt-0.5">
+          {type} · {time}
+        </p>
       </div>
       <span
         className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full border ${chip.cls} shrink-0`}
@@ -197,58 +203,70 @@ function ApplicationRow({
   );
 }
 
-/* ──────────────────────── Preview 3: Admin stats ───────────────────────── */
+/* ───────────────── Preview 3: Learn from supervisors ──────────────────── */
 
-function AdminStatsPreview() {
+function LearnFromSupervisorsPreview() {
   return (
     <PreviewFrame>
-      <PreviewHeader title="لوحة الإدارة" subtitle="نظرة شاملة على المنصة" />
-      <div className="p-5 space-y-4">
-        <div className="bg-muted/40 rounded-lg p-4 ds-border">
-          <p className="text-[11px] font-bold text-foreground/60 mb-1">معدل القبول</p>
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-success tabular-nums">85%</span>
-            <span className="text-[10px] font-bold text-muted-foreground">من 103 طلب</span>
-          </div>
-          <div className="flex h-1.5 rounded-full overflow-hidden mt-3">
-            <div className="bg-status-accepted" style={{ width: "85%" }} />
-            <div className="bg-status-rejected" style={{ width: "15%" }} />
-          </div>
-        </div>
-
-        <ul className="space-y-2">
-          <StatRow icon={GraduationCap} label="الطلاب المسجّلون" value="350" tone="text-info" />
-          <StatRow icon={Users} label="المشرفون" value="24" tone="text-accent" />
-          <StatRow icon={Building2} label="الرعاة" value="12" tone="text-secondary" />
-        </ul>
-
-        <div className="rounded-lg bg-primary/5 ds-border p-3 flex items-center gap-2 text-[11px] font-bold text-primary">
-          <Sparkles className="w-3.5 h-3.5" />
-          4 طلبات ترقية تنتظر مراجعتك
-        </div>
+      <PreviewHeader title="مقالات ودليل ريادي" subtitle="محتوى يكتبه المشرفون لطلابهم" />
+      <ul className="divide-y divide-border/40">
+        <ArticleRow
+          icon={BookOpen}
+          tone="text-info"
+          tag="مقال"
+          title="كيف تكتب وصف مشروع يقنع المشرف؟"
+          author="د. أحمد محمد"
+        />
+        <ArticleRow
+          icon={PlayCircle}
+          tone="text-status-modification"
+          tag="فيديو"
+          title="نموذج العمل التجاري للمشاريع الطلابية"
+          author="د. سارة الحجاج"
+        />
+        <ArticleRow
+          icon={Compass}
+          tone="text-secondary"
+          tag="دليل"
+          title="خطوات تأسيس شركة ناشئة في الأردن"
+          author="مكتب الريادة"
+        />
+      </ul>
+      <div className="p-3 border-t border-border/40 bg-muted/40 flex items-center justify-between text-[11px] font-bold">
+        <span className="text-muted-foreground">+ 18 مقالاً</span>
+        <span className="text-primary">عرض الكل ←</span>
       </div>
     </PreviewFrame>
   );
 }
 
-function StatRow({
+function ArticleRow({
   icon: Icon,
-  label,
-  value,
   tone,
+  tag,
+  title,
+  author,
 }: {
-  icon: typeof Users;
-  label: string;
-  value: string;
+  icon: LucideIcon;
   tone: string;
+  tag: string;
+  title: string;
+  author: string;
 }) {
   return (
-    <li className="flex items-center justify-between">
-      <span className="flex items-center gap-2 text-xs font-bold text-foreground">
-        <Icon className={`w-3.5 h-3.5 ${tone}`} />
-        {label}
-      </span>
-      <span className="text-lg font-extrabold tabular-nums">{value}</span>
+    <li className="flex items-start gap-3 p-3 hover:bg-muted/30 transition-colors">
+      <div className={`w-9 h-9 rounded-lg bg-muted/50 flex items-center justify-center shrink-0 ${tone}`}>
+        <Icon className="w-4 h-4" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-1.5 mb-1">
+          <span className="text-[9px] font-extrabold text-foreground/55 tracking-wide uppercase">
+            {tag}
+          </span>
+        </div>
+        <p className="text-xs font-bold text-foreground leading-snug line-clamp-2">{title}</p>
+        <p className="text-[10px] text-muted-foreground font-medium mt-1">{author}</p>
+      </div>
     </li>
   );
 }
@@ -280,7 +298,7 @@ function TypeChip({
   label,
   active = false,
 }: {
-  icon: typeof Lightbulb;
+  icon: LucideIcon;
   label: string;
   active?: boolean;
 }) {
