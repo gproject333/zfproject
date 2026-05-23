@@ -2,35 +2,36 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Mail, LogIn, AlertCircle, Eye, EyeOff, ArrowRight, Sparkles } from "lucide-react";
+import { Mail, LogIn, AlertCircle, Eye, EyeOff, ArrowRight, Sparkles, GraduationCap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useAuthForm } from "@/features/auth/hooks/useAuthForm";
-import type { LoginVariant, LoginVariantConfig } from "@/features/auth/types/login-variants";
-import { EMAIL_DOMAIN_SUGGESTIONS, LOGIN_VARIANTS } from "@/features/auth/utils/login-configs";
 import { buttonVariants, InputOTP, Spinner } from "@/components/ui";
 
-interface LoginFormProps {
-  variant: LoginVariant;
-}
+/** Domain hints the autocomplete dropdown offers once the user types `@`. */
+const EMAIL_DOMAIN_SUGGESTIONS = ["std-zuj.edu.jo", "zuj.edu.jo"];
 
 /**
- * Single login surface. All four variants (student / supervisor / admin /
- * sponsor) render through this component with role distinction limited to
- * brand identity + submit-button color. The shell, layout, inputs, and
- * decoration stay identical — DESIGN.md "Trust over flash".
+ * Single login surface for the whole platform. Role distinction is handled
+ * downstream by `/login-redirect`, which reads `user.role` from the database
+ * and sends the user to their dashboard. The login page itself shows the
+ * same calm Olive Reading Room UI to everyone — DESIGN.md "Trust over flash"
+ * and "calm, academic, considered" personality.
+ *
+ * Self-registration is a student-only flow; the supervisor / admin / sponsor
+ * accounts are admin-created, but the "إنشاء حساب" link stays visible here
+ * because the registration form itself enforces the student-email rule.
  */
-export default function LoginForm({ variant }: LoginFormProps) {
-  const config = LOGIN_VARIANTS[variant];
+export default function LoginForm() {
   const router = useRouter();
   const auth = useAuthForm();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (auth.needsSecondFactor) {
-      await auth.verifySecondFactor(async () => router.push(config.redirectTo));
+      await auth.verifySecondFactor(async () => router.push("/login-redirect"));
     } else {
-      await auth.signInWithPassword(async () => router.push(config.redirectTo));
+      await auth.signInWithPassword(async () => router.push("/login-redirect"));
     }
   };
 
@@ -45,7 +46,15 @@ export default function LoginForm({ variant }: LoginFormProps) {
       </Link>
 
       <div className="w-full max-w-md animate-scale-in">
-        <BrandHeader brand={config.brand} />
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 mx-auto ds-shadow-sm bg-primary">
+            <GraduationCap className="w-9 h-9 text-primary-foreground" />
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold mb-2 text-foreground">حاضنة الزيتونة</h1>
+          <p className="text-sm font-medium text-muted-foreground">
+            منصة احتضان المشاريع الريادية في الجامعة
+          </p>
+        </div>
 
         <div className="ds-card p-6 sm:p-8">
           <div id="clerk-captcha" />
@@ -62,36 +71,34 @@ export default function LoginForm({ variant }: LoginFormProps) {
             ) : (
               <>
                 <FloatingEmailInput
-                  id={`${variant}-email`}
+                  id="login-email"
                   value={auth.email}
                   onChange={auth.setEmail}
-                  placeholder={config.emailPlaceholder}
+                  placeholder="البريد الإلكتروني"
                 />
                 <FloatingPasswordInput
-                  id={`${variant}-password`}
+                  id="login-password"
                   value={auth.password}
                   onChange={auth.setPassword}
-                  placeholder={config.passwordPlaceholder}
+                  placeholder="كلمة المرور"
                   showPassword={auth.showPassword}
                   onToggleVisibility={auth.togglePasswordVisibility}
                 />
-                {config.showStudentLinks && (
-                  <div className="flex justify-start">
-                    <Link
-                      href="/forgot-password"
-                      className="text-xs font-bold text-primary hover:underline underline-offset-4"
-                    >
-                      نسيت كلمة المرور؟
-                    </Link>
-                  </div>
-                )}
+                <div className="flex justify-start">
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs font-bold text-primary hover:underline underline-offset-4"
+                  >
+                    نسيت كلمة المرور؟
+                  </Link>
+                </div>
               </>
             )}
 
             <button
               type="submit"
               disabled={auth.loading}
-              className={config.submitButtonClass}
+              className={buttonVariants({ variant: "primary", fullWidth: true })}
             >
               {auth.loading ? (
                 <>
@@ -101,47 +108,23 @@ export default function LoginForm({ variant }: LoginFormProps) {
               ) : (
                 <>
                   <LogIn className="w-5 h-5" />
-                  {config.submitText}
+                  تسجيل الدخول
                 </>
               )}
             </button>
           </form>
 
-          {config.showStudentLinks && (
-            <>
-              <div className="flex items-center gap-3 my-6">
-                <div className="flex-1 h-px bg-foreground/10" />
-                <span className="text-xs font-bold text-muted-foreground">أو</span>
-                <div className="flex-1 h-px bg-foreground/10" />
-              </div>
-              <Link href="/register" className={buttonVariants({ variant: "outline", fullWidth: true })}>
-                <Sparkles className="w-5 h-5" />
-                إنشاء حساب جديد
-              </Link>
-            </>
-          )}
+          <div className="flex items-center gap-3 my-6">
+            <div className="flex-1 h-px bg-foreground/10" />
+            <span className="text-xs font-bold text-muted-foreground">أو</span>
+            <div className="flex-1 h-px bg-foreground/10" />
+          </div>
+          <Link href="/register" className={buttonVariants({ variant: "outline", fullWidth: true })}>
+            <Sparkles className="w-5 h-5" />
+            إنشاء حساب جديد
+          </Link>
         </div>
-
-        {config.footerNote && (
-          <p className="text-center mt-5 text-xs font-medium text-muted-foreground">
-            {config.footerNote}
-          </p>
-        )}
       </div>
-    </div>
-  );
-}
-
-function BrandHeader({ brand }: { brand: LoginVariantConfig["brand"] }) {
-  return (
-    <div className="text-center mb-8">
-      <div
-        className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 mx-auto ds-shadow-sm ${brand.iconBgClass}`}
-      >
-        {brand.icon}
-      </div>
-      <h1 className="text-2xl sm:text-3xl font-extrabold mb-2 text-foreground">{brand.title}</h1>
-      <p className="text-sm font-medium text-muted-foreground">{brand.subtitle}</p>
     </div>
   );
 }

@@ -86,7 +86,7 @@ export const adminSidebarConfig: AppSidebarConfig = {
   brandIconClassName: "text-white",
   subtitle: "لوحة مشرف النظام",
   profileHref: "/admin",
-  logoutHref: "/admin/login",
+  logoutHref: "/login",
   // Admin uses the mid-olive accent (per DESIGN.md), one step brighter
   // than supervisor's primary so the two sidebars are distinguishable
   // without breaking the olive identity.
