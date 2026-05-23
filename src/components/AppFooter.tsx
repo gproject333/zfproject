@@ -8,16 +8,16 @@ import { getPlatformMeta } from "@/lib/configs/socialPlatforms";
 import OliveLogo from "./OliveLogo";
 
 /**
- * Global footer. Four columns on desktop:
- *   1. Brand — large logo + tagline + university line.
- *   2. للطلاب — student-facing routes.
+ * Global footer. Soft olive-mist background, four-column layout:
+ *   1. Brand — large logo + tagline.
+ *   2. للطلاب — student routes.
  *   3. المنصة — about / FAQ / auth.
- *   4. تواصل — social icons + contact email.
- * Collapses to a single stacked column on mobile.
+ *   4. تواصل — contact + social.
  *
- * Soft warm-dark background (deep olive tint) instead of pure black so
- * the page→footer transition stays inside the Olive Reading Room family
- * instead of feeling like a SaaS dark switch.
+ * The footer stays inside the Olive Reading Room family rather than
+ * switching to a dark "SaaS footer" mode. Background is a subtle
+ * primary-tinted gradient over the muted token; decorative orbs in
+ * the corners pick up the same blurred olive light used by the hero.
  */
 const STUDENT_LINKS: { label: string; href: string }[] = [
   { label: "تقديم طلب جديد", href: "/student/new" },
@@ -39,13 +39,25 @@ export default function AppFooter() {
 
   return (
     <footer
-      className="mt-auto text-background"
+      className="relative mt-auto overflow-hidden border-t border-foreground/8"
       style={{
         background:
-          "linear-gradient(180deg, color-mix(in srgb, var(--foreground) 92%, var(--primary) 8%) 0%, var(--foreground) 100%)",
+          "linear-gradient(180deg, color-mix(in srgb, var(--muted) 75%, var(--background)) 0%, var(--muted) 100%)",
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-8">
+      {/* Soft tinted orbs in the corners — same vocabulary the hero uses. */}
+      <div
+        aria-hidden
+        className="absolute -top-16 -right-16 w-[320px] h-[320px] rounded-full opacity-20 pointer-events-none blur-3xl"
+        style={{ background: "var(--color-primary)" }}
+      />
+      <div
+        aria-hidden
+        className="absolute -bottom-24 -left-20 w-[360px] h-[360px] rounded-full opacity-15 pointer-events-none blur-3xl"
+        style={{ background: "var(--color-secondary)" }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] mb-12">
           {/* Brand column */}
           <div className="lg:pl-8">
@@ -54,17 +66,17 @@ export default function AppFooter() {
               className="inline-flex items-center gap-3 group"
               aria-label="حاضنة الزيتونة — الصفحة الرئيسية"
             >
-              <div className="w-16 h-16 rounded-2xl bg-background flex items-center justify-center shrink-0 transition-transform group-hover:-rotate-3 shadow-[0_8px_24px_-6px_rgba(0,0,0,0.4)]">
+              <div className="w-16 h-16 rounded-2xl bg-card flex items-center justify-center shrink-0 transition-transform group-hover:-rotate-3 shadow-[0_8px_24px_-6px_rgba(31,92,46,0.18)] ds-border">
                 <OliveLogo className="w-12 h-12" />
               </div>
               <div>
-                <p className="font-extrabold text-xl leading-tight">حاضنة الزيتونة</p>
-                <p className="text-xs text-background/60 font-bold tracking-wide mt-1">
+                <p className="font-extrabold text-xl leading-tight text-foreground">حاضنة الزيتونة</p>
+                <p className="text-xs text-muted-foreground font-bold tracking-wide mt-1">
                   ZUJ INCUBATOR
                 </p>
               </div>
             </Link>
-            <p className="text-sm text-background/70 font-medium leading-relaxed mt-5 max-w-sm">
+            <p className="text-sm text-foreground/70 font-medium leading-relaxed mt-5 max-w-sm">
               منصّة احتضان المشاريع الريادية والتقنية والأكاديمية لطلاب
               جامعة الزيتونة الأردنية — من فكرة إلى مشروع مدعوم بالكامل.
             </p>
@@ -72,7 +84,7 @@ export default function AppFooter() {
 
           {/* Student links column */}
           <nav aria-label="روابط الطلاب">
-            <p className="text-[11px] font-extrabold text-background/50 uppercase tracking-[0.15em] mb-4">
+            <p className="text-[11px] font-extrabold text-foreground/55 uppercase tracking-[0.15em] mb-4">
               للطلاب
             </p>
             <ul className="space-y-3 text-sm font-medium">
@@ -80,7 +92,7 @@ export default function AppFooter() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-background/80 hover:text-background hover:translate-x-1 inline-block transition-all duration-150"
+                    className="text-foreground/75 hover:text-primary hover:translate-x-1 inline-block transition-all duration-150"
                   >
                     {l.label}
                   </Link>
@@ -91,7 +103,7 @@ export default function AppFooter() {
 
           {/* Platform links column */}
           <nav aria-label="روابط المنصة">
-            <p className="text-[11px] font-extrabold text-background/50 uppercase tracking-[0.15em] mb-4">
+            <p className="text-[11px] font-extrabold text-foreground/55 uppercase tracking-[0.15em] mb-4">
               المنصة
             </p>
             <ul className="space-y-3 text-sm font-medium">
@@ -99,7 +111,7 @@ export default function AppFooter() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-background/80 hover:text-background hover:translate-x-1 inline-block transition-all duration-150"
+                    className="text-foreground/75 hover:text-primary hover:translate-x-1 inline-block transition-all duration-150"
                   >
                     {l.label}
                   </Link>
@@ -110,12 +122,12 @@ export default function AppFooter() {
 
           {/* Contact column */}
           <div>
-            <p className="text-[11px] font-extrabold text-background/50 uppercase tracking-[0.15em] mb-4">
+            <p className="text-[11px] font-extrabold text-foreground/55 uppercase tracking-[0.15em] mb-4">
               تواصل
             </p>
             <a
               href="mailto:incubator@zuj.edu.jo"
-              className="inline-flex items-center gap-2 text-sm font-medium text-background/80 hover:text-background mb-5"
+              className="inline-flex items-center gap-2 text-sm font-medium text-foreground/75 hover:text-primary mb-5"
             >
               <Mail className="w-4 h-4" />
               incubator@zuj.edu.jo
@@ -138,7 +150,7 @@ export default function AppFooter() {
                         rel="noopener noreferrer"
                         aria-label={accessibleLabel}
                         title={accessibleLabel}
-                        className="w-10 h-10 flex items-center justify-center rounded-lg border border-background/20 bg-background/5 text-background/85 hover:text-primary hover:border-background hover:bg-background transition-colors"
+                        className="w-10 h-10 flex items-center justify-center rounded-lg bg-card ds-border text-foreground/75 hover:text-primary-foreground hover:bg-primary hover:border-primary transition-colors"
                       >
                         <Icon className="w-4 h-4" aria-hidden="true" />
                       </a>
@@ -150,17 +162,16 @@ export default function AppFooter() {
           </div>
         </div>
 
-        {/* Bottom strip — gradient divider + copyright row */}
         <div
           className="h-px w-full mb-6"
           style={{
             background:
-              "linear-gradient(to left, transparent, color-mix(in srgb, var(--background) 25%, transparent), transparent)",
+              "linear-gradient(to left, transparent, color-mix(in srgb, var(--foreground) 12%, transparent), transparent)",
           }}
           aria-hidden
         />
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-background/60 font-medium">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-foreground/60 font-medium">
           <p>© {year} حاضنة الزيتونة — جميع الحقوق محفوظة</p>
           <p className="inline-flex items-center gap-1.5">
             صُنع بـ
