@@ -76,23 +76,3 @@
   background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
 }
 
-/* --- Lenis smooth-scroll setup.
-   Lenis is used only by the landing's scroll-driven storytelling
-   sections, so its CSS hooks live with the rest of the landing
-   styles instead of polluting the global stylesheet. */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}

@@ -245,8 +245,8 @@ export default function LandingPage() {
 
         <AmbientOlives />
 
-        {/* Cinematic full-bleed photo hero. Not wrapped in RevealOnScroll;
-            it runs its own GSAP + Lenis choreography. */}
+        {/* Hero with copy on the right + product mockup on the left. Not
+            wrapped in RevealOnScroll — it runs its own framer-motion entrance. */}
         <CinematicHero
           dashboardHref={dashboardHref}
           userName={user?.name}
