@@ -44,11 +44,11 @@ export default function FAQ() {
             <HelpCircle className="w-3.5 h-3.5" />
             أسئلة شائعة
           </span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight">
             كل ما تحتاج{" "}
             <span className="text-primary">معرفته</span>
           </h2>
-          <p className="text-foreground/65 mt-5 text-lg sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="text-foreground/65 mt-6 text-xl sm:text-2xl font-medium max-w-2xl mx-auto leading-relaxed">
             أجوبة سريعة لأكثر الأسئلة شيوعاً. لم تجد سؤالك؟ تواصل معنا مباشرة.
           </p>
         </div>
