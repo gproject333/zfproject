@@ -24,7 +24,6 @@ import FeatureShowcases from "./FeatureShowcases";
 import AboutSection from "./AboutSection";
 import Testimonials from "./Testimonials";
 import FAQ from "./FAQ";
-import Partners from "./Partners";
 import FinalCTA from "./FinalCTA";
 import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnnouncementBar";
 import RevealOnScroll from "./RevealOnScroll";
@@ -268,7 +267,6 @@ export default function LandingPage() {
         <RevealOnScroll><HowItWorks /></RevealOnScroll>
         <RevealOnScroll><AboutSection /></RevealOnScroll>
         <RevealOnScroll><Testimonials /></RevealOnScroll>
-        <RevealOnScroll><Partners /></RevealOnScroll>
         <RevealOnScroll><FAQ /></RevealOnScroll>
         <RevealOnScroll><FinalCTA /></RevealOnScroll>
         <AppFooter />
