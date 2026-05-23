@@ -91,7 +91,7 @@ export default function HeroCarousel() {
   return (
     <Shell>
       <div
-        className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 group"
+        className="relative aspect-video rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden border border-white/10 group"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         role="region"
@@ -208,11 +208,11 @@ export default function HeroCarousel() {
  */
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-5xl mx-auto px-4 md:px-6">
-      <div className="relative rounded-3xl bg-card dark:bg-muted p-3 md:p-4 overflow-hidden ds-border">
+    <div className="max-w-5xl mx-auto px-3 sm:px-5 lg:px-8">
+      <div className="relative rounded-xl sm:rounded-2xl md:rounded-3xl bg-card dark:bg-muted p-2 sm:p-3 md:p-5 overflow-hidden ds-border">
         {/* Corner accents */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/15 to-transparent rounded-bl-full pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-secondary/10 to-transparent rounded-tr-full pointer-events-none" />
+        <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-bl from-primary/15 to-transparent rounded-bl-full pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-tr from-secondary/10 to-transparent rounded-tr-full pointer-events-none" />
 
         {/* Content */}
         <div className="relative z-[1]">{children}</div>

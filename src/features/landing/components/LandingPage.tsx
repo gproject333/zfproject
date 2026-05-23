@@ -28,7 +28,6 @@ import FinalCTA from "./FinalCTA";
 import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnnouncementBar";
 import RevealOnScroll from "./RevealOnScroll";
 import AmbientOlives from "./AmbientOlives";
-import SectionDivider from "./SectionDivider";
 
 /** Stable no-op subscriber — the hydration flag never changes after mount. */
 const subscribeNoop = () => () => {};
@@ -104,12 +103,12 @@ export default function LandingPage() {
           <nav
             className={`fixed ${
               hasAnnouncement ? "top-[40px]" : "top-0"
-            } right-0 left-0 w-full z-50 transition-all duration-300 ${
+            } right-0 left-0 w-full z-50 transition-all duration-300 text-foreground ${
               showAuthNav
-                ? "bg-card ds-border-thick border-t-0 border-x-0 text-foreground"
+                ? "bg-card ds-border-thick border-t-0 border-x-0"
                 : isScrolled
-                  ? "glass border-b border-white/20 dark:border-white/5 text-foreground"
-                  : "bg-transparent border-transparent text-white"
+                  ? "glass border-b border-border/40"
+                  : "bg-background/60 backdrop-blur-sm border-b border-transparent"
             }`}
           >
             <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
@@ -133,11 +132,7 @@ export default function LandingPage() {
                   </div>
                   <div className="hidden sm:block">
                     <p className="font-extrabold text-base leading-tight">حاضنة الزيتونة</p>
-                    <p
-                      className={`text-[10px] font-bold ${
-                        showAuthNav || isScrolled ? "text-muted-foreground" : "text-white/70"
-                      }`}
-                    >
+                    <p className="text-[10px] font-bold text-muted-foreground">
                       ZUJ Incubator
                     </p>
                   </div>
@@ -184,11 +179,7 @@ export default function LandingPage() {
                     <>
                       <Link
                         href="/login"
-                        className={
-                          isScrolled
-                            ? `${buttonVariants({ variant: "outline", size: "sm" })} whitespace-nowrap`
-                            : "inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg text-sm font-bold whitespace-nowrap text-white ring-1 ring-white/40 hover:bg-white/15 transition-colors"
-                        }
+                        className={`${buttonVariants({ variant: "outline", size: "sm" })} whitespace-nowrap`}
                       >
                         <LogIn className="w-4 h-4" />
                         <span className="hidden sm:inline">تسجيل الدخول</span>
@@ -251,8 +242,6 @@ export default function LandingPage() {
           authReady={authReady && (!isSignedIn || user !== undefined)}
           isSignedIn={!!isSignedIn}
         />
-
-        <SectionDivider />
 
         {/* Hero carousel — supervisor-managed banners (images/video only) */}
         <RevealOnScroll>
