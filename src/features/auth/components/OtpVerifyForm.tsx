@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import {Mail, CheckCircle2, AlertCircle, GraduationCap, ArrowRight} from "lucide-react";
-import { Button, InputOTP, Spinner, Card} from "@/components/ui";
+import { Mail, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
+import { Button, InputOTP, Spinner, Card } from "@/components/ui";
+import AuthShell from "./AuthShell";
 
 export default function OtpVerifyForm() {
   const { signUp, setActive } = useSignUp();
@@ -48,97 +49,74 @@ export default function OtpVerifyForm() {
   if (!email) return null;
 
   return (
-    <div className="min-h-screen bg-pattern flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute top-16 left-16 w-24 h-24 bg-success/30 ds-border rounded-xl rotate-6 animate-float opacity-50 hidden md:block" />
-      <div className="absolute bottom-16 right-16 w-16 h-16 bg-secondary ds-border rounded-full animate-float opacity-40 hidden md:block" style={{ animationDelay: "1.5s" }} />
-      <div className="absolute inset-0 bg-dots opacity-[0.03]" />
-
-      <div className="w-full max-w-md animate-scale-in relative z-10">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-primary ds-border-thick rounded-2xl ds-shadow-lg mb-4 mx-auto">
-            <GraduationCap className="w-10 h-10 text-primary-foreground" />
-          </div>
-          <h1 className="text-3xl font-extrabold text-foreground mb-2">تأكيد البريد الإلكتروني</h1>
-          <p className="text-muted-foreground font-medium">خطوة أخيرة للدخول للمنصة</p>
+    <AuthShell title="تأكيد البريد الإلكتروني" subtitle="خطوة أخيرة قبل الدخول إلى المنصة">
+      <Card className="p-6 sm:p-8">
+        <div className="flex items-center gap-3 p-3 bg-success/10 ds-border rounded-lg mb-6 text-sm font-medium">
+          <Mail className="w-5 h-5 text-success shrink-0" />
+          <span>
+            تم إرسال رمز التحقق إلى{" "}
+            <strong className="text-foreground" dir="ltr">{email}</strong>
+          </span>
         </div>
 
-        <Card className="p-8">
-          <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-foreground">
-            <div className="flex gap-1.5">
-              <span className="w-3 h-3 rounded-full bg-destructive ds-border" />
-              <span className="w-3 h-3 rounded-full bg-warning ds-border" />
-              <span className="w-3 h-3 rounded-full bg-success ds-border" />
+        {error && (
+          <div className="flex items-center gap-2 p-3 bg-destructive/10 ds-border rounded-lg mb-5" role="alert">
+            <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
+            <p className="text-sm font-semibold text-destructive">{error}</p>
+          </div>
+        )}
+
+        <form onSubmit={handleVerify} className="space-y-5">
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-center text-foreground">
+              رمز التحقق (OTP)
+            </label>
+            <div className="flex justify-center" dir="ltr">
+              <InputOTP value={otpCode} onChange={setOtpCode} maxLength={6} autoFocus>
+                <InputOTP.Group>
+                  <InputOTP.Slot index={0} />
+                  <InputOTP.Slot index={1} />
+                  <InputOTP.Slot index={2} />
+                  <InputOTP.Slot index={3} />
+                  <InputOTP.Slot index={4} />
+                  <InputOTP.Slot index={5} />
+                </InputOTP.Group>
+              </InputOTP>
             </div>
-            <span className="font-bold text-sm mr-2">رمز التحقق</span>
           </div>
 
-          <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-success/20 ds-border rounded-full flex items-center justify-center mx-auto mb-4">
-              <Mail className="w-8 h-8 text-success" />
-            </div>
-            <h3 className="font-extrabold text-lg mb-1">تم إرسال رمز التحقق!</h3>
-            <p className="text-sm text-muted-foreground font-medium">
-              تفقد بريدك <strong className="text-foreground">{email}</strong> وأدخل الرمز المكون من 6 أرقام.
-            </p>
-          </div>
+          <Button
+            type="submit"
+            isDisabled={loading || otpCode.length < 6}
+            variant="primary"
+            fullWidth
+            className="text-base"
+          >
+            {loading ? (
+              <>
+                <Spinner size="sm" color="current" />
+                جاري التحقق...
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="w-5 h-5" />
+                تأكيد والدخول
+              </>
+            )}
+          </Button>
 
-          {error && (
-            <div className="flex items-center gap-2 p-3 bg-destructive/10 ds-border rounded-lg mb-5">
-              <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
-              <p className="text-sm font-semibold text-destructive">{error}</p>
-            </div>
-          )}
-
-          <form onSubmit={handleVerify} className="space-y-5">
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-center">رمز التحقق (OTP)</label>
-              <div className="flex justify-center" dir="ltr">
-                <InputOTP value={otpCode} onChange={setOtpCode} maxLength={6} autoFocus>
-                  <InputOTP.Group>
-                    <InputOTP.Slot index={0} />
-                    <InputOTP.Slot index={1} />
-                    <InputOTP.Slot index={2} />
-                    <InputOTP.Slot index={3} />
-                    <InputOTP.Slot index={4} />
-                    <InputOTP.Slot index={5} />
-                  </InputOTP.Group>
-                </InputOTP>
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              isDisabled={loading || otpCode.length < 6}
-              variant="primary"
-              fullWidth
-              className="text-base"
-            >
-              {loading ? (
-                <>
-                  <Spinner size="sm" color="current" />
-                  جاري التحقق...
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="w-5 h-5" />
-                  تأكيد والدخول
-                </>
-              )}
-            </Button>
-
-            <Button
-              type="button"
-              onPress={() => router.back()}
-              variant="outline"
-              fullWidth
-              className="text-sm"
-            >
-              <ArrowRight className="w-4 h-4" />
-              رجوع
-            </Button>
-          </form>
-        </Card>
-      </div>
-    </div>
+          <Button
+            type="button"
+            onPress={() => router.back()}
+            variant="outline"
+            fullWidth
+            className="text-sm"
+          >
+            <ArrowRight className="w-4 h-4" />
+            رجوع
+          </Button>
+        </form>
+      </Card>
+    </AuthShell>
   );
 }

@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Mail, LogIn, AlertCircle, Eye, EyeOff, ArrowRight, Sparkles, GraduationCap } from "lucide-react";
+import { Mail, LogIn, AlertCircle, Eye, EyeOff, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useAuthForm } from "@/features/auth/hooks/useAuthForm";
 import { buttonVariants, InputOTP, Spinner } from "@/components/ui";
+import AuthShell from "./AuthShell";
 
 /** Domain hints the autocomplete dropdown offers once the user types `@`. */
 const EMAIL_DOMAIN_SUGGESTIONS = ["std-zuj.edu.jo", "zuj.edu.jo"];
@@ -36,96 +37,79 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-pattern flex items-center justify-center p-4 relative">
-      <Link
-        href="/"
-        className={`${buttonVariants({ variant: "outline", size: "sm" })} absolute top-5 right-5 z-20 group`}
-      >
-        <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
-        <span>الرئيسية</span>
-      </Link>
+    <AuthShell
+      title="حاضنة الزيتونة"
+      subtitle="منصة احتضان المشاريع الريادية في الجامعة"
+    >
+      <div className="ds-card p-6 sm:p-8">
+        <div id="clerk-captcha" />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {auth.error && (
+            <div className="flex items-center gap-2 p-3 bg-destructive/10 rounded-lg ds-border" role="alert">
+              <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
+              <p className="text-sm font-semibold text-destructive">{auth.error}</p>
+            </div>
+          )}
 
-      <div className="w-full max-w-md animate-scale-in">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 mx-auto ds-shadow-sm bg-primary">
-            <GraduationCap className="w-9 h-9 text-primary-foreground" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold mb-2 text-foreground">حاضنة الزيتونة</h1>
-          <p className="text-sm font-medium text-muted-foreground">
-            منصة احتضان المشاريع الريادية في الجامعة
-          </p>
-        </div>
-
-        <div className="ds-card p-6 sm:p-8">
-          <div id="clerk-captcha" />
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {auth.error && (
-              <div className="flex items-center gap-2 p-3 bg-destructive/10 rounded-lg ds-border" role="alert">
-                <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
-                <p className="text-sm font-semibold text-destructive">{auth.error}</p>
+          {auth.needsSecondFactor ? (
+            <SecondFactorBlock otp={auth.otp} onChange={auth.setOtp} />
+          ) : (
+            <>
+              <FloatingEmailInput
+                id="login-email"
+                value={auth.email}
+                onChange={auth.setEmail}
+                placeholder="البريد الإلكتروني"
+              />
+              <FloatingPasswordInput
+                id="login-password"
+                value={auth.password}
+                onChange={auth.setPassword}
+                placeholder="كلمة المرور"
+                showPassword={auth.showPassword}
+                onToggleVisibility={auth.togglePasswordVisibility}
+              />
+              <div className="flex justify-start">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs font-bold text-primary hover:underline underline-offset-4"
+                >
+                  نسيت كلمة المرور؟
+                </Link>
               </div>
-            )}
+            </>
+          )}
 
-            {auth.needsSecondFactor ? (
-              <SecondFactorBlock otp={auth.otp} onChange={auth.setOtp} />
+          <button
+            type="submit"
+            disabled={auth.loading}
+            className={buttonVariants({ variant: "primary", fullWidth: true })}
+          >
+            {auth.loading ? (
+              <>
+                <Spinner size="sm" color="current" />
+                جاري الدخول...
+              </>
             ) : (
               <>
-                <FloatingEmailInput
-                  id="login-email"
-                  value={auth.email}
-                  onChange={auth.setEmail}
-                  placeholder="البريد الإلكتروني"
-                />
-                <FloatingPasswordInput
-                  id="login-password"
-                  value={auth.password}
-                  onChange={auth.setPassword}
-                  placeholder="كلمة المرور"
-                  showPassword={auth.showPassword}
-                  onToggleVisibility={auth.togglePasswordVisibility}
-                />
-                <div className="flex justify-start">
-                  <Link
-                    href="/forgot-password"
-                    className="text-xs font-bold text-primary hover:underline underline-offset-4"
-                  >
-                    نسيت كلمة المرور؟
-                  </Link>
-                </div>
+                <LogIn className="w-5 h-5" />
+                تسجيل الدخول
               </>
             )}
+          </button>
+        </form>
 
-            <button
-              type="submit"
-              disabled={auth.loading}
-              className={buttonVariants({ variant: "primary", fullWidth: true })}
-            >
-              {auth.loading ? (
-                <>
-                  <Spinner size="sm" color="current" />
-                  جاري الدخول...
-                </>
-              ) : (
-                <>
-                  <LogIn className="w-5 h-5" />
-                  تسجيل الدخول
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px bg-foreground/10" />
-            <span className="text-xs font-bold text-muted-foreground">أو</span>
-            <div className="flex-1 h-px bg-foreground/10" />
-          </div>
-          <Link href="/register" className={buttonVariants({ variant: "outline", fullWidth: true })}>
-            <Sparkles className="w-5 h-5" />
-            إنشاء حساب جديد
-          </Link>
+        <div className="flex items-center gap-3 my-6">
+          <div className="flex-1 h-px bg-foreground/10" />
+          <span className="text-xs font-bold text-muted-foreground">أو</span>
+          <div className="flex-1 h-px bg-foreground/10" />
         </div>
+        <Link href="/register" className={buttonVariants({ variant: "outline", fullWidth: true })}>
+          <Sparkles className="w-5 h-5" />
+          إنشاء حساب جديد
+        </Link>
       </div>
-    </div>
+    </AuthShell>
   );
 }
 
