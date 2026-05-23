@@ -1,4 +1,4 @@
-import { query, mutation } from "./_generated/server";
+import { query, mutation, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireAdmin } from "./lib/auth";
 
@@ -170,5 +170,36 @@ export const seed = mutation({
         });
       }
     }
+  },
+});
+
+// One-shot bootstrap seed callable from the Convex dashboard before any
+// admin user exists. Skips the admin check; the auth-gated `seed` above
+// remains the primary entry point once the app is bootstrapped.
+export const bootstrapSeed = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const existing = await ctx.db.query("colleges").take(1);
+    if (existing.length > 0) return { inserted: 0, note: "already seeded" };
+
+    const now = Date.now();
+    let collegesCount = 0;
+    let departmentsCount = 0;
+    for (const item of SEED_DATA) {
+      const collegeId = await ctx.db.insert("colleges", {
+        name: item.college,
+        createdAt: now,
+      });
+      collegesCount++;
+      for (const dep of item.departments) {
+        await ctx.db.insert("departments", {
+          name: dep,
+          collegeId,
+          createdAt: now,
+        });
+        departmentsCount++;
+      }
+    }
+    return { collegesCount, departmentsCount };
   },
 });
