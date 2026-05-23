@@ -26,9 +26,8 @@ export const getFileUrl = query({
 
     const isOwner = app.studentId === user._id;
     const isStaff = user.role === "supervisor" || user.role === "admin";
-    // Sponsors can see any application that has been submitted (i.e. moved
-    // out of the student-only `draft` stage). No admin assignment required.
-    const isSponsorViewing = user.role === "sponsor" && app.status !== "draft";
+    // Sponsors only fetch files for projects accepted into incubation.
+    const isSponsorViewing = user.role === "sponsor" && app.status === "accepted";
 
     if (!isOwner && !isStaff && !isSponsorViewing) return null;
 
