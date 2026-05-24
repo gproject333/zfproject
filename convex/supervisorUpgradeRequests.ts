@@ -2,6 +2,7 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireAdmin, requireUser } from "./lib/auth";
 import { loadUsersMap } from "./lib/users";
+import { notifyAllAdmins } from "./lib/notifications";
 import { internal } from "./_generated/api";
 
 export const submitRequest = mutation({
@@ -32,20 +33,11 @@ export const submitRequest = mutation({
     });
 
     // Notify every admin so any of them can pick the request up.
-    const admins = await ctx.db
-      .query("users")
-      .withIndex("by_role", (q) => q.eq("role", "admin"))
-      .collect();
-    for (const admin of admins) {
-      await ctx.db.insert("notifications", {
-        userId: admin._id,
-        title: "طلب ترقية جديد",
-        message: `${student.name ?? student.email} يطلب الترقية إلى مشرف`,
-        type: "upgrade_request",
-        read: false,
-        createdAt: now,
-      });
-    }
+    await notifyAllAdmins(ctx, {
+      title: "طلب ترقية جديد",
+      message: `${student.name ?? student.email} يطلب الترقية إلى مشرف`,
+      type: "upgrade_request",
+    });
 
     return requestId;
   },
