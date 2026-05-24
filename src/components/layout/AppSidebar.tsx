@@ -125,6 +125,30 @@ export default function AppSidebar({ config }: Props) {
             open ? "ml-auto" : ""
           }`}
         >
+          {/* Modern edge-chevron collapse toggle — a small circular button
+              that straddles the sidebar/content boundary near the top.
+              Standard on Linear / Notion / Vercel; replaces the older
+              footer button so collapsing is always one click away from the
+              page top, not at the end of a long list. */}
+          <button
+            type="button"
+            onClick={toggleCollapsed}
+            className="hidden md:flex absolute top-16 left-0 -translate-x-1/2 z-20
+                       w-7 h-7 rounded-full bg-card border border-foreground/20
+                       shadow-[0_2px_8px_rgba(0,0,0,0.08)] items-center justify-center
+                       text-foreground/70 hover:text-foreground hover:bg-muted
+                       hover:shadow-[0_2px_12px_rgba(0,0,0,0.12)] hover:scale-105
+                       transition-all duration-200"
+            aria-label={collapsed ? "توسيع القائمة" : "تصغير القائمة"}
+            title={collapsed ? "توسيع" : "تصغير"}
+          >
+            {collapsed ? (
+              <ChevronLeft className="w-4 h-4" />
+            ) : (
+              <ChevronRight className="w-4 h-4" />
+            )}
+          </button>
+
           {/* Mobile close */}
           {open && (
             <Button
@@ -196,22 +220,6 @@ export default function AppSidebar({ config }: Props) {
             })}
           </div>
 
-          {/* Foot — collapse toggle only. Bell + settings moved to the
-              TopActionsCluster at the top of the main column for
-              discoverability. */}
-          <div className="mt-3 pt-3 border-t border-border/60 flex flex-col gap-1.5">
-            <Button
-              onPress={toggleCollapsed}
-              variant="ghost"
-              size="sm"
-              fullWidth
-              className={`hidden md:flex ${collapsed ? "justify-center" : "justify-between"}`}
-              aria-label={collapsed ? "توسيع" : "تصغير"}
-            >
-              {!collapsed && <span className="text-xs">تصغير</span>}
-              {collapsed ? <ChevronLeft className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
-            </Button>
-          </div>
         </nav>
       </aside>
     </>
