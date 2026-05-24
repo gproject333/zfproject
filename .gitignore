@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+packages/*/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -15,7 +16,9 @@
 
 # next.js
 /.next/
+packages/*/.next/
 /out/
+packages/*/out/
 
 # production
 /build
@@ -36,11 +39,14 @@ yarn-error.log*
 
 # vercel
 .vercel
+packages/*/.vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+packages/*/next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+packages/*/.clerk/
 .superpowers/
