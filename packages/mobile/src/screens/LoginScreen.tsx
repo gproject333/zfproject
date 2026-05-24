@@ -13,7 +13,7 @@ import { useSignIn } from "@clerk/clerk-expo";
 
 type Phase = "credentials" | "second_factor";
 
-type SecondFactorMode = "totp" | "phone_code" | "backup_code";
+type SecondFactorMode = "totp" | "phone_code" | "email_code" | "backup_code";
 
 /**
  * Human-readable label for each strategy so the UI can say "أدخل الكود
@@ -28,6 +28,10 @@ const MODE_COPY: Record<SecondFactorMode, { title: string; hint: string }> = {
   phone_code: {
     title: "أدخل الكود من الرسالة النصية",
     hint: "أرسلنا رسالة SMS إلى رقمك المسجل",
+  },
+  email_code: {
+    title: "أدخل الكود من البريد الإلكتروني",
+    hint: "أرسلنا رمز التحقق إلى بريدك الإلكتروني",
   },
   backup_code: {
     title: "أدخل أحد رموز الاحتياط",
@@ -99,8 +103,15 @@ export default function LoginScreen() {
         const supported = signIn.supportedSecondFactors ?? [];
         setDebugFactors(supported.map((f) => f.strategy));
 
+        // Strategy priority: phone_code → email_code → totp →
+        // backup_code. The first two need `prepareSecondFactor` to
+        // actually dispatch the SMS / email; totp is read straight
+        // from the user's authenticator and needs no prepare.
         const phoneFactor = supported.find(
           (f) => f.strategy === "phone_code",
+        );
+        const emailFactor = supported.find(
+          (f) => f.strategy === "email_code",
         );
         const totpFactor = supported.find((f) => f.strategy === "totp");
 
@@ -110,6 +121,12 @@ export default function LoginScreen() {
             phoneNumberId: phoneFactor.phoneNumberId as string,
           });
           setMode("phone_code");
+        } else if (emailFactor && "emailAddressId" in emailFactor) {
+          await signIn.prepareSecondFactor({
+            strategy: "email_code",
+            emailAddressId: emailFactor.emailAddressId as string,
+          });
+          setMode("email_code");
         } else if (totpFactor) {
           setMode("totp");
         } else {
