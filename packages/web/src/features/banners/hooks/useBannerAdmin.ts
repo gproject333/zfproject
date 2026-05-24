@@ -175,7 +175,6 @@ export function useBannerAdmin() {
     }
 
     const isHero = formState.bannerType === "hero";
-    const isScrolling = formState.bannerType === "scrolling";
 
     // Scrolling and text banners require a message
     if (!isHero && !formState.message.trim()) {

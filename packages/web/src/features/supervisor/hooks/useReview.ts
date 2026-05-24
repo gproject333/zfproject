@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "@/lib/toast";
 import { api } from "../../../../convex/_generated/api";
@@ -39,14 +39,19 @@ export function useReview(app: Doc<"applications"> | null | undefined) {
   const [status, setStatus] = useState<SupervisorStatus | null>(initialStatus);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Re-sync local state whenever the underlying application changes (e.g. the
-  // supervisor navigates to a different review, or Convex pushes a fresh
-  // version after saving).
-  useEffect(() => {
+  // Re-sync local state whenever the underlying application's saved values
+  // change (e.g. the supervisor navigates to a different review, or Convex
+  // pushes a fresh version after saving). We snapshot the saved values as
+  // the "previous prop" so the reset runs during render — the React 19
+  // idiom that avoids the cascading-renders warning from setState-in-effect.
+  const savedSignature = `${app?._id ?? ""}|${initialStatus ?? ""}|${initialRating ?? ""}|${initialNotes}`;
+  const [lastSignature, setLastSignature] = useState(savedSignature);
+  if (savedSignature !== lastSignature) {
+    setLastSignature(savedSignature);
     setNotes(initialNotes);
     setRating(initialRating);
     setStatus(initialStatus);
-  }, [initialNotes, initialRating, initialStatus]);
+  }
 
   const isDirty =
     status !== initialStatus || notes !== initialNotes || rating !== initialRating;

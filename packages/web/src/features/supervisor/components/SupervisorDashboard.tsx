@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Compass, BookOpen, Inbox, FileText } from "lucide-react";
+import { Compass, BookOpen, Inbox } from "lucide-react";
 import { Card } from "@/components/ui";
 import { SkeletonStatCards, Skeleton } from "@/components/ui/Skeleton";
 import { ApplicationsDonut } from "@/components/charts/ApplicationsDonut";

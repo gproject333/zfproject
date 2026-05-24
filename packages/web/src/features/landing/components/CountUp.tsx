@@ -42,6 +42,10 @@ export default function CountUp({
   useEffect(() => {
     if (!inView) return;
     if (reduce) {
+      // Reduced-motion users skip the animation and snap straight to the
+      // final value. This is the effect's sole effect — there's no external
+      // store to sync via the React 19 pattern.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setValue(to);
       return;
     }

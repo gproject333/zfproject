@@ -32,6 +32,11 @@ export function useInView<T extends Element = HTMLElement>(
     if (!node) return;
 
     if (typeof IntersectionObserver === "undefined") {
+      // Old-browser fallback: reveal immediately so content isn't stuck
+      // in its pre-reveal state. This is a one-shot init triggered by the
+      // mount effect — there's nothing to "synchronize" via the React 19
+      // pattern, so the lint rule's recommended alternatives don't apply.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setInView(true);
       return;
     }

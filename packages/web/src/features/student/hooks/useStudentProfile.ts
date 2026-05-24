@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
@@ -39,19 +39,23 @@ export function useStudentProfile() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      setForm({
-        name: user.name ?? "",
-        phone: user.phone ?? "",
-        college: user.college ?? "",
-        department: user.department ?? "",
-        studentId: user.studentId ?? "",
-        linkedinUrl: user.linkedinUrl ?? "",
-        avatarFile: null,
-      });
-    }
-  }, [user]);
+  // Hydrate the form from the loaded user. Using the "store the previous prop"
+  // pattern (https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes)
+  // — runs during render whenever the user identity changes, which keeps
+  // strict React 19 effect rules happy.
+  const [lastUserId, setLastUserId] = useState<Id<"users"> | undefined>(undefined);
+  if (user && user._id !== lastUserId) {
+    setLastUserId(user._id);
+    setForm({
+      name: user.name ?? "",
+      phone: user.phone ?? "",
+      college: user.college ?? "",
+      department: user.department ?? "",
+      studentId: user.studentId ?? "",
+      linkedinUrl: user.linkedinUrl ?? "",
+      avatarFile: null,
+    });
+  }
 
   const setField = useCallback(
     <K extends keyof ProfileFormState>(

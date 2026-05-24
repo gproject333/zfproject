@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { usePaginatedQuery, useQuery } from "convex/react";
 import { useSearchParams } from "next/navigation";
 import type { SortingState, RowSelectionState } from "@tanstack/react-table";
@@ -92,10 +92,15 @@ export function useApplicationFilters() {
   const facets = useQuery(api.applications.supervisor.filterFacets, {});
 
   // Clear row selection whenever server args change so bulk actions
-  // can't fire on rows the supervisor can no longer see.
-  useEffect(() => {
+  // can't fire on rows the supervisor can no longer see. Tracked via a
+  // "previous prop" snapshot so the reset runs during render, satisfying
+  // the React 19 lint rule that forbids setState-in-effect.
+  const argSignature = `${queryArgs.status ?? ""}|${queryArgs.type ?? ""}|${queryArgs.sortDir}`;
+  const [lastArgSignature, setLastArgSignature] = useState(argSignature);
+  if (argSignature !== lastArgSignature) {
+    setLastArgSignature(argSignature);
     setRowSelection({});
-  }, [queryArgs.status, queryArgs.type, queryArgs.sortDir]);
+  }
 
   const normalizedSearch = useMemo(
     () => (search ? normalizeArabic(search) : ""),

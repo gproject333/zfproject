@@ -1,8 +1,20 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/hooks/useInView";
+
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(callback: () => void): () => void {
+  const mql = window.matchMedia(REDUCED_MOTION_QUERY);
+  mql.addEventListener("change", callback);
+  return () => mql.removeEventListener("change", callback);
+}
+
+function getReducedMotion(): boolean {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
 
 type RevealAnimation = "slide-up" | "fade-in" | "scale-in" | "slide-right" | "slide-left";
 
@@ -42,15 +54,11 @@ export default function Reveal({
   className,
 }: RevealProps) {
   const [ref, inView] = useInView<HTMLDivElement>({ once: !replay, threshold });
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, []);
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotion,
+    () => false,
+  );
 
   if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;
