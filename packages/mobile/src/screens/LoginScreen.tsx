@@ -13,6 +13,28 @@ import { useSignIn } from "@clerk/clerk-expo";
 
 type Phase = "credentials" | "second_factor";
 
+type SecondFactorMode = "totp" | "phone_code" | "backup_code";
+
+/**
+ * Human-readable label for each strategy so the UI can say "أدخل الكود
+ * من رسالة SMS" vs "أدخل الكود من تطبيق Authenticator". Kept inline
+ * because Clerk's own enum is not translated.
+ */
+const MODE_COPY: Record<SecondFactorMode, { title: string; hint: string }> = {
+  totp: {
+    title: "أدخل كود التحقق",
+    hint: "افتح تطبيق Authenticator وأدخل الكود المؤقت (6 أرقام)",
+  },
+  phone_code: {
+    title: "أدخل الكود من الرسالة النصية",
+    hint: "أرسلنا رسالة SMS إلى رقمك المسجل",
+  },
+  backup_code: {
+    title: "أدخل أحد رموز الاحتياط",
+    hint: "استخدم أي رمز لم تستخدمه من قبل",
+  },
+};
+
 /**
  * Two-phase Clerk sign-in:
  *
@@ -35,6 +57,15 @@ export default function LoginScreen() {
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  // Which 2FA strategy Clerk negotiated for this account. We pick a
+  // primary mode (phone_code over totp, falling back to backup_code)
+  // and remember it so submitSecondFactor passes the right strategy.
+  const [mode, setMode] = useState<SecondFactorMode>("totp");
+  // Raw strategy list from Clerk for the debug panel below. Shown only
+  // on the 2FA screen so we (and the user) can confirm exactly which
+  // strategies the account has enabled — saves a round-trip every time
+  // someone says "but I get email codes, not SMS!"
+  const [debugFactors, setDebugFactors] = useState<string[]>([]);
 
   function showError(e: unknown) {
     const err = e as { errors?: { message?: string }[]; message?: string };
@@ -60,6 +91,30 @@ export default function LoginScreen() {
         return;
       }
       if (attempt.status === "needs_second_factor") {
+        // Clerk publishes the configured second factors. SMS / email-
+        // type strategies need `prepareSecondFactor` to actually send
+        // the code; TOTP and backup codes work without it. We pick
+        // whichever the account has — prefer phone_code (because the
+        // user receives a fresh message), fall back to totp.
+        const supported = signIn.supportedSecondFactors ?? [];
+        setDebugFactors(supported.map((f) => f.strategy));
+
+        const phoneFactor = supported.find(
+          (f) => f.strategy === "phone_code",
+        );
+        const totpFactor = supported.find((f) => f.strategy === "totp");
+
+        if (phoneFactor && "phoneNumberId" in phoneFactor) {
+          await signIn.prepareSecondFactor({
+            strategy: "phone_code",
+            phoneNumberId: phoneFactor.phoneNumberId as string,
+          });
+          setMode("phone_code");
+        } else if (totpFactor) {
+          setMode("totp");
+        } else {
+          setMode("backup_code");
+        }
         setPhase("second_factor");
         return;
       }
@@ -76,15 +131,24 @@ export default function LoginScreen() {
     setError(null);
     setSubmitting(true);
     try {
-      // Try TOTP first (authenticator app code), then fall back to a
-      // backup code. Clerk rejects each strategy independently, so the
-      // backup-code path will only run when TOTP comes back with
-      // verification_failed or strategy_not_allowed.
+      // Submit with the strategy we negotiated when the password
+      // attempt returned needs_second_factor. If the user's input
+      // doesn't match that strategy (e.g. they typed a backup code on
+      // the phone_code screen) we retry once with backup_code so they
+      // don't have to start over.
       let attempt = await signIn!
-        .attemptSecondFactor({ strategy: "totp", code })
+        .attemptSecondFactor({ strategy: mode, code } as never)
         .catch((e) => {
           const err = e as { errors?: { code?: string }[] };
-          if (err.errors?.[0]?.code === "strategy_not_allowed") return null;
+          // Only retry-with-backup-code on a code-mismatch shaped
+          // error; rethrow anything else (rate-limited, expired, …)
+          // so the real reason reaches the user.
+          if (
+            mode !== "backup_code" &&
+            err.errors?.[0]?.code === "form_code_incorrect"
+          ) {
+            return null;
+          }
           throw e;
         });
       if (!attempt) {
@@ -162,10 +226,14 @@ export default function LoginScreen() {
           </>
         ) : (
           <>
-            <Text style={styles.title}>التحقق بخطوتين</Text>
-            <Text style={styles.subtitle}>
-              أدخل الكود من تطبيق Authenticator أو أحد رموز الاحتياط
-            </Text>
+            <Text style={styles.title}>{MODE_COPY[mode].title}</Text>
+            <Text style={styles.subtitle}>{MODE_COPY[mode].hint}</Text>
+
+            {debugFactors.length > 0 ? (
+              <Text style={styles.debug}>
+                Clerk supported factors: {debugFactors.join(", ")}
+              </Text>
+            ) : null}
 
             <Text style={styles.label}>الكود</Text>
             <TextInput
@@ -275,6 +343,15 @@ const styles = StyleSheet.create({
   },
   linkBtn: { alignSelf: "flex-end", padding: 8, marginTop: 8 },
   linkText: { color: "#525252", fontSize: 14 },
+  debug: {
+    fontSize: 11,
+    color: "#a3a3a3",
+    backgroundColor: "#f5f5f5",
+    padding: 8,
+    borderRadius: 6,
+    marginTop: 8,
+    fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace",
+  },
   hint: {
     fontSize: 12,
     color: "#737373",
