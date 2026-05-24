@@ -32,15 +32,32 @@ export default function LoginScreen() {
     setError(null);
     setSubmitting(true);
     try {
-      const attempt = await signIn.create({ identifier: email, password });
+      // Clerk's `signIn.create` may return `complete` immediately (single
+      // password factor) or `needs_first_factor` when multiple strategies
+      // are enabled on the instance. In the second case we explicitly
+      // pick the password strategy so the existing Clerk users — who
+      // signed up on the web with email + password — can still get in.
+      let attempt = await signIn.create({ identifier: email, password });
+      if (attempt.status === "needs_first_factor") {
+        attempt = await attempt.attemptFirstFactor({
+          strategy: "password",
+          password,
+        });
+      }
       if (attempt.status === "complete") {
         await setActive({ session: attempt.createdSessionId });
       } else {
-        setError("تعذّر إكمال تسجيل الدخول. تأكد من البيانات.");
+        setError(`تعذّر إكمال تسجيل الدخول — الحالة: ${attempt.status}`);
       }
-    } catch (e) {
+    } catch (e: unknown) {
+      // Clerk throws structured errors with a `clerkError: true` flag;
+      // their `errors[0].message` is the human-readable reason. Fall
+      // back to the generic message only when the shape doesn't match.
+      const err = e as { errors?: { message?: string }[]; message?: string };
       const msg =
-        e instanceof Error ? e.message : "بيانات الدخول غير صحيحة";
+        err.errors?.[0]?.message ??
+        err.message ??
+        "بيانات الدخول غير صحيحة";
       setError(msg);
     } finally {
       setSubmitting(false);
