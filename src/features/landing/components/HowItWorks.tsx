@@ -35,7 +35,7 @@ const STAGES: Stage[] = [
   {
     num: "٢",
     title: "قدّم فكرتك",
-    desc: "اختر نوع الاحتضان (ريادي / تقني / أكاديمي) واملأ نموذج الطلب.",
+    desc: "اختر نوع الاحتضان (فكرة ريادية / مشروع IT / مشروع للجامعة) واملأ نموذج الطلب.",
     metaphor: "اسقِ الفكرة",
     icon: Leaf,
     snippet: ApplicationSnippet,
@@ -185,9 +185,9 @@ function ApplicationSnippet() {
         تقديم طلب جديد
       </div>
       <div className="grid grid-cols-3 gap-1.5 mb-3">
-        <TypeChip icon={Lightbulb} label="ريادي" active />
-        <TypeChip icon={FileText} label="تقني" />
-        <TypeChip icon={GraduationCap} label="جامعي" />
+        <TypeChip icon={Lightbulb} label="فكرة ريادية" active />
+        <TypeChip icon={FileText} label="مشروع IT" />
+        <TypeChip icon={GraduationCap} label="للجامعة" />
       </div>
       <div className="space-y-2">
         <div className="text-[10px] font-bold text-foreground/60">اسم المشروع</div>
@@ -212,7 +212,7 @@ function ReviewSnippet() {
         تم قبول طلبك &quot;بستان الزيتون الذكي&quot;
       </p>
       <p className="text-[11px] text-muted-foreground font-medium mb-3 leading-relaxed line-clamp-2">
-        راجع د. أحمد محمد الطلب ووافق عليه. تابع التحديثات في لوحتك.
+        راجع المشرف الأكاديمي طلبك ووافق عليه. تابع التحديثات في لوحتك.
       </p>
       <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full border bg-status-accepted/15 text-status-accepted border-status-accepted/30">
         <CheckCircle2 className="w-3 h-3" />

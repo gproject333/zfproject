@@ -251,9 +251,9 @@ function VariantDots({
 
 function HeroMockup() {
   const types = [
-    { icon: Lightbulb, title: "ريادي", desc: "فكرة مشروع تجاري ناشئ", active: true },
-    { icon: FileText, title: "تخرّج IT", desc: "مشروع تقني للتخرّج", active: false },
-    { icon: GraduationCap, title: "جامعي", desc: "مشروع يخدم الجامعة", active: false },
+    { icon: Lightbulb, title: "فكرة ريادية", desc: "فكرة مشروع تجاري ناشئ", active: true },
+    { icon: FileText, title: "مشروع IT", desc: "مشروع تقني للتخرّج", active: false },
+    { icon: GraduationCap, title: "مشروع للجامعة", desc: "مشروع يخدم الجامعة", active: false },
   ];
 
   return (

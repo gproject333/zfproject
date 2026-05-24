@@ -158,7 +158,7 @@ function SubmitShowcase() {
       highlight="دقائق"
       description="اختر نوع احتضانك من ثلاثة مسارات، عبّي التفاصيل بنموذج ذكي يكشف الحقول حسب نوع المشروع، وأرسله مباشرة للمشرف الأكاديمي. ما تحتاج تنزل من مكتب لمكتب — كل خطوة رقمية."
       bullets={[
-        { icon: Lightbulb, label: "ثلاثة أنواع: ريادي، تخرّج تقني، أو يخدم الجامعة" },
+        { icon: Lightbulb, label: "ثلاثة أنواع: فكرة ريادية، مشروع IT، أو مشروع للجامعة" },
         { icon: FileText, label: "نموذج تكيّفي — يطلب فقط ما يحتاجه نوع مشروعك" },
         { icon: Send, label: "ارفع PDF أو فيديو تعريفي مع طلبك" },
       ]}
@@ -178,9 +178,9 @@ function SubmitMockup() {
         <div>
           <div className="text-xs font-bold text-foreground/65 mb-2">نوع الاحتضان</div>
           <div className="grid grid-cols-3 gap-2">
-            <TypeChip icon={Lightbulb} label="ريادي" desc="فكرة تجارية" active />
-            <TypeChip icon={FileText} label="تخرّج IT" desc="مشروع تقني" />
-            <TypeChip icon={GraduationCap} label="جامعي" desc="يخدم الجامعة" />
+            <TypeChip icon={Lightbulb} label="فكرة ريادية" desc="فكرة تجارية" active />
+            <TypeChip icon={FileText} label="مشروع IT" desc="مشروع تقني" />
+            <TypeChip icon={GraduationCap} label="للجامعة" desc="يخدم الجامعة" />
           </div>
         </div>
         <MockField label="اسم المشروع" value="بستان الزيتون الذكي" />
@@ -229,20 +229,20 @@ function TrackMockup() {
       <ul className="divide-y divide-border/40">
         <TrackRow
           name="بستان الزيتون الذكي"
-          type="ريادي"
+          type="فكرة ريادية"
           status="accepted"
           time="قُبل قبل يومين"
           highlight
         />
         <TrackRow
           name="منصة دروس تفاعلية"
-          type="تخرّج IT"
+          type="مشروع IT"
           status="under_review"
           time="بانتظار المراجعة"
         />
         <TrackRow
           name="نظام إدارة الفعاليات"
-          type="جامعي"
+          type="للجامعة"
           status="needs_modification"
           time="ملاحظتان من المشرف"
         />
@@ -333,14 +333,14 @@ function LearnShowcase() {
 function LearnMockup() {
   return (
     <MockupFrame>
-      <MockupHeader title="مقالات ودليل ريادي" subtitle="محتوى يكتبه المشرفون لطلابهم" />
+      <MockupHeader title="مقالات والدليل الريادي" subtitle="محتوى يكتبه المشرفون لطلابهم" />
       <ul className="divide-y divide-border/40">
         <ArticleRow
           icon={BookOpen}
           tone="text-info"
           tag="مقال"
           title="كيف تكتب وصف مشروع يقنع المشرف؟"
-          author="د. أحمد محمد"
+          author="مشرف الحاضنة"
           readTime="٥ دقائق قراءة"
         />
         <ArticleRow
@@ -348,22 +348,22 @@ function LearnMockup() {
           tone="text-status-modification"
           tag="فيديو"
           title="نموذج العمل التجاري للمشاريع الطلابية"
-          author="د. سارة الحجاج"
+          author="الدليل الريادي"
           readTime="١٢ دقيقة"
         />
         <ArticleRow
           icon={Compass}
           tone="text-secondary"
-          tag="دليل"
+          tag="دورة"
           title="خطوات تأسيس شركة ناشئة في الأردن"
-          author="مكتب الريادة"
-          readTime="٨ خطوات"
+          author="الدليل الريادي"
+          readTime="٨ وحدات"
         />
       </ul>
       <div className="px-6 py-4 border-t border-border/40 bg-muted/30 flex items-center justify-between">
         <div className="text-xs">
-          <span className="font-extrabold text-foreground">+ ١٨ مقالاً</span>
-          <span className="text-muted-foreground font-medium"> في المكتبة</span>
+          <span className="font-extrabold text-foreground">مكتبة متجدّدة</span>
+          <span className="text-muted-foreground font-medium"> · مقالات + فيديو + دورات + روابط</span>
         </div>
         <span className="text-xs font-extrabold text-primary">عرض الكل ←</span>
       </div>
