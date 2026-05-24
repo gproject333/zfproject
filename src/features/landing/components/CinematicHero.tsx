@@ -555,89 +555,144 @@ function SpotlightBackground() {
 
 interface JourneyCard {
   icon: LucideIcon;
+  step: string;
+  time: string;
   title: string;
   body: string;
   accentBg: string;
   accentText: string;
-  rotate: string;
-  offsetY: string;
-  delay: number;
+  glow: string;
+  isFresh?: boolean;
 }
 
 const JOURNEY_CARDS: JourneyCard[] = [
   {
     icon: CheckCircle2,
+    step: "١",
+    time: "قبل يومين",
     title: "تم قبول طلبك",
     body: "بستان الزيتون الذكي · فكرة ريادية",
     accentBg: "bg-success/15",
     accentText: "text-success",
-    rotate: "rotate-[-3deg]",
-    offsetY: "translate-y-4",
-    delay: 0.05,
+    glow: "shadow-[0_18px_45px_-18px_rgba(34,197,94,0.5)]",
   },
   {
     icon: CalendarClock,
-    title: "موعد لقاء جديد",
+    step: "٢",
+    time: "أمس · ٣ مساءً",
+    title: "موعد لقاء جديد مع د. المشرف",
     body: "الخميس ١٠ صباحاً · مكتب الكلية",
     accentBg: "bg-accent/15",
     accentText: "text-accent",
-    rotate: "rotate-[1.5deg]",
-    offsetY: "-translate-y-2",
-    delay: 0.18,
+    glow: "shadow-[0_18px_45px_-18px_rgba(36,82,55,0.55)]",
   },
   {
     icon: Heart,
+    step: "٣",
+    time: "الآن",
     title: "راعٍ مهتم بمشروعك",
     body: "شركة من قطاع الزراعة الذكية",
     accentBg: "bg-secondary/20",
     accentText: "text-secondary-border",
-    rotate: "rotate-[-1deg]",
-    offsetY: "translate-y-2",
-    delay: 0.32,
+    glow: "shadow-[0_22px_55px_-15px_rgba(201,162,39,0.6)]",
+    isFresh: true,
   },
 ];
 
 function SpotlightMockup() {
   return (
-    <div className="relative h-[360px] sm:h-[400px]">
-      {/* Notification flash chip floating above */}
+    <div className="relative w-full max-w-[400px] mx-auto py-4 sm:py-6">
+      {/* Floating "live journey" chip top */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05, duration: 0.5 }}
-        className="absolute top-0 right-0 sm:right-6 inline-flex items-center gap-2 text-[11px] font-extrabold bg-card/90 backdrop-blur ds-border rounded-full px-3 py-1.5 shadow-lg z-30"
+        className="absolute -top-2 right-2 sm:right-4 inline-flex items-center gap-2 text-[11px] font-extrabold bg-card/95 backdrop-blur ds-border rounded-full px-3 py-1.5 shadow-lg z-30"
       >
         <Bell className="w-3.5 h-3.5 text-secondary-border" />
         رحلة طالب حقيقي
       </motion.div>
 
-      {/* Stacked journey cards */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative w-full max-w-[340px]">
-          {JOURNEY_CARDS.map((c, i) => (
-            <motion.div
-              key={c.title}
-              initial={{ opacity: 0, y: 24, rotate: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: c.delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className={`absolute inset-x-0 rounded-2xl bg-card ds-border shadow-[0_20px_45px_-15px_rgba(0,0,0,0.25)] p-4 ${c.rotate} ${c.offsetY}`}
-              style={{ top: `${i * 78}px`, zIndex: 10 + i }}
+      {/* Vertical timeline thread on the right (RTL start side) */}
+      <div
+        aria-hidden
+        className="absolute top-8 bottom-4 right-[34px] w-px overflow-hidden"
+      >
+        <div
+          className="w-full h-full"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent, color-mix(in srgb, var(--secondary) 55%, transparent) 12%, color-mix(in srgb, var(--accent) 45%, transparent) 50%, color-mix(in srgb, var(--success) 50%, transparent) 88%, transparent)",
+          }}
+        />
+        {/* Travelling spark along the thread */}
+        <motion.div
+          className="absolute left-1/2 -translate-x-1/2 w-1 h-10 rounded-full bg-secondary/80 blur-[2px]"
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: ["-10%", "110%"], opacity: [0, 1, 1, 0] }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", times: [0, 0.15, 0.85, 1] }}
+        />
+      </div>
+
+      <ul className="space-y-4 relative">
+        {JOURNEY_CARDS.map((c, i) => (
+          <motion.li
+            key={c.title}
+            initial={{ opacity: 0, x: 28 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.08 + i * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="relative flex items-stretch gap-3"
+          >
+            {/* Numbered timeline node — sits ON the thread */}
+            <div className="relative w-[68px] shrink-0 flex flex-col items-center pt-3">
+              <div
+                className={`relative w-10 h-10 rounded-full ${c.accentBg} ${c.accentText} flex items-center justify-center font-black text-base z-10 ds-border bg-card`}
+              >
+                {c.step}
+                {c.isFresh && (
+                  <motion.span
+                    className="absolute inset-0 rounded-full border-2 border-secondary"
+                    initial={{ opacity: 0.8, scale: 1 }}
+                    animate={{ opacity: 0, scale: 1.6 }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                  />
+                )}
+              </div>
+              <span className="mt-1.5 text-[9px] font-extrabold text-foreground/55 tracking-wide">
+                {c.time}
+              </span>
+            </div>
+
+            {/* Card */}
+            <div
+              className={`flex-1 min-w-0 rounded-2xl bg-card ds-border ${c.glow} p-4 transition-transform duration-300 hover:-translate-y-0.5`}
             >
               <div className="flex items-start gap-3">
-                <span className={`w-11 h-11 rounded-xl ${c.accentBg} ${c.accentText} flex items-center justify-center shrink-0`}>
+                <span
+                  className={`w-11 h-11 rounded-xl ${c.accentBg} ${c.accentText} flex items-center justify-center shrink-0`}
+                >
                   <c.icon className="w-5 h-5" />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-extrabold text-foreground truncate">{c.title}</p>
-                  <p className="text-[11px] text-muted-foreground font-medium mt-0.5 truncate">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-extrabold text-foreground leading-snug truncate">
+                      {c.title}
+                    </p>
+                    {c.isFresh && (
+                      <span className="text-[9px] font-black text-secondary-border bg-secondary/15 border border-secondary/40 rounded-full px-1.5 py-0.5 shrink-0">
+                        جديد
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground font-medium mt-1 leading-relaxed line-clamp-2">
                     {c.body}
                   </p>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+            </div>
+          </motion.li>
+        ))}
+      </ul>
     </div>
   );
 }
