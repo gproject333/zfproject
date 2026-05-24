@@ -41,6 +41,12 @@ yarn-error.log*
 .vercel
 packages/*/.vercel
 
+# expo / react native
+packages/*/.expo/
+packages/*/.expo-shared/
+packages/*/android/
+packages/*/ios/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
