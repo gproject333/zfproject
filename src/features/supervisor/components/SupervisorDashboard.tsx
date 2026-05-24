@@ -46,10 +46,8 @@ export default function SupervisorDashboard() {
             }
             className="ds-card-interactive p-6 flex flex-col items-center text-center w-full"
           >
-            <div
-              className="w-12 h-12 rounded-xl ds-border flex items-center justify-center mb-4 bg-white"
-            >
-              <stat.icon className={`w-6 h-6 ${stat.color}`} />
+            <div className="w-12 h-12 rounded-xl ds-border flex items-center justify-center mb-4 bg-muted">
+              <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
             </div>
             <h3 className="text-3xl font-extrabold mb-1">{stat.value}</h3>
             <p className="text-sm font-bold text-muted-foreground">{stat.label}</p>
@@ -59,7 +57,7 @@ export default function SupervisorDashboard() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Link href="/supervisor/entrepreneurial-guide" className="ds-card p-5 flex items-center gap-4 hover:ds-shadow transition-all">
-          <div className="w-12 h-12 rounded-xl bg-white ds-border flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-accent/15 ds-border flex items-center justify-center shrink-0">
             <Compass className="w-6 h-6 text-accent" />
           </div>
           <div>
@@ -68,7 +66,7 @@ export default function SupervisorDashboard() {
           </div>
         </Link>
         <Link href="/supervisor/articles" className="ds-card p-5 flex items-center gap-4 hover:ds-shadow transition-all">
-          <div className="w-12 h-12 rounded-xl bg-white ds-border flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-primary/15 ds-border flex items-center justify-center shrink-0">
             <BookOpen className="w-6 h-6 text-primary" />
           </div>
           <div>

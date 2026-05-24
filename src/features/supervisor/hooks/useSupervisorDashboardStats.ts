@@ -9,8 +9,18 @@ export interface SupervisorStatCard {
   label: string;
   value: number;
   icon: LucideIcon;
+  /** Color for the chip-style status text (used elsewhere). */
   color: string;
+  /** Background for the chip-style status pill (used elsewhere). */
   bg: string;
+  /**
+   * Theme-aware icon color for the dashboard tile. Must remain legible on
+   * `bg-muted`, which means we use brand-tinted tokens (text-status-*,
+   * text-success, text-destructive) instead of `text-foreground` for the
+   * status-bearing cards — those would otherwise blend into the muted
+   * surface in dark mode.
+   */
+  iconColor: string;
   filter?: string;
 }
 
@@ -32,6 +42,7 @@ export function useSupervisorDashboardStats() {
           value: stats.total,
           icon: FileText,
           color: "text-foreground",
+          iconColor: "text-foreground",
           bg: "bg-muted",
         },
         {
@@ -39,6 +50,7 @@ export function useSupervisorDashboardStats() {
           value: stats.underReview,
           icon: STATUS_CONFIG.under_review.icon,
           color: STATUS_CONFIG.under_review.text,
+          iconColor: "text-status-pending",
           bg: STATUS_CONFIG.under_review.bg,
           filter: "under_review",
         },
@@ -47,6 +59,7 @@ export function useSupervisorDashboardStats() {
           value: stats.needsModification,
           icon: STATUS_CONFIG.needs_modification.icon,
           color: STATUS_CONFIG.needs_modification.text,
+          iconColor: "text-status-modification",
           bg: STATUS_CONFIG.needs_modification.bg,
           filter: "needs_modification",
         },
@@ -55,6 +68,7 @@ export function useSupervisorDashboardStats() {
           value: stats.accepted,
           icon: STATUS_CONFIG.accepted.icon,
           color: STATUS_CONFIG.accepted.text,
+          iconColor: "text-success",
           bg: STATUS_CONFIG.accepted.bg,
           filter: "accepted",
         },
@@ -63,6 +77,7 @@ export function useSupervisorDashboardStats() {
           value: stats.rejected,
           icon: STATUS_CONFIG.rejected.icon,
           color: STATUS_CONFIG.rejected.text,
+          iconColor: "text-destructive",
           bg: STATUS_CONFIG.rejected.bg,
           filter: "rejected",
         },
