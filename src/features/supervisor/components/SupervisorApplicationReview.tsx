@@ -14,6 +14,7 @@ import { useReview } from "@/features/supervisor/hooks/useReview";
 import ReviewPanel from "./ReviewPanel";
 import ReviewHistoryTimeline from "./ReviewHistoryTimeline";
 import StudentProfileButton from "./StudentProfileButton";
+import ScheduleMeetingButton from "./ScheduleMeetingButton";
 
 /**
  * Supervisor application review page. Composes a hero card (title +
@@ -62,7 +63,13 @@ export default function SupervisorApplicationReview() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left column - Profile + Details */}
         <div className="lg:col-span-2 space-y-6">
-          <StudentProfileButton applicationId={app._id} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <StudentProfileButton applicationId={app._id} />
+            <ScheduleMeetingButton
+              studentId={app.studentId}
+              applicationId={app._id}
+            />
+          </div>
           <ApplicationDetailsView
             app={app}
             pdfUrl={pdfUrl}

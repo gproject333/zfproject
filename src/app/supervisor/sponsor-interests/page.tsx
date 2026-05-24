@@ -13,8 +13,8 @@ import {
   Building2,
   ExternalLink,
 } from "lucide-react";
-import { api } from "../../../../../convex/_generated/api";
-import type { Id } from "../../../../../convex/_generated/dataModel";
+import { api } from "../../../../convex/_generated/api";
+import type { Id } from "../../../../convex/_generated/dataModel";
 import { Button, Card, Spinner } from "@/components/ui";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 

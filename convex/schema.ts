@@ -293,7 +293,8 @@ export default defineSchema({
       v.literal("assignment"),        // Sponsor assigned to a project
       v.literal("announcement"),      // Broadcast announcement
       v.literal("system"),            // System notice
-      v.literal("upgrade_request")    // Supervisor-upgrade request update
+      v.literal("upgrade_request"),   // Supervisor-upgrade request update
+      v.literal("meeting")            // Supervisor scheduled a meeting with the student
     ),
     applicationId: v.optional(v.id("applications")),
     read: v.boolean(),
@@ -390,6 +391,30 @@ export default defineSchema({
     .index("by_student", ["studentId"])
     .index("by_status", ["status"])
     .index("by_createdAt", ["createdAt"]),
+
+  // ============================================
+  // Meetings (supervisor → student)
+  // ============================================
+  // Lightweight scheduling: a supervisor records a meeting they intend to
+  // hold with a student. There's no calendar/RSVP flow yet — the meeting
+  // exists primarily so the student can see "you have something coming up"
+  // alongside their notifications, and so supervisors can keep a record.
+  // location is free-form (room name or video link); notes is anything
+  // extra (agenda, what to bring, etc.).
+  meetings: defineTable({
+    studentId: v.id("users"),
+    scheduledBy: v.id("users"),
+    scheduledAt: v.number(),
+    location: v.optional(v.string()),
+    notes: v.optional(v.string()),
+    // Optional anchor — when a meeting is rooted in a specific project the
+    // student can deep-link straight to it from the meeting card.
+    applicationId: v.optional(v.id("applications")),
+    createdAt: v.number(),
+  })
+    .index("by_student", ["studentId"])
+    .index("by_student_scheduled", ["studentId", "scheduledAt"])
+    .index("by_scheduledBy", ["scheduledBy"]),
 
   // ============================================
   // Activity log

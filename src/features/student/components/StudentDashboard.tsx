@@ -9,6 +9,7 @@ import StudentAvatar from "./StudentAvatar";
 import AttentionSection from "./AttentionSection";
 import RecentApplicationsCard from "./RecentApplicationsCard";
 import RecentNotificationsCard from "./RecentNotificationsCard";
+import UpcomingMeetingsCard from "./UpcomingMeetingsCard";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "@/lib/toast";
@@ -128,6 +129,9 @@ export default function StudentDashboard() {
           )}
         </Card>
       )}
+
+      {/* Upcoming meetings — renders nothing when empty */}
+      <UpcomingMeetingsCard />
 
       {/* Recent activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

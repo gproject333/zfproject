@@ -25,6 +25,7 @@ import type * as lib_statuses from "../lib/statuses.js";
 import type * as lib_uploads from "../lib/uploads.js";
 import type * as lib_users from "../lib/users.js";
 import type * as lib_validation from "../lib/validation.js";
+import type * as meetings from "../meetings.js";
 import type * as notifications from "../notifications.js";
 import type * as presence from "../presence.js";
 import type * as socialLinks from "../socialLinks.js";
@@ -60,6 +61,7 @@ declare const fullApi: ApiFromModules<{
   "lib/uploads": typeof lib_uploads;
   "lib/users": typeof lib_users;
   "lib/validation": typeof lib_validation;
+  meetings: typeof meetings;
   notifications: typeof notifications;
   presence: typeof presence;
   socialLinks: typeof socialLinks;
