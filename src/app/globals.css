@@ -51,28 +51,32 @@
   --radius: 10px;
 }
 
-/* --- CSS Variables (Dark) --- */
+/* --- CSS Variables (Dark) ---
+   Neutral charcoal palette (#212122 base). Lets the olive/gold accents
+   pop without competing with a tinted background. Foreground-on-accent
+   colors switched to the same charcoal so button text matches the bg
+   tone rather than the old olive-shadow look. */
 .dark {
-  --background: #0F1A12;
-  --foreground: #E8F0E8;
-  --card: #1A2E1F;
-  --card-foreground: #E8F0E8;
+  --background: #212122;
+  --foreground: #E8E8E8;
+  --card: #2A2A2B;
+  --card-foreground: #E8E8E8;
 
   --primary: #4CAF50;
-  --primary-foreground: #0F1A12;
+  --primary-foreground: #212122;
   --secondary: #D4AF37;
-  --secondary-foreground: #0F1A12;
+  --secondary-foreground: #212122;
   --accent: #66BB6A;
-  --accent-foreground: #0F1A12;
+  --accent-foreground: #212122;
 
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
   --success: #22C55E;
-  --success-foreground: #0F1A12;
+  --success-foreground: #212122;
   --warning: #FACC15;
-  --warning-foreground: #0F1A12;
+  --warning-foreground: #212122;
   --info: #60A5FA;
-  --info-foreground: #0F1A12;
+  --info-foreground: #212122;
 
   --status-pending: #FACC15;
   --status-review: #60A5FA;
@@ -80,10 +84,10 @@
   --status-rejected: #EF4444;
   --status-modification: #FB923C;
 
-  --muted: #1A2E1F;
-  --muted-foreground: #B8C4BA;
-  --border: #2A3F2F;
-  --input: #1A2E1F;
+  --muted: #2A2A2B;
+  --muted-foreground: #B5B5B5;
+  --border: #3A3A3C;
+  --input: #2A2A2B;
   --ring: #4CAF50;
   --secondary-border: #A0822A;
 
