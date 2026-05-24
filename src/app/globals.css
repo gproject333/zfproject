@@ -457,6 +457,14 @@ textarea::placeholder {
 .animate-pulse-border { animation: pulseBorder 2s   ease-in-out infinite; }
 .animate-wiggle       { animation: wiggle      0.5s ease-in-out; }
 .animate-bounce-x     { animation: bounceX     1s   ease-in-out infinite; }
+.animate-heart-burst  { animation: heartBurst  0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+@keyframes heartBurst {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  20%  { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+  55%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -55%) scale(0.9); }
+}
 
 /* Marquee track — must be twice the content width */
 .animate-marquee {

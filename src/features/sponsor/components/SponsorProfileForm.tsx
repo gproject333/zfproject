@@ -37,9 +37,9 @@ export default function SponsorProfileForm() {
 
   // Hydrate the editable form from the server document once it lands and on
   // re-fetch. Same pattern used by useStudentProfile.
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setForm({
         name: user.name ?? "",
         phone: user.phone ?? "",

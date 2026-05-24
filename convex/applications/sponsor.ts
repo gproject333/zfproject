@@ -37,15 +37,25 @@ export const mySponsoredApplications = query({
     const withVideo = apps.filter((a) => !!a.videoFileId);
     const reels = await Promise.all(
       withVideo.map(async (a) => {
-        const [videoUrl, pdfUrl] = await Promise.all([
+        const [videoUrl, pdfUrl, student] = await Promise.all([
           a.videoFileId ? ctx.storage.getUrl(a.videoFileId) : null,
           a.pdfFileId ? ctx.storage.getUrl(a.pdfFileId) : null,
+          ctx.db.get(a.studentId),
         ]);
+        const studentAvatarUrl = student?.avatar
+          ? await ctx.storage.getUrl(student.avatar)
+          : null;
         return {
           ...a,
           videoUrl,
           pdfUrl,
           isInterested: interestMap.get(a._id) ?? false,
+          // Instagram-style identity strip on the reel — name + avatar of
+          // the project owner, pre-hydrated so we don't fetch per-frame.
+          student: {
+            name: student?.name ?? null,
+            avatarUrl: studentAvatarUrl,
+          },
         };
       }),
     );
@@ -252,6 +262,67 @@ export const myInterests = query({
     return rows
       .filter((r): r is NonNullable<typeof r> => r !== null)
       .sort((a, b) => b.interestCreatedAt - a.interestCreatedAt);
+  },
+});
+
+/**
+ * Supervisor/admin inbox: every sponsor↔project interest in the system,
+ * enriched with sponsor + project metadata so the dashboard can render
+ * contact info and a "تم التواصل" toggle without any per-row round trip.
+ *
+ * Returned newest-interest-first. Filters out rows whose sponsor or
+ * application was deleted, and only includes rows where the sponsor is
+ * still interested.
+ */
+export const allSponsorInterests = query({
+  args: {},
+  handler: async (ctx) => {
+    const caller = await getOptionalUser(ctx);
+    if (!caller || (caller.role !== "supervisor" && caller.role !== "admin")) {
+      return [];
+    }
+
+    const interests = await ctx.db.query("sponsorAssignments").collect();
+    const liked = interests.filter((a) => a.isInterested === true);
+
+    const rows = await Promise.all(
+      liked.map(async (a) => {
+        const [sponsor, app] = await Promise.all([
+          ctx.db.get(a.sponsorId),
+          ctx.db.get(a.applicationId),
+        ]);
+        if (!sponsor || !app) return null;
+        return {
+          assignmentId: a._id,
+          interestCreatedAt: a.createdAt,
+          adminContactedAt: a.adminContactedAt ?? null,
+          sponsor: {
+            _id: sponsor._id,
+            name: sponsor.name ?? null,
+            email: sponsor.email,
+            phone: sponsor.phone ?? null,
+            linkedinUrl: sponsor.linkedinUrl ?? null,
+          },
+          project: {
+            _id: app._id,
+            name: app.projectName,
+            type: app.type,
+            status: app.status,
+            studentId: app.studentId,
+          },
+        };
+      }),
+    );
+
+    return rows
+      .filter((r): r is NonNullable<typeof r> => r !== null)
+      .sort((a, b) => {
+        // Pending (not contacted) first, then by newest interest.
+        const aPending = a.adminContactedAt === null ? 0 : 1;
+        const bPending = b.adminContactedAt === null ? 0 : 1;
+        if (aPending !== bPending) return aPending - bPending;
+        return b.interestCreatedAt - a.interestCreatedAt;
+      });
   },
 });
 

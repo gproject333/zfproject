@@ -39,6 +39,7 @@ export default function SponsorReelOverlayActions({
 
   const [showProject, setShowProject] = useState(false);
   const [showStudent, setShowStudent] = useState(false);
+  const [bigHeartKey, setBigHeartKey] = useState(0);
 
   const student = useQuery(
     api.applications.sponsor.getStudentForAcceptedApplication,
@@ -46,7 +47,12 @@ export default function SponsorReelOverlayActions({
   );
 
   const handleToggle = async () => {
-    setOptimistic(!interested);
+    const next = !interested;
+    setOptimistic(next);
+    if (next) {
+      // IG-style floating heart burst — only when liking, not unliking.
+      setBigHeartKey((k) => k + 1);
+    }
     setIsLiking(true);
     try {
       await toggleInterest({ applicationId: app._id as Id<"applications"> });
@@ -58,6 +64,13 @@ export default function SponsorReelOverlayActions({
 
   return (
     <>
+      {/* IG-style floating heart that scales + fades on every like. */}
+      {bigHeartKey > 0 && (
+        <Heart
+          key={bigHeartKey}
+          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-32 h-32 text-red-500 fill-red-500 drop-shadow-[0_0_24px_rgba(239,68,68,0.6)] animate-heart-burst"
+        />
+      )}
       <div className="absolute bottom-32 left-4 z-20 flex flex-col items-center gap-5">
         <OverlayButton
           label={interested ? "أنت مهتم" : "اهتمام"}
