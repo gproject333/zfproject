@@ -511,6 +511,21 @@ textarea::placeholder {
     radial-gradient(circle at 60% 80%, rgba(102,187,106,0.03) 0%, transparent 50%);
 }
 
+/* The footer in dark mode keeps a light surface (#deddeb) — a deliberate
+   contrast moment instead of dissolving into the charcoal page. Scope-
+   override the relevant tokens inside `.app-footer` so every existing
+   utility (bg-card, text-foreground, text-muted-foreground, ds-border)
+   resolves against light values without touching the markup. */
+.dark .app-footer {
+  --background: #DEDDEB;
+  --foreground: #13201A;
+  --card: #FFFFFF;
+  --card-foreground: #13201A;
+  --muted: #DEDDEB;
+  --muted-foreground: #5F6B62;
+  --border: #C6C6D0;
+}
+
 .bg-dots {
   background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
   background-size: 24px 24px;

@@ -39,7 +39,7 @@ export default function AppFooter() {
 
   return (
     <footer
-      className="relative mt-auto overflow-hidden border-t border-foreground/8"
+      className="app-footer relative mt-auto overflow-hidden border-t border-foreground/8"
       style={{
         background:
           "linear-gradient(180deg, color-mix(in srgb, var(--muted) 75%, var(--background)) 0%, var(--muted) 100%)",
