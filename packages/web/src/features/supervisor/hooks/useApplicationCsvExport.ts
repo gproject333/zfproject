@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 import { STATUS_LABELS } from "../../../../convex/lib/statuses";
 import { TYPE_CONFIG } from "@/lib/configs/application";
-import { formatArabicDate } from "@/lib/formatters";
+import { formatArabicDate } from "@smart-zuj/core";
 import { exportCsv } from "@/lib/exportCsv";
 
 type Row = Doc<"applications"> & {

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { UserCircle, Calendar } from "lucide-react";
-import { formatArabicDate } from "@/lib/formatters";
+import { formatArabicDate } from "@smart-zuj/core";
 import type { ArticleDoc } from "../hooks/useArticleForm";
 
 interface ArticleCardProps {

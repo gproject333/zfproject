@@ -12,7 +12,7 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/Table";
-import { formatArabicDate } from "@/lib/formatters";
+import { formatArabicDate } from "@smart-zuj/core";
 import ArticleFormDialog from "./ArticleFormDialog";
 import { useArticleForm } from "../hooks/useArticleForm";
 import { Button, Spinner} from "@/components/ui";

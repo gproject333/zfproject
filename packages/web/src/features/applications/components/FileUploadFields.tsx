@@ -2,7 +2,7 @@
 
 import { FileText, Video, X, Upload } from "lucide-react";
 import type { useFileUpload } from "@/features/applications/hooks/useFileUpload";
-import { formatFileSize } from "@/lib/formatters";
+import { formatFileSize } from "@smart-zuj/core";
 
 type FileUploadState = ReturnType<typeof useFileUpload>;
 

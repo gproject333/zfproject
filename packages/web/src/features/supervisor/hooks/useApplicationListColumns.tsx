@@ -14,7 +14,7 @@ import {
 import type { Doc } from "../../../../convex/_generated/dataModel";
 import { canTransition } from "../../../../convex/lib/statuses";
 import { STATUS_CONFIG, TYPE_CONFIG } from "@/lib/configs/application";
-import { formatArabicDate } from "@/lib/formatters";
+import { formatArabicDate } from "@smart-zuj/core";
 import {
   DropdownMenu,
   DropdownMenuTrigger,

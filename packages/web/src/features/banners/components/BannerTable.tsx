@@ -17,8 +17,8 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/Table";
-import { youTubeThumbnail } from "@/lib/youtube";
-import { formatArabicDate } from "@/lib/formatters";
+import { youTubeThumbnail } from "@smart-zuj/core";
+import { formatArabicDate } from "@smart-zuj/core";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import type { BannerDoc } from "../hooks/useBannerForm";
 

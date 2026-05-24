@@ -3,7 +3,7 @@
 import type { RefObject } from "react";
 import { ImageIcon, Play, Upload, Video } from "lucide-react";
 import { Input } from "@/components/ui";
-import { youTubeThumbnail } from "@/lib/youtube";
+import { youTubeThumbnail } from "@smart-zuj/core";
 import type { MediaType, useBannerAdmin } from "../../hooks/useBannerAdmin";
 import { BannerPreview } from "./BannerPreview";
 

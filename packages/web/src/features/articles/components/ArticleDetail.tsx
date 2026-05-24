@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import {UserCircle, Calendar, ChevronRight} from "lucide-react";
-import { formatArabicDate } from "@/lib/formatters";
+import { formatArabicDate } from "@smart-zuj/core";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Breadcrumbs, buttonVariants, Spinner, Card} from "@/components/ui";
 import { useArticleDetail } from "../hooks/useArticlesList";

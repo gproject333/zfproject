@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import { ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc } from "../../../../convex/_generated/dataModel";
-import { extractYouTubeId } from "@/lib/youtube";
+import { extractYouTubeId } from "@smart-zuj/core";
 
 const AUTOPLAY_MS = 5000;
 

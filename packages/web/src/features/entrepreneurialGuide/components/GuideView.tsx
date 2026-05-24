@@ -6,7 +6,7 @@ import { api } from "../../../../convex/_generated/api";
 import {Compass, ExternalLink, Video, GraduationCap, Link2, Calendar} from "lucide-react";
 import { Spinner, Tabs } from "@/components/ui";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { formatArabicDate } from "@/lib/formatters";
+import { formatArabicDate } from "@smart-zuj/core";
 
 type FilterType = "all" | "video" | "course" | "link";
 

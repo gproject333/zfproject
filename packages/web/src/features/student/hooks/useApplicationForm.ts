@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { FORM_EXTRA_FIELDS } from "@/lib/configs/application";
-import { validatePhone } from "@/lib/validation";
+import { validatePhone } from "@smart-zuj/core";
 import type {
   ApplicationFormData,
   ApplicationType,

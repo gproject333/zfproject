@@ -12,7 +12,7 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/Table";
-import { formatArabicDate } from "@/lib/formatters";
+import { formatArabicDate } from "@smart-zuj/core";
 import GuideFormDialog from "./GuideFormDialog";
 import { useGuideForm } from "../hooks/useGuideForm";
 import { Button, Spinner} from "@/components/ui";

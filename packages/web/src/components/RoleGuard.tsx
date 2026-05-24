@@ -5,7 +5,7 @@ import { api } from "../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui";
-import { getRoleHomepage, type Role } from "@/lib/roles";
+import { getRoleHomepage, type Role } from "@smart-zuj/core";
 
 interface RoleGuardProps {
   allowedRoles: Role[];

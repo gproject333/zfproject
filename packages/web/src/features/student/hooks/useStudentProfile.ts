@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
-import { validatePhone } from "@/lib/validation";
+import { validatePhone } from "@smart-zuj/core";
 
 export interface ProfileFormState {
   name: string;

@@ -7,7 +7,7 @@ import { useQuery } from "convex/react";
 import { useConvexAuth } from "convex/react";
 import { AlertTriangle, ArrowLeft } from "lucide-react";
 import { api } from "../../../convex/_generated/api";
-import { getRoleHomepage } from "@/lib/roles";
+import { getRoleHomepage } from "@smart-zuj/core";
 
 /**
  * Post-login waiting room. Clerk hands us a session immediately, but the

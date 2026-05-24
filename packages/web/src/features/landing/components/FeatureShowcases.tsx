@@ -21,7 +21,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
-import { getRoleHomepage } from "@/lib/roles";
+import { getRoleHomepage } from "@smart-zuj/core";
 
 /**
  * Auth-aware CTA targets for the three showcases. Non-authed visitors are

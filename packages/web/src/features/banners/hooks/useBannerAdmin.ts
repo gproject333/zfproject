@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc, Id } from "../../../../convex/_generated/dataModel";
-import { isYouTubeUrl } from "@/lib/youtube";
+import { isYouTubeUrl } from "@smart-zuj/core";
 
 export type BannerVariant = "info" | "success" | "warning";
 export type BannerAudience = "student" | "supervisor" | "landing" | "all";

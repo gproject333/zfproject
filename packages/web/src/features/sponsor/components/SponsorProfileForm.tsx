@@ -6,7 +6,7 @@ import { Camera, CheckCircle2, Link2, Save } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import { Button, Card, Input, Spinner } from "@/components/ui";
-import { validatePhone } from "@/lib/validation";
+import { validatePhone } from "@smart-zuj/core";
 
 interface FormState {
   name: string;
