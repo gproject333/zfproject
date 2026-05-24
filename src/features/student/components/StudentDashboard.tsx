@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, ArrowUpCircle, Clock, XCircle } from "lucide-react";
+import { Plus, ArrowUpCircle, Clock, XCircle, UserCircle, ArrowLeft, Rocket, BookOpen, Compass } from "lucide-react";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
 import { Button, Card } from "@/components/ui";
 import { useStudentDashboardStats } from "@/features/student/hooks/useStudentDashboardStats";
+import { useProfileComplete } from "@/features/student/hooks/useProfileComplete";
 import StudentAvatar from "./StudentAvatar";
 import AttentionSection from "./AttentionSection";
 import RecentApplicationsCard from "./RecentApplicationsCard";
@@ -22,6 +24,7 @@ import { toast } from "@/lib/toast";
 export default function StudentDashboard() {
   const router = useRouter();
   const { stats, user, statCards, loading } = useStudentDashboardStats();
+  const profile = useProfileComplete();
   const upgradeRequest = useQuery(api.supervisorUpgradeRequests.getMyRequest, {});
   const submitRequest = useMutation(api.supervisorUpgradeRequests.submitRequest);
 
@@ -60,6 +63,77 @@ export default function StudentDashboard() {
           تقديم طلب جديد
         </Button>
       </div>
+
+      {/* Incomplete profile banner — sits ABOVE AttentionSection because
+          the student literally cannot submit a new application until they
+          fill it. */}
+      {!profile.loading && !profile.isComplete && profile.hasUser && (
+        <Card className="p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 border-warning/40 bg-warning/[0.06]">
+          <div className="w-12 h-12 rounded-xl bg-warning/15 text-warning ds-border flex items-center justify-center shrink-0">
+            <UserCircle className="w-6 h-6" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-extrabold text-base">أكمل ملفك الشخصي</h3>
+            <p className="text-sm text-muted-foreground font-medium mt-0.5">
+              {profile.missing.length > 0
+                ? `لتتمكن من تقديم طلب، ينقصك: ${profile.missing.join("، ")}.`
+                : "أكمل بياناتك حتى يقدر المشرف يتواصل معك."}
+            </p>
+          </div>
+          <Link
+            href="/student/profile"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-warning text-white font-bold text-sm shrink-0 hover:opacity-90 transition-opacity"
+          >
+            إكمال الآن
+            <ArrowLeft className="w-4 h-4" />
+          </Link>
+        </Card>
+      )}
+
+      {/* First-time student welcome — only when zero applications AND
+          profile is complete so we don't double-stack onboarding cards. */}
+      {stats.total === 0 && profile.isComplete && (
+        <Card className="p-6 sm:p-7 border-primary/30 bg-gradient-to-br from-primary/[0.06] via-primary/[0.03] to-transparent">
+          <div className="flex flex-col sm:flex-row items-start gap-5">
+            <div className="w-14 h-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-[0_8px_24px_-6px_rgba(31,92,46,0.5)]">
+              <Rocket className="w-7 h-7" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-black text-lg sm:text-xl leading-tight">
+                مرحباً بك في حاضنة الزيتونة 👋
+              </h3>
+              <p className="text-sm text-muted-foreground font-medium mt-1.5 leading-relaxed">
+                ابدأ بتقديم فكرتك الأولى — اختار النوع، عبّي البيانات، وابعت
+                للمشرف. تقدر تحفظ مسودة وترجع لها أي وقت.
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                <Link
+                  href="/student/new"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-primary text-primary-foreground font-bold text-sm ds-shadow-sm hover:bg-accent transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  ابدأ بفكرتك الأولى
+                </Link>
+                <Link
+                  href="/student/guide"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-card text-foreground font-bold text-sm ds-border hover:bg-muted transition-colors"
+                >
+                  <Compass className="w-4 h-4" />
+                  دليل التقديم
+                </Link>
+                <Link
+                  href="/student/articles"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-card text-foreground font-bold text-sm ds-border hover:bg-muted transition-colors"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  مكتبة المقالات
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* What needs the student's action */}
       {stats.needsModification > 0 && <AttentionSection />}

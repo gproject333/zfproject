@@ -11,6 +11,7 @@ import { useStudentApplicationDetails } from "@/features/student/hooks/useStuden
 import ApplicationEditForm from "./ApplicationEditForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import StudentApplicationHero from "./StudentApplicationHero";
+import ApplicationStatusBanner from "./ApplicationStatusBanner";
 import { Button, Card } from "@/components/ui";
 import { SkeletonApplicationDetail } from "@/components/ui/Skeleton";
 import { Tooltip } from "@/components/ui/Tooltip";
@@ -135,6 +136,12 @@ export default function StudentApplicationDetails() {
         actions={actions}
         showStepper={!isEditing}
       />
+
+      {/* Status-aware banner: timeline expectations during review,
+          celebration + next-steps after acceptance. Renders nothing for
+          draft/needs_modification/rejected — the existing feedback card
+          handles those. */}
+      {!isEditing && <ApplicationStatusBanner app={app} />}
 
       {/* Supervisor feedback sits above the body: when an application is
           returned for changes it is the first thing the student should

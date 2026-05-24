@@ -7,6 +7,7 @@ import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import { useFileUpload } from "@/features/applications/hooks/useFileUpload";
 import { useApplicationForm, type ApplicationType } from "./useApplicationForm";
+import { useDraftAutoSave, isFormDirty } from "./useDraftAutoSave";
 import { buildApplicationPayload } from "../utils/buildApplicationPayload";
 import { validateApplicationFiles } from "../utils/validateApplicationFiles";
 
@@ -29,6 +30,26 @@ export function useCreateApplication(type: ApplicationType) {
 
   const [loading, setLoading] = useState(false);
   const [submitMode, setSubmitMode] = useState<SubmitMode>("submit");
+  const [success, setSuccess] = useState<
+    | null
+    | { appId: Id<"applications">; mode: SubmitMode }
+  >(null);
+
+  // Auto-save + browser-close guard. The hook owns localStorage; here we
+  // just feed it the current form snapshot and a "should we be saving?"
+  // signal so it can debounce writes and warn on unload.
+  const dirty = isFormDirty(form.formData);
+  const draft = useDraftAutoSave(type, form.formData, dirty, loading);
+
+  /**
+   * Navigate to the new application. Called from the success dialog —
+   * draft saves skip the dialog entirely (next argument), submitted
+   * applications wait for the user to dismiss the dialog before routing.
+   */
+  const goToApplication = useCallback(() => {
+    if (!success) return;
+    router.push(`/student/applications/${success.appId}`);
+  }, [router, success]);
 
   const submit = useCallback(
     async (mode: SubmitMode) => {
@@ -62,7 +83,18 @@ export function useCreateApplication(type: ApplicationType) {
           submitNow: mode === "submit",
         });
 
-        router.push(`/student/applications/${appId}`);
+        // Clear the persisted draft now that the server has the data —
+        // keeping it around would re-prompt to restore on the next visit.
+        draft.clearDraft();
+
+        if (mode === "draft") {
+          // Drafts skip the celebration — go straight to the application.
+          router.push(`/student/applications/${appId}`);
+        } else {
+          // Submitted: pause on a success modal so the student knows what
+          // happens next before landing on the read-only detail view.
+          setSuccess({ appId, mode });
+        }
       } catch (e: unknown) {
         form.setFormError(
           "حدث خطأ: " + (e instanceof Error ? e.message : "حاول مرة أخرى.")
@@ -71,7 +103,7 @@ export function useCreateApplication(type: ApplicationType) {
         setLoading(false);
       }
     },
-    [form, upload, createApplication, router, type]
+    [form, upload, createApplication, router, type, draft]
   );
 
   return {
@@ -80,5 +112,8 @@ export function useCreateApplication(type: ApplicationType) {
     loading,
     submitMode,
     submit,
+    success,
+    goToApplication,
+    draft,
   };
 }

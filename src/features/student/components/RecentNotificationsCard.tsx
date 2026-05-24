@@ -51,8 +51,13 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
         </div>
       ) : notifications.length === 0 ? (
         <div className="text-center py-10 px-5">
-          <Bell className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm font-medium text-muted-foreground">لا توجد إشعارات</p>
+          <div className="w-12 h-12 rounded-full bg-accent/12 text-accent flex items-center justify-center mx-auto mb-3">
+            <Bell className="w-6 h-6" />
+          </div>
+          <p className="text-sm font-bold mb-1">صندوق هادئ — لسّا ما صار شي</p>
+          <p className="text-xs text-muted-foreground font-medium max-w-[260px] mx-auto leading-relaxed">
+            رح نطمنك أول ما يطلع قرار من مشرفك أو يحدد لك موعد لقاء.
+          </p>
         </div>
       ) : (
         <div>

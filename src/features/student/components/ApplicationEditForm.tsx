@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {Edit3, Save, Send} from "lucide-react";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 import FileUploadFields from "@/features/applications/components/FileUploadFields";
@@ -7,6 +8,7 @@ import FormError from "@/features/applications/components/FormError";
 import { useEditApplication } from "@/features/student/hooks/useEditApplication";
 import ApplicationFormFields from "./ApplicationFormFields";
 import { Button, Spinner, Card} from "@/components/ui";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 interface ApplicationEditFormProps {
   app: Doc<"applications">;
@@ -21,6 +23,7 @@ interface ApplicationEditFormProps {
  */
 export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFormProps) {
   const { form, upload, saving, saveMode, save } = useEditApplication(app, onSaved);
+  const [confirmResubmit, setConfirmResubmit] = useState(false);
 
   return (
     <Card className="p-6">
@@ -64,7 +67,7 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
           حفظ التعديلات
         </Button>
         <Button
-          onPress={() => void save(true)}
+          onPress={() => setConfirmResubmit(true)}
           isDisabled={saving}
           variant="secondary"
           className="flex-[2]"
@@ -80,6 +83,23 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
           )}
         </Button>
       </div>
+
+      <ConfirmDialog
+        open={confirmResubmit}
+        onOpenChange={(open) => {
+          if (!saving) setConfirmResubmit(open);
+        }}
+        title="إعادة تقديم الطلب"
+        description="بعد إعادة التقديم سيعود طلبك إلى قائمة المراجعة عند المشرف ولن تقدر تعدّله حتى يصدر القرار. هل أنت متأكد؟"
+        icon={<Send className="w-6 h-6 text-primary" />}
+        confirmLabel="نعم، أعد التقديم"
+        cancelLabel="إلغاء"
+        isSubmitting={saving}
+        onConfirm={() => {
+          setConfirmResubmit(false);
+          void save(true);
+        }}
+      />
     </Card>
   );
 }
