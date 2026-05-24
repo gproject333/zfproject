@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useQuery } from "convex/react";
+import { useAuth } from "@clerk/nextjs";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Send,
@@ -18,6 +20,50 @@ import {
   Bell,
   type LucideIcon,
 } from "lucide-react";
+import { api } from "../../../../convex/_generated/api";
+import { getRoleHomepage } from "@/lib/roles";
+
+/**
+ * Auth-aware CTA targets for the three showcases. Non-authed visitors are
+ * always pushed to /register so they don't hit a Clerk login wall after a
+ * marketing click; signed-in users are routed to the role-appropriate
+ * surface for that section (their dashboard for "Track", their articles
+ * library for "Learn", the new-application flow for "Submit"). Skipping
+ * the role check until Convex has the user means we render `/register`
+ * for the first paint and upgrade once the role resolves.
+ */
+function useShowcaseCtas() {
+  const { isLoaded, isSignedIn } = useAuth();
+  const user = useQuery(
+    api.users.shared.currentUser,
+    isLoaded && isSignedIn ? undefined : "skip",
+  );
+
+  const signedIn = isLoaded && !!isSignedIn;
+  const role = user?.role;
+
+  // SUBMIT — only students submit applications. Other roles get pointed
+  // to their dashboard; guests to /register.
+  const submitHref = !signedIn
+    ? "/register"
+    : role === "student"
+      ? "/student/new"
+      : getRoleHomepage(role);
+
+  // TRACK — the role's own dashboard, or /register for guests.
+  const trackHref = !signedIn ? "/register" : getRoleHomepage(role);
+
+  // LEARN — students + supervisors have their own articles routes; admins
+  // and sponsors fall back to the student-style library which the
+  // notification bell already deep-links to.
+  const learnHref = !signedIn
+    ? "/register"
+    : role === "supervisor"
+      ? "/supervisor/articles"
+      : "/student/articles";
+
+  return { submitHref, trackHref, learnHref };
+}
 
 /**
  * Three full-feature showcases that each get hero-style breathing room:
@@ -29,11 +75,12 @@ import {
  * entrance reveal only, all status colors via tokens.
  */
 export default function FeatureShowcases() {
+  const ctas = useShowcaseCtas();
   return (
     <div className="relative">
-      <SubmitShowcase />
-      <TrackShowcase />
-      <LearnShowcase />
+      <SubmitShowcase ctaHref={ctas.submitHref} />
+      <TrackShowcase ctaHref={ctas.trackHref} />
+      <LearnShowcase ctaHref={ctas.learnHref} />
     </div>
   );
 }
@@ -150,7 +197,7 @@ function MockupHeader({ title, subtitle }: { title: string; subtitle: string }) 
 
 /* ─────────────────────── Showcase 1: Submit ─────────────────────── */
 
-function SubmitShowcase() {
+function SubmitShowcase({ ctaHref }: { ctaHref: string }) {
   return (
     <FeatureSection
       eyebrow="الخطوة الأولى"
@@ -163,7 +210,7 @@ function SubmitShowcase() {
         { icon: Send, label: "ارفع PDF أو فيديو تعريفي مع طلبك" },
       ]}
       cta="ابدأ تقديمك"
-      ctaHref="/register"
+      ctaHref={ctaHref}
       mockupSide="right"
       mockup={<SubmitMockup />}
     />
@@ -202,7 +249,7 @@ function SubmitMockup() {
 
 /* ─────────────────────── Showcase 2: Track ─────────────────────── */
 
-function TrackShowcase() {
+function TrackShowcase({ ctaHref }: { ctaHref: string }) {
   return (
     <FeatureSection
       eyebrow="بعد التقديم"
@@ -215,7 +262,7 @@ function TrackShowcase() {
         { icon: CheckCircle2, label: "خمس حالات واضحة: مسودة، مراجعة، تعديل، قبول، رفض" },
       ]}
       cta="استعرض لوحتك"
-      ctaHref="/student"
+      ctaHref={ctaHref}
       mockupSide="left"
       mockup={<TrackMockup />}
     />
@@ -310,7 +357,7 @@ function TrackRow({
 
 /* ─────────────────────── Showcase 3: Learn ─────────────────────── */
 
-function LearnShowcase() {
+function LearnShowcase({ ctaHref }: { ctaHref: string }) {
   return (
     <FeatureSection
       eyebrow="مكتبة المعرفة"
@@ -323,7 +370,7 @@ function LearnShowcase() {
         { icon: Compass, label: "دليل ريادي خطوة بخطوة لتأسيس شركة" },
       ]}
       cta="تصفّح المكتبة"
-      ctaHref="/student/articles"
+      ctaHref={ctaHref}
       mockupSide="right"
       mockup={<LearnMockup />}
     />

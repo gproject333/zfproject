@@ -6,12 +6,21 @@ import { notifyAllAdmins } from "./lib/notifications";
 import { internal } from "./_generated/api";
 
 export const submitRequest = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: {
+    reason: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
     const student = await requireUser(ctx);
     if (student.role !== "student") throw new Error("متاح للطلاب فقط");
     if (!student.email.endsWith("@zuj.edu.jo")) {
       throw new Error("هذه الميزة متاحة لأعضاء هيئة التدريس فقط (@zuj.edu.jo)");
+    }
+    const reason = args.reason?.trim();
+    if (!reason || reason.length < 20) {
+      throw new Error("اكتب سبباً واضحاً (20 حرفاً على الأقل) لطلب الترقية");
+    }
+    if (reason.length > 1000) {
+      throw new Error("السبب طويل جداً (الحد الأقصى 1000 محرف)");
     }
 
     // Reject if the student already has a pending request.
@@ -28,6 +37,7 @@ export const submitRequest = mutation({
     const requestId = await ctx.db.insert("supervisorUpgradeRequests", {
       studentId: student._id,
       status: "pending",
+      reason,
       createdAt: now,
       updatedAt: now,
     });

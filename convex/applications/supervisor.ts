@@ -7,6 +7,37 @@ import { STATUS_LABELS, canTransition } from "../lib/statuses";
 import { assertMaxLength } from "../lib/validation";
 import { loadUsersMap, loadStudentsMap } from "../lib/users";
 
+/**
+ * Returns the next application waiting for a supervisor decision, oldest
+ * first. Lets the review page chain straight into the next item instead
+ * of bouncing back to the list after every save. Excludes the current
+ * application so the supervisor doesn't loop on the one they just
+ * decided.
+ */
+export const nextPendingApplication = query({
+  args: { excludeId: v.optional(v.id("applications")) },
+  handler: async (ctx, args) => {
+    const supervisor = await getOptionalSupervisor(ctx);
+    if (!supervisor) return null;
+
+    const pending = await ctx.db
+      .query("applications")
+      .withIndex("by_status", (q) => q.eq("status", "under_review"))
+      .collect();
+
+    const candidates = pending
+      .filter((a) => a._id !== args.excludeId)
+      .sort(
+        (a, b) =>
+          (a.submittedAt ?? a.createdAt) - (b.submittedAt ?? b.createdAt),
+      );
+
+    const next = candidates[0];
+    if (!next) return { id: null as null, remaining: 0 };
+    return { id: next._id, remaining: candidates.length };
+  },
+});
+
 export const listApplications = query({
   args: {
     paginationOpts: paginationOptsValidator,

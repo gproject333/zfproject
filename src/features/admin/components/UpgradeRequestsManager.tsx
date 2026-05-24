@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { CheckCircle2, XCircle, Clock, TrendingUp } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
@@ -104,55 +104,71 @@ export default function UpgradeRequestsManager() {
                 {requests.map((req) => {
                   const statusInfo = STATUS_LABELS[req.status];
                   const isLoading = loadingId === req._id;
+                  const reason = req.reason?.trim();
                   return (
-                    <tr
-                      key={req._id}
-                      className="border-b border-border/50 hover:bg-muted/30 transition-colors"
-                    >
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-primary/10 ds-border flex items-center justify-center shrink-0 font-extrabold text-primary text-sm">
-                            {(req.studentName ?? req.studentEmail)[0]?.toUpperCase()}
+                    <Fragment key={req._id}>
+                      <tr
+                        className={`hover:bg-muted/30 transition-colors ${reason ? "border-b-0" : "border-b border-border/50"}`}
+                      >
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-primary/10 ds-border flex items-center justify-center shrink-0 font-extrabold text-primary text-sm">
+                              {(req.studentName ?? req.studentEmail)[0]?.toUpperCase()}
+                            </div>
+                            <span className="font-bold">{req.studentName ?? "—"}</span>
                           </div>
-                          <span className="font-bold">{req.studentName ?? "—"}</span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 hidden md:table-cell text-muted-foreground">
-                        {req.studentEmail}
-                      </td>
-                      <td className="px-4 py-3 hidden sm:table-cell text-muted-foreground">
-                        {new Date(req.createdAt).toLocaleDateString("ar-JO")}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`ds-badge font-bold ${statusInfo.bg} ${statusInfo.color}`}>
-                          {statusInfo.label}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        {req.status === "pending" ? (
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => handleReview(req._id, "approved")}
-                              disabled={isLoading}
-                              className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1 text-success hover:bg-success/10 disabled:opacity-50"
-                            >
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              قبول
-                            </button>
-                            <button
-                              onClick={() => handleReview(req._id, "rejected")}
-                              disabled={isLoading}
-                              className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1 text-destructive hover:bg-destructive/10 disabled:opacity-50"
-                            >
-                              <XCircle className="w-3.5 h-3.5" />
-                              رفض
-                            </button>
-                          </div>
-                        ) : (
-                          <span className="text-xs text-muted-foreground">تم البت بالطلب</span>
-                        )}
-                      </td>
-                    </tr>
+                        </td>
+                        <td className="px-4 py-3 hidden md:table-cell text-muted-foreground">
+                          {req.studentEmail}
+                        </td>
+                        <td className="px-4 py-3 hidden sm:table-cell text-muted-foreground">
+                          {new Date(req.createdAt).toLocaleDateString("ar-JO")}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`ds-badge font-bold ${statusInfo.bg} ${statusInfo.color}`}>
+                            {statusInfo.label}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          {req.status === "pending" ? (
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleReview(req._id, "approved")}
+                                disabled={isLoading}
+                                className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1 text-success hover:bg-success/10 disabled:opacity-50"
+                              >
+                                <CheckCircle2 className="w-3.5 h-3.5" />
+                                قبول
+                              </button>
+                              <button
+                                onClick={() => handleReview(req._id, "rejected")}
+                                disabled={isLoading}
+                                className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1 text-destructive hover:bg-destructive/10 disabled:opacity-50"
+                              >
+                                <XCircle className="w-3.5 h-3.5" />
+                                رفض
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">تم البت بالطلب</span>
+                          )}
+                        </td>
+                      </tr>
+                      {reason && (
+                        <tr className="border-b border-border/50 bg-muted/20">
+                          <td colSpan={5} className="px-4 pt-1 pb-3">
+                            <div className="pr-12">
+                              <p className="text-[10px] font-extrabold text-muted-foreground uppercase tracking-wide mb-1">
+                                سبب الطلب
+                              </p>
+                              <p className="text-sm text-foreground/80 font-medium whitespace-pre-wrap leading-relaxed">
+                                {reason}
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
                   );
                 })}
               </tbody>

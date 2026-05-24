@@ -385,6 +385,10 @@ export default defineSchema({
       v.literal("rejected"),
     ),
     reviewedBy: v.optional(v.id("users")),
+    // Free-form justification the student writes when requesting the
+    // promotion. Optional so old rows don't need a backfill, but the new
+    // submitRequest UI surfaces it as a required field.
+    reason: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
   })

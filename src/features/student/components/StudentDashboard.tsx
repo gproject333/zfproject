@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, ArrowUpCircle, Clock, XCircle, UserCircle, ArrowLeft, Rocket, BookOpen, Compass } from "lucide-react";
+import { useState } from "react";
+import { Plus, ArrowUpCircle, Clock, XCircle, UserCircle, ArrowLeft, Rocket, BookOpen, Compass, Send } from "lucide-react";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
-import { Button, Card } from "@/components/ui";
+import { Button, Card, Spinner, TextArea } from "@/components/ui";
+import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import { useStudentDashboardStats } from "@/features/student/hooks/useStudentDashboardStats";
 import { useProfileComplete } from "@/features/student/hooks/useProfileComplete";
 import StudentAvatar from "./StudentAvatar";
@@ -29,13 +31,28 @@ export default function StudentDashboard() {
   const submitRequest = useMutation(api.supervisorUpgradeRequests.submitRequest);
 
   const isZujStaff = user?.email?.endsWith("@zuj.edu.jo") ?? false;
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [upgradeReason, setUpgradeReason] = useState("");
+  const [upgradeBusy, setUpgradeBusy] = useState(false);
+  const [upgradeError, setUpgradeError] = useState<string | null>(null);
 
   const handleUpgradeRequest = async () => {
+    setUpgradeError(null);
+    const trimmed = upgradeReason.trim();
+    if (trimmed.length < 20) {
+      setUpgradeError("اكتب سبباً واضحاً لا يقل عن 20 حرفاً.");
+      return;
+    }
+    setUpgradeBusy(true);
     try {
-      await submitRequest({});
-      toast.success("تم تقديم طلب الترقية بنجاح، سيتم مراجعته قريباً");
+      await submitRequest({ reason: trimmed });
+      toast.success("تم تقديم طلب الترقية، سيتم مراجعته قريباً");
+      setUpgradeOpen(false);
+      setUpgradeReason("");
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "حدث خطأ");
+      setUpgradeError(e instanceof Error ? e.message : "حدث خطأ");
+    } finally {
+      setUpgradeBusy(false);
     }
   };
 
@@ -193,7 +210,7 @@ export default function StudentDashboard() {
           </div>
           {(upgradeRequest === null || upgradeRequest?.status === "rejected") && (
             <Button
-              onPress={handleUpgradeRequest}
+              onPress={() => setUpgradeOpen(true)}
               variant="primary"
               size="sm"
               className="shrink-0"
@@ -203,6 +220,66 @@ export default function StudentDashboard() {
           )}
         </Card>
       )}
+
+      <Dialog
+        open={upgradeOpen}
+        onOpenChange={(o) => {
+          if (!upgradeBusy) {
+            setUpgradeOpen(o);
+            if (!o) setUpgradeError(null);
+          }
+        }}
+      >
+        <DialogContent
+          title="طلب الترقية إلى مشرف"
+          description="اشرح للأدمن سبب رغبتك بالترقية ودورك الأكاديمي حتى يستطيع البتّ بطلبك بسرعة."
+          className="max-w-md"
+        >
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="upgrade-reason" className="block text-sm font-bold mb-2">
+                سبب الطلب
+              </label>
+              <TextArea
+                id="upgrade-reason"
+                fullWidth
+                value={upgradeReason}
+                onChange={(e) => setUpgradeReason(e.target.value)}
+                placeholder="مثال: أعمل معيداً في قسم نظم المعلومات منذ سنتين وأشرف على ٣ مشاريع تخرج حالياً."
+                className="min-h-[120px]"
+                maxLength={1000}
+              />
+              <p className="text-xs text-muted-foreground font-medium mt-1.5">
+                {upgradeReason.trim().length} / 1000 — 20 حرفاً على الأقل
+              </p>
+            </div>
+            {upgradeError && (
+              <p className="text-xs font-bold text-destructive">{upgradeError}</p>
+            )}
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Button
+                onPress={handleUpgradeRequest}
+                isDisabled={upgradeBusy}
+                variant="primary"
+                fullWidth
+              >
+                {upgradeBusy ? <Spinner size="sm" color="current" /> : <Send className="w-4 h-4" />}
+                إرسال الطلب
+              </Button>
+              <Button
+                onPress={() => {
+                  if (!upgradeBusy) setUpgradeOpen(false);
+                }}
+                variant="outline"
+                fullWidth
+              >
+                إلغاء
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
 
       {/* Upcoming meetings — renders nothing when empty */}
       <UpcomingMeetingsCard />

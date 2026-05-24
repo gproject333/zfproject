@@ -249,6 +249,20 @@ body {
   border-color: var(--primary);
 }
 
+/* Keyboard-focus rings for every interactive element by default. Anything
+   that overrides this (e.g., custom :focus-visible classes in Tailwind)
+   will still win. Hidden for mouse/touch users via :focus-visible. */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="menuitem"]:focus-visible,
+[role="option"]:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 55%, transparent);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
 .ds-input::placeholder {
   color: var(--muted-foreground);
 }

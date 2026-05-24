@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Compass, BookOpen } from "lucide-react";
+import { Compass, BookOpen, Inbox, FileText } from "lucide-react";
+import { Card } from "@/components/ui";
 import { SkeletonStatCards, Skeleton } from "@/components/ui/Skeleton";
 import { ApplicationsDonut } from "@/components/charts/ApplicationsDonut";
 import { useSupervisorDashboardStats } from "@/features/supervisor/hooks/useSupervisorDashboardStats";
@@ -32,6 +33,43 @@ export default function SupervisorDashboard() {
           </h2>
         </div>
       </div>
+
+      {/* Brand-new supervisor: zero applications in the system → replace
+          the dead row of zero-count stat cards with a welcome panel. */}
+      {stats.total === 0 ? (
+        <Card className="p-6 sm:p-8 border-accent/30 bg-gradient-to-br from-accent/[0.05] via-accent/[0.02] to-transparent">
+          <div className="flex flex-col sm:flex-row items-start gap-5">
+            <div className="w-14 h-14 rounded-2xl bg-accent text-accent-foreground flex items-center justify-center shrink-0 shadow-[0_8px_24px_-6px_rgba(36,82,55,0.5)]">
+              <Inbox className="w-7 h-7" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-black text-lg sm:text-xl leading-tight">
+                صندوقك جاهز — لسّا ما وصلت طلبات
+              </h3>
+              <p className="text-sm text-muted-foreground font-medium mt-1.5 leading-relaxed">
+                أول ما يقدّم طالب طلب احتضان، حيظهر هنا للمراجعة. خلال انتظارك
+                تقدر تجهّز محتوى للمكتبة وتضيف موارد للدليل الريادي.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                <Link
+                  href="/supervisor/articles"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-card text-foreground font-bold text-sm ds-border hover:bg-muted transition-colors"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  المقالات
+                </Link>
+                <Link
+                  href="/supervisor/entrepreneurial-guide"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-card text-foreground font-bold text-sm ds-border hover:bg-muted transition-colors"
+                >
+                  <Compass className="w-4 h-4" />
+                  الدليل الريادي
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Card>
+      ) : null}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {statCards.map((stat) => (

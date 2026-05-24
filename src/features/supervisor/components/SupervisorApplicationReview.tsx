@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Spinner } from "@/components/ui";
+import { useQuery } from "convex/react";
+import { CheckCircle2, ArrowLeft, List } from "lucide-react";
+import { Button, Spinner } from "@/components/ui";
+import { Dialog, DialogContent } from "@/components/ui/Dialog";
+import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import PdfViewer from "@/components/PdfViewerLazy";
 import ApplicationDetailsView from "@/features/applications/components/ApplicationDetailsView";
@@ -30,6 +34,12 @@ export default function SupervisorApplicationReview() {
   const review = useReview(app);
   const presenceOthers = usePresence(app?._id);
   const [showPdf, setShowPdf] = useState(false);
+  const [savedDialog, setSavedDialog] = useState(false);
+  // Live-updated pool of still-pending applications, current one excluded
+  // — drives the "Review next" CTA in the post-save dialog.
+  const nextPending = useQuery(api.applications.supervisor.nextPendingApplication, {
+    excludeId: appId,
+  });
 
   if (app === undefined) {
     return (
@@ -82,11 +92,57 @@ export default function SupervisorApplicationReview() {
         <div className="space-y-6">
           <ReviewPanel
             review={review}
-            onSaved={() => router.push("/supervisor/applications")}
+            onSaved={() => setSavedDialog(true)}
           />
           <ReviewHistoryTimeline applicationId={app._id} />
         </div>
       </div>
+
+      {/* Post-save dialog: keeps the supervisor in flow. If there's a
+          pending app to review, the primary CTA jumps straight to it;
+          otherwise they return to the list with a "inbox clear" message. */}
+      <Dialog open={savedDialog} onOpenChange={setSavedDialog}>
+        <DialogContent title="تم حفظ القرار" className="max-w-md">
+          <div className="space-y-5">
+            <div className="flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-success/15 text-success flex items-center justify-center ring-4 ring-success/10">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+            </div>
+            <p className="text-center text-sm text-muted-foreground font-medium leading-relaxed">
+              {nextPending?.id
+                ? `بقي ${nextPending.remaining} طلب${nextPending.remaining === 1 ? "" : "اً"} بانتظار قرارك. تابع المراجعة أو ارجع للقائمة.`
+                : "ممتاز — صندوقك الوارد فارغ. لا توجد طلبات معلّقة الآن."}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2">
+              {nextPending?.id ? (
+                <Button
+                  onPress={() => {
+                    setSavedDialog(false);
+                    router.push(`/supervisor/applications/${nextPending.id}`);
+                  }}
+                  variant="primary"
+                  fullWidth
+                >
+                  مراجعة الطلب التالي
+                  <ArrowLeft className="w-4 h-4 rotate-180" />
+                </Button>
+              ) : null}
+              <Button
+                onPress={() => {
+                  setSavedDialog(false);
+                  router.push("/supervisor/applications");
+                }}
+                variant={nextPending?.id ? "outline" : "primary"}
+                fullWidth
+              >
+                <List className="w-4 h-4" />
+                العودة للقائمة
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

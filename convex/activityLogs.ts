@@ -1,5 +1,6 @@
 import { query, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
+import { paginationOptsValidator } from "convex/server";
 import { requireAdmin } from "./lib/auth";
 
 export const log = internalMutation({
@@ -28,5 +29,23 @@ export const recentLogs = query({
       .withIndex("by_created")
       .order("desc")
       .take(args.limit ?? 20);
+  },
+});
+
+/**
+ * Full audit feed for the admin /admin/logs page. Paginated and
+ * client-filterable (we hand back the raw rows; the page narrows by
+ * actor/action/entity locally so the filters can be combined freely
+ * without a query-per-permutation).
+ */
+export const listLogs = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    await requireAdmin(ctx);
+    return await ctx.db
+      .query("activityLogs")
+      .withIndex("by_created")
+      .order("desc")
+      .paginate(args.paginationOpts);
   },
 });
