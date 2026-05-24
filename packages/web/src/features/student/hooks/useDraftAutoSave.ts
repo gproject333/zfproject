@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { storage } from "@/lib/storage";
 import type { ApplicationFormData } from "@/features/student/types/application-form";
 import type { ApplicationType } from "@/features/student/hooks/useApplicationForm";
 
@@ -48,7 +49,7 @@ export function useDraftAutoSave(
   // form was already non-empty (e.g., navigated from another sub-route).
   useEffect(() => {
     try {
-      const raw = window.localStorage.getItem(storageKey);
+      const raw = storage.getItem(storageKey);
       if (!raw) return;
       const parsed = JSON.parse(raw) as SavedDraft;
       if (parsed?.formData?.projectName !== undefined) {
@@ -65,15 +66,11 @@ export function useDraftAutoSave(
   useEffect(() => {
     if (!hasMounted.current || isSubmitting) return;
     if (!isDirty) return;
-    const id = window.setTimeout(() => {
-      try {
-        const payload: SavedDraft = { formData, savedAt: Date.now() };
-        window.localStorage.setItem(storageKey, JSON.stringify(payload));
-      } catch {
-        /* private mode / quota — silently give up */
-      }
+    const id = setTimeout(() => {
+      const payload: SavedDraft = { formData, savedAt: Date.now() };
+      storage.setItem(storageKey, JSON.stringify(payload));
     }, DEBOUNCE_MS);
-    return () => window.clearTimeout(id);
+    return () => clearTimeout(id);
   }, [storageKey, formData, isDirty, isSubmitting]);
 
   // Warn the student before closing/reloading the tab with unsaved edits.
@@ -89,19 +86,11 @@ export function useDraftAutoSave(
 
   const acceptRestore = () => setPendingRestore(null);
   const dismissRestore = () => {
-    try {
-      window.localStorage.removeItem(storageKey);
-    } catch {
-      /* ignore */
-    }
+    storage.removeItem(storageKey);
     setPendingRestore(null);
   };
   const clearDraft = () => {
-    try {
-      window.localStorage.removeItem(storageKey);
-    } catch {
-      /* ignore */
-    }
+    storage.removeItem(storageKey);
   };
 
   return { pendingRestore, acceptRestore, dismissRestore, clearDraft };

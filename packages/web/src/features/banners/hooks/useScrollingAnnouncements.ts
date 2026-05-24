@@ -4,12 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Doc } from "../../../../convex/_generated/dataModel";
+import { storage } from "@/lib/storage";
 
 const STORAGE_KEY = "dismissed-scrolling-announcements";
 
 function getDismissedIds(): Set<string> {
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = storage.getItem(STORAGE_KEY);
     if (!raw) return new Set();
     return new Set(JSON.parse(raw) as string[]);
   } catch {
@@ -18,11 +19,7 @@ function getDismissedIds(): Set<string> {
 }
 
 function persistDismissedIds(ids: Set<string>): void {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
-  } catch {
-    /* ignore storage errors */
-  }
+  storage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
 }
 
 interface UseScrollingAnnouncementsResult {
@@ -41,14 +38,12 @@ export function useScrollingAnnouncements(
   audience: "student" | "landing" | "supervisor",
 ): UseScrollingAnnouncementsResult {
   const banners = useQuery(api.banners.listActiveScrolling, { audience });
-  // Lazy-init reads localStorage on first render. Safe during SSR because
-  // `getDismissedIds` catches the `window` ReferenceError and returns an
-  // empty set — and `banners` is `undefined` until the Convex query
+  // Lazy-init reads the storage adapter on first render. Safe during SSR
+  // because the adapter is backed by an in-memory map when `window` is not
+  // available — and `banners` is `undefined` until the Convex query
   // resolves client-side, so nothing renders that depends on this value
   // before hydration.
-  const [dismissedIds, setDismissedIds] = useState<Set<string>>(() =>
-    typeof window === "undefined" ? new Set() : getDismissedIds(),
-  );
+  const [dismissedIds, setDismissedIds] = useState<Set<string>>(getDismissedIds);
   const [now, setNow] = useState(Date.now);
 
   // Re-check expiry every 60 seconds
