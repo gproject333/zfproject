@@ -11,32 +11,43 @@ import {
 } from "react-native";
 import { useSignIn } from "@clerk/clerk-expo";
 
+type Phase = "credentials" | "second_factor";
+
 /**
- * Email + password sign-in via Clerk. We do this in two steps because
- * Clerk's first-factor API is async (it may also return MFA strategies
- * for some accounts): `create` starts the attempt, `setActive` commits
- * the session once a `complete` status comes back.
+ * Two-phase Clerk sign-in:
  *
- * Anything other than `complete` is surfaced as a generic message —
- * the demo isn't meant to replicate the web's full sign-in UX.
+ *  1. credentials  — email + password. We call attemptFirstFactor with
+ *     the password strategy explicitly so instances that have multiple
+ *     first-factor strategies enabled still work.
+ *  2. second_factor — after the password is accepted, if Clerk replies
+ *     `needs_second_factor`, prompt for a 6-digit TOTP from the user's
+ *     authenticator app (or a backup code).
+ *
+ * Real Clerk error messages are surfaced verbatim so we never hide a
+ * real failure ("password incorrect", "code expired") behind a generic
+ * fallback string.
  */
 export default function LoginScreen() {
   const { signIn, setActive, isLoaded } = useSignIn();
+  const [phase, setPhase] = useState<Phase>("credentials");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  async function onSubmit() {
+  function showError(e: unknown) {
+    const err = e as { errors?: { message?: string }[]; message?: string };
+    setError(
+      err.errors?.[0]?.message ?? err.message ?? "حدث خطأ غير متوقع",
+    );
+  }
+
+  async function submitCredentials() {
     if (!isLoaded) return;
     setError(null);
     setSubmitting(true);
     try {
-      // Clerk's `signIn.create` may return `complete` immediately (single
-      // password factor) or `needs_first_factor` when multiple strategies
-      // are enabled on the instance. In the second case we explicitly
-      // pick the password strategy so the existing Clerk users — who
-      // signed up on the web with email + password — can still get in.
       let attempt = await signIn.create({ identifier: email, password });
       if (attempt.status === "needs_first_factor") {
         attempt = await attempt.attemptFirstFactor({
@@ -46,19 +57,49 @@ export default function LoginScreen() {
       }
       if (attempt.status === "complete") {
         await setActive({ session: attempt.createdSessionId });
-      } else {
-        setError(`تعذّر إكمال تسجيل الدخول — الحالة: ${attempt.status}`);
+        return;
       }
-    } catch (e: unknown) {
-      // Clerk throws structured errors with a `clerkError: true` flag;
-      // their `errors[0].message` is the human-readable reason. Fall
-      // back to the generic message only when the shape doesn't match.
-      const err = e as { errors?: { message?: string }[]; message?: string };
-      const msg =
-        err.errors?.[0]?.message ??
-        err.message ??
-        "بيانات الدخول غير صحيحة";
-      setError(msg);
+      if (attempt.status === "needs_second_factor") {
+        setPhase("second_factor");
+        return;
+      }
+      setError(`تعذّر إكمال تسجيل الدخول — الحالة: ${attempt.status}`);
+    } catch (e) {
+      showError(e);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function submitSecondFactor() {
+    if (!isLoaded) return;
+    setError(null);
+    setSubmitting(true);
+    try {
+      // Try TOTP first (authenticator app code), then fall back to a
+      // backup code. Clerk rejects each strategy independently, so the
+      // backup-code path will only run when TOTP comes back with
+      // verification_failed or strategy_not_allowed.
+      let attempt = await signIn!
+        .attemptSecondFactor({ strategy: "totp", code })
+        .catch((e) => {
+          const err = e as { errors?: { code?: string }[] };
+          if (err.errors?.[0]?.code === "strategy_not_allowed") return null;
+          throw e;
+        });
+      if (!attempt) {
+        attempt = await signIn!.attemptSecondFactor({
+          strategy: "backup_code",
+          code,
+        });
+      }
+      if (attempt.status === "complete") {
+        await setActive({ session: attempt.createdSessionId });
+        return;
+      }
+      setError(`تعذّر التحقق — الحالة: ${attempt.status}`);
+    } catch (e) {
+      showError(e);
     } finally {
       setSubmitting(false);
     }
@@ -70,56 +111,110 @@ export default function LoginScreen() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <View style={styles.card}>
-        <Text style={styles.title}>تسجيل الدخول</Text>
-        <Text style={styles.subtitle}>
-          استخدم نفس حساب الويب — Smart ZUJ
-        </Text>
+        {phase === "credentials" ? (
+          <>
+            <Text style={styles.title}>تسجيل الدخول</Text>
+            <Text style={styles.subtitle}>
+              استخدم نفس حساب الويب — Smart ZUJ
+            </Text>
 
-        <Text style={styles.label}>البريد الإلكتروني</Text>
-        <TextInput
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          autoComplete="email"
-          style={styles.input}
-          placeholder="you@example.com"
-          placeholderTextColor="#a3a3a3"
-          editable={!submitting}
-        />
+            <Text style={styles.label}>البريد الإلكتروني</Text>
+            <TextInput
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              autoComplete="email"
+              style={styles.input}
+              placeholder="you@example.com"
+              placeholderTextColor="#a3a3a3"
+              editable={!submitting}
+            />
 
-        <Text style={styles.label}>كلمة المرور</Text>
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          style={styles.input}
-          placeholder="••••••••"
-          placeholderTextColor="#a3a3a3"
-          editable={!submitting}
-        />
+            <Text style={styles.label}>كلمة المرور</Text>
+            <TextInput
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              style={styles.input}
+              placeholder="••••••••"
+              placeholderTextColor="#a3a3a3"
+              editable={!submitting}
+            />
 
-        {error ? <Text style={styles.error}>{error}</Text> : null}
+            {error ? <Text style={styles.error}>{error}</Text> : null}
 
-        <Pressable
-          onPress={onSubmit}
-          disabled={!isLoaded || submitting || !email || !password}
-          style={({ pressed }) => [
-            styles.button,
-            (pressed || submitting || !email || !password) &&
-              styles.buttonDisabled,
-          ]}
-        >
-          {submitting ? (
-            <ActivityIndicator color="white" />
-          ) : (
-            <Text style={styles.buttonText}>دخول</Text>
-          )}
-        </Pressable>
+            <Pressable
+              onPress={submitCredentials}
+              disabled={!isLoaded || submitting || !email || !password}
+              style={({ pressed }) => [
+                styles.button,
+                (pressed || submitting || !email || !password) &&
+                  styles.buttonDisabled,
+              ]}
+            >
+              {submitting ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={styles.buttonText}>دخول</Text>
+              )}
+            </Pressable>
+          </>
+        ) : (
+          <>
+            <Text style={styles.title}>التحقق بخطوتين</Text>
+            <Text style={styles.subtitle}>
+              أدخل الكود من تطبيق Authenticator أو أحد رموز الاحتياط
+            </Text>
+
+            <Text style={styles.label}>الكود</Text>
+            <TextInput
+              value={code}
+              onChangeText={setCode}
+              keyboardType="number-pad"
+              autoComplete="one-time-code"
+              style={styles.input}
+              placeholder="123456"
+              placeholderTextColor="#a3a3a3"
+              editable={!submitting}
+              autoFocus
+            />
+
+            {error ? <Text style={styles.error}>{error}</Text> : null}
+
+            <Pressable
+              onPress={submitSecondFactor}
+              disabled={!isLoaded || submitting || code.length < 6}
+              style={({ pressed }) => [
+                styles.button,
+                (pressed || submitting || code.length < 6) &&
+                  styles.buttonDisabled,
+              ]}
+            >
+              {submitting ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={styles.buttonText}>تحقق</Text>
+              )}
+            </Pressable>
+
+            <Pressable
+              onPress={() => {
+                setPhase("credentials");
+                setCode("");
+                setError(null);
+              }}
+              style={styles.linkBtn}
+              disabled={submitting}
+            >
+              <Text style={styles.linkText}>← الرجوع لتسجيل الدخول</Text>
+            </Pressable>
+          </>
+        )}
 
         <Text style={styles.hint}>
           هذه شاشة بسيطة لتجربة Convex auth من React Native — الأنواع
-          المتقدمة (Google, SSO, MFA) موجودة في الويب فقط حالياً.
+          المتقدمة (Google, SSO, Magic Link) موجودة في الويب فقط حالياً.
         </Text>
       </View>
     </KeyboardAvoidingView>
@@ -178,6 +273,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: "right",
   },
+  linkBtn: { alignSelf: "flex-end", padding: 8, marginTop: 8 },
+  linkText: { color: "#525252", fontSize: 14 },
   hint: {
     fontSize: 12,
     color: "#737373",
