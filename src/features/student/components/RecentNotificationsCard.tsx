@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import {Bell} from "lucide-react";
@@ -7,6 +8,7 @@ import { Card } from "@/components/ui";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { api } from "../../../../convex/_generated/api";
 import NotificationItem from "@/components/NotificationItem";
+import AckRequiredModal from "@/components/AckRequiredModal";
 import { useRecentNotifications } from "@/features/student/hooks/useRecentNotifications";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 
@@ -20,8 +22,13 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
   const router = useRouter();
   const { notifications, loading } = useRecentNotifications(limit);
   const markAsRead = useMutation(api.notifications.markAsRead);
+  const [ackModalNotif, setAckModalNotif] = useState<Doc<"notifications"> | null>(null);
 
   const handleClick = async (n: Doc<"notifications">) => {
+    if (n.requireAck && !n.ackedAt) {
+      setAckModalNotif(n);
+      return;
+    }
     if (!n.read) await markAsRead({ id: n._id });
     if (n.applicationId) {
       router.push(`/student/applications/${n.applicationId}`);
@@ -71,6 +78,11 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
           ))}
         </div>
       )}
+      <AckRequiredModal
+        notification={ackModalNotif}
+        open={!!ackModalNotif}
+        onClose={() => setAckModalNotif(null)}
+      />
     </Card>
   );
 }

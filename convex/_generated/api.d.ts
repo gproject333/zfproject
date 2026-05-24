@@ -16,6 +16,7 @@ import type * as applications_supervisor from "../applications/supervisor.js";
 import type * as articles from "../articles.js";
 import type * as banners from "../banners.js";
 import type * as colleges from "../colleges.js";
+import type * as crons from "../crons.js";
 import type * as entrepreneurialGuide from "../entrepreneurialGuide.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
@@ -52,6 +53,7 @@ declare const fullApi: ApiFromModules<{
   articles: typeof articles;
   banners: typeof banners;
   colleges: typeof colleges;
+  crons: typeof crons;
   entrepreneurialGuide: typeof entrepreneurialGuide;
   files: typeof files;
   http: typeof http;

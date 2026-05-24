@@ -10,6 +10,22 @@ interface FanoutNotificationArgs {
 }
 
 /**
+ * Notification types that carry a real-world consequence the user must
+ * actively acknowledge — a status change on their application, a meeting
+ * scheduled for them, or a decision on their supervisor-upgrade request.
+ * The Ack modal hooks off this list to know when to intercept clicks.
+ */
+export const ACK_REQUIRED_TYPES = [
+  "status_change",
+  "meeting",
+  "upgrade_request",
+] as const;
+
+export function typeRequiresAck(type: Doc<"notifications">["type"]): boolean {
+  return (ACK_REQUIRED_TYPES as readonly string[]).includes(type);
+}
+
+/**
  * Fan a notification out to every supervisor. Used for events tied to the
  * supervisor's review workflow: new applications, resubmissions, sponsor
  * interest that needs brokering. Admins are NOT included here — they
@@ -36,6 +52,7 @@ export async function notifyAllSupervisors(
       type: args.type,
       applicationId: args.applicationId,
       read: false,
+      requireAck: typeRequiresAck(args.type),
       createdAt: now,
     });
   }
@@ -65,6 +82,7 @@ export async function notifyAllAdmins(
       type: args.type,
       applicationId: args.applicationId,
       read: false,
+      requireAck: typeRequiresAck(args.type),
       createdAt: now,
     });
   }
@@ -88,6 +106,7 @@ export async function notifyAllStudents(
       message: args.message,
       type: args.type,
       read: false,
+      requireAck: typeRequiresAck(args.type),
       createdAt: now,
     });
   }

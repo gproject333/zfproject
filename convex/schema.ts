@@ -298,11 +298,20 @@ export default defineSchema({
     ),
     applicationId: v.optional(v.id("applications")),
     read: v.boolean(),
+    // Some notifications carry an action the user has to acknowledge
+    // explicitly (status decisions, meeting invites, upgrade decisions).
+    // `requireAck` flags them; `ackedAt` records when the user actually
+    // confirmed. Optional everywhere so old rows stay valid as-is.
+    requireAck: v.optional(v.boolean()),
+    ackedAt: v.optional(v.number()),
     createdAt: v.number(),
   })
     .index("by_user", ["userId"])
     .index("by_user_read", ["userId", "read"])
-    .index("by_user_created", ["userId", "createdAt"]),
+    .index("by_user_created", ["userId", "createdAt"])
+    // Sole purpose: range-scan all notifications older than the cleanup
+    // cutoff. Unused by any user-facing query.
+    .index("by_createdAt", ["createdAt"]),
 
   // ============================================
   // Sponsor ↔ application assignments

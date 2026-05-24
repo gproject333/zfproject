@@ -7,10 +7,13 @@ import { useState } from "react";
 import { Bell, CheckCheck } from "lucide-react";
 import { Popover, Spinner } from "@/components/ui";
 import NotificationItem from "@/components/NotificationItem";
+import AckRequiredModal from "@/components/AckRequiredModal";
+import type { Doc } from "../../convex/_generated/dataModel";
 
 export default function NotificationBell() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [ackModalNotif, setAckModalNotif] = useState<Doc<"notifications"> | null>(null);
 
   const currentUser = useQuery(api.users.shared.currentUser);
   const unreadCount = useQuery(api.notifications.unreadCount);
@@ -21,6 +24,14 @@ export default function NotificationBell() {
   const handleNotificationClick = async (
     n: NonNullable<typeof notifications>[number],
   ) => {
+    // Ack-required: intercept the normal flow and open a confirmation
+    // modal. Acknowledgement itself marks read + sets ackedAt server-side.
+    if (n.requireAck && !n.ackedAt) {
+      setAckModalNotif(n);
+      setOpen(false);
+      return;
+    }
+
     if (!n.read) await markAsRead({ id: n._id });
     setOpen(false);
     if (!n.applicationId) return;
@@ -95,6 +106,11 @@ export default function NotificationBell() {
           </div>
         </Popover.Dialog>
       </Popover.Content>
+      <AckRequiredModal
+        notification={ackModalNotif}
+        open={!!ackModalNotif}
+        onClose={() => setAckModalNotif(null)}
+      />
     </Popover>
   );
 }

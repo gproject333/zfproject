@@ -53,6 +53,7 @@ export const scheduleMeeting = mutation({
       type: "meeting",
       applicationId: args.applicationId,
       read: false,
+      requireAck: true,
       createdAt: Date.now(),
     });
 
@@ -142,6 +143,7 @@ export const cancelMeeting = mutation({
       type: "meeting",
       applicationId: meeting.applicationId,
       read: false,
+      requireAck: true,
       createdAt: Date.now(),
     });
   },

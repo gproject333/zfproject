@@ -75,7 +75,14 @@ export default function NotificationItem({
         <Icon className="w-4 h-4" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold leading-tight mb-0.5">{n.title}</p>
+        <div className="flex items-center gap-2 mb-0.5">
+          <p className="text-sm font-bold leading-tight truncate">{n.title}</p>
+          {n.requireAck && !n.ackedAt && (
+            <span className="shrink-0 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-warning/15 text-warning border border-warning/30 whitespace-nowrap">
+              يتطلب تأكيد
+            </span>
+          )}
+        </div>
         <p className="text-xs text-muted-foreground line-clamp-2">{n.message}</p>
         <p className="text-[10px] text-muted-foreground mt-1">
           {notificationTimeAgo(n.createdAt)}

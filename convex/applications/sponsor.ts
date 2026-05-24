@@ -351,7 +351,7 @@ async function notifyInterest(
   const sponsorLabel = sponsor.name?.trim() || "أحد الداعمين";
   const projectLabel = app.projectName;
 
-  // Notify the project owner.
+  // Notify the project owner. `assignment` is FYI — no ack required.
   await ctx.db.insert("notifications", {
     userId: app.studentId,
     title: "اهتمام جديد بمشروعك",
@@ -359,6 +359,7 @@ async function notifyInterest(
     type: "assignment",
     applicationId,
     read: false,
+    requireAck: false,
     createdAt: Date.now(),
   });
 

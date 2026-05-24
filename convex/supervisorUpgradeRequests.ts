@@ -135,6 +135,7 @@ export const reviewRequest = mutation({
             : "عذراً، تم رفض طلب ترقيتك إلى مشرف.",
         type: "upgrade_request",
         read: false,
+        requireAck: true,
         createdAt: now,
       });
     }

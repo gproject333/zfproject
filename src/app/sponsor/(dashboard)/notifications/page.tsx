@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { Bell, CheckCheck } from "lucide-react";
 import { api } from "../../../../../convex/_generated/api";
+import type { Doc } from "../../../../../convex/_generated/dataModel";
 import { Button, Spinner } from "@/components/ui";
 import NotificationItem from "@/components/NotificationItem";
+import AckRequiredModal from "@/components/AckRequiredModal";
 
 export default function SponsorNotificationsPage() {
   const router = useRouter();
@@ -13,10 +16,15 @@ export default function SponsorNotificationsPage() {
   const unreadCount = useQuery(api.notifications.unreadCount) ?? 0;
   const markAsRead = useMutation(api.notifications.markAsRead);
   const markAllAsRead = useMutation(api.notifications.markAllAsRead);
+  const [ackModalNotif, setAckModalNotif] = useState<Doc<"notifications"> | null>(null);
 
   const handleClick = async (
     n: NonNullable<typeof notifications>[number],
   ) => {
+    if (n.requireAck && !n.ackedAt) {
+      setAckModalNotif(n);
+      return;
+    }
     if (!n.read) await markAsRead({ id: n._id });
     // The sponsor's "view source" for any application notification is the
     // interests grid — sponsors don't have a per-application page.
@@ -66,6 +74,12 @@ export default function SponsorNotificationsPage() {
           </ul>
         )}
       </div>
+
+      <AckRequiredModal
+        notification={ackModalNotif}
+        open={!!ackModalNotif}
+        onClose={() => setAckModalNotif(null)}
+      />
     </div>
   );
 }

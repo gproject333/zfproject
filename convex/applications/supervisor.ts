@@ -303,6 +303,7 @@ export const updateApplicationStatus = mutation({
       type: "status_change",
       applicationId: args.id,
       read: false,
+      requireAck: true,
       createdAt: now,
     });
   },
@@ -376,6 +377,7 @@ export const bulkUpdateStatus = mutation({
         type: "status_change",
         applicationId: id,
         read: false,
+        requireAck: true,
         createdAt: now,
       });
 
