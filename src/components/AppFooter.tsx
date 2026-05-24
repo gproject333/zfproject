@@ -70,13 +70,13 @@ export default function AppFooter() {
                 <OliveLogo className="w-12 h-12" />
               </div>
               <div>
-                <p className="font-extrabold text-xl leading-tight text-foreground">حاضنة الزيتونة</p>
-                <p className="text-xs text-muted-foreground font-bold tracking-wide mt-1">
+                <p className="font-extrabold text-2xl leading-tight text-foreground">حاضنة الزيتونة</p>
+                <p className="text-sm text-foreground/70 font-bold tracking-wide mt-1">
                   ZUJ INCUBATOR
                 </p>
               </div>
             </Link>
-            <p className="text-sm text-foreground/70 font-medium leading-relaxed mt-5 max-w-sm">
+            <p className="text-base text-foreground/85 font-medium leading-relaxed mt-5 max-w-sm">
               منصّة احتضان المشاريع الريادية والتقنية والأكاديمية لطلاب
               جامعة الزيتونة الأردنية — من فكرة إلى مشروع مدعوم بالكامل.
             </p>
@@ -84,15 +84,15 @@ export default function AppFooter() {
 
           {/* Student links column */}
           <nav aria-label="روابط الطلاب">
-            <p className="text-[11px] font-extrabold text-foreground/55 uppercase tracking-[0.15em] mb-4">
+            <p className="text-xs font-extrabold text-foreground/80 uppercase tracking-[0.15em] mb-4">
               للطلاب
             </p>
-            <ul className="space-y-3 text-sm font-medium">
+            <ul className="space-y-3 text-base font-semibold">
               {STUDENT_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-foreground/75 hover:text-primary hover:translate-x-1 inline-block transition-all duration-150"
+                    className="text-foreground/90 hover:text-primary hover:translate-x-1 inline-block transition-all duration-150"
                   >
                     {l.label}
                   </Link>
@@ -103,15 +103,15 @@ export default function AppFooter() {
 
           {/* Platform links column */}
           <nav aria-label="روابط المنصة">
-            <p className="text-[11px] font-extrabold text-foreground/55 uppercase tracking-[0.15em] mb-4">
+            <p className="text-xs font-extrabold text-foreground/80 uppercase tracking-[0.15em] mb-4">
               المنصة
             </p>
-            <ul className="space-y-3 text-sm font-medium">
+            <ul className="space-y-3 text-base font-semibold">
               {PLATFORM_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-foreground/75 hover:text-primary hover:translate-x-1 inline-block transition-all duration-150"
+                    className="text-foreground/90 hover:text-primary hover:translate-x-1 inline-block transition-all duration-150"
                   >
                     {l.label}
                   </Link>
@@ -122,12 +122,12 @@ export default function AppFooter() {
 
           {/* Contact column */}
           <div>
-            <p className="text-[11px] font-extrabold text-foreground/55 uppercase tracking-[0.15em] mb-4">
+            <p className="text-xs font-extrabold text-foreground/80 uppercase tracking-[0.15em] mb-4">
               تواصل
             </p>
             <a
               href="mailto:incubator@zuj.edu.jo"
-              className="inline-flex items-center gap-2 text-sm font-medium text-foreground/75 hover:text-primary mb-5"
+              className="inline-flex items-center gap-2 text-base font-semibold text-foreground/90 hover:text-primary mb-5"
             >
               <Mail className="w-4 h-4" />
               incubator@zuj.edu.jo
@@ -150,9 +150,9 @@ export default function AppFooter() {
                         rel="noopener noreferrer"
                         aria-label={accessibleLabel}
                         title={accessibleLabel}
-                        className="w-10 h-10 flex items-center justify-center rounded-lg bg-card ds-border text-foreground/75 hover:text-primary-foreground hover:bg-primary hover:border-primary transition-colors"
+                        className="w-11 h-11 flex items-center justify-center rounded-lg bg-card ds-border text-foreground/85 hover:text-primary-foreground hover:bg-primary hover:border-primary transition-colors"
                       >
-                        <Icon className="w-4 h-4" aria-hidden="true" />
+                        <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
                       </a>
                     </li>
                   );
@@ -171,7 +171,7 @@ export default function AppFooter() {
           aria-hidden
         />
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-foreground/60 font-medium">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-foreground/80 font-semibold">
           <p>© {year} حاضنة الزيتونة — جميع الحقوق محفوظة</p>
           <p className="inline-flex items-center gap-1.5">
             صُنع بـ
