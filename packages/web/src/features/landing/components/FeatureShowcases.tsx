@@ -20,7 +20,7 @@ import {
   Bell,
   type LucideIcon,
 } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { getRoleHomepage } from "@smart-zuj/core";
 
 /**

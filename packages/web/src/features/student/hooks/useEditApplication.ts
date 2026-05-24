@@ -2,8 +2,8 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Doc } from "@smart-zuj/convex";
 import { useFileUpload } from "@/features/applications/hooks/useFileUpload";
 import {
   useApplicationForm,

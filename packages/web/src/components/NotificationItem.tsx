@@ -11,7 +11,7 @@ import {
   CalendarClock,
   type LucideIcon,
 } from "lucide-react";
-import type { Doc } from "../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 
 export const NOTIFICATION_TYPE_ICONS: Record<
   Doc<"notifications">["type"] | "ai_evaluation",

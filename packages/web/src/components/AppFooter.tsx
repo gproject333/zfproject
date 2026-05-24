@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { Mail, Heart } from "lucide-react";
-import { api } from "../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { getPlatformMeta } from "@/lib/configs/socialPlatforms";
 import OliveLogo from "./OliveLogo";
 

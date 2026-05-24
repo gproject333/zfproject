@@ -2,8 +2,8 @@
 
 import { useQuery } from "convex/react";
 import { Avatar } from "@heroui/react";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 
 interface StudentAvatarProps {
   name?: string;

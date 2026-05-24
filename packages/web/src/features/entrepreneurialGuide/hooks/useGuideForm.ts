@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useGuideAdmin } from "./useGuideAdmin";
-import type { Doc, Id } from "../../../../convex/_generated/dataModel";
+import type { Doc, Id } from "@smart-zuj/convex";
 
 /**
  * UI-layer wrapper around useGuideAdmin — owns the dialog open state

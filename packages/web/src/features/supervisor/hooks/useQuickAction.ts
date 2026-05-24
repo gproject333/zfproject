@@ -3,9 +3,9 @@
 import { useCallback, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "@/lib/toast";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
-import type { SupervisorStatus } from "../../../../convex/lib/statuses";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
+import type { SupervisorStatus } from "@smart-zuj/convex/statuses";
 
 interface PendingAction {
   appId: Id<"applications">;

@@ -8,7 +8,7 @@ import {
   Code2,
   Building2,
 } from "lucide-react";
-import { STATUS_LABELS } from "../../../convex/lib/statuses";
+import { STATUS_LABELS } from "@smart-zuj/convex/statuses";
 
 export const STATUS_CONFIG = {
   draft: {

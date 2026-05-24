@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { CalendarClock, MapPin, User as UserIcon } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { Card } from "@/components/ui";
 
 /**

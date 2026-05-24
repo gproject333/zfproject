@@ -10,7 +10,7 @@ import {
   GraduationCap,
   Tag,
 } from "lucide-react";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 import { Card } from "@/components/ui";
 
 interface ProjectDetailsCardProps {

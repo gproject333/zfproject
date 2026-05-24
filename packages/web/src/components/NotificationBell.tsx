@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Bell, CheckCheck } from "lucide-react";
 import { Popover, Spinner } from "@/components/ui";
 import NotificationItem from "@/components/NotificationItem";
 import AckRequiredModal from "@/components/AckRequiredModal";
-import type { Doc } from "../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 
 export default function NotificationBell() {
   const router = useRouter();

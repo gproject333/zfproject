@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Doc } from "@smart-zuj/convex";
 import { storage } from "@/lib/storage";
 
 const STORAGE_KEY = "dismissed-scrolling-announcements";

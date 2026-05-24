@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 
 /**
  * Applications that currently need the student's action — status

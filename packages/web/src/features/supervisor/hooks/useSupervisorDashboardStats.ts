@@ -2,7 +2,7 @@
 
 import { useQuery } from "convex/react";
 import { FileText, type LucideIcon } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { STATUS_CONFIG } from "@/lib/configs/application";
 
 export interface SupervisorStatCard {

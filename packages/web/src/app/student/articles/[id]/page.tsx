@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import ArticleDetail from "@/features/articles/components/ArticleDetail";
-import type { Id } from "../../../../../convex/_generated/dataModel";
+import type { Id } from "@smart-zuj/convex";
 
 export default function StudentArticleDetailPage() {
   const params = useParams();

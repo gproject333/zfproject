@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQuery } from "convex/react";
 import { Sparkles, Heart, Bell, UserRound, type LucideIcon } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 
 const ITEMS: Array<{ href: string; label: string; icon: LucideIcon }> = [
   { href: "/sponsor", label: "استكشف", icon: Sparkles },

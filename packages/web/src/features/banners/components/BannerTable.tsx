@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/Table";
 import { youTubeThumbnail } from "@smart-zuj/core";
 import { formatArabicDate } from "@smart-zuj/core";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import type { Id } from "@smart-zuj/convex";
 import type { BannerDoc } from "../hooks/useBannerForm";
 
 const VARIANT_LABELS: Record<"info" | "success" | "warning", string> = {

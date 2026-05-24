@@ -4,7 +4,7 @@ import { ReactNode, useMemo } from "react";
 import { useQuery } from "convex/react";
 import { Building2, Star } from "lucide-react";
 import { sponsorNavItems } from "@/components/layout/navItems";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import DashboardLayout, { type DashboardLayoutConfig } from "@/components/layout/DashboardLayout";
 
 export default function SponsorLayout({ children }: { children: ReactNode }) {

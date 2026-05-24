@@ -6,11 +6,11 @@ import { useMutation } from "convex/react";
 import {Bell} from "lucide-react";
 import { Card } from "@/components/ui";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import NotificationItem from "@/components/NotificationItem";
 import AckRequiredModal from "@/components/AckRequiredModal";
 import { useRecentNotifications } from "@/features/student/hooks/useRecentNotifications";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 
 /**
  * Dashboard widget: latest N notifications for the current student.

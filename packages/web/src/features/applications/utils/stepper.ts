@@ -6,7 +6,7 @@ import {
   AlertTriangle,
   type LucideIcon,
 } from "lucide-react";
-import type { ApplicationStatus } from "../../../../convex/lib/statuses";
+import type { ApplicationStatus } from "@smart-zuj/convex/statuses";
 
 export type StepState = "done" | "current" | "upcoming";
 

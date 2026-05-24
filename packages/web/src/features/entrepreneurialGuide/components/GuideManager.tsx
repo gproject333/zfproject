@@ -1,6 +1,6 @@
 "use client";
 
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 import {Compass, Plus, Edit3, Trash2, ExternalLink, Video, GraduationCap, Link2} from "lucide-react";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";

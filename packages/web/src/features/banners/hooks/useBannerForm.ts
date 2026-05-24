@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useBannerAdmin } from "./useBannerAdmin";
-import type { Doc, Id } from "../../../../convex/_generated/dataModel";
+import type { Doc, Id } from "@smart-zuj/convex";
 
 export type BannerDoc = Doc<"banners">;
 

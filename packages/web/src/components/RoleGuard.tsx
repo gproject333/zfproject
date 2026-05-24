@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useConvexAuth } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui";

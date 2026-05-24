@@ -2,7 +2,7 @@
 
 import { useQuery } from "convex/react";
 import { BarChart3 } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { SkeletonStatCards } from "@/components/ui/Skeleton";
 import StatsHero from "./adminDashboard/StatsHero";
 import PendingActions from "./adminDashboard/PendingActions";

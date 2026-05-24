@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Info, CheckCircle2, AlertTriangle, ArrowLeft } from "lucide-react";
 import { buttonVariants } from "@/components/ui";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 
 type BannerDoc = Doc<"banners">;
 

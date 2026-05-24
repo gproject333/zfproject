@@ -8,7 +8,7 @@ import {
   AlertTriangle,
   type LucideIcon,
 } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 
 export interface StudentStatCard {
   label: string;

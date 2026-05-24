@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import {Compass, ExternalLink, Video, GraduationCap, Link2, Calendar} from "lucide-react";
 import { Spinner, Tabs } from "@/components/ui";
 import { EmptyState } from "@/components/ui/EmptyState";

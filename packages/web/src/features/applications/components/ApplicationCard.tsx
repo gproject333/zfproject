@@ -3,7 +3,7 @@
 import { Eye } from "lucide-react";
 import { STATUS_CONFIG, TYPE_CONFIG } from "@/lib/configs/application";
 import { formatArabicDate } from "@smart-zuj/core";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 
 interface ApplicationCardProps {
   application: Doc<"applications">;

@@ -1,7 +1,7 @@
 "use client";
 
 import { Check } from "lucide-react";
-import type { ApplicationStatus } from "../../../../convex/lib/statuses";
+import type { ApplicationStatus } from "@smart-zuj/convex/statuses";
 import { buildStepperSteps } from "../utils/stepper";
 import { Card } from "@/components/ui";
 

@@ -13,8 +13,8 @@ import {
   BookOpen,
   Download,
 } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import { Id } from "@smart-zuj/convex";
 import { toast } from "@/lib/toast";
 import { Button, Input, Card} from "@/components/ui";
 

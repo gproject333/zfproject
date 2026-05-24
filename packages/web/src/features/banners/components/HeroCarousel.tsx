@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "convex/react";
 import { ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Doc } from "@smart-zuj/convex";
 import { extractYouTubeId } from "@smart-zuj/core";
 
 const AUTOPLAY_MS = 5000;

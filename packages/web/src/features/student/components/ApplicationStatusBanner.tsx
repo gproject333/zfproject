@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Clock4, Bell, PartyPopper, X, CalendarClock, Heart } from "lucide-react";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 
 const SEEN_KEY_PREFIX = "smartzuj.acceptance-seen.";
 

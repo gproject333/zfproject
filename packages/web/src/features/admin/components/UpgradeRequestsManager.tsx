@@ -3,8 +3,8 @@
 import { Fragment, useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { CheckCircle2, XCircle, Clock, TrendingUp } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import { Id } from "@smart-zuj/convex";
 import { toast } from "@/lib/toast";
 import { Tabs, Card} from "@/components/ui";
 

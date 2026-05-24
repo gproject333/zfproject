@@ -5,8 +5,8 @@ import { useQuery } from "convex/react";
 import { User as UserIcon, ChevronLeft } from "lucide-react";
 import { Spinner } from "@/components/ui";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 import StudentProfileBody from "@/features/applications/components/StudentProfileBody";
 
 interface StudentProfileButtonProps {

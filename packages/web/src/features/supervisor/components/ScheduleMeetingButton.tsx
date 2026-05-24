@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useMutation } from "convex/react";
 import { CalendarClock, MapPin, FileText, Send, CheckCircle2 } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 import { Button, Input, Spinner } from "@/components/ui";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
 

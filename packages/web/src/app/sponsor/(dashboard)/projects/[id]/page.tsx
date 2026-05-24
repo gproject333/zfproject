@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import { api } from "../../../../../../convex/_generated/api";
-import { Id } from "../../../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import { Id } from "@smart-zuj/convex";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, VideoOff } from "lucide-react";
 import { Spinner } from "@/components/ui";

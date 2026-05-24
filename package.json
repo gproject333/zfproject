@@ -3,13 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter @smart-zuj/web dev",
-    "build": "pnpm --filter @smart-zuj/web build",
+    "dev": "pnpm -r --parallel --stream dev",
+    "build": "pnpm --filter @smart-zuj/convex deploy && pnpm --filter @smart-zuj/web build",
     "start": "pnpm --filter @smart-zuj/web start",
-    "lint": "pnpm --filter @smart-zuj/web lint",
-    "test": "pnpm --filter @smart-zuj/web test",
-    "test:watch": "pnpm --filter @smart-zuj/web test:watch",
-    "test:ui": "pnpm --filter @smart-zuj/web test:ui"
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

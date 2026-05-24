@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { Edit3, X, Trash2, FileQuestion } from "lucide-react";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import type { Id } from "@smart-zuj/convex";
 import PdfViewer from "@/components/PdfViewerLazy";
 import ProjectDetailsCard from "@/features/applications/components/ProjectDetailsCard";
 import AttachmentsSection from "@/features/applications/components/AttachmentsSection";

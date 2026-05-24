@@ -3,7 +3,7 @@
 import { MessageSquare, AlertTriangle, Edit3, ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 import { RATING_CONFIG, type SupervisorRating } from "@/lib/configs/application";
 import { Button } from "@/components/ui";
 

@@ -15,7 +15,7 @@ import RecentApplicationsCard from "./RecentApplicationsCard";
 import RecentNotificationsCard from "./RecentNotificationsCard";
 import UpcomingMeetingsCard from "./UpcomingMeetingsCard";
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { toast } from "@/lib/toast";
 
 /**

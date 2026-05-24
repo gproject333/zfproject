@@ -3,8 +3,8 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 
 const PDF_MAX_SIZE = 10 * 1024 * 1024; // 10MB
 const VIDEO_MAX_SIZE = 100 * 1024 * 1024; // 100MB

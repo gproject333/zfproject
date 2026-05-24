@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import {Edit3, Save, Send} from "lucide-react";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 import FileUploadFields from "@/features/applications/components/FileUploadFields";
 import FormError from "@/features/applications/components/FormError";
 import { useEditApplication } from "@/features/student/hooks/useEditApplication";

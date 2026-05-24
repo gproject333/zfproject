@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Clock4, CheckCircle2, VideoOff, Sparkles } from "lucide-react";
 import type { FunctionReturnType } from "convex/server";
-import type { api } from "../../../../convex/_generated/api";
+import type { api } from "@smart-zuj/convex";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 
 type InterestRow = FunctionReturnType<

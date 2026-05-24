@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "convex/react";
 import { useSearchParams } from "next/navigation";
 import { VideoOff, Inbox, Sparkles, Volume2, VolumeX, Play } from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { Spinner } from "@/components/ui";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import SponsorReelOverlayActions from "@/features/applications/components/SponsorReelOverlayActions";

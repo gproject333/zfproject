@@ -13,7 +13,7 @@ import SettingsMenu from "@/components/SettingsMenu";
 import NotificationBell from "@/components/NotificationBell";
 import { Button, buttonVariants } from "@/components/ui";
 import { useAuth } from "@clerk/nextjs";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { getRoleHomepage, getRoleProfileHref } from "@smart-zuj/core";
 import AppFooter from "@/components/AppFooter";
 import CinematicHero from "./CinematicHero";

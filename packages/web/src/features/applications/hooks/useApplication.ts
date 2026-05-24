@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 
 /**
  * Loads an application along with its PDF and video file URLs.

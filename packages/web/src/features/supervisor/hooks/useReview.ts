@@ -3,12 +3,12 @@
 import { useCallback, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "@/lib/toast";
-import { api } from "../../../../convex/_generated/api";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Doc } from "@smart-zuj/convex";
 import {
   isSupervisorStatus,
   type SupervisorStatus,
-} from "../../../../convex/lib/statuses";
+} from "@smart-zuj/convex/statuses";
 import type { SupervisorRating } from "@/lib/configs/application";
 
 export type { SupervisorStatus, SupervisorRating };

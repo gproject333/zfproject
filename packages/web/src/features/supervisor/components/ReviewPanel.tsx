@@ -6,7 +6,7 @@ import type { useReview, SupervisorStatus, SupervisorRating } from "@/features/s
 import {
   SUPERVISOR_STATUS_KEYS,
   STATUS_LABELS,
-} from "../../../../convex/lib/statuses";
+} from "@smart-zuj/convex/statuses";
 import { RATING_CONFIG, RATING_KEYS } from "@/lib/configs/application";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
 import { Button, TextArea, Spinner, Card} from "@/components/ui";

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useMutation } from "convex/react";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
-import { api } from "../../convex/_generated/api";
-import type { Doc } from "../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Doc } from "@smart-zuj/convex";
 import { Button, Spinner } from "@/components/ui";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
 

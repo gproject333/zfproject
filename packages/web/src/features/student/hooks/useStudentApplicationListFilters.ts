@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { usePaginatedQuery } from "convex/react";
 import { useSearchParams } from "next/navigation";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { normalizeArabic } from "@/lib/utils";
 
 const PAGE_SIZE = 20;

@@ -8,7 +8,7 @@ import { formatArabicDate } from "@smart-zuj/core";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Breadcrumbs, buttonVariants, Spinner, Card} from "@/components/ui";
 import { useArticleDetail } from "../hooks/useArticlesList";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import type { Id } from "@smart-zuj/convex";
 
 interface ArticleDetailProps {
   id: Id<"articles">;

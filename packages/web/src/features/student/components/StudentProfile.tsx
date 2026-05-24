@@ -8,8 +8,8 @@ import { SkeletonDashboard } from "@/components/ui/Skeleton";
 import { Button, Input, Spinner, Card} from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import { Id } from "@smart-zuj/convex";
 
 interface StudentProfileProps {
   /** Show college & department dropdowns. Default: true. */

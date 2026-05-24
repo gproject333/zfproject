@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { ArrowRight, Calendar } from "lucide-react";
-import type { Doc } from "../../../../convex/_generated/dataModel";
+import type { Doc } from "@smart-zuj/convex";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import { formatArabicDate } from "@smart-zuj/core";
 import StatusBadge from "./StatusBadge";

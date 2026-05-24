@@ -3,8 +3,8 @@
 import { useState, useCallback } from "react";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 import { useFileUpload } from "@/features/applications/hooks/useFileUpload";
 import { useApplicationForm, type ApplicationType } from "./useApplicationForm";
 import { useDraftAutoSave, isFormDirty } from "./useDraftAutoSave";

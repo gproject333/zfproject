@@ -1,5 +1,5 @@
 import { STATUS_CONFIG } from "@/lib/configs/application";
-import type { ApplicationStatus } from "../../../../convex/lib/statuses";
+import type { ApplicationStatus } from "@smart-zuj/convex/statuses";
 
 interface StatusBadgeProps {
   status: ApplicationStatus;

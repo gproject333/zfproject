@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 
 /** Heartbeat cadence — must be smaller than PRESENCE_WINDOW_MS on the
  *  backend (30s) so a couple of missed beats don't drop us. */

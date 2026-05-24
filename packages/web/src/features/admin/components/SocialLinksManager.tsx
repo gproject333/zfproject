@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "@/lib/toast";
 import {Plus, Trash2, Edit3, Check, X, Link2, Eye, EyeOff} from "lucide-react";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 import {
   SOCIAL_PLATFORMS,
   getPlatformMeta,

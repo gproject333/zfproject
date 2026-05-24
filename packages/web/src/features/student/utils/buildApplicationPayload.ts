@@ -1,4 +1,4 @@
-import type { Id } from "../../../../convex/_generated/dataModel";
+import type { Id } from "@smart-zuj/convex";
 import type { ApplicationFormData } from "@/features/student/hooks/useApplicationForm";
 
 interface UploadedFiles {

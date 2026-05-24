@@ -5,8 +5,8 @@ import {History, ArrowLeft} from "lucide-react";
 import { Spinner, Card} from "@/components/ui";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { api } from "../../../../convex/_generated/api";
-import type { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 import StatusBadge from "@/features/applications/components/StatusBadge";
 
 interface ReviewHistoryTimelineProps {

@@ -2,7 +2,7 @@
 
 import { useQuery } from "convex/react";
 import { Heart } from "lucide-react";
-import { api } from "../../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { Spinner } from "@/components/ui";
 import SponsorInterestCard from "@/features/sponsor/components/SponsorInterestCard";
 

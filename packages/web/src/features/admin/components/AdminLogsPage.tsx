@@ -11,7 +11,7 @@ import {
   Inbox,
 } from "lucide-react";
 import { Button, Card, Input, Spinner } from "@/components/ui";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 
 const PAGE_SIZE = 40;
 

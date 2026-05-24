@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { useConvexAuth } from "convex/react";
 import { AlertTriangle, ArrowLeft } from "lucide-react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { getRoleHomepage } from "@smart-zuj/core";
 
 /**

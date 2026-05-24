@@ -2,7 +2,7 @@
 
 import { X } from "lucide-react";
 import { Card } from "@/components/ui";
-import type { Id } from "../../../../../convex/_generated/dataModel";
+import type { Id } from "@smart-zuj/convex";
 import type { UserManagementConfig } from "./config";
 
 export interface UserItem {

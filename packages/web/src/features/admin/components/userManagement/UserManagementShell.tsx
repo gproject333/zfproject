@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useQuery, useMutation, useAction } from "convex/react";
 import { Plus, X, Mail, User, Building, Phone, KeyRound, CheckCircle2, AlertCircle, ToggleLeft, ToggleRight, Search } from "lucide-react";
-import { api } from "../../../../../convex/_generated/api";
-import type { Id } from "../../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Id } from "@smart-zuj/convex";
 import { Button, Input, Spinner, Card } from "@/components/ui";
 import { toast } from "@/lib/toast";
 import ProfileModal, { type UserItem } from "./ProfileModal";

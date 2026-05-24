@@ -13,8 +13,8 @@ import {
 } from "./FloatingFields";
 import { Button, InputOTP, Spinner, Card } from "@/components/ui";
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import { Id } from "@smart-zuj/convex";
 import AuthShell from "./AuthShell";
 
 export default function RegisterForm() {

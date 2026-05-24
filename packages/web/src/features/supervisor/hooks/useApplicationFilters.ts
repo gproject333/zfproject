@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 import { usePaginatedQuery, useQuery } from "convex/react";
 import { useSearchParams } from "next/navigation";
 import type { SortingState, RowSelectionState } from "@tanstack/react-table";
-import { api } from "../../../../convex/_generated/api";
-import type { Doc, Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@smart-zuj/convex";
+import type { Doc, Id } from "@smart-zuj/convex";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import { normalizeArabic } from "@/lib/utils";
 

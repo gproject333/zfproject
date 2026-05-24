@@ -4,9 +4,9 @@ import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import {Activity} from "lucide-react";
 import { Spinner, Card} from "@/components/ui";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@smart-zuj/convex";
 import { STATUS_CONFIG } from "@/lib/configs/application";
-import { STATUS_LABELS } from "../../../../convex/lib/statuses";
+import { STATUS_LABELS } from "@smart-zuj/convex/statuses";
 
 type StatusKey = keyof typeof STATUS_CONFIG;
 
