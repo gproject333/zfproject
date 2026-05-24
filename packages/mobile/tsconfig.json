@@ -6,5 +6,5 @@
     "module": "esnext",
     "skipLibCheck": true
   },
-  "include": ["App.tsx", "src/**/*"]
+  "include": ["App.tsx", "src/**/*", "index.js"]
 }
