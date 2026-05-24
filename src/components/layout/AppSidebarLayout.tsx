@@ -6,6 +6,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import AppFooter from "@/components/AppFooter";
 import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnnouncementBar";
 import AppSidebar, { type AppSidebarConfig } from "./AppSidebar";
+import TopActionsCluster from "./TopActionsCluster";
 
 type Role = "student" | "supervisor" | "admin" | "sponsor";
 
@@ -38,8 +39,12 @@ export default function AppSidebarLayout({
         {/* Main content column */}
         <div className="flex-1 min-w-0 flex flex-col">
           <ScrollingAnnouncementBar audience={announcementAudience} />
+          <TopActionsCluster
+            profileHref={config.profileHref}
+            logoutHref={config.logoutHref}
+          />
 
-          <main className="flex-1 p-4 pt-16 md:p-6 max-w-6xl w-full mx-auto">
+          <main className="flex-1 p-4 pt-16 md:p-6 md:pt-4 max-w-6xl w-full mx-auto">
             <ErrorBoundary>{children}</ErrorBoundary>
           </main>
           <AppFooter />

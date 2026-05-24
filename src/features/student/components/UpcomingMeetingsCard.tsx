@@ -60,24 +60,8 @@ function MeetingRow({ meeting }: { meeting: Meeting }) {
     minute: "2-digit",
   });
 
-  const Wrapper = meeting.applicationId
-    ? ({ children }: { children: React.ReactNode }) => (
-        <Link
-          href={`/student/applications/${meeting.applicationId}`}
-          className="block rounded-xl border border-foreground/[0.08] bg-card p-4 hover:border-accent/40 hover:shadow-sm transition-all"
-        >
-          {children}
-        </Link>
-      )
-    : ({ children }: { children: React.ReactNode }) => (
-        <div className="rounded-xl border border-foreground/[0.08] bg-card p-4">
-          {children}
-        </div>
-      );
-
-  return (
-    <Wrapper>
-      <div className="flex items-start gap-3">
+  const body = (
+    <div className="flex items-start gap-3">
         <div className="flex flex-col items-center justify-center w-14 shrink-0 rounded-lg bg-gradient-to-br from-accent to-accent/80 text-accent-foreground p-2 shadow-sm">
           <span className="text-[10px] font-bold uppercase tracking-wide">
             {date.toLocaleDateString("ar-EG", { month: "short" })}
@@ -109,6 +93,21 @@ function MeetingRow({ meeting }: { meeting: Meeting }) {
           )}
         </div>
       </div>
-    </Wrapper>
+  );
+
+  if (meeting.applicationId) {
+    return (
+      <Link
+        href={`/student/applications/${meeting.applicationId}`}
+        className="block rounded-xl border border-foreground/[0.08] bg-card p-4 hover:border-accent/40 hover:shadow-sm transition-all"
+      >
+        {body}
+      </Link>
+    );
+  }
+  return (
+    <div className="rounded-xl border border-foreground/[0.08] bg-card p-4">
+      {body}
+    </div>
   );
 }

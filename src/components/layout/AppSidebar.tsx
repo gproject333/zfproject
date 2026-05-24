@@ -6,8 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import NotificationBell from "@/components/NotificationBell";
-import SettingsMenu from "@/components/SettingsMenu";
 import { Button } from "@/components/ui";
 import { Tooltip } from "@/components/ui/Tooltip";
 
@@ -198,17 +196,10 @@ export default function AppSidebar({ config }: Props) {
             })}
           </div>
 
-          {/* Foot — notifications, settings, collapse toggle */}
+          {/* Foot — collapse toggle only. Bell + settings moved to the
+              TopActionsCluster at the top of the main column for
+              discoverability. */}
           <div className="mt-3 pt-3 border-t border-border/60 flex flex-col gap-1.5">
-            <div
-              className={`flex items-center gap-1 ${
-                collapsed ? "md:flex-col" : ""
-              }`}
-            >
-              <NotificationBell />
-              <SettingsMenu profileHref={config.profileHref} logoutHref={config.logoutHref} />
-            </div>
-
             <Button
               onPress={toggleCollapsed}
               variant="ghost"
