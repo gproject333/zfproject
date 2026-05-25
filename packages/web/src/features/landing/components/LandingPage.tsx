@@ -10,6 +10,7 @@ import { navItemsForRole, sidebarConfigForRole } from "@/components/layout/navIt
 import AppSidebar from "@/components/layout/AppSidebar";
 import OliveLogo from "@/components/OliveLogo";
 import SettingsMenu from "@/components/SettingsMenu";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import NotificationBell from "@/components/NotificationBell";
 import { Button, buttonVariants } from "@/components/ui";
 import { useAuth } from "@clerk/nextjs";
@@ -173,26 +174,30 @@ export default function LandingPage() {
                   <>
                     <NotificationBell />
                     <SettingsMenu profileHref={getRoleProfileHref(user?.role)} logoutHref="/login" />
+                    <ThemeToggle />
                   </>
                 ) : (
-                  showGuestCtas && (
-                    <>
-                      <Link
-                        href="/login"
-                        className={`${buttonVariants({ variant: "outline", size: "sm" })} whitespace-nowrap`}
-                      >
-                        <LogIn className="w-4 h-4" />
-                        <span className="hidden sm:inline">تسجيل الدخول</span>
-                      </Link>
-                      <Link
-                        href="/register"
-                        className={`${buttonVariants({ variant: "secondary", size: "sm" })} whitespace-nowrap`}
-                      >
-                        <Sparkles className="w-4 h-4" />
-                        <span className="hidden sm:inline">ابدأ الآن</span>
-                      </Link>
-                    </>
-                  )
+                  <>
+                    {showGuestCtas && (
+                      <>
+                        <Link
+                          href="/login"
+                          className={`${buttonVariants({ variant: "outline", size: "sm" })} whitespace-nowrap`}
+                        >
+                          <LogIn className="w-4 h-4" />
+                          <span className="hidden sm:inline">تسجيل الدخول</span>
+                        </Link>
+                        <Link
+                          href="/register"
+                          className={`${buttonVariants({ variant: "secondary", size: "sm" })} whitespace-nowrap`}
+                        >
+                          <Sparkles className="w-4 h-4" />
+                          <span className="hidden sm:inline">ابدأ الآن</span>
+                        </Link>
+                      </>
+                    )}
+                    <ThemeToggle />
+                  </>
                 )}
               </div>
             </div>
