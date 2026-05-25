@@ -1,13 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Rocket, LogIn, LayoutDashboard, Sparkles } from "lucide-react";
-import { VariantDots } from "./VariantDots";
-import { MistBackground, MistMockup } from "./scenes/MistScene";
-import { GridBackground, GridMockup } from "./scenes/GridScene";
-import { SpotlightBackground, SpotlightMockup } from "./scenes/SpotlightScene";
+import { motion, useReducedMotion } from "framer-motion";
+import { Rocket, LogIn, LayoutDashboard, ArrowLeft } from "lucide-react";
 
 interface CinematicHeroProps {
   dashboardHref?: string;
@@ -17,70 +12,17 @@ interface CinematicHeroProps {
 }
 
 /**
- * Three rotating hero "scenes". Each scene swaps **everything** the eye
- * notices — background pattern, product mockup, accent color, and copy —
- * so the visitor sees a fully fresh framing of the same product every
- * ~7 seconds. CTAs, bullet strip, and the variant dots stay fixed so the
- * layout never jitters.
+ * Light, calm, generous hero modeled after cache-team.com:
  *
- *  1. Olive Mist (warm) — type-selection card on a tinted-orbs canvas.
- *  2. Grid (techy)      — application-status feed on a subtle dot grid.
- *  3. Spotlight (cinema)— stacked journey cards on a dark radial spot.
+ *  - Soft on-brand background with a faint dotted grid overlay.
+ *  - One enormous fluid headline; the brand phrase is rendered as a
+ *    horizontal gradient text (foreground → primary), nothing else competes.
+ *  - One sub-headline, two CTAs (solid primary + outline), three pillar chips.
+ *  - Lots of vertical breathing room; collapses to a single column with
+ *    smaller type and looser CTAs on phones.
  *
- * Rotation auto-pauses on hover/focus and is disabled for prefers-reduced-
- * motion (the carousel still renders, but the user drives it via the dots).
+ * Motion is staggered fade-up with reduced-motion fallback.
  */
-type SceneKey = "mist" | "grid" | "spotlight";
-
-interface Scene {
-  key: SceneKey;
-  eyebrow: string;
-  headline: string;
-  highlight: string;
-  description: string;
-  accent: "primary" | "accent" | "secondary";
-  Background: () => React.ReactElement;
-  Mockup: () => React.ReactElement;
-}
-
-const SCENES: Scene[] = [
-  {
-    key: "mist",
-    eyebrow: "جامعة الزيتونة الأردنية",
-    headline: "من الفكرة إلى",
-    highlight: "مشروع معتمد أكاديميًّا",
-    description:
-      "حاضنة الزيتونة منصة رسمية تتبع جامعة الزيتونة الأردنية، تتيح للطالب تقديم مشروعه إلى مشرف أكاديمي ومتابعة مراحله حتى الاعتماد.",
-    accent: "primary",
-    Background: MistBackground,
-    Mockup: MistMockup,
-  },
-  {
-    key: "grid",
-    eyebrow: "نظام رقمي متكامل",
-    headline: "قدِّم طلبك",
-    highlight: "وتابع حالته أولًا بأوَّل",
-    description:
-      "نموذج رقمي تُعبَّأ بياناته في دقائق، يُحال مباشرة إلى المشرف الأكاديمي، ويُبلَّغ الطالب بقرار المراجعة خلال مدة محدودة.",
-    accent: "accent",
-    Background: GridBackground,
-    Mockup: GridMockup,
-  },
-  {
-    key: "spotlight",
-    eyebrow: "إشراف ودعم متكامل",
-    headline: "من اعتماد المشروع إلى",
-    highlight: "اللقاء بالمشرف والجهات الداعمة",
-    description:
-      "يتولى المشرف الأكاديمي دراسة الطلب وتحديد مواعيد المتابعة، مع إتاحة التواصل مع الجهات الداعمة والاطلاع على المراجع المنشورة من أعضاء هيئة التدريس.",
-    accent: "secondary",
-    Background: SpotlightBackground,
-    Mockup: SpotlightMockup,
-  },
-];
-
-const ROTATE_INTERVAL_MS = 7000;
-
 export default function CinematicHero({
   dashboardHref = "/student",
   userName,
@@ -88,168 +30,142 @@ export default function CinematicHero({
   isSignedIn = false,
 }: CinematicHeroProps) {
   const reduce = useReducedMotion();
-  const [sceneIndex, setSceneIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    if (reduce || paused) return;
-    const id = window.setInterval(() => {
-      setSceneIndex((i) => (i + 1) % SCENES.length);
-    }, ROTATE_INTERVAL_MS);
-    return () => window.clearInterval(id);
-  }, [reduce, paused]);
 
   const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: reduce ? 0 : 16 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const, delay },
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const, delay },
   });
-
-  const scene = SCENES[sceneIndex];
-  const accentText =
-    scene.accent === "accent"
-      ? "text-accent"
-      : scene.accent === "secondary"
-        ? "text-secondary-border"
-        : "text-primary";
-  const accentChipBg =
-    scene.accent === "accent"
-      ? "bg-accent/12 text-accent"
-      : scene.accent === "secondary"
-        ? "bg-secondary/15 text-secondary-border"
-        : "bg-primary/10 text-primary";
 
   return (
     <section
-      className="relative px-4 pt-24 sm:pt-28 pb-16 sm:pb-24 overflow-hidden"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
+      dir="rtl"
+      className="relative isolate overflow-hidden bg-background"
     >
-      <AnimatePresence mode="sync">
+      {/* Faint dotted grid — calm, technical, never noisy. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 opacity-60 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, color-mix(in srgb, var(--foreground) 6%, transparent) 1px, transparent 1px),
+            linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 6%, transparent) 1px, transparent 1px)
+          `,
+          backgroundSize: "44px 44px",
+          maskImage:
+            "radial-gradient(ellipse at center, black 55%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at center, black 55%, transparent 100%)",
+        }}
+      />
+
+      {/* Soft brand glow behind the headline */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-1/3 -z-10 h-[420px] pointer-events-none opacity-50"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 60% at 50% 0%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 70%)",
+        }}
+      />
+
+      <div className="relative max-w-5xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-20 sm:pb-28 text-center">
+        {/* Eyebrow */}
         <motion.div
-          key={`bg-${scene.key}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: reduce ? 0 : 0.8, ease: "easeInOut" }}
-          className="absolute inset-0 pointer-events-none"
+          {...fadeUp(0.05)}
+          className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase text-primary/85 mb-7"
         >
-          <scene.Background />
-        </motion.div>
-      </AnimatePresence>
-
-      <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-14 items-center">
-        <motion.div {...fadeUp(0.35)} className="order-2 lg:order-1">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`mockup-${scene.key}`}
-              initial={{ opacity: 0, y: reduce ? 0 : 18, scale: reduce ? 1 : 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: reduce ? 0 : -10, scale: reduce ? 1 : 0.97 }}
-              transition={{ duration: reduce ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <scene.Mockup />
-            </motion.div>
-          </AnimatePresence>
+          <span className="w-7 h-px bg-primary/40" />
+          ZUJ Incubator · حاضنة الزيتونة
+          <span className="w-7 h-px bg-primary/40" />
         </motion.div>
 
-        <div className="order-1 lg:order-2 text-right">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`eyebrow-${scene.key}`}
-              initial={{ opacity: 0, y: reduce ? 0 : 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: reduce ? 0 : -4 }}
-              transition={{ duration: reduce ? 0 : 0.4, ease: "easeOut" }}
-              className={`inline-flex items-center gap-2 text-xs font-bold mb-4 rounded-full px-3 py-1.5 ${accentChipBg}`}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              {scene.eyebrow}
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="min-h-[230px] sm:min-h-[260px] lg:min-h-[280px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`copy-${scene.key}`}
-                initial={{ opacity: 0, y: reduce ? 0 : 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: reduce ? 0 : -8 }}
-                transition={{ duration: reduce ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] text-foreground">
-                  {scene.headline}
-                  <br />
-                  <span className={accentText}>{scene.highlight}</span>
-                </h1>
-                <p className="mt-5 text-base sm:text-lg text-foreground/75 font-medium max-w-xl leading-relaxed">
-                  {scene.description}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <VariantDots
-            count={SCENES.length}
-            activeIndex={sceneIndex}
-            onSelect={setSceneIndex}
-            accent={scene.accent}
-          />
-
-          <motion.div
-            {...fadeUp(0.28)}
-            className="mt-7 flex flex-col sm:flex-row-reverse sm:justify-end gap-3 min-h-[56px]"
+        {/* Massive headline with gradient brand phrase */}
+        <motion.h1
+          {...fadeUp(0.18)}
+          className="font-black leading-[1.08] tracking-tight text-foreground text-[clamp(2.25rem,7.5vw,5.75rem)]"
+        >
+          من فكرة طالب
+          <br />
+          <span
+            className="bg-clip-text text-transparent"
+            style={{
+              backgroundImage:
+                "linear-gradient(to left, var(--foreground) 10%, var(--primary) 65%, var(--accent) 100%)",
+            }}
           >
-            {!authReady ? (
-              <div className="w-48 h-12 rounded-md bg-foreground/5 animate-pulse" />
-            ) : isSignedIn ? (
+            إلى مشروع معتمد
+          </span>
+        </motion.h1>
+
+        {/* One subline, narrow column for comfortable reading */}
+        <motion.p
+          {...fadeUp(0.32)}
+          className="mt-7 sm:mt-8 mx-auto max-w-2xl text-base sm:text-lg lg:text-xl text-foreground/65 leading-relaxed font-medium"
+        >
+          منصة رسمية تابعة لجامعة الزيتونة الأردنية تتيح للطالب تقديم مشروعه إلى
+          مشرف أكاديمي ومتابعته خطوة بخطوة حتى الاعتماد.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          {...fadeUp(0.46)}
+          className="mt-10 sm:mt-12 flex flex-col-reverse sm:flex-row-reverse items-stretch sm:items-center justify-center gap-3 sm:gap-4"
+        >
+          {!authReady ? (
+            <div className="w-full sm:w-56 h-14 rounded-full bg-foreground/5 animate-pulse" />
+          ) : isSignedIn ? (
+            <Link
+              href={dashboardHref}
+              className="group inline-flex items-center justify-center gap-2.5 px-7 sm:px-9 py-4 rounded-full bg-foreground text-background font-extrabold text-base shadow-[0_10px_30px_-12px_color-mix(in_srgb,var(--foreground)_50%,transparent)] hover:shadow-[0_18px_44px_-12px_color-mix(in_srgb,var(--foreground)_60%,transparent)] hover:-translate-y-0.5 transition-all duration-300"
+            >
+              <LayoutDashboard className="w-5 h-5" />
+              {userName ? `لوحة ${userName}` : "اذهب إلى لوحتي"}
+              <ArrowLeft className="w-4 h-4 -mr-1 transition-transform group-hover:-translate-x-1" />
+            </Link>
+          ) : (
+            <>
               <Link
-                href={dashboardHref}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md bg-primary text-primary-foreground font-bold text-base ds-shadow-sm hover:bg-accent transition-colors"
+                href="/register"
+                className="group inline-flex items-center justify-center gap-2.5 px-7 sm:px-9 py-4 rounded-full bg-foreground text-background font-extrabold text-base shadow-[0_10px_30px_-12px_color-mix(in_srgb,var(--foreground)_50%,transparent)] hover:shadow-[0_18px_44px_-12px_color-mix(in_srgb,var(--foreground)_60%,transparent)] hover:-translate-y-0.5 transition-all duration-300"
               >
-                <LayoutDashboard className="w-5 h-5" />
-                {userName ? `لوحة ${userName}` : "اذهب إلى لوحتي"}
+                <Rocket className="w-5 h-5 transition-transform group-hover:-rotate-12" />
+                إنشاء حساب جديد
+                <ArrowLeft className="w-4 h-4 -mr-1 transition-transform group-hover:-translate-x-1" />
               </Link>
-            ) : (
-              <>
-                <Link
-                  href="/register"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md bg-primary text-primary-foreground font-bold text-base ds-shadow-sm hover:bg-accent transition-colors"
-                >
-                  <Rocket className="w-5 h-5" />
-                  إنشاء حساب جديد
-                </Link>
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md bg-card text-foreground font-bold text-base ds-border hover:bg-muted transition-colors"
-                >
-                  <LogIn className="w-5 h-5" />
-                  تسجيل الدخول
-                </Link>
-              </>
-            )}
-          </motion.div>
+              <Link
+                href="/login"
+                className="inline-flex items-center justify-center gap-2.5 px-7 sm:px-9 py-4 rounded-full bg-transparent text-foreground font-bold text-base border-2 border-foreground/15 hover:bg-foreground/5 hover:border-foreground/30 transition-all duration-300"
+              >
+                <LogIn className="w-5 h-5" />
+                تسجيل الدخول
+              </Link>
+            </>
+          )}
+        </motion.div>
 
-          <motion.ul
-            {...fadeUp(0.42)}
-            className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold text-foreground/70"
-          >
-            <li className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              ثلاثة مسارات لاحتضان المشاريع
+        {/* Pillar chips */}
+        <motion.ul
+          {...fadeUp(0.6)}
+          className="mt-14 sm:mt-20 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold"
+        >
+          {[
+            { label: "ثلاثة مسارات احتضان", dot: "var(--primary)" },
+            { label: "إشراف أكاديمي معتمد", dot: "var(--accent)" },
+            { label: "شراكات مع جهات داعمة", dot: "var(--secondary)" },
+          ].map(({ label, dot }) => (
+            <li
+              key={label}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border/30 text-foreground/75"
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: dot }}
+              />
+              {label}
             </li>
-            <li className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              إشراف أكاديمي معتمد
-            </li>
-            <li className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-              شراكات مع جهات داعمة
-            </li>
-          </motion.ul>
-        </div>
+          ))}
+        </motion.ul>
       </div>
     </section>
   );
