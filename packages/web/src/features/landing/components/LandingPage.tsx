@@ -41,6 +41,31 @@ function useHydrated(): boolean {
   return useSyncExternalStore(subscribeNoop, () => true, () => false);
 }
 
+const CACHED_ROLE_KEY = "smart-zuj:last-role";
+
+/** Read the last-seen role from localStorage on mount so we can pre-decide
+ *  the landing layout (navbar vs sidebar) without waiting for the Convex
+ *  user query to resolve. Eliminates the navbar→sidebar flash on refresh
+ *  for admin/supervisor accounts. */
+function readCachedRole(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem(CACHED_ROLE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedRole(role: string | null | undefined): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (role) window.localStorage.setItem(CACHED_ROLE_KEY, role);
+    else window.localStorage.removeItem(CACHED_ROLE_KEY);
+  } catch {
+    /* storage disabled — fall back to no caching */
+  }
+}
+
 /**
  * Landing page orchestrator. Visible to both guests and signed-in
  * users so the marketing sections, hero carousel, and announcement
@@ -67,18 +92,40 @@ export default function LandingPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const dashboardHref = getRoleHomepage(user?.role);
-  const navItems = navItemsForRole(user?.role);
+  // `effectiveRole` is computed below from Convex (`user.role`) with a
+  // localStorage fallback, so we delay these derivations until afterward.
   // `mounted` blocks any render before hydration; `clerkLoaded` waits
   // for Clerk to finish reading the session — together they prevent
   // a flash of guest UI between mount and auth resolution.
   const authReady   = mounted && clerkLoaded;
-  const showGuestCtas = authReady && !isSignedIn;
-  const showAuthNav   = authReady && !!isSignedIn;
+  // For signed-in users we also need the Convex `users` row to resolve
+  // before we know the actual role. We pre-seed it from localStorage so a
+  // returning admin/supervisor lands directly on the sidebar layout
+  // without flashing the navbar on every refresh.
+  const cachedRole = mounted ? readCachedRole() : null;
+  const effectiveRole = user?.role ?? cachedRole ?? undefined;
+  const userResolved = !isSignedIn || user !== undefined;
+  const layoutReady = authReady && (userResolved || cachedRole !== null);
+  const showGuestCtas = authReady && userResolved && !isSignedIn;
+  const showAuthNav   = layoutReady && !!isSignedIn;
   // A signed-in supervisor or admin gets their app-shell sidebar in
   // place of the navbar — consistent with their dashboard.
-  const sidebarConfig = showAuthNav ? sidebarConfigForRole(user?.role) : null;
+  const sidebarConfig = showAuthNav ? sidebarConfigForRole(effectiveRole) : null;
   const usesSidebar = sidebarConfig !== null;
+
+  // Keep the cached role in sync with what Convex returns so it stays
+  // accurate across refreshes; clear it on sign-out.
+  useEffect(() => {
+    if (!authReady) return;
+    if (!isSignedIn) {
+      writeCachedRole(null);
+      return;
+    }
+    if (user?.role) writeCachedRole(user.role);
+  }, [authReady, isSignedIn, user?.role]);
+
+  const dashboardHref = getRoleHomepage(effectiveRole);
+  const navItems = navItemsForRole(effectiveRole);
 
   return (
     <div
@@ -109,8 +156,10 @@ export default function LandingPage() {
           />
         )}
 
-        {/* Navbar — guests + signed-in students / sponsors */}
-        {!usesSidebar && (
+        {/* Navbar — guests + signed-in students / sponsors. Held back until
+            `layoutReady` so admin/supervisor users don't flash the navbar
+            for a frame before the sidebar takes over. */}
+        {layoutReady && !usesSidebar && (
           <nav
             className={`fixed ${
               hasAnnouncement ? "top-[40px]" : "top-0"
@@ -183,7 +232,7 @@ export default function LandingPage() {
                 ) : showAuthNav ? (
                   <>
                     <NotificationBell />
-                    <SettingsMenu profileHref={getRoleProfileHref(user?.role)} logoutHref="/login" />
+                    <SettingsMenu profileHref={getRoleProfileHref(effectiveRole)} logoutHref="/login" />
                     <ThemeToggle />
                   </>
                 ) : (
