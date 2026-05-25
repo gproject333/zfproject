@@ -27,7 +27,6 @@ import AboutSection from "./AboutSection";
 import Testimonials from "./Testimonials";
 import FAQ from "./FAQ";
 import FinalCTA from "./FinalCTA";
-import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnnouncementBar";
 import RevealOnScroll from "./RevealOnScroll";
 import AmbientOlives from "./AmbientOlives";
 
@@ -82,7 +81,6 @@ export default function LandingPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   // True while a scrolling announcement is pinned above the navbar — the
   // navbar and page content shift down by the bar's height (40px).
-  const [hasAnnouncement, setHasAnnouncement] = useState(false);
   const pathname = usePathname();
 
   // Scroll-triggered navbar background
@@ -136,17 +134,9 @@ export default function LandingPage() {
 
       <div
         className={`flex-1 min-w-0 flex flex-col ${
-          usesSidebar ? "" : hasAnnouncement ? "pt-[108px]" : "pt-[68px]"
+          usesSidebar ? "" : "pt-[68px]"
         }`}
       >
-        {/* Scrolling announcement ticker — fixed above the navbar for the
-            navbar layout, in-flow at the top of the column for sidebars. */}
-        <ScrollingAnnouncementBar
-          audience="landing"
-          variant={usesSidebar ? undefined : "above-navbar"}
-          onVisibilityChange={usesSidebar ? undefined : setHasAnnouncement}
-        />
-
         {/* When the sidebar layout is active (supervisor/admin), surface the
             same bell + settings + theme cluster the dashboard pages use. */}
         {usesSidebar && sidebarConfig && (
@@ -161,14 +151,10 @@ export default function LandingPage() {
             for a frame before the sidebar takes over. */}
         {layoutReady && !usesSidebar && (
           <nav
-            className={`fixed ${
-              hasAnnouncement ? "top-[40px]" : "top-0"
-            } right-0 left-0 w-full z-50 transition-all duration-300 text-foreground ${
-              showAuthNav
-                ? "bg-card ds-border-thick border-t-0 border-x-0"
-                : isScrolled
-                  ? "glass border-b border-border/40"
-                  : "bg-background/60 backdrop-blur-sm border-b border-transparent"
+            className={`fixed top-0 right-0 left-0 w-full z-50 transition-all duration-300 text-foreground ${
+              isScrolled
+                ? "bg-background/85 backdrop-blur-md border-b border-border/20"
+                : "bg-transparent border-b border-transparent"
             }`}
           >
             <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
@@ -201,20 +187,20 @@ export default function LandingPage() {
 
               {/* Nav links — only when authenticated */}
               {showAuthNav && (
-                <div className="hidden md:flex items-center gap-2.5">
+                <div className="hidden md:flex items-center gap-1">
                   {navItems.map(({ label, href, icon: Icon }) => {
                     const isActive = pathname === href;
                     return (
                       <Link
                         key={href}
                         href={href}
-                        className={`flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ds-border ${
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 border ${
                           isActive
-                            ? "bg-primary ds-shadow-sm"
-                            : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
+                            ? "bg-white text-gray-900 border-white shadow-md"
+                            : "bg-transparent text-foreground/80 border-transparent hover:bg-foreground/8 hover:text-foreground hover:border-foreground/15"
                         }`}
                       >
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-4 h-4" />
                         {label}
                       </Link>
                     );
