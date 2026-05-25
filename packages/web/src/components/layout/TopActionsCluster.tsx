@@ -2,6 +2,7 @@
 
 import NotificationBell from "@/components/NotificationBell";
 import SettingsMenu from "@/components/SettingsMenu";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface TopActionsClusterProps {
   profileHref: string;
@@ -32,6 +33,7 @@ export default function TopActionsCluster({
       <div className="flex justify-end gap-2 pointer-events-auto">
         <NotificationBell />
         <SettingsMenu profileHref={profileHref} logoutHref={logoutHref} />
+        <ThemeToggle />
       </div>
     </div>
   );

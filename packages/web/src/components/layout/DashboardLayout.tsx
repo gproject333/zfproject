@@ -9,6 +9,7 @@ import { Button } from "@/components/ui";
 import NotificationBell from "@/components/NotificationBell";
 import AppFooter from "@/components/AppFooter";
 import SettingsMenu from "@/components/SettingsMenu";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import RoleGuard from "@/components/RoleGuard";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ScrollingAnnouncementBar from "@/features/banners/components/ScrollingAnnouncementBar";
@@ -139,6 +140,7 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
                 profileHref={config.profileHref}
                 logoutHref={config.logoutHref}
               />
+              <ThemeToggle />
             </div>
           </div>
 

@@ -1,15 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import {
-  Settings,
-  UserCircle,
-  Sun,
-  Moon,
-  LogOut,
-} from "lucide-react";
+import { Settings, UserCircle, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -36,20 +28,7 @@ export default function SettingsMenu({
   logoutHref = "/login",
 }: SettingsMenuProps) {
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
   const logout = useLogoutHandler(logoutHref);
-  const [mounted, setMounted] = useState(false);
-
-  // next-themes hydration guard — the server doesn't know the resolved
-  // theme so we delay the icon swap until after mount to avoid SSR mismatch.
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-  }, []);
-
-  const isDark = theme === "dark";
-  const ThemeIcon = mounted && isDark ? Sun : Moon;
-  const themeLabel = mounted && isDark ? "الوضع الفاتح" : "الوضع الداكن";
 
   return (
     <>
@@ -65,12 +44,6 @@ export default function SettingsMenu({
           <DropdownMenuItem onSelect={() => router.push(profileHref)}>
             <UserCircle className="w-4 h-4" />
             الملفّ الشخصي
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onSelect={() => setTheme(isDark ? "light" : "dark")}
-          >
-            <ThemeIcon className="w-4 h-4" />
-            {themeLabel}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
