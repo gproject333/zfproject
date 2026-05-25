@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { Sparkles, LogIn, Menu, X } from "lucide-react";
 import { navItemsForRole, sidebarConfigForRole } from "@/components/layout/navItems";
 import AppSidebar from "@/components/layout/AppSidebar";
+import TopActionsCluster from "@/components/layout/TopActionsCluster";
 import OliveLogo from "@/components/OliveLogo";
 import SettingsMenu from "@/components/SettingsMenu";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -98,6 +99,15 @@ export default function LandingPage() {
           variant={usesSidebar ? undefined : "above-navbar"}
           onVisibilityChange={usesSidebar ? undefined : setHasAnnouncement}
         />
+
+        {/* When the sidebar layout is active (supervisor/admin), surface the
+            same bell + settings + theme cluster the dashboard pages use. */}
+        {usesSidebar && sidebarConfig && (
+          <TopActionsCluster
+            profileHref={sidebarConfig.profileHref}
+            logoutHref={sidebarConfig.logoutHref}
+          />
+        )}
 
         {/* Navbar — guests + signed-in students / sponsors */}
         {!usesSidebar && (
