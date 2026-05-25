@@ -13,9 +13,6 @@
     "onlyBuiltDependencies": [
       "esbuild",
       "@tailwindcss/oxide"
-    ],
-    "overrides": {
-      "expo-crypto": "~15.0.9"
-    }
+    ]
   }
 }

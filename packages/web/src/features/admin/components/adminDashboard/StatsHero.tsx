@@ -62,7 +62,7 @@ function AcceptanceRateHero({
       <Card className="p-8 flex flex-col justify-center min-h-[200px]">
         <p className="text-sm font-semibold text-muted-foreground">معدل القبول</p>
         <p className="mt-2 text-base font-bold text-foreground">
-          لم يصل أي طلب بعد — سيظهر هنا أوّل ما يقدّم طالب.
+          لم يُقدَّم أي طلب بعد — يظهر المعدل عند تقديم أول طلب.
         </p>
       </Card>
     );
@@ -90,7 +90,7 @@ function AcceptanceRateHero({
               {rate}%
             </span>
             <span className="text-sm font-semibold text-muted-foreground">
-              من {accepted + rejected} طلب اتُّخذ فيها قرار
+              من {accepted + rejected} طلبًا اتُّخذ فيها قرار
             </span>
           </div>
         </div>
@@ -137,7 +137,7 @@ function RoleCountsColumn({
   const rows = [
     { label: "الطلاب المسجّلون", value: students, icon: GraduationCap, color: "text-info" },
     { label: "المشرفون الأكاديميون", value: supervisors, icon: Users, color: "text-accent" },
-    { label: "الرعاة", value: sponsors, icon: Building2, color: "text-secondary" },
+    { label: "الداعمون", value: sponsors, icon: Building2, color: "text-secondary" },
   ];
   return (
     <Card className="p-6 flex flex-col justify-between min-h-[200px]">

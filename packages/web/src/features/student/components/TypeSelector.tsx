@@ -19,9 +19,9 @@ const INCUBATION_TYPES = [
   {
     id: "entrepreneurial_idea",
     title: "فكرة ريادية",
-    subtitle: "احتضان فكرة ريادية مبتكرة",
+    subtitle: "احتضان فكرة ريادية مبتكرة.",
     description:
-      "لديك فكرة مشروع ريادي مبتكر وتريد تحويلها إلى واقع؟ قدّم فكرتك مع أهداف المشروع ونوعه.",
+      "لتقديم فكرة مشروع ريادي وتحويلها إلى مشروع قائم، يُرجى تضمين أهداف المشروع ونوعه.",
     icon: Lightbulb,
     color: "text-primary",
     borderColor: "hover:border-primary",
@@ -34,10 +34,10 @@ const INCUBATION_TYPES = [
   },
   {
     id: "it_graduation",
-    title: "مشروع IT",
-    subtitle: "مشروع في تكنولوجيا المعلومات",
+    title: "مشروع تخرج (IT)",
+    subtitle: "مشروع في تكنولوجيا المعلومات.",
     description:
-      "مشروع IT يحتاج دعم وإرشاد؟ قدّم مشروعك مع التقنيات المستخدمة والمشرف الأكاديمي.",
+      "لتقديم مشروع في تكنولوجيا المعلومات، يُرجى تضمين التقنيات المستخدمة واسم المشرف الأكاديمي.",
     icon: Code2,
     color: "text-secondary",
     borderColor: "hover:border-secondary",
@@ -50,10 +50,10 @@ const INCUBATION_TYPES = [
   },
   {
     id: "university_entrepreneurial",
-    title: "مشروع ريادي للجامعة",
-    subtitle: "مشروع يخدم الجامعة بشكل مباشر",
+    title: "مشروع يخدم الجامعة",
+    subtitle: "مشروع يخدم الجامعة بصورة مباشرة.",
     description:
-      "فكرة مشروع يفيد الجامعة مباشرة ويحتاج دعماً مؤسسياً؟ قدّم مشروعك مع تحديد الفائدة والمكان المستهدف.",
+      "لتقديم مشروع يخدم الجامعة بصورة مباشرة ويحتاج إلى دعم مؤسسي، يُرجى تحديد الفائدة المرجوة والمكان المستهدف.",
     icon: Building2,
     color: "text-accent",
     borderColor: "hover:border-accent",
@@ -81,14 +81,14 @@ export default function TypeSelector() {
       <div className="mb-8 flex flex-wrap items-center gap-3">
         <button
           onClick={() => router.push("/student")}
-          aria-label="رجوع"
+          aria-label="العودة"
           className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card ds-shadow-hover"
         >
           <ArrowRight className="w-5 h-5" />
         </button>
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <Rocket className="w-6 h-6 text-accent" />
-          اختر نوع برنامج الاحتضان
+          اختيار نوع برنامج الاحتضان
         </h2>
         <button
           type="button"
@@ -96,7 +96,7 @@ export default function TypeSelector() {
           className="ms-auto inline-flex items-center gap-2 text-sm font-bold text-primary bg-primary/10 border border-primary/20 rounded-full px-4 py-2 hover:bg-primary/15 transition-colors"
         >
           <HelpCircle className="w-4 h-4" />
-          ما أعرف أي نوع يناسبني
+          أي نوع يناسب مشروعي؟
         </button>
       </div>
 
@@ -141,7 +141,7 @@ export default function TypeSelector() {
             {/* CTA */}
             <div className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg border-2 font-semibold text-sm transition-colors group-hover:bg-foreground group-hover:text-card">
               <GraduationCap className="w-5 h-5" />
-              ابدأ التقديم
+              بدء التقديم
             </div>
           </button>
         ))}
@@ -160,27 +160,27 @@ function ChooseGuideDialog({
 }) {
   const rows: { label: string; values: [string, string, string] }[] = [
     {
-      label: "تناسبك إذا...",
+      label: "يناسبك في حال:",
       values: [
-        "عندك فكرة تجارية مبتكرة تبغى تحوّلها مشروع",
-        "تشتغل على مشروع تخرّج تقني",
-        "تبغى تحلّ مشكلة تخص الجامعة نفسها",
+        "وجود فكرة تجارية مبتكرة يُراد تحويلها إلى مشروع.",
+        "العمل على مشروع تخرج تقني.",
+        "الرغبة في معالجة مشكلة تخص الجامعة.",
       ],
     },
     {
-      label: "مثال",
-      values: ["تطبيق توصيل أو منصّة تعليمية", "موقع، تطبيق، أو نظام", "نظام لإدارة فعالية أو مكان جامعي"],
+      label: "أمثلة",
+      values: ["تطبيق توصيل أو منصّة تعليمية.", "موقع أو تطبيق أو نظام.", "نظام لإدارة فعالية أو مرفق جامعي."],
     },
     {
       label: "حقول إضافية",
-      values: ["أهداف + فئة المشروع", "المشرف الأكاديمي + التقنيات", "الفائدة للجامعة + المكان"],
+      values: ["الأهداف وفئة المشروع.", "المشرف الأكاديمي والتقنيات.", "الفائدة للجامعة والمكان."],
     },
   ];
 
   const tracks = [
     { title: "فكرة ريادية", icon: Lightbulb, color: "text-primary", bg: "bg-primary/12" },
-    { title: "مشروع IT", icon: Code2, color: "text-secondary", bg: "bg-secondary/15" },
-    { title: "للجامعة", icon: Building2, color: "text-accent", bg: "bg-accent/12" },
+    { title: "مشروع تخرج (IT)", icon: Code2, color: "text-secondary", bg: "bg-secondary/15" },
+    { title: "مشروع يخدم الجامعة", icon: Building2, color: "text-accent", bg: "bg-accent/12" },
   ];
 
   return (
@@ -188,7 +188,7 @@ function ChooseGuideDialog({
       <DialogContent title="ما الفرق بين الأنواع الثلاثة؟" className="max-w-3xl">
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground font-medium leading-relaxed">
-            اختر النوع اللي يصف مشروعك أفضل. تقدر دائماً ترجع وتغيّر قبل التقديم النهائي.
+            يُرجى اختيار النوع الأنسب للمشروع. يمكن تعديل الاختيار قبل التقديم النهائي.
           </p>
 
           <div className="grid grid-cols-3 gap-3">
@@ -229,7 +229,7 @@ function ChooseGuideDialog({
           </div>
 
           <p className="text-[11px] text-muted-foreground font-medium text-center pt-2">
-            لسّا غير متأكد؟ ابدأ بأقرب نوع — تقدر تحفظ مسودة وترجع تعدّل النوع لاحقاً.
+            في حال عدم التيقُّن من النوع، يمكن البدء بالأقرب وحفظ المسودة وتعديل النوع لاحقًا.
           </p>
         </div>
       </DialogContent>

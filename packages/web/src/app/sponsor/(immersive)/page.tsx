@@ -41,7 +41,7 @@ function LoadingState() {
   return (
     <div className="h-full w-full flex flex-col items-center justify-center gap-4 text-white/80">
       <Spinner size="xl" color="current" className="text-secondary" />
-      <p className="font-bold animate-pulse">جاري تحميل المشاريع...</p>
+      <p className="font-bold animate-pulse">يجري تحميل المشاريع...</p>
     </div>
   );
 }
@@ -52,9 +52,9 @@ function EmptyState() {
       <div className="w-20 h-20 rounded-full bg-secondary/15 border border-secondary/40 flex items-center justify-center">
         <Inbox className="w-9 h-9 text-secondary" />
       </div>
-      <h3 className="text-2xl font-black">لا توجد مشاريع مقبولة بعد</h3>
+      <h3 className="text-2xl font-black">لا توجد مشاريع معتمدة حاليًا</h3>
       <p className="text-sm text-white/65 font-medium max-w-xs leading-relaxed">
-        ستظهر هنا فيديوهات المشاريع التي اعتمدها المشرفون للاحتضان.
+        تُعرض هنا الفيديوهات التعريفية للمشاريع التي اعتمدها المشرفون للاحتضان.
       </p>
       <FloatingSponsorBottomBar />
     </div>
@@ -173,7 +173,7 @@ function ReelSlide({
         ) : (
           <div className="absolute inset-0 z-0 flex flex-col items-center justify-center bg-zinc-900">
             <VideoOff className="w-16 h-16 text-zinc-700 mb-4" />
-            <p className="text-zinc-500 font-bold">لا يوجد فيديو تعريفي</p>
+            <p className="text-zinc-500 font-bold">لا يتوفّر فيديو تعريفي</p>
           </div>
         )}
 
@@ -237,7 +237,7 @@ function ReelSlide({
 
 /** IG-style avatar + handle row at the top of the caption block. */
 function ReelIdentity({ reel }: { reel: Reel }) {
-  const name = reel.student.name?.trim() || "طالب جامعي";
+  const name = reel.student.name?.trim() || "طالب في الجامعة";
   const initial = name.charAt(0);
   return (
     <div className="flex items-center gap-2.5 mb-3">

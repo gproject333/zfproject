@@ -40,17 +40,17 @@ export default function StudentDashboard() {
     setUpgradeError(null);
     const trimmed = upgradeReason.trim();
     if (trimmed.length < 20) {
-      setUpgradeError("اكتب سبباً واضحاً لا يقل عن 20 حرفاً.");
+      setUpgradeError("يُرجى كتابة سبب واضح لا يقل عن 20 حرفًا.");
       return;
     }
     setUpgradeBusy(true);
     try {
       await submitRequest({ reason: trimmed });
-      toast.success("تم تقديم طلب الترقية، سيتم مراجعته قريباً");
+      toast.success("تم تقديم طلب الترقية، وستتم مراجعته قريبًا.");
       setUpgradeOpen(false);
       setUpgradeReason("");
     } catch (e: unknown) {
-      setUpgradeError(e instanceof Error ? e.message : "حدث خطأ");
+      setUpgradeError(e instanceof Error ? e.message : "حدث خطأ.");
     } finally {
       setUpgradeBusy(false);
     }
@@ -64,7 +64,7 @@ export default function StudentDashboard() {
       <div className="flex flex-wrap items-center gap-4">
         <StudentAvatar name={user?.name} avatarId={user?.avatar} size="lg" />
         <div className="min-w-0">
-          <h2 className="text-2xl font-bold">مرحباً، {user?.name ?? "بك"}</h2>
+          <h2 className="text-2xl font-bold">مرحبًا، {user?.name ?? "بك"}</h2>
           {user?.department && (
             <p className="text-sm text-muted-foreground mt-0.5">
               {user.department}
@@ -93,15 +93,15 @@ export default function StudentDashboard() {
             <h3 className="font-extrabold text-base">أكمل ملفك الشخصي</h3>
             <p className="text-sm text-muted-foreground font-medium mt-0.5">
               {profile.missing.length > 0
-                ? `لتتمكن من تقديم طلب، ينقصك: ${profile.missing.join("، ")}.`
-                : "أكمل بياناتك حتى يقدر المشرف يتواصل معك."}
+                ? `يتعذر تقديم الطلب لنقص البيانات التالية: ${profile.missing.join("، ")}.`
+                : "يُرجى استكمال البيانات لتمكين المشرف من التواصل معك."}
             </p>
           </div>
           <Link
             href="/student/profile"
             className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-warning text-white font-bold text-sm shrink-0 hover:opacity-90 transition-opacity"
           >
-            إكمال الآن
+            استكمال الملف
             <ArrowLeft className="w-4 h-4" />
           </Link>
         </Card>
@@ -117,11 +117,11 @@ export default function StudentDashboard() {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-black text-lg sm:text-xl leading-tight">
-                مرحباً بك في حاضنة الزيتونة 👋
+                مرحبًا بك في حاضنة الزيتونة
               </h3>
               <p className="text-sm text-muted-foreground font-medium mt-1.5 leading-relaxed">
-                ابدأ بتقديم فكرتك الأولى — اختار النوع، عبّي البيانات، وابعت
-                للمشرف. تقدر تحفظ مسودة وترجع لها أي وقت.
+                لتقديم الطلب، يُرجى اختيار نوعه وتعبئة البيانات المطلوبة وإرسالها
+                إلى المشرف. يمكن حفظ مسودة الطلب والعودة إليها لاحقًا.
               </p>
 
               <div className="mt-5 flex flex-wrap gap-2.5">
@@ -130,7 +130,7 @@ export default function StudentDashboard() {
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-primary text-primary-foreground font-bold text-sm ds-shadow-sm hover:bg-accent transition-colors"
                 >
                   <Plus className="w-4 h-4" />
-                  ابدأ بفكرتك الأولى
+                  تقديم طلب جديد
                 </Link>
                 <Link
                   href="/student/guide"
@@ -192,19 +192,19 @@ export default function StudentDashboard() {
             <h3 className="font-semibold text-base">الترقية إلى مشرف</h3>
             {upgradeRequest === undefined ? null : upgradeRequest === null ? (
               <p className="text-sm text-muted-foreground mt-0.5">
-                بريدك الجامعي مؤهل للترقية إلى مشرف أكاديمي. اضغط لتقديم الطلب.
+                بريدك الجامعي مؤهَّل للترقية إلى مشرف أكاديمي. يمكنك تقديم الطلب.
               </p>
             ) : upgradeRequest.status === "pending" ? (
               <div className="flex items-center gap-2 mt-0.5">
                 <Clock className="w-4 h-4 text-warning" />
-                <p className="text-sm text-warning">طلبك قيد المراجعة من قِبل الإدارة</p>
+                <p className="text-sm text-warning">الطلب قيد المراجعة من قِبَل الإدارة.</p>
               </div>
             ) : upgradeRequest.status === "approved" ? (
-              <p className="text-sm text-success mt-0.5">تمت الموافقة على طلبك</p>
+              <p className="text-sm text-success mt-0.5">تمت الموافقة على الطلب.</p>
             ) : (
               <div className="flex items-center gap-2 mt-0.5">
                 <XCircle className="w-4 h-4 text-destructive" />
-                <p className="text-sm text-destructive">تم رفض طلبك السابق — يمكنك إعادة التقديم</p>
+                <p className="text-sm text-destructive">رُفض الطلب السابق. يمكن إعادة تقديمه.</p>
               </div>
             )}
           </div>
@@ -232,7 +232,7 @@ export default function StudentDashboard() {
       >
         <DialogContent
           title="طلب الترقية إلى مشرف"
-          description="اشرح للأدمن سبب رغبتك بالترقية ودورك الأكاديمي حتى يستطيع البتّ بطلبك بسرعة."
+          description="يُرجى إيضاح أسباب طلب الترقية والدور الأكاديمي؛ لتمكين الإدارة من البتّ في الطلب."
           className="max-w-md"
         >
           <div className="space-y-4">
@@ -245,12 +245,12 @@ export default function StudentDashboard() {
                 fullWidth
                 value={upgradeReason}
                 onChange={(e) => setUpgradeReason(e.target.value)}
-                placeholder="مثال: أعمل معيداً في قسم نظم المعلومات منذ سنتين وأشرف على ٣ مشاريع تخرج حالياً."
+                placeholder="مثال: أعمل معيدًا في قسم نظم المعلومات منذ سنتين، وأُشرف حاليًا على ثلاثة مشاريع تخرج."
                 className="min-h-[120px]"
                 maxLength={1000}
               />
               <p className="text-xs text-muted-foreground font-medium mt-1.5">
-                {upgradeReason.trim().length} / 1000 — 20 حرفاً على الأقل
+                {upgradeReason.trim().length} / 1000 — 20 حرفًا على الأقل
               </p>
             </div>
             {upgradeError && (

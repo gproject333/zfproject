@@ -9,7 +9,7 @@ import { toast } from "@/lib/toast";
 import { Tabs, Card} from "@/components/ui";
 
 const STATUS_LABELS = {
-  pending: { label: "معلق", color: "text-warning", bg: "bg-warning/10" },
+  pending: { label: "قيد الانتظار", color: "text-warning", bg: "bg-warning/10" },
   approved: { label: "مقبول", color: "text-success", bg: "bg-success/10" },
   rejected: { label: "مرفوض", color: "text-destructive", bg: "bg-destructive/10" },
 };
@@ -30,9 +30,9 @@ export default function UpgradeRequestsManager() {
     setLoadingId(requestId);
     try {
       await reviewRequest({ requestId, decision });
-      toast.success(decision === "approved" ? "تمت الموافقة وترقية الطالب إلى مشرف" : "تم رفض الطلب");
+      toast.success(decision === "approved" ? "تمت الموافقة وتمت ترقية الطالب إلى مشرف" : "تم رفض الطلب");
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "حدث خطأ");
+      toast.error(e instanceof Error ? e.message : "حدث خطأ أثناء تنفيذ العملية");
     } finally {
       setLoadingId(null);
     }
@@ -49,12 +49,12 @@ export default function UpgradeRequestsManager() {
             طلبات الترقية إلى مشرف
           </h2>
           <p className="text-muted-foreground font-medium">
-            طلبات الترقية المقدمة من أعضاء هيئة التدريس (@zuj.edu.jo)
+            طلبات الترقية المقدّمة من أعضاء الهيئة التدريسية (@zuj.edu.jo)
           </p>
         </div>
         {pending > 0 && (
           <span className="ds-badge bg-warning/20 text-warning font-extrabold text-sm px-3 py-1.5">
-            {pending} طلب معلق
+            {pending} طلب قيد الانتظار
           </span>
         )}
       </div>
@@ -150,7 +150,7 @@ export default function UpgradeRequestsManager() {
                               </button>
                             </div>
                           ) : (
-                            <span className="text-xs text-muted-foreground">تم البت بالطلب</span>
+                            <span className="text-xs text-muted-foreground">تمّ البتّ في الطلب</span>
                           )}
                         </td>
                       </tr>

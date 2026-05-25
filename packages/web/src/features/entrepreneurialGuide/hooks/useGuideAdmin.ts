@@ -63,11 +63,11 @@ export function useGuideAdmin() {
     setFormError(null);
 
     if (!formState.title.trim()) {
-      setFormError("العنوان مطلوب");
+      setFormError("حقل العنوان مطلوب");
       return false;
     }
     if (!formState.url.trim()) {
-      setFormError("الرابط مطلوب");
+      setFormError("حقل الرابط مطلوب");
       return false;
     }
 

@@ -44,11 +44,11 @@ export default function SupervisorDashboard() {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-black text-lg sm:text-xl leading-tight">
-                صندوقك جاهز — لسّا ما وصلت طلبات
+                صندوق الطلبات جاهز — لم تُستلَم طلبات بعد
               </h3>
               <p className="text-sm text-muted-foreground font-medium mt-1.5 leading-relaxed">
-                أول ما يقدّم طالب طلب احتضان، حيظهر هنا للمراجعة. خلال انتظارك
-                تقدر تجهّز محتوى للمكتبة وتضيف موارد للدليل الريادي.
+                عند تقديم أول طلب احتضان من قِبَل طالب، سيظهر هنا للمراجعة. يمكن
+                خلال فترة الانتظار إعداد محتوى المكتبة وإضافة موارد إلى الدليل الريادي.
               </p>
               <div className="mt-5 flex flex-wrap gap-2.5">
                 <Link

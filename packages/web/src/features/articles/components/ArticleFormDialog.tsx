@@ -96,7 +96,7 @@ export default function ArticleFormDialog({
               value={formState.summary}
               onChange={(e) => setFormField("summary", e.target.value)}
               className="text-sm"
-              placeholder="جملة مختصرة تظهر في بطاقة المعاينة"
+              placeholder="عبارة موجزة تظهر في بطاقة المعاينة"
               fullWidth
             />
           </div>
@@ -116,7 +116,7 @@ export default function ArticleFormDialog({
               value={formState.body}
               onChange={(e) => setFormField("body", e.target.value)}
               className="text-sm min-h-56 font-mono"
-              placeholder="اكتب المحتوى بصيغة Markdown..."
+              placeholder="اكتب المحتوى بتنسيق Markdown..."
               fullWidth
               required
             />
@@ -130,7 +130,7 @@ export default function ArticleFormDialog({
             <div className="flex items-center gap-3">
               <label className={`${buttonVariants({ variant: "outline", size: "sm" })} cursor-pointer`}>
                 <Upload className="w-4 h-4" />
-                {formState.coverFile ? "تغيير" : "رفع صورة"}
+                {formState.coverFile ? "تغيير الصورة" : "رفع صورة"}
                 <input
                   type="file"
                   accept="image/*"
@@ -181,7 +181,7 @@ export default function ArticleFormDialog({
                 }
               }}
               className="text-sm"
-              placeholder="اكتب وسماً ثم Enter"
+              placeholder="اكتب وسمًا ثم اضغط Enter"
               fullWidth
             />
             {formState.tags.length > 0 && (
@@ -268,7 +268,7 @@ export default function ArticleFormDialog({
               size="sm"
               isDisabled={saving}
             >
-              {saving ? "جاري الحفظ..." : editing ? "حفظ التعديلات" : "نشر المقالة"}
+              {saving ? "جارٍ الحفظ..." : editing ? "حفظ التعديلات" : "نشر المقالة"}
             </Button>
           </div>
         </form>

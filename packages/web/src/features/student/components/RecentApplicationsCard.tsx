@@ -22,7 +22,7 @@ export default function RecentApplicationsCard({ limit = 3 }: { limit?: number }
       <div className="flex items-center justify-between px-5 py-3.5 border-b-2 border-foreground/10">
         <h3 className="font-semibold flex items-center gap-2">
           <FileText className="w-4 h-4 text-accent" />
-          آخر طلباتي
+          أحدث الطلبات
         </h3>
         <Link
           href="/student/applications"
@@ -49,7 +49,7 @@ export default function RecentApplicationsCard({ limit = 3 }: { limit?: number }
       ) : applications.length === 0 ? (
         <div className="text-center py-10 px-5">
           <FileText className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm font-medium text-muted-foreground">لا توجد طلبات بعد</p>
+          <p className="text-sm font-medium text-muted-foreground">لا توجد طلبات حتى الآن.</p>
         </div>
       ) : (
         <div className="p-3 space-y-3">

@@ -63,7 +63,7 @@ export default function ArticlesManager() {
         <EmptyState
           variant="empty-inbox"
           title="لا توجد مقالات بعد"
-          description="ابدأ بنشر أول مقالة لتظهر للطلاب في صفحة المقالات."
+          description="انشر أول مقالة لتظهر للطلاب في صفحة المقالات."
           action={
             <Button
               onPress={form.openCreateDialog}
@@ -192,7 +192,7 @@ export default function ArticlesManager() {
           if (!open) form.setToDelete(null);
         }}
         title="حذف المقالة"
-        description="سيتم حذف المقالة وصورة غلافها نهائياً. لا يمكن التراجع."
+        description="ستُحذَف المقالة وصورة غلافها نهائيًا، ولا يمكن التراجع عن العملية."
         destructive
         confirmLabel="حذف"
         cancelLabel="إلغاء"

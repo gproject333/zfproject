@@ -24,7 +24,7 @@ export default function OtpVerifyForm() {
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otpCode.length < 6) {
-      setError("رمز التحقق يجب أن يكون 6 أرقام");
+      setError("يجب أن يتكوّن رمز التحقّق من 6 أرقام");
       return;
     }
     setLoading(true);
@@ -35,12 +35,12 @@ export default function OtpVerifyForm() {
         await setActive!({ session: result.createdSessionId });
         router.push("/login-redirect");
       } else {
-        setError("التحقق لم يكتمل. حاول مجدداً.");
+        setError("لم يكتمل التحقّق. يُرجى إعادة المحاولة.");
       }
     } catch (err: unknown) {
       const clerkErr = err as { errors?: { message?: string }[] };
       const msg = clerkErr?.errors?.[0]?.message;
-      setError(msg ?? "رمز التحقق غير صحيح أو منتهي الصلاحية.");
+      setError(msg ?? "رمز التحقّق غير صحيح أو منتهي الصلاحية.");
     } finally {
       setLoading(false);
     }
@@ -49,12 +49,12 @@ export default function OtpVerifyForm() {
   if (!email) return null;
 
   return (
-    <AuthShell title="تأكيد البريد الإلكتروني" subtitle="خطوة أخيرة قبل الدخول إلى المنصة">
+    <AuthShell title="تأكيد البريد الإلكتروني" subtitle="خطوة أخيرة قبل الدخول إلى المنصّة">
       <Card className="p-6 sm:p-8">
         <div className="flex items-center gap-3 p-3 bg-success/10 ds-border rounded-lg mb-6 text-sm font-medium">
           <Mail className="w-5 h-5 text-success shrink-0" />
           <span>
-            تم إرسال رمز التحقق إلى{" "}
+            أُرسل رمز التحقّق إلى{" "}
             <strong className="text-foreground" dir="ltr">{email}</strong>
           </span>
         </div>
@@ -69,7 +69,7 @@ export default function OtpVerifyForm() {
         <form onSubmit={handleVerify} className="space-y-5">
           <div className="space-y-2">
             <label className="block text-sm font-bold text-center text-foreground">
-              رمز التحقق (OTP)
+              رمز التحقّق (OTP)
             </label>
             <div className="flex justify-center" dir="ltr">
               <InputOTP value={otpCode} onChange={setOtpCode} maxLength={6} autoFocus>
@@ -95,12 +95,12 @@ export default function OtpVerifyForm() {
             {loading ? (
               <>
                 <Spinner size="sm" color="current" />
-                جاري التحقق...
+                يجري التحقّق...
               </>
             ) : (
               <>
                 <CheckCircle2 className="w-5 h-5" />
-                تأكيد والدخول
+                التأكيد والدخول
               </>
             )}
           </Button>
@@ -113,7 +113,7 @@ export default function OtpVerifyForm() {
             className="text-sm"
           >
             <ArrowRight className="w-4 h-4" />
-            رجوع
+            الرجوع
           </Button>
         </form>
       </Card>

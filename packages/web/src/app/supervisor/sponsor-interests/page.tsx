@@ -54,10 +54,10 @@ export default function AdminSponsorInterestsPage() {
       <header className="flex items-center justify-between gap-4 flex-wrap">
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
-            اهتمامات الرعاة
+            اهتمامات الداعمين
           </h1>
           <p className="text-sm text-muted-foreground font-medium">
-            راجع كل اهتمام أبداه راعٍ بمشروع، تواصل معه بالقناة المناسبة، ثم
+            راجع كل اهتمام أبداه أحد الداعمين بمشروع، تواصل معه بالقناة المناسبة، ثم
             علّم الاهتمام كـ«تم التواصل».
           </p>
         </div>
@@ -101,7 +101,7 @@ function EmptyState() {
       </div>
       <h2 className="text-lg font-extrabold">لا توجد اهتمامات بعد</h2>
       <p className="text-sm text-muted-foreground font-medium max-w-sm">
-        لمّا يبدي راعٍ اهتمامه بمشروع مقبول، حيظهر هنا للمراجعة والمتابعة.
+        عندما يُبدي أحد الداعمين اهتمامه بمشروع مقبول، يظهر هنا للمراجعة والمتابعة.
       </p>
     </div>
   );
@@ -122,7 +122,7 @@ function InterestRow({
 }) {
   const typeCfg = TYPE_CONFIG[row.project.type];
   const contacted = row.adminContactedAt !== null;
-  const sponsorName = row.sponsor.name?.trim() || "راعٍ بدون اسم";
+  const sponsorName = row.sponsor.name?.trim() || "داعم دون اسم";
   const initial = sponsorName.charAt(0);
 
   return (

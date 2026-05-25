@@ -22,11 +22,11 @@ export default function AttentionSection() {
       <div className="flex items-center gap-2.5 px-5 py-3.5 bg-status-modification/10 border-b border-foreground/10">
         <AlertTriangle className="w-5 h-5 text-status-modification shrink-0" />
         <div>
-          <h2 className="font-bold text-sm">يحتاج انتباهك</h2>
+          <h2 className="font-bold text-sm">طلبات تستوجب الانتباه</h2>
           <p className="text-xs text-muted-foreground">
             {applications.length === 1
-              ? "طلب واحد يحتاج تعديلاً قبل إعادة تقديمه"
-              : `${applications.length} طلبات تحتاج تعديلاً قبل إعادة تقديمها`}
+              ? "طلب واحد يستوجب التعديل قبل إعادة تقديمه."
+              : `${applications.length} طلبات تستوجب التعديل قبل إعادة تقديمها.`}
           </p>
         </div>
       </div>

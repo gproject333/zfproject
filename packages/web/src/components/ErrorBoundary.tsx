@@ -51,9 +51,9 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             <div className="w-14 h-14 bg-destructive/10 ds-border rounded-xl flex items-center justify-center mx-auto mb-4">
               <AlertTriangle className="w-7 h-7 text-destructive" />
             </div>
-            <h2 className="text-xl font-extrabold mb-2">حدث خطأ غير متوقع</h2>
+            <h2 className="text-xl font-extrabold mb-2">حدث خطأ غير متوقّع</h2>
             <p className="text-sm text-muted-foreground font-medium mb-5">
-              نأسف على الإزعاج. حاول إعادة تحميل الصفحة أو العودة لاحقاً.
+              يُرجى إعادة تحميل الصفحة أو المحاولة لاحقًا.
             </p>
             {this.state.error?.message && (
               <pre className="text-xs text-left bg-muted/50 p-3 rounded-lg ds-border mb-5 overflow-auto whitespace-pre-wrap break-words">
@@ -62,7 +62,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             )}
             <Button onPress={this.handleReset} variant="primary" fullWidth>
               <RefreshCw className="w-4 h-4" />
-              المحاولة مرة أخرى
+              إعادة المحاولة
             </Button>
           </Card>
         </div>

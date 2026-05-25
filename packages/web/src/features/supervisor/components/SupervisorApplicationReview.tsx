@@ -111,8 +111,8 @@ export default function SupervisorApplicationReview() {
             </div>
             <p className="text-center text-sm text-muted-foreground font-medium leading-relaxed">
               {nextPending?.id
-                ? `بقي ${nextPending.remaining} طلب${nextPending.remaining === 1 ? "" : "اً"} بانتظار قرارك. تابع المراجعة أو ارجع للقائمة.`
-                : "ممتاز — صندوقك الوارد فارغ. لا توجد طلبات معلّقة الآن."}
+                ? `تبقّى ${nextPending.remaining} طلب${nextPending.remaining === 1 ? "" : "اً"} بانتظار القرار. يمكن متابعة المراجعة أو العودة إلى القائمة.`
+                : "اكتملت مراجعة جميع الطلبات. لا توجد طلبات معلّقة في الوقت الحالي."}
             </p>
             <div className="flex flex-col sm:flex-row gap-2">
               {nextPending?.id ? (
@@ -137,7 +137,7 @@ export default function SupervisorApplicationReview() {
                 fullWidth
               >
                 <List className="w-4 h-4" />
-                العودة للقائمة
+                العودة إلى القائمة
               </Button>
             </div>
           </div>

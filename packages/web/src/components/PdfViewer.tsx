@@ -109,7 +109,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
       onTouchStart={startDrag(sign)}
       className="absolute top-0 bottom-0 w-3 flex items-center justify-center cursor-col-resize group z-10 select-none"
       style={{ [sign === 1 ? "left" : "right"]: 0 }}
-      title="اسحب لتغيير العرض"
+      title="السحب لضبط العرض"
     >
       <div className={`w-1 rounded-full h-16 transition-colors ${isDragging ? "bg-primary" : "bg-foreground/20 group-hover:bg-primary/60"}`} />
       <GripVertical className={`absolute w-4 h-4 transition-colors ${isDragging ? "text-primary" : "text-foreground/30 group-hover:text-primary/70"}`} />
@@ -150,19 +150,19 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
             <FileText className="w-4 h-4 text-destructive" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-extrabold truncate">{title ?? "ملف PDF"}</p>
+            <p className="text-sm font-extrabold truncate">{title ?? "ملفّ PDF"}</p>
             <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wide">
-              PDF · صفحة {page} من {numPages || "—"}
+              PDF · الصفحة {page} من {numPages || "—"}
             </p>
           </div>
           <div className="flex items-center gap-1 shrink-0">
-            <a href={url} download className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="تحميل">
+            <a href={url} download className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="التحميل">
               <Download className="w-4 h-4" />
             </a>
-            <a href={url} target="_blank" rel="noopener noreferrer" className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="فتح في تبويب جديد">
+            <a href={url} target="_blank" rel="noopener noreferrer" className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="الفتح في تبويب جديد">
               <ExternalLink className="w-4 h-4" />
             </a>
-            <button onClick={handleClose} className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="إغلاق">
+            <button onClick={handleClose} className="w-8 h-8 ds-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors" title="الإغلاق">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -194,13 +194,13 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
           </div>
 
           <div className="flex items-center gap-1">
-            <button onClick={() => setZoomIndex((i) => Math.max(0, i - 1))} disabled={zoomIndex === 0} className="w-7 h-7 ds-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="تصغير">
+            <button onClick={() => setZoomIndex((i) => Math.max(0, i - 1))} disabled={zoomIndex === 0} className="w-7 h-7 ds-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="التصغير">
               <ZoomOut className="w-4 h-4" />
             </button>
-            <button onClick={() => setZoomIndex(DEFAULT_ZOOM_INDEX)} className="px-2 py-0.5 ds-border rounded-md text-xs font-bold hover:bg-muted transition-colors min-w-[48px] text-center" title="إعادة تعيين الحجم">
+            <button onClick={() => setZoomIndex(DEFAULT_ZOOM_INDEX)} className="px-2 py-0.5 ds-border rounded-md text-xs font-bold hover:bg-muted transition-colors min-w-[48px] text-center" title="إعادة ضبط الحجم">
               {Math.round(scale * 100)}%
             </button>
-            <button onClick={() => setZoomIndex((i) => Math.min(ZOOM_STEPS.length - 1, i + 1))} disabled={zoomIndex === ZOOM_STEPS.length - 1} className="w-7 h-7 ds-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="تكبير">
+            <button onClick={() => setZoomIndex((i) => Math.min(ZOOM_STEPS.length - 1, i + 1))} disabled={zoomIndex === ZOOM_STEPS.length - 1} className="w-7 h-7 ds-border rounded-md flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="التكبير">
               <ZoomIn className="w-4 h-4" />
             </button>
           </div>
@@ -214,13 +214,13 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
             loading={
               <div className="flex flex-col items-center justify-center gap-3 py-20">
                 <Spinner size="lg" color="current" className="text-muted-foreground" />
-                <p className="text-sm font-bold text-muted-foreground">جاري تحميل الملف...</p>
+                <p className="text-sm font-bold text-muted-foreground">يجري تحميل الملفّ...</p>
               </div>
             }
             error={
               <div className="flex flex-col items-center justify-center gap-3 py-20">
                 <AlertTriangle className="w-8 h-8 text-destructive" />
-                <p className="text-sm font-bold text-destructive">تعذّر تحميل الملف</p>
+                <p className="text-sm font-bold text-destructive">تعذّر تحميل الملفّ</p>
                 <a
                   href={url}
                   target="_blank"
@@ -228,7 +228,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
                   className={buttonVariants({ variant: "outline", size: "sm" })}
                 >
                   <ExternalLink className="w-4 h-4" />
-                  فتح في تبويب جديد
+                  الفتح في تبويب جديد
                 </a>
               </div>
             }

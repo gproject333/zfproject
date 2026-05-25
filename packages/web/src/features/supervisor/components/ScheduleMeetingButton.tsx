@@ -40,7 +40,7 @@ export default function ScheduleMeetingButton({
         <span className="flex-1 min-w-0">
           <span className="block font-bold text-sm">إرسال موعد لقاء</span>
           <span className="block text-xs text-muted-foreground">
-            حدّد للطالب وقت ومكان للقاء حضوري أو افتراضي
+            تحديد وقت ومكان لقاء حضوري أو افتراضي مع الطالب
           </span>
         </span>
       </button>
@@ -85,16 +85,16 @@ function MeetingForm({
   async function submit() {
     setError(null);
     if (!date || !time) {
-      setError("اختر التاريخ والوقت");
+      setError("يُرجى تحديد التاريخ والوقت");
       return;
     }
     const scheduledAt = new Date(`${date}T${time}:00`).getTime();
     if (!Number.isFinite(scheduledAt)) {
-      setError("تاريخ غير صالح");
+      setError("التاريخ غير صالح");
       return;
     }
     if (scheduledAt < Date.now()) {
-      setError("الوقت يجب أن يكون مستقبلياً");
+      setError("يجب أن يكون الوقت مستقبليًا");
       return;
     }
     setBusy(true);
@@ -109,7 +109,7 @@ function MeetingForm({
       setSuccess(true);
       setTimeout(onDone, 900);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "فشل إرسال الموعد");
+      setError(e instanceof Error ? e.message : "تعذّر إرسال الموعد");
     } finally {
       setBusy(false);
     }
@@ -119,7 +119,7 @@ function MeetingForm({
     return (
       <div className="flex flex-col items-center justify-center py-8 gap-3 text-success">
         <CheckCircle2 className="w-12 h-12" />
-        <p className="font-extrabold">تم إرسال الموعد للطالب</p>
+        <p className="font-extrabold">أُرسِل الموعد إلى الطالب</p>
       </div>
     );
   }
@@ -160,7 +160,7 @@ function MeetingForm({
           fullWidth
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          placeholder="مثال: مكتب الكلية الطابق الثاني — أو رابط Zoom"
+          placeholder="مثال: مكتب الكلية، الطابق الثاني — أو رابط Zoom"
         />
       </div>
 
@@ -172,7 +172,7 @@ function MeetingForm({
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="جدول الأعمال، ما يجب إحضاره، ..."
+          placeholder="جدول الأعمال، المستندات المطلوب إحضارها، ..."
           className="w-full min-h-[90px] rounded-lg border border-foreground/15 bg-background p-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 resize-y"
           maxLength={1000}
         />
@@ -191,7 +191,7 @@ function MeetingForm({
           isDisabled={busy}
         >
           {busy ? <Spinner size="sm" color="current" /> : <Send className="w-4 h-4" />}
-          إرسال للطالب
+          إرسال إلى الطالب
         </Button>
       </div>
     </div>

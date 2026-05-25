@@ -45,7 +45,7 @@ export default function StudentApplicationHero({
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            العودة إلى طلباتي
+            العودة إلى الطلبات
           </button>
           {actions}
         </div>

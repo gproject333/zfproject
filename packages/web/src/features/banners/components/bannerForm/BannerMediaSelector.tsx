@@ -70,7 +70,7 @@ export function BannerMediaSelector({
               <span className="text-sm font-bold text-muted-foreground">
                 {admin.formState.mediaFile
                   ? admin.formState.mediaFile.name
-                  : "اختر صورة أو اسحبها هنا"}
+                  : "اختر صورة أو اسحبها إلى هذه المنطقة"}
               </span>
               <input
                 ref={fileInputRef}
@@ -114,7 +114,7 @@ export function BannerMediaSelector({
             <span className="text-sm font-bold text-muted-foreground">
               {admin.formState.mediaFile
                 ? admin.formState.mediaFile.name
-                : "اختر ملف فيديو (MP4, WebM)"}
+                : "اختر ملف فيديو (MP4 أو WebM)"}
             </span>
             <input
               ref={fileInputRef}
@@ -153,7 +153,7 @@ export function BannerMediaSelector({
       )}
 
       <p className="text-xs font-bold text-muted-foreground bg-muted/50 rounded-lg px-3 py-2">
-        يظهر هذا الإعلان لجميع المستخدمين في جميع الصفحات الرئيسية.
+        يُعرض هذا الإعلان لجميع المستخدمين في الصفحات الرئيسية كافة.
       </p>
     </>
   );

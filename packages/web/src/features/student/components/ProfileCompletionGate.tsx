@@ -34,17 +34,17 @@ export default function ProfileCompletionGate({ children }: { children: ReactNod
         <UserCircle className="w-8 h-8" />
       </div>
       <div className="space-y-2">
-        <h2 className="text-xl font-extrabold">أكمل بياناتك الشخصية أولاً</h2>
+        <h2 className="text-xl font-extrabold">يُرجى استكمال البيانات الشخصية أولًا.</h2>
         <p className="text-sm text-muted-foreground font-medium leading-relaxed">
-          المشرف الأكاديمي يحتاج بياناتك الأساسية حتى يقدر يراجع طلبك ويتواصل
-          معك. خذ دقيقة لإكمالها وارجع لتقديم الطلب.
+          يحتاج المشرف الأكاديمي إلى البيانات الأساسية لمراجعة الطلب والتواصل
+          مع مقدِّمه. يُرجى استكمالها قبل تقديم الطلب.
         </p>
       </div>
 
       {missing.length > 0 && (
         <div className="inline-flex flex-wrap items-center justify-center gap-2 text-xs font-bold text-warning bg-warning/10 border border-warning/30 rounded-full px-3 py-1.5">
           <Sparkles className="w-3.5 h-3.5" />
-          ينقص: {missing.join("، ")}
+          البيانات الناقصة: {missing.join("، ")}
         </div>
       )}
 
@@ -54,14 +54,14 @@ export default function ProfileCompletionGate({ children }: { children: ReactNod
           className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-primary text-primary-foreground font-bold text-sm ds-shadow-sm hover:bg-accent transition-colors"
         >
           <UserCircle className="w-4 h-4" />
-          إكمال البيانات
+          استكمال البيانات
         </Link>
         <Link
           href="/student"
           className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-card text-foreground font-bold text-sm ds-border hover:bg-muted transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          العودة للوحة
+          العودة إلى لوحة التحكم
         </Link>
       </div>
     </Card>

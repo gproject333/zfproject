@@ -11,7 +11,7 @@ import { formatArabicDate } from "@smart-zuj/core";
 type FilterType = "all" | "video" | "course" | "link";
 
 const FILTERS: { value: FilterType; label: string }[] = [
-  { value: "all", label: "الكل" },
+  { value: "all", label: "الجميع" },
   { value: "video", label: "فيديوهات" },
   { value: "course", label: "دورات" },
   { value: "link", label: "روابط" },
@@ -53,7 +53,7 @@ export default function GuideView() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-2xl font-extrabold flex items-center gap-2">
           <Compass className="w-6 h-6 text-secondary" />
-          دليلك الريادي
+          الدليل الريادي
         </h2>
         <Tabs
           variant="secondary"
@@ -80,7 +80,7 @@ export default function GuideView() {
         <EmptyState
           variant="empty-inbox"
           title="لا توجد موارد بعد"
-          description="سيضيف المشرفون موارد تعليمية قريباً. تابع هنا!"
+          description="سيضيف المشرفون موارد تعليمية قريبًا."
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

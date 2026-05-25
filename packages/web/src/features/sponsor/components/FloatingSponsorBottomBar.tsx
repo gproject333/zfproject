@@ -8,10 +8,10 @@ import { Sparkles, Heart, Bell, UserRound, type LucideIcon } from "lucide-react"
 import { api } from "@smart-zuj/convex";
 
 const ITEMS: Array<{ href: string; label: string; icon: LucideIcon }> = [
-  { href: "/sponsor", label: "استكشف", icon: Sparkles },
-  { href: "/sponsor/interests", label: "اهتماماتي", icon: Heart },
-  { href: "/sponsor/notifications", label: "إشعارات", icon: Bell },
-  { href: "/sponsor/profile", label: "بروفايلي", icon: UserRound },
+  { href: "/sponsor", label: "الاستكشاف", icon: Sparkles },
+  { href: "/sponsor/interests", label: "الاهتمامات", icon: Heart },
+  { href: "/sponsor/notifications", label: "الإشعارات", icon: Bell },
+  { href: "/sponsor/profile", label: "الملف الشخصي", icon: UserRound },
 ];
 
 const IDLE_HIDE_MS = 2500;
@@ -53,7 +53,7 @@ export default function FloatingSponsorBottomBar() {
   return (
     <nav
       dir="rtl"
-      aria-label="تنقل الداعم"
+      aria-label="تنقّل الجهة الداعمة"
       onPointerEnter={() => setVisible(true)}
       className={`fixed bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5
                   bg-black/55 backdrop-blur-xl border border-secondary/35

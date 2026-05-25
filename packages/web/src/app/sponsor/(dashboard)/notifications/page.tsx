@@ -39,7 +39,7 @@ export default function SponsorNotificationsPage() {
             الإشعارات
           </h1>
           <p className="text-sm text-muted-foreground font-medium">
-            تحديثات الإدارة والمشرفين على اهتماماتك.
+            تحديثات الإدارة والمشرفين بشأن اهتماماتكم.
           </p>
         </div>
         {unreadCount > 0 && (
@@ -92,7 +92,7 @@ function EmptyState() {
       </div>
       <h2 className="text-lg font-extrabold">لا توجد إشعارات</h2>
       <p className="text-sm text-muted-foreground font-medium max-w-sm">
-        ستظهر هنا إشعاراتك عند تواصل الإدارة معك بشأن مشاريع أبديت اهتمامك بها.
+        تظهر هنا الإشعارات عند تواصل الإدارة بشأن المشاريع التي أبديتم الاهتمام بها.
       </p>
     </div>
   );

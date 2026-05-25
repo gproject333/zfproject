@@ -57,15 +57,15 @@ export default function StudentApplicationDetails() {
         <div className="w-16 h-16 rounded-2xl bg-muted ds-border flex items-center justify-center mx-auto mb-4">
           <FileQuestion className="w-8 h-8 text-muted-foreground" />
         </div>
-        <h2 className="text-lg font-semibold mb-1">الطلب غير موجود</h2>
+        <h2 className="text-lg font-semibold mb-1">الطلب غير موجود.</h2>
         <p className="text-sm text-muted-foreground mb-6">
-          قد يكون الطلب محذوفاً أو أن الرابط غير صحيح.
+          قد يكون الطلب محذوفًا أو أنّ الرابط غير صحيح.
         </p>
         <Button
           onPress={() => router.push("/student/applications")}
           variant="primary"
         >
-          العودة إلى طلباتي
+          العودة إلى الطلبات
         </Button>
       </Card>
     );
@@ -77,7 +77,7 @@ export default function StudentApplicationDetails() {
         <>
           <Tooltip
             content={
-              !canDelete ? "يمكن حذف المسودات والمرفوضة فقط" : "حذف الطلب"
+              !canDelete ? "يمكن حذف المسودات والطلبات المرفوضة فقط." : "حذف الطلب"
             }
           >
             <Button

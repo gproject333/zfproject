@@ -79,7 +79,7 @@ export function useStudentProfile() {
       headers: { "Content-Type": file.type },
       body: file,
     });
-    if (!res.ok) throw new Error("فشل في رفع الصورة");
+    if (!res.ok) throw new Error("تعذّر رفع الصورة.");
     const { storageId } = (await res.json()) as {
       storageId: Id<"_storage">;
     };
@@ -91,7 +91,7 @@ export function useStudentProfile() {
     setSuccess(false);
 
     if (!form.name.trim()) {
-      setError("الاسم مطلوب");
+      setError("الاسم حقل مطلوب.");
       return false;
     }
 
@@ -122,7 +122,7 @@ export function useStudentProfile() {
       setSuccess(true);
       return true;
     } catch (e) {
-      setError(e instanceof Error ? e.message : "حدث خطأ");
+      setError(e instanceof Error ? e.message : "حدث خطأ.");
       return false;
     } finally {
       setSaving(false);

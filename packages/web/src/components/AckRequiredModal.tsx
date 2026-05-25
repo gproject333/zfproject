@@ -68,7 +68,7 @@ export default function AckRequiredModal({
           ) : (
             <CheckCircle2 className="w-4 h-4" />
           )}
-          {alreadyAcked ? "تم التأكيد" : "فهمت"}
+          {alreadyAcked ? "تمّ التأكيد" : "تمّ الاطّلاع"}
         </Button>
       </DialogContent>
     </Dialog>

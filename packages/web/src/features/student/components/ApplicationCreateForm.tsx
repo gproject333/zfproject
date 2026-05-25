@@ -40,13 +40,13 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
     return (
       <Card className="p-12 text-center">
         <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
-        <h3 className="text-xl font-bold mb-2">نوع غير صالح</h3>
+        <h3 className="text-xl font-bold mb-2">نوع غير صالح.</h3>
         <Button
           onPress={() => router.push("/student/new")}
           variant="primary"
           className="mt-4"
         >
-          العودة لاختيار النوع
+          العودة إلى اختيار النوع
         </Button>
       </Card>
     );
@@ -60,7 +60,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
       <div className="flex items-center gap-3 mb-6">
         <button
           onClick={() => router.push("/student/new")}
-          aria-label="رجوع"
+          aria-label="العودة"
           className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card ds-shadow-hover shrink-0"
         >
           <ArrowRight className="w-5 h-5" />
@@ -82,9 +82,9 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
             <Save className="w-5 h-5" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-extrabold text-sm">عندك مسودة محفوظة من جلسة سابقة</p>
+            <p className="font-extrabold text-sm">توجد مسودة محفوظة من جلسة سابقة.</p>
             <p className="text-xs text-muted-foreground font-medium mt-0.5">
-              تبغى تكمل من حيث وقفت؟ البيانات محفوظة محلياً على جهازك.
+              يمكن استئناف العمل عليها؛ فالبيانات محفوظة محليًا على الجهاز.
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -147,7 +147,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
               {loading && submitMode === "submit" ? (
                 <>
                   <Spinner size="sm" color="current" />
-                  جاري التقديم...
+                  جارٍ التقديم...
                 </>
               ) : (
                 <>
@@ -164,13 +164,13 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
       <div className="mt-6 ds-card p-5 bg-muted/50">
         <h4 className="font-bold text-sm mb-2 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-success" />
-          نصائح لطلب ناجح
+          إرشادات تقديم الطلب
         </h4>
         <ul className="text-sm text-muted-foreground font-medium space-y-1 list-disc list-inside">
-          <li>اكتب وصفاً واضحاً ومفصلاً لمشروعك</li>
-          <li>حدد المشكلة التي يحلها مشروعك بدقة</li>
-          <li>أرفق فيديو تقديمي (يزيد فرص القبول 2x)</li>
-          <li>يمكنك حفظ المسودة والعودة لإكمالها لاحقاً</li>
+          <li>تقديم وصف واضح ومفصَّل للمشروع.</li>
+          <li>تحديد المشكلة التي يعالجها المشروع بدقة.</li>
+          <li>إرفاق فيديو تعريفي يُعزِّز فرص القبول.</li>
+          <li>يمكن حفظ المسودة والعودة إليها لاحقًا.</li>
         </ul>
       </div>
 
@@ -178,7 +178,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
           silently so the student understands the next phase before
           landing on a read-only detail page. */}
       <Dialog open={!!success} onOpenChange={(open) => !open && goToApplication()}>
-        <DialogContent title="تم إرسال طلبك بنجاح" className="max-w-md">
+        <DialogContent title="تم إرسال الطلب بنجاح." className="max-w-md">
           <div className="space-y-5">
             <div className="flex items-center justify-center">
               <div className="w-20 h-20 rounded-full bg-success/15 text-success flex items-center justify-center ring-4 ring-success/10">
@@ -186,21 +186,21 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
               </div>
             </div>
             <p className="text-center text-sm text-muted-foreground font-medium leading-relaxed">
-              شكراً لتقديم فكرتك. حدّدنا للمشرف الأكاديمي طلبك للمراجعة.
+              تم استلام الطلب وإحالته إلى المشرف الأكاديمي للمراجعة.
             </p>
 
             <ul className="space-y-2.5 bg-muted/40 ds-border rounded-xl p-4">
               <NextStep
                 icon={<Eye className="w-4 h-4" />}
-                label="المشرف يراجع تفاصيلك"
+                label="يقوم المشرف بمراجعة تفاصيل الطلب."
               />
               <NextStep
                 icon={<Clock4 className="w-4 h-4" />}
-                label="متوقع الرد خلال 3–5 أيام عمل"
+                label="يُتوقَّع صدور القرار خلال 3–5 أيام عمل."
               />
               <NextStep
                 icon={<Bell className="w-4 h-4" />}
-                label="حيصلك إشعار فوراً عند صدور القرار"
+                label="سيُرسَل إشعار فور صدور القرار."
               />
             </ul>
 
@@ -210,7 +210,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
                 variant="secondary"
                 fullWidth
               >
-                مشاهدة طلبي
+                عرض الطلب
                 <ArrowRight className="w-4 h-4 rotate-180" />
               </Button>
               <Button
@@ -218,7 +218,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
                 variant="outline"
                 fullWidth
               >
-                العودة للوحة
+                العودة إلى لوحة التحكم
               </Button>
             </div>
           </div>

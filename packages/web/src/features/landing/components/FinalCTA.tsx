@@ -14,9 +14,9 @@ import { JoinIcon } from "@/components/CustomIcons";
  * stops feeling like a one-button dead end.
  */
 const TRUST_POINTS = [
-  "مجاني دائماً",
-  "رد المشرف خلال 3–5 أيام",
-  "بدون بطاقة ائتمان",
+  "التسجيل مجاني لجميع طلبة الجامعة",
+  "مدة المراجعة المعتمدة: من ٣ إلى ٥ أيام",
+  "إشراف أكاديمي معتمد",
 ];
 
 export default function FinalCTA() {
@@ -81,15 +81,14 @@ export default function FinalCTA() {
           <div className="relative z-[1] max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-2 text-xs font-bold text-white/85 mb-5 bg-white/12 backdrop-blur rounded-full px-3 py-1.5 ring-1 ring-white/20">
               <Sparkles className="w-3.5 h-3.5" />
-              ابدأ اليوم — مجاناً
+              تسجيل الطلبة متاح حاليًّا
             </div>
 
             <h2 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight">
-              جاهز تزرع فكرتك؟
+              ابدأ إجراءات احتضان مشروعك
             </h2>
             <p className="text-base md:text-lg text-white/85 font-medium max-w-xl mx-auto mb-9 leading-relaxed">
-              انضم لمئات الطلاب الذين حوّلوا أفكارهم إلى مشاريع حقيقية. قدّم
-              طلبك الآن وابدأ رحلتك مع حاضنة الزيتونة.
+              يُتاح لطلبة جامعة الزيتونة الأردنية تقديم مشاريعهم إلى الحاضنة عبر المنصة الرسمية والاستفادة من خدمات الإشراف الأكاديمي.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-7">
@@ -100,13 +99,13 @@ export default function FinalCTA() {
                 {isAuthenticated ? (
                   <>
                     <JoinIcon className="w-5 h-5" />
-                    الذهاب للوحة التحكم
+                    الانتقال إلى لوحة التحكم
                     <ArrowLeft className="w-5 h-5" />
                   </>
                 ) : (
                   <>
                     <Rocket className="w-5 h-5" />
-                    قدّم مشروعك الآن
+                    تقديم طلب احتضان
                     <ArrowLeft className="w-5 h-5" />
                   </>
                 )}
@@ -118,7 +117,7 @@ export default function FinalCTA() {
                   className="inline-flex items-center gap-2 px-7 py-4 bg-white/10 hover:bg-white/15 text-white font-bold text-base rounded-2xl backdrop-blur-md ring-1 ring-white/25 transition-colors"
                 >
                   <BookOpen className="w-5 h-5" />
-                  كيف تشتغل المنصة؟
+                  الاطلاع على إجراءات الاحتضان
                 </Link>
               )}
             </div>

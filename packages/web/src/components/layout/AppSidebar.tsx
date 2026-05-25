@@ -140,7 +140,7 @@ export default function AppSidebar({ config }: Props) {
                        hover:shadow-[0_2px_12px_rgba(0,0,0,0.12)] hover:scale-105
                        transition-all duration-200"
             aria-label={collapsed ? "توسيع القائمة" : "تصغير القائمة"}
-            title={collapsed ? "توسيع" : "تصغير"}
+            title={collapsed ? "التوسيع" : "التصغير"}
           >
             {collapsed ? (
               <ChevronLeft className="w-4 h-4" />

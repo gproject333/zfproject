@@ -97,7 +97,7 @@ export function useCreateApplication(type: ApplicationType) {
         }
       } catch (e: unknown) {
         form.setFormError(
-          "حدث خطأ: " + (e instanceof Error ? e.message : "حاول مرة أخرى.")
+          "حدث خطأ: " + (e instanceof Error ? e.message : "يُرجى المحاولة لاحقًا.")
         );
       } finally {
         setLoading(false);

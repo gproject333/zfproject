@@ -33,11 +33,11 @@ export function useStudentApplicationDetails(appId: Id<"applications">) {
     setDeleting(true);
     try {
       await deleteApplication({ id: appId });
-      toast.success("تم حذف الطلب");
+      toast.success("تم حذف الطلب.");
       router.push("/student/applications");
     } catch (e: unknown) {
       toast.error(
-        "خطأ: " + (e instanceof Error ? e.message : "حاول مرة أخرى."),
+        "خطأ: " + (e instanceof Error ? e.message : "يُرجى المحاولة لاحقًا."),
       );
       setDeleting(false);
     }

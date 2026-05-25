@@ -26,7 +26,7 @@ export default function SponsorProjectReelsPage() {
       <div className="flex justify-center flex-col items-center h-[60vh] gap-4">
         <Spinner size="xl" color="current" className="text-primary" />
         <p className="font-bold text-muted-foreground animate-pulse">
-          جاري تحميل العرض...
+          يجري تحميل العرض...
         </p>
       </div>
     );
@@ -55,7 +55,7 @@ export default function SponsorProjectReelsPage() {
         ) : (
           <div className="absolute inset-0 z-0 flex flex-col items-center justify-center bg-zinc-900">
             <VideoOff className="w-16 h-16 text-zinc-700 mb-4" />
-            <p className="text-zinc-500 font-bold">لا يوجد فيديو تعريفي</p>
+            <p className="text-zinc-500 font-bold">لا يتوفّر فيديو تعريفي</p>
           </div>
         )}
 
@@ -63,7 +63,7 @@ export default function SponsorProjectReelsPage() {
 
         <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
           <span className="text-[10px] font-bold text-white/60 bg-black/40 px-3 py-1 rounded-full backdrop-blur-md">
-            تصفح المشاريع
+            تصفّح المشاريع
           </span>
           <button
             onClick={() => router.push("/sponsor")}

@@ -103,7 +103,7 @@ export default function ApplicationFormFields({
         error={errors.description}
         hint={
           <span className="inline-flex items-center gap-2">
-            <HintIcon text="اشرح المشروع بوضوح — ما يفعله، لمن، وما يميزه. 50 حرف على الأقل." />
+            <HintIcon text="يُرجى توضيح وظيفة المشروع وجمهوره ومزاياه، بما لا يقل عن 50 حرفًا." />
             <span
               className={`text-xs font-medium ${
                 ((formData.description as string)?.length ?? 0) >= 50
@@ -120,7 +120,7 @@ export default function ApplicationFormFields({
           rows={4}
           fullWidth
           className={`resize-none ${errors.description ? "!border-destructive" : ""}`}
-          placeholder="اكتب وصفاً شاملاً لمشروعك (50 حرف على الأقل)..."
+          placeholder="يُرجى كتابة وصف شامل للمشروع (50 حرفًا على الأقل)..."
           value={(formData.description as string) ?? ""}
           onChange={(e) => updateField("description", e.target.value)}
           onBlur={() => validateField("description")}
@@ -131,12 +131,12 @@ export default function ApplicationFormFields({
       {renderTypeSlot("afterDescription")}
 
       {/* 4. Problem statement */}
-      <FormField label="المشكلة التي يحلها المشروع" required error={errors.problemStatement}>
+      <FormField label="المشكلة التي يعالجها المشروع" required error={errors.problemStatement}>
         <TextArea
           rows={3}
           fullWidth
           className={`resize-none ${errors.problemStatement ? "!border-destructive" : ""}`}
-          placeholder="ما المشكلة التي يعالجها مشروعك؟"
+          placeholder="يُرجى تحديد المشكلة التي يعالجها المشروع."
           value={(formData.problemStatement as string) ?? ""}
           onChange={(e) => updateField("problemStatement", e.target.value)}
           onBlur={() => validateField("problemStatement")}
@@ -148,7 +148,7 @@ export default function ApplicationFormFields({
         <Input
           fullWidth
           className={errors.targetAudience ? "!border-destructive" : ""}
-          placeholder="مثال: طلاب الجامعات في الأردن"
+          placeholder="مثال: طلبة الجامعات في الأردن"
           value={(formData.targetAudience as string) ?? ""}
           onChange={(e) => updateField("targetAudience", e.target.value)}
           onBlur={() => validateField("targetAudience")}
@@ -165,7 +165,7 @@ export default function ApplicationFormFields({
             <div key={i} className="flex gap-2 items-start">
               <Input
                 className="flex-1"
-                placeholder="اسم العضو"
+                placeholder="اسم العضو الكامل"
                 value={member.name}
                 onChange={(e) => updateMember(i, { name: e.target.value })}
               />
@@ -184,7 +184,7 @@ export default function ApplicationFormFields({
                 type="button"
                 onClick={() => removeMember(i)}
                 className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card shrink-0 hover:bg-destructive hover:text-white transition-colors"
-                aria-label="حذف عضو"
+                aria-label="حذف العضو"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -208,7 +208,7 @@ export default function ApplicationFormFields({
           label="رقم الهاتف"
           required
           error={errors.phone}
-          hint={<HintIcon text="10 أرقام تبدأ بـ 07" />}
+          hint={<HintIcon text="عشرة أرقام تبدأ بـ 07." />}
         >
           <Input
             type="tel"

@@ -249,10 +249,10 @@ export default function LandingPage() {
             <HeroCarousel />
           </div>
         </RevealOnScroll>
+        <RevealOnScroll><AboutSection /></RevealOnScroll>
         <RevealOnScroll><FeaturesSection /></RevealOnScroll>
         <FeatureShowcases />
         <RevealOnScroll><HowItWorks /></RevealOnScroll>
-        <RevealOnScroll><AboutSection /></RevealOnScroll>
         <RevealOnScroll><Testimonials /></RevealOnScroll>
         <RevealOnScroll><FAQ /></RevealOnScroll>
         <RevealOnScroll><FinalCTA /></RevealOnScroll>

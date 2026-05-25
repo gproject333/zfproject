@@ -26,9 +26,9 @@ export default function UpcomingMeetingsCard() {
           <CalendarClock className="w-4 h-4" />
         </span>
         <div>
-          <h3 className="font-extrabold text-base leading-none">لقاءات قادمة</h3>
+          <h3 className="font-extrabold text-base leading-none">اللقاءات القادمة</h3>
           <p className="text-xs text-muted-foreground font-medium mt-0.5">
-            مواعيد حدّدها لك المشرف
+            مواعيد حدّدها المشرف.
           </p>
         </div>
       </header>

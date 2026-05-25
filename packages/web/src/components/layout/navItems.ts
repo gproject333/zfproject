@@ -44,7 +44,7 @@ export const supervisorNavItems: NavItem[] = [
   { label: "الصفحة الرئيسية", href: "/", icon: Home },
   { label: "لوحة تحكم المشرف", href: "/supervisor", icon: LayoutDashboard },
   { label: "إدارة الطلبات", href: "/supervisor/applications", icon: FileText },
-  { label: "اهتمامات الرعاة", href: "/supervisor/sponsor-interests", icon: Heart },
+  { label: "اهتمامات الداعمين", href: "/supervisor/sponsor-interests", icon: Heart },
   { label: "الإعلانات", href: "/supervisor/banners", icon: Megaphone },
   { label: "المقالات", href: "/supervisor/articles", icon: BookOpen },
   { label: "الدليل الريادي", href: "/supervisor/entrepreneurial-guide", icon: Compass },
@@ -55,7 +55,7 @@ export const adminNavItems: NavItem[] = [
   { label: "لوحة التحكم", href: "/admin", icon: LayoutDashboard },
   { label: "الطلاب", href: "/admin/students", icon: GraduationCap },
   { label: "المشرفون", href: "/admin/supervisors", icon: Users },
-  { label: "الرعاة", href: "/admin/sponsors", icon: Building2 },
+  { label: "الداعمون", href: "/admin/sponsors", icon: Building2 },
   { label: "إدارة الكليات", href: "/admin/colleges", icon: BookOpen },
   { label: "طلبات الترقية", href: "/admin/upgrade-requests", icon: TrendingUp },
   { label: "سجل النشاط", href: "/admin/logs", icon: ClipboardList },
@@ -63,10 +63,10 @@ export const adminNavItems: NavItem[] = [
 ];
 
 export const sponsorNavItems: NavItem[] = [
-  { label: "استكشف", href: "/sponsor", icon: Sparkles },
-  { label: "اهتماماتي", href: "/sponsor/interests", icon: Heart },
+  { label: "الاستكشاف", href: "/sponsor", icon: Sparkles },
+  { label: "الاهتمامات", href: "/sponsor/interests", icon: Heart },
   { label: "الإشعارات", href: "/sponsor/notifications", icon: Bell },
-  { label: "بروفايلي", href: "/sponsor/profile", icon: UserRound },
+  { label: "الملف الشخصي", href: "/sponsor/profile", icon: UserRound },
 ];
 
 /**

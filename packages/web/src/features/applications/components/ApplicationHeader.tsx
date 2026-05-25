@@ -40,7 +40,7 @@ export default function ApplicationHeader({
         <button
           onClick={onBack}
           className="w-10 h-10 ds-border rounded-lg flex items-center justify-center bg-card ds-shadow-hover shrink-0 mt-1"
-          aria-label="رجوع"
+          aria-label="عودة"
         >
           <ArrowRight className="w-5 h-5" />
         </button>

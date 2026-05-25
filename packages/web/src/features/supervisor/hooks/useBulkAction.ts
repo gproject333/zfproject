@@ -45,9 +45,9 @@ export function useBulkAction(onSuccess?: () => void) {
           ...(notes && notes.trim().length > 0 ? { supervisorNotes: notes } : {}),
         });
         if (result.skipped.length === 0) {
-          toast.success(`تم تحديث ${result.succeeded.length} طلب بنجاح`);
+          toast.success(`حُدِّث ${result.succeeded.length} طلب بنجاح`);
         } else {
-          toast(`نجح: ${result.succeeded.length} — تم تجاوز: ${result.skipped.length}`, {
+          toast(`نجح: ${result.succeeded.length} — تم تخطّي: ${result.skipped.length}`, {
             description: result.skipped[0]?.reason,
           });
         }
@@ -55,7 +55,7 @@ export function useBulkAction(onSuccess?: () => void) {
         onSuccess?.();
       } catch (e: unknown) {
         toast.error(
-          "حدث خطأ: " + (e instanceof Error ? e.message : "حاول مرة أخرى."),
+          "حدث خطأ: " + (e instanceof Error ? e.message : "يُرجى المحاولة مجددًا."),
         );
       } finally {
         setIsSubmitting(false);

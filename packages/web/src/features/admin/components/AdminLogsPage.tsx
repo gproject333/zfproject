@@ -16,10 +16,10 @@ import { api } from "@smart-zuj/convex";
 const PAGE_SIZE = 40;
 
 const ROLE_LABELS: Record<string, string> = {
-  admin: "أدمن",
+  admin: "مدير النظام",
   supervisor: "مشرف",
   student: "طالب",
-  sponsor: "راعٍ",
+  sponsor: "داعم",
 };
 
 const TIME_UNITS: Array<[string, number]> = [
@@ -77,7 +77,7 @@ export default function AdminLogsPage() {
           سجل النشاط
         </h1>
         <p className="text-sm text-muted-foreground font-medium">
-          كل إجراء قام به مستخدم بالنظام — مرجع للمراجعة والامتثال.
+          سجل جميع الإجراءات التي يقوم بها المستخدمون في النظام؛ يُستخدم للمراجعة والتدقيق.
         </p>
       </header>
 
@@ -197,8 +197,8 @@ function EmptyState({ hasFilter }: { hasFilter: boolean }) {
       </h3>
       <p className="text-sm text-muted-foreground font-medium max-w-sm mx-auto">
         {hasFilter
-          ? "جرّب تخفيف الفلاتر أو مسح خانة البحث."
-          : "ستظهر هنا كل الإجراءات الإدارية فور حدوثها."}
+          ? "يُرجى تخفيف معايير التصفية أو مسح حقل البحث."
+          : "ستُعرض جميع الإجراءات الإدارية هنا فور تنفيذها."}
       </p>
     </div>
   );

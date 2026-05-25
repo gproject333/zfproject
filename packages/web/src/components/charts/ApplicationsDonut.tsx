@@ -44,7 +44,7 @@ export function ApplicationsDonut({
 
       {total === 0 ? (
         <div className="aspect-square max-h-56 mx-auto flex items-center justify-center text-muted-foreground font-bold text-sm">
-          لا توجد بيانات بعد
+          لا تتوفّر بيانات حاليًا
         </div>
       ) : (
         <>

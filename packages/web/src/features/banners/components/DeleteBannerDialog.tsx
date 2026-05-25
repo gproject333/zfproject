@@ -19,7 +19,7 @@ export function DeleteBannerDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         title="حذف الإعلان"
-        description="هذا الإجراء لا يمكن التراجع عنه."
+        description="لا يمكن التراجع عن هذا الإجراء."
       >
         <div className="flex gap-2 pt-2">
           <Button variant="outline" className="flex-1" onPress={() => onOpenChange(false)}>

@@ -32,7 +32,7 @@ export default function ArticlesList() {
         <EmptyState
           variant="empty-inbox"
           title="لا توجد مقالات بعد"
-          description="سيقوم المشرفون بنشر مقالات إرشادية وتعريفية هنا قريباً."
+          description="سيقوم المشرفون بنشر مقالات إرشادية وتعريفية هنا قريبًا."
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

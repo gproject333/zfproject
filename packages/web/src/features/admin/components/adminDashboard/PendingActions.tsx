@@ -22,7 +22,7 @@ export default function PendingActions({
     pendingUpgrades > 0 && {
       href: "/admin/upgrade-requests",
       icon: TrendingUp,
-      label: `${pendingUpgrades} ${pendingUpgrades === 1 ? "طلب ترقية" : "طلبات ترقية"} بانتظار مراجعتك`,
+      label: `${pendingUpgrades} ${pendingUpgrades === 1 ? "طلب ترقية" : "طلبات ترقية"} في انتظار المراجعة`,
       cta: "مراجعة",
       tone: "primary" as const,
     },
@@ -46,7 +46,7 @@ export default function PendingActions({
       <Card className="p-5 flex items-center gap-3">
         <Sparkles className="w-5 h-5 text-success shrink-0" />
         <p className="text-sm font-bold text-foreground">
-          كل شيء تحت السيطرة — لا توجد طلبات تنتظر إجراءً منك الآن.
+          لا توجد طلبات تتطلب إجراءً في الوقت الحالي.
         </p>
       </Card>
     );

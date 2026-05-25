@@ -18,7 +18,7 @@ export function usePasswordChange() {
       await signIn!.create({ strategy: "reset_password_email_code", identifier: email });
       setStep("verifying");
     } catch {
-      setError("تعذّر إرسال رمز التحقق. تأكد من البريد الإلكتروني.");
+      setError("تعذّر إرسال رمز التحقق. يُرجى التأكد من البريد الإلكتروني.");
     } finally {
       setLoading(false);
     }
@@ -26,7 +26,7 @@ export function usePasswordChange() {
 
   const verifyAndChange = useCallback(async (_email: string, code: string, newPassword: string) => {
     if (newPassword.length < 8) {
-      setError("كلمة المرور يجب أن تكون 8 أحرف على الأقل");
+      setError("يجب ألّا تقل كلمة المرور عن ثمانية أحرف.");
       return;
     }
     setLoading(true);
@@ -41,7 +41,7 @@ export function usePasswordChange() {
         await setActive!({ session: result.createdSessionId });
         setStep("done");
       } else {
-        setError("فشل التحقق. حاول مجدداً.");
+        setError("فشل التحقق. يُرجى المحاولة مجددًا.");
       }
     } catch (err: unknown) {
       const clerkErr = err as { errors?: { code?: string; message?: string }[] };
@@ -49,9 +49,9 @@ export function usePasswordChange() {
       if (code_ === "form_code_incorrect") {
         setError("رمز التحقق غير صحيح.");
       } else if (code_ === "form_password_pwned") {
-        setError("كلمة المرور موجودة في قوائم اختراق معروفة، اختر كلمة أخرى.");
+        setError("كلمة المرور مدرجة ضمن قوائم اختراق معروفة. يُرجى اختيار كلمة أخرى.");
       } else {
-        setError("حدث خطأ. تأكد من الرمز وكلمة المرور وحاول مجدداً.");
+        setError("حدث خطأ. يُرجى التحقق من الرمز وكلمة المرور والمحاولة مجددًا.");
       }
     } finally {
       setLoading(false);

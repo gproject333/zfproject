@@ -44,7 +44,7 @@ export default function AdminDashboard() {
   if (stats === null) {
     return (
       <div className="text-center py-20">
-        <p className="text-lg font-bold text-destructive">غير مصرح — يجب أن تكون Admin</p>
+        <p className="text-lg font-bold text-destructive">غير مصرّح — يتطلب الوصول صلاحية مدير النظام</p>
       </div>
     );
   }
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
           لوحة تحكم النظام
         </h2>
         <p className="text-muted-foreground font-medium">
-          نظرة شاملة على منصة حاضنة الزيتونة
+          نظرة شاملة على منصة نظام إدارة المخزون الذكي
         </p>
       </header>
 

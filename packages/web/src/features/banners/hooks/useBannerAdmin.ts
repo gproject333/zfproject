@@ -161,7 +161,7 @@ export function useBannerAdmin() {
       headers: { "Content-Type": file.type },
       body: file,
     });
-    if (!res.ok) throw new Error("فشل في رفع الملف");
+    if (!res.ok) throw new Error("تعذّر رفع الملف");
     const { storageId } = (await res.json()) as { storageId: Id<"_storage"> };
     return storageId;
   }
@@ -170,7 +170,7 @@ export function useBannerAdmin() {
     setFormError(null);
 
     if (!formState.title.trim()) {
-      setFormError("العنوان مطلوب");
+      setFormError("العنوان حقل إلزامي");
       return false;
     }
 
@@ -178,21 +178,21 @@ export function useBannerAdmin() {
 
     // Scrolling and text banners require a message
     if (!isHero && !formState.message.trim()) {
-      setFormError("نص الرسالة مطلوب");
+      setFormError("نص الرسالة حقل إلزامي");
       return false;
     }
 
     // Hero banners require media
     if (isHero) {
       if (formState.mediaType === "youtube" && !formState.youtubeUrl.trim()) {
-        setFormError("رابط اليوتيوب مطلوب");
+        setFormError("رابط يوتيوب حقل إلزامي");
         return false;
       }
       if (
         formState.mediaType === "youtube" &&
         !isYouTubeUrl(formState.youtubeUrl.trim())
       ) {
-        setFormError("رابط اليوتيوب غير صالح");
+        setFormError("رابط يوتيوب غير صالح");
         return false;
       }
       if (
@@ -200,11 +200,11 @@ export function useBannerAdmin() {
         !formState.mediaFile &&
         !formState.imageUrl.trim()
       ) {
-        setFormError("يرجى رفع صورة أو إدخال رابط الصورة");
+        setFormError("يُرجى رفع صورة أو إدخال رابط الصورة");
         return false;
       }
       if (formState.mediaType === "video" && !formState.mediaFile) {
-        setFormError("يرجى رفع ملف الفيديو");
+        setFormError("يُرجى رفع ملف الفيديو");
         return false;
       }
     }
@@ -258,7 +258,7 @@ export function useBannerAdmin() {
       resetForm();
       return true;
     } catch (e) {
-      setFormError(e instanceof Error ? e.message : "حدث خطأ");
+      setFormError(e instanceof Error ? e.message : "حدث خطأ أثناء تنفيذ العملية");
       return false;
     } finally {
       setSaving(false);

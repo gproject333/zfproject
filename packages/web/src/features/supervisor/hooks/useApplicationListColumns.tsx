@@ -67,7 +67,7 @@ export function useApplicationListColumns(
           <label className="inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
-              aria-label="تحديد كل الطلبات في الصفحة"
+              aria-label="تحديد جميع الطلبات في الصفحة"
               checked={table.getIsAllPageRowsSelected()}
               ref={(el) => {
                 if (el)
@@ -206,7 +206,7 @@ export function useApplicationListColumns(
                       status: "under_review",
                       notesRequired: false,
                       title: "بدء المراجعة",
-                      description: `وضع الطلب "${app.projectName}" قيد المراجعة`,
+                      description: `يُوضع الطلب "${app.projectName}" قيد المراجعة`,
                       destructive: false,
                     })
                   }
@@ -221,7 +221,7 @@ export function useApplicationListColumns(
                       status: "accepted",
                       notesRequired: false,
                       title: "قبول الطلب",
-                      description: `سيتم قبول الطلب "${app.projectName}" وإشعار الطالب`,
+                      description: `سيُقبَل الطلب "${app.projectName}" ويُبلَّغ الطالب بذلك`,
                       destructive: false,
                     })
                   }
@@ -237,7 +237,7 @@ export function useApplicationListColumns(
                       status: "needs_modification",
                       notesRequired: true,
                       title: "طلب تعديل",
-                      description: `سيتم طلب تعديل من الطالب على "${app.projectName}"`,
+                      description: `سيُطلَب من الطالب إجراء تعديلات على "${app.projectName}"`,
                       destructive: false,
                     })
                   }
@@ -254,7 +254,7 @@ export function useApplicationListColumns(
                       status: "rejected",
                       notesRequired: true,
                       title: "رفض الطلب",
-                      description: `سيتم رفض الطلب "${app.projectName}"`,
+                      description: `سيُرفَض الطلب "${app.projectName}"`,
                       destructive: true,
                     })
                   }

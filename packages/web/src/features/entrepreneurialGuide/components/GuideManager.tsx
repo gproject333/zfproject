@@ -64,7 +64,7 @@ export default function GuideManager() {
         <EmptyState
           variant="empty-inbox"
           title="لا توجد موارد بعد"
-          description="أضف فيديوهات ودورات وروابط لتظهر للطلاب في دليلهم الريادي."
+          description="أضف فيديوهات ودورات وروابط لتظهر للطلاب ضمن الدليل الريادي."
           action={
             <Button
               onPress={form.openCreateDialog}
@@ -172,7 +172,7 @@ export default function GuideManager() {
           if (!open) form.setToDelete(null);
         }}
         title="حذف المورد"
-        description="سيتم حذف هذا المورد نهائياً. لا يمكن التراجع."
+        description="سيُحذَف هذا المورد نهائيًا، ولا يمكن التراجع عن العملية."
         destructive
         confirmLabel="حذف"
         cancelLabel="إلغاء"

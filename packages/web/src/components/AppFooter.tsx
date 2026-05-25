@@ -23,14 +23,14 @@ const STUDENT_LINKS: { label: string; href: string }[] = [
   { label: "تقديم طلب جديد", href: "/student/new" },
   { label: "طلباتي", href: "/student/applications" },
   { label: "المقالات", href: "/student/articles" },
-  { label: "الدليل الريادي", href: "/student/guide" },
+  { label: "دليل التقديم", href: "/student/guide" },
 ];
 
 const PLATFORM_LINKS: { label: string; href: string }[] = [
   { label: "الصفحة الرئيسية", href: "/" },
   { label: "إنشاء حساب", href: "/register" },
   { label: "تسجيل الدخول", href: "/login" },
-  { label: "نسيت كلمة المرور", href: "/forgot-password" },
+  { label: "استعادة كلمة المرور", href: "/forgot-password" },
 ];
 
 export default function AppFooter() {
@@ -77,8 +77,8 @@ export default function AppFooter() {
               </div>
             </Link>
             <p className="text-base text-foreground/85 font-medium leading-relaxed mt-5 max-w-sm">
-              منصّة احتضان المشاريع الريادية والتقنية والأكاديمية لطلاب
-              جامعة الزيتونة الأردنية — من فكرة إلى مشروع مدعوم بالكامل.
+              منصّة احتضان المشاريع الريادية والتقنية والأكاديمية لطلبة
+              جامعة الزيتونة الأردنية، من مرحلة الفكرة إلى مشروع مكتمل الدعم.
             </p>
           </div>
 
@@ -174,9 +174,9 @@ export default function AppFooter() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-foreground/80 font-semibold">
           <p>© {year} حاضنة الزيتونة — جميع الحقوق محفوظة</p>
           <p className="inline-flex items-center gap-1.5">
-            صُنع بـ
+            طُوِّرت في
             <Heart className="w-3.5 h-3.5 text-secondary fill-secondary" aria-hidden />
-            في جامعة الزيتونة الأردنية
+            جامعة الزيتونة الأردنية
           </p>
         </div>
       </div>

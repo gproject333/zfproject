@@ -33,14 +33,14 @@ const AUDIENCE_LABELS: Record<
   string
 > = {
   student: "الطلاب",
-  supervisor: "المشرفين",
+  supervisor: "المشرفون",
   landing: "الصفحة الرئيسية",
   all: "الكل",
 };
 
 const TYPE_LABELS: Record<string, string> = {
   scrolling: "شريط متحرك",
-  hero: "هيرو",
+  hero: "إعلان رئيسي",
   text: "نص",
 };
 
@@ -51,7 +51,7 @@ const MEDIA_LABELS: Record<string, string> = {
 };
 
 function formatExpiry(ts: number | undefined, now: number): string {
-  if (!ts) return "بدون انتهاء";
+  if (!ts) return "دون تاريخ انتهاء";
   const d = new Date(ts);
   const dateStr = formatArabicDate(d);
   const timeStr = d.toLocaleTimeString("ar-JO", {
@@ -168,7 +168,7 @@ export function BannerTable({
                 <Switch
                   isSelected={b.isActive}
                   onChange={(checked) => void onToggle(b._id, checked)}
-                  aria-label={b.isActive ? "إيقاف الإعلان" : "تفعيل الإعلان"}
+                  aria-label={b.isActive ? "تعطيل الإعلان" : "تفعيل الإعلان"}
                   size="sm"
                 />
               </TableCell>

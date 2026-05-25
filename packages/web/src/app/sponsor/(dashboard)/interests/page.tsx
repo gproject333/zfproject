@@ -17,7 +17,7 @@ export default function SponsorInterestsPage() {
             اهتماماتي
           </h1>
           <p className="text-sm text-muted-foreground font-medium">
-            المشاريع التي أبديت اهتمامك بها وحالة متابعة الإدارة لها.
+            المشاريع التي أبديتم اهتمامكم بها وحالة متابعة الإدارة لها.
           </p>
         </div>
         {rows && rows.length > 0 && (
@@ -59,10 +59,10 @@ function EmptyState() {
       <div className="w-20 h-20 rounded-full bg-gradient-to-br from-secondary/20 to-secondary/10 border border-secondary/40 flex items-center justify-center shadow-[0_0_24px_rgba(201,162,39,0.2)]">
         <Heart className="w-9 h-9 text-secondary-border" fill="currentColor" />
       </div>
-      <h2 className="text-xl font-extrabold">لا توجد اهتمامات بعد</h2>
+      <h2 className="text-xl font-extrabold">لا توجد اهتمامات مسجّلة</h2>
       <p className="text-sm text-muted-foreground font-medium max-w-md leading-relaxed">
-        لمّا تتصفح ريلز المشاريع وتضغط على القلب، حتلاقي المشروع هنا، وحتعرف
-        إذا الإدارة تواصلت معك بشأنه.
+        عند تصفّح المشاريع وتسجيل الاهتمام بأحدها، تظهر هنا، ويتضمّن العرض
+        ما إذا كانت الإدارة قد تواصلت بشأنه.
       </p>
     </div>
   );

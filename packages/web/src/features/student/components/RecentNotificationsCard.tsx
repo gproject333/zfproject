@@ -40,7 +40,7 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
       <div className="flex items-center justify-between px-5 py-3.5 border-b-2 border-foreground/10">
         <h3 className="font-semibold flex items-center gap-2">
           <Bell className="w-4 h-4 text-accent" />
-          آخر الإشعارات
+          أحدث الإشعارات
         </h3>
       </div>
 
@@ -61,9 +61,9 @@ export default function RecentNotificationsCard({ limit = 3 }: { limit?: number 
           <div className="w-12 h-12 rounded-full bg-accent/12 text-accent flex items-center justify-center mx-auto mb-3">
             <Bell className="w-6 h-6" />
           </div>
-          <p className="text-sm font-bold mb-1">صندوق هادئ — لسّا ما صار شي</p>
+          <p className="text-sm font-bold mb-1">لا توجد إشعارات حتى الآن.</p>
           <p className="text-xs text-muted-foreground font-medium max-w-[260px] mx-auto leading-relaxed">
-            رح نطمنك أول ما يطلع قرار من مشرفك أو يحدد لك موعد لقاء.
+            سيتم إعلامك فور صدور قرار من المشرف أو تحديد موعد لقاء.
           </p>
         </div>
       ) : (

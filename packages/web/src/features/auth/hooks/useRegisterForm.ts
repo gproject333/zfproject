@@ -81,17 +81,17 @@ export function useRegisterForm(): UseRegisterFormResult {
   const validateStep1 = (): boolean => {
     const e: Record<string, string> = {};
     if (!formData.name.trim() || formData.name.trim().length < 3) {
-      e.name = "الاسم يجب أن يكون 3 أحرف على الأقل";
+      e.name = "يجب ألّا يقلّ الاسم عن 3 أحرف";
     }
     if (!formData.email.trim()) {
-      e.email = "البريد الإلكتروني مطلوب";
+      e.email = "حقل البريد الإلكتروني مطلوب";
     } else if (!VALID_EMAIL_DOMAINS.some((d) => formData.email.endsWith(d))) {
       e.email = "يجب استخدام البريد الجامعي (@zuj.edu.jo أو @std-zuj.edu.jo)";
     }
     if (!formData.studentId.trim()) {
-      e.studentId = "الرقم الجامعي مطلوب";
+      e.studentId = "حقل الرقم الجامعي مطلوب";
     } else if (!/^\d{9}$/.test(formData.studentId)) {
-      e.studentId = "الرقم الجامعي يجب أن يكون 9 أرقام بالضبط";
+      e.studentId = "يجب أن يتكوّن الرقم الجامعي من 9 أرقام بالضبط";
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -121,9 +121,9 @@ export function useRegisterForm(): UseRegisterFormResult {
       const code = clerkError?.code ?? "";
       const msg = clerkError?.longMessage ?? clerkError?.message ?? "";
       if (code === "form_identifier_exists" || msg.includes("already")) {
-        setErrors({ form: "هذا البريد الإلكتروني مسجل مسبقاً" });
+        setErrors({ form: "هذا البريد الإلكتروني مُسجَّل مسبقًا" });
       } else {
-        setErrors({ form: msg || "حدث خطأ. تأكد من البيانات وحاول مجدداً." });
+        setErrors({ form: msg || "حدث خطأ. يُرجى التأكّد من البيانات وإعادة المحاولة." });
       }
     } finally {
       setLoading(false);
@@ -135,7 +135,7 @@ export function useRegisterForm(): UseRegisterFormResult {
   const submitOtp = useCallback(
     async (code: string) => {
       if (!code || code.length < 6) {
-        setErrors({ otp: "أدخل الكود المكون من 6 أرقام" });
+        setErrors({ otp: "يُرجى إدخال الرمز المكوّن من 6 أرقام" });
         return;
       }
       setLoading(true);
@@ -148,9 +148,9 @@ export function useRegisterForm(): UseRegisterFormResult {
         const clerkError = clerkErr?.errors?.[0];
         const code2 = clerkError?.code ?? "";
         if (code2 === "form_code_incorrect" || code2.includes("code")) {
-          setErrors({ otp: "الكود غير صحيح، تحقق وأعد المحاولة" });
+          setErrors({ otp: "الرمز غير صحيح. يُرجى التأكّد منه وإعادة المحاولة." });
         } else {
-          setErrors({ otp: clerkError?.message ?? "حدث خطأ أثناء التحقق" });
+          setErrors({ otp: clerkError?.message ?? "حدث خطأ أثناء التحقّق" });
         }
       } finally {
         setLoading(false);
@@ -164,11 +164,11 @@ export function useRegisterForm(): UseRegisterFormResult {
     async (onSuccess: () => void) => {
       const e: Record<string, string> = {};
       if (isStudent) {
-        if (!formData.college) e.college = "الكلية مطلوبة";
-        if (!formData.department) e.department = "التخصص مطلوب";
+        if (!formData.college) e.college = "حقل الكلية مطلوب";
+        if (!formData.department) e.department = "حقل التخصّص مطلوب";
       }
       if (!formData.password || formData.password.length < 8) {
-        e.password = "كلمة المرور يجب أن تكون 8 أحرف على الأقل";
+        e.password = "يجب ألّا تقلّ كلمة المرور عن 8 أحرف";
       }
       if (formData.password !== formData.confirmPassword) {
         e.confirmPassword = "كلمتا المرور غير متطابقتين";
@@ -195,7 +195,7 @@ export function useRegisterForm(): UseRegisterFormResult {
           await setActive!({ session: result.createdSessionId });
           onSuccess();
         } else {
-          setErrors({ form: "لم يكتمل التسجيل، حاول مجدداً" });
+          setErrors({ form: "لم يكتمل التسجيل. يُرجى إعادة المحاولة." });
         }
       } catch (err: unknown) {
         const clerkErr = err as { errors?: { message?: string; longMessage?: string; code?: string }[] };
@@ -203,11 +203,11 @@ export function useRegisterForm(): UseRegisterFormResult {
         const code = clerkError?.code ?? "";
         const msg = clerkError?.longMessage ?? clerkError?.message ?? "";
         if (code === "form_password_pwned") {
-          setErrors({ form: "كلمة المرور موجودة في قوائم اختراق معروفة، اختر كلمة مرور أخرى" });
+          setErrors({ form: "كلمة المرور هذه واردة في قوائم اختراق معروفة. يُرجى اختيار كلمة مرور أخرى." });
         } else if (code === "form_password_too_short") {
-          setErrors({ form: "كلمة المرور يجب أن تكون 8 أحرف على الأقل" });
+          setErrors({ form: "يجب ألّا تقلّ كلمة المرور عن 8 أحرف" });
         } else {
-          setErrors({ form: msg || "حدث خطأ. تأكد من البيانات وحاول مجدداً." });
+          setErrors({ form: msg || "حدث خطأ. يُرجى التأكّد من البيانات وإعادة المحاولة." });
         }
       } finally {
         setLoading(false);

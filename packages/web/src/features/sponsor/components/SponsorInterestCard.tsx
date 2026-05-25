@@ -52,7 +52,7 @@ export default function SponsorInterestCard({ row }: { row: InterestRow }) {
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-zinc-600">
             <VideoOff className="w-10 h-10" />
-            <span className="text-xs font-bold">لا يوجد فيديو</span>
+            <span className="text-xs font-bold">لا يتوفّر فيديو</span>
           </div>
         )}
 
@@ -103,7 +103,7 @@ function StatusPill({
     return (
       <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-1 rounded-full bg-success/15 text-success border border-success/30">
         <CheckCircle2 className="w-3 h-3" />
-        الإدارة تواصلت
+        تواصلت الإدارة
         {contactedAt && <span className="font-bold">· {relativeAr(contactedAt)}</span>}
       </span>
     );
@@ -111,7 +111,7 @@ function StatusPill({
   return (
     <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-1 rounded-full bg-secondary/15 text-secondary-border border border-secondary/40">
       <Clock4 className="w-3 h-3" />
-      بانتظار الإدارة
+      بانتظار تواصل الإدارة
     </span>
   );
 }

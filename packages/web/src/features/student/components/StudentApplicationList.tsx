@@ -49,7 +49,7 @@ export default function StudentApplicationList() {
             طلباتي
           </h2>
           <p className="text-sm text-muted-foreground">
-            تابع حالة طلباتك واقرأ ملاحظات المشرف
+            متابعة حالة الطلبات والاطلاع على ملاحظات المشرف.
           </p>
         </div>
         <Button onPress={() => router.push("/student/new")} variant="primary" size="sm">
@@ -63,7 +63,7 @@ export default function StudentApplicationList() {
         <Input
           type="text"
           placeholder="ابحث عن طلب..."
-          aria-label="بحث في طلباتي"
+          aria-label="البحث في الطلبات"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           fullWidth
@@ -100,8 +100,8 @@ export default function StudentApplicationList() {
           title={statusFilter === "all" ? "لا توجد طلبات" : "لا توجد طلبات بهذه الحالة"}
           description={
             statusFilter === "all"
-              ? "لم تقدم أي طلبات بعد. ابدأ الآن!"
-              : "جرّب فلتراً آخر أو قدّم طلباً جديداً."
+              ? "لم يتم تقديم أي طلب حتى الآن."
+              : "يُرجى اختيار حالة أخرى أو تقديم طلب جديد."
           }
           action={
             <Button onPress={() => router.push("/student/new")} variant="primary">

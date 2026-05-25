@@ -16,7 +16,7 @@ interface ValidateArgs {
  * `null` when all required files are present.
  */
 export function validateApplicationFiles(args: ValidateArgs): string | null {
-  if (!args.pdfFile && !args.existingPdfId) return "ملف PDF مطلوب";
-  if (!args.videoFile && !args.existingVideoId) return "الفيديو التقديمي مطلوب";
+  if (!args.pdfFile && !args.existingPdfId) return "ملف PDF حقل مطلوب.";
+  if (!args.videoFile && !args.existingVideoId) return "الفيديو التعريفي حقل مطلوب.";
   return null;
 }

@@ -37,15 +37,15 @@ function UnderReviewBanner() {
         <Clock4 className="w-5 h-5" />
       </div>
       <div className="flex-1 min-w-0 space-y-1">
-        <p className="font-extrabold text-sm">طلبك بانتظار المراجعة</p>
+        <p className="font-extrabold text-sm">الطلب قيد المراجعة.</p>
         <p className="text-xs text-muted-foreground font-medium leading-relaxed">
-          المشرف الأكاديمي يطّلع على طلبك. متوقع الرد خلال{" "}
+          يقوم المشرف الأكاديمي بمراجعة الطلب. يُتوقَّع صدور القرار خلال{" "}
           <span className="font-extrabold text-foreground">3–5 أيام عمل</span>.
-          ستصلك إشعار فور صدور القرار.
+          سيُرسَل إليك إشعار فور صدور القرار.
         </p>
         <p className="text-[11px] text-muted-foreground font-bold flex items-center gap-1 pt-1">
           <Bell className="w-3 h-3" />
-          ما تحتاج تتابع — رح نخبرك
+          لا حاجة للمتابعة؛ سيتم إعلامك تلقائيًا.
         </p>
       </div>
     </div>
@@ -95,10 +95,10 @@ function AcceptedCelebration({ appId }: { appId: string }) {
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-black text-lg sm:text-xl text-success leading-tight">
-            مبروك — تم قبول طلبك ✨
+            تم قبول الطلب.
           </h3>
           <p className="text-sm text-muted-foreground font-medium mt-1 leading-relaxed">
-            دخلت رسمياً مرحلة الاحتضان. هاي الخطوات اللي صارت متاحة:
+            دخل المشروع رسميًا مرحلة الاحتضان. الخطوات التالية متاحة الآن:
           </p>
         </div>
       </div>
@@ -107,14 +107,14 @@ function AcceptedCelebration({ appId }: { appId: string }) {
         <NextStepCard
           icon={<CalendarClock className="w-5 h-5" />}
           accent="bg-accent/15 text-accent border-accent/30"
-          title="موعد لقاء مع المشرف"
-          body="المشرف يقدر يحدد معك وقت لتطوير المشروع."
+          title="تحديد موعد لقاء مع المشرف"
+          body="يمكن للمشرف تحديد موعد لمتابعة تطوير المشروع."
         />
         <NextStepCard
           icon={<Heart className="w-5 h-5" />}
           accent="bg-secondary/15 text-secondary-border border-secondary/40"
-          title="رعاة قد يبدوا اهتماماً"
-          body="مشروعك صار ظاهر للداعمين بمعرض الريلز."
+          title="إبداء الجهات الداعمة اهتمامًا"
+          body="أصبح المشروع ظاهرًا للجهات الداعمة في معرض الريلز."
         />
       </div>
 
@@ -123,14 +123,14 @@ function AcceptedCelebration({ appId }: { appId: string }) {
           href="/student"
           className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-success text-white font-bold text-sm hover:opacity-90 transition-opacity"
         >
-          العودة للوحة
+          العودة إلى لوحة التحكم
         </Link>
         <button
           type="button"
           onClick={close}
           className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-card text-foreground font-bold text-sm ds-border hover:bg-muted transition-colors"
         >
-          إخفاء هذه الرسالة
+          إخفاء الرسالة
         </button>
       </div>
     </div>

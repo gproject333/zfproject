@@ -36,7 +36,7 @@ export default function AuthShell({
         className={`${buttonVariants({ variant: "outline", size: "sm" })} absolute top-5 right-5 z-20 group`}
       >
         <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
-        <span>الرئيسية</span>
+        <span>الصفحة الرئيسية</span>
       </Link>
 
       <div className={`w-full ${widthClass} animate-scale-in`}>

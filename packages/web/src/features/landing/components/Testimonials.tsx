@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Quote, GraduationCap, Leaf, Star, Users, Building2 } from "lucide-react";
+import { Quote, Leaf, Star, Users, GraduationCap, Building2 } from "lucide-react";
 
 /**
  * Testimonials section: a centered hero quote that auto-rotates every 8s,
@@ -25,54 +25,30 @@ interface Testimonial {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    name: "أحمد الخطيب",
-    role: "طالب ريادة أعمال",
-    quote:
-      "حاضنة الزيتونة ساعدتني على تحويل فكرتي من مجرد مشروع تخرج إلى شركة ناشئة حقيقية. الدعم الأكاديمي والإرشاد كانا لا يقدران بثمن.",
-    tone: "primary",
-    rating: 5,
-  },
-  {
-    name: "سارة المحمود",
-    role: "مشروع تخرج IT",
-    quote:
-      "التقديم الرقمي والمتابعة المباشرة مع المشرفين جعلا العملية سلسة جداً. أنصح كل طالب بتجربة المنصة.",
-    tone: "secondary",
-    rating: 5,
-  },
-  {
     name: "محمد العبادي",
     role: "مشروع يخدم الجامعة",
     quote:
-      "حصلت على ملاحظات بنّاءة من المشرفين خلال أيام، وتم قبول مشروعي بسرعة. تجربة ممتازة من البداية إلى النهاية.",
+      "تلقّيتُ ملاحظات أكاديمية مفصَّلة من المشرف خلال أيام، واعتُمد مشروعي وفق الإجراءات المعتمدة في الحاضنة.",
     tone: "accent",
     rating: 5,
   },
   {
-    name: "ليال الزعبي",
-    role: "تخرج هندسة برمجيات",
-    quote:
-      "الواجهة بسيطة وواضحة، ولوحة المتابعة خلتني أعرف بالضبط وين مشروعي بكل مرحلة. شكراً للفريق.",
-    tone: "primary",
-    rating: 5,
-  },
-  {
     name: "خالد الرفاعي",
-    role: "ريادي شاب",
+    role: "مسار فكرة ريادية",
     quote:
-      "وجدت في المنصة المكان المناسب للحوار مع المشرفين وتطوير فكرتي خطوة بخطوة، وانتهت بحصولي على تمويل أولي.",
+      "أتاحت لي المنصة التواصل المنهجي مع المشرف الأكاديمي وتطوير المشروع بصورة متدرجة، حتى الحصول على دعم من إحدى الجهات الداعمة.",
     tone: "secondary",
     rating: 5,
   },
 ];
 
 const TRUST_STATS: { icon: typeof Users; value: string; label: string }[] = [
-  { icon: Users, value: "+١٠٠", label: "طالب على المنصة" },
-  { icon: GraduationCap, value: "+٥٠", label: "مشروع مقبول" },
-  { icon: Building2, value: "+٢٠", label: "راعٍ من القطاع الخاص" },
+  { icon: Users, value: "+١٠٠", label: "طالب مسجَّل على المنصة" },
+  { icon: GraduationCap, value: "+٥٠", label: "مشروع معتمد" },
+  { icon: Building2, value: "+٢٠", label: "جهة داعمة" },
 ];
 
-const ROTATE_MS = 8000;
+const ROTATE_MS = 3500;
 
 export default function Testimonials() {
   const reduce = useReducedMotion();
@@ -109,12 +85,8 @@ export default function Testimonials() {
         </div>
 
         <div className="text-center mb-10 max-w-2xl mx-auto">
-          <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
-            <GraduationCap className="w-3.5 h-3.5" />
-            ماذا يقول طلابنا
-          </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
-            قصص نجاح <span className="text-primary">ملهمة</span>
+            شهادات <span className="text-primary">الطلبة</span>
           </h2>
         </div>
 
@@ -140,20 +112,6 @@ export default function Testimonials() {
       {/* Slower marquee row of the remaining quotes — sized down so it
           plays as ambient social proof instead of competing with the
           featured card. */}
-      <div className="relative ds-marquee-track">
-        <div className="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-muted/30 dark:from-muted/40 to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-muted/30 dark:from-muted/40 to-transparent z-10 pointer-events-none" />
-
-        <div className="animate-marquee gap-5 py-2" style={{ animationDuration: "75s" }}>
-          {[0, 1].map((copy) => (
-            <div key={copy} className="flex items-stretch gap-5 shrink-0 px-3">
-              {TESTIMONIALS.map((t, i) => (
-                <TestimonialCard key={`${copy}-${i}`} t={t} />
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
@@ -277,44 +235,3 @@ function Dots({
   );
 }
 
-function TestimonialCard({ t }: { t: Testimonial }) {
-  return (
-    <article
-      className="relative shrink-0 w-[300px] sm:w-[360px] glass rounded-2xl ring-1 ring-foreground/10 p-5 overflow-hidden"
-      style={{ borderInlineStart: `3px solid var(--color-${t.tone})` }}
-    >
-      <div
-        aria-hidden
-        className="absolute -top-8 -left-8 w-32 h-32 rounded-full blur-2xl opacity-15"
-        style={{ background: `var(--color-${t.tone})` }}
-      />
-      <div className="relative">
-        <div className="flex items-start justify-between mb-3">
-          <Quote className="w-6 h-6 text-primary/30" />
-          <Leaf className={`w-3.5 h-3.5 text-${t.tone}/60`} />
-        </div>
-        <p className="text-sm font-medium leading-relaxed text-foreground/85 mb-4 line-clamp-4 min-h-[5rem]">
-          «{t.quote}»
-        </p>
-        <div className="flex items-center gap-3 pt-3 border-t border-foreground/10">
-          <div
-            className="w-9 h-9 rounded-full ring-2 ring-background flex items-center justify-center text-sm font-black text-white shrink-0"
-            style={{
-              background: `linear-gradient(135deg, var(--color-${t.tone}), color-mix(in srgb, var(--color-${t.tone}) 55%, white))`,
-            }}
-          >
-            {t.name.charAt(0)}
-          </div>
-          <div className="min-w-0">
-            <p className="text-sm font-extrabold leading-tight truncate">
-              {t.name}
-            </p>
-            <p className="text-[11px] text-foreground/55 font-bold truncate">
-              {t.role}
-            </p>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-}

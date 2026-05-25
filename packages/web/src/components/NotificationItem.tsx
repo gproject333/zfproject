@@ -79,7 +79,7 @@ export default function NotificationItem({
           <p className="text-sm font-bold leading-tight truncate">{n.title}</p>
           {n.requireAck && !n.ackedAt && (
             <span className="shrink-0 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-warning/15 text-warning border border-warning/30 whitespace-nowrap">
-              يتطلب تأكيد
+              يستلزم تأكيدًا
             </span>
           )}
         </div>

@@ -14,11 +14,11 @@ function timeAgo(ts: number) {
   const diff = Date.now() - ts;
   const m = Math.floor(diff / 60000);
   if (m < 1) return "الآن";
-  if (m < 60) return `قبل ${m} دقيقة`;
+  if (m < 60) return `منذ ${m} دقيقة`;
   const h = Math.floor(m / 60);
-  if (h < 24) return `قبل ${h} ساعة`;
+  if (h < 24) return `منذ ${h} ساعة`;
   const d = Math.floor(h / 24);
-  return `قبل ${d} يوم`;
+  return `منذ ${d} يوم`;
 }
 
 function actionLabel(app: {
@@ -27,12 +27,12 @@ function actionLabel(app: {
   updatedAt: number;
   reviewedAt?: number;
 }): string {
-  if (app.status === "accepted") return "تم قبول الطلب";
-  if (app.status === "rejected") return "تم رفض الطلب";
+  if (app.status === "accepted") return "قُبِل الطلب";
+  if (app.status === "rejected") return "رُفِض الطلب";
   if (app.status === "needs_modification") return "طُلب تعديل الطلب";
   if (app.status === "under_review") return "بدأت مراجعة الطلب";
   // pending:
-  if (app.submittedAt && app.submittedAt === app.updatedAt) return "قدّم طلباً جديداً";
+  if (app.submittedAt && app.submittedAt === app.updatedAt) return "قدّم طلبًا جديدًا";
   return "أعاد تقديم الطلب";
 }
 

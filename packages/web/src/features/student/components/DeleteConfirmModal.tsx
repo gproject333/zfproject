@@ -28,11 +28,11 @@ export default function DeleteConfirmModal({
           </div>
           <div>
             <h3 className="font-semibold">حذف الطلب</h3>
-            <p className="text-sm text-muted-foreground">هذا الإجراء لا يمكن التراجع عنه</p>
+            <p className="text-sm text-muted-foreground">لا يمكن التراجع عن هذا الإجراء.</p>
           </div>
         </div>
         <p className="text-sm mb-6">
-          هل أنت متأكد من حذف طلب &quot;<strong>{projectName}</strong>&quot;؟
+          هل تريد تأكيد حذف طلب &quot;<strong>{projectName}</strong>&quot;؟
         </p>
         <div className="flex gap-3">
           <Button variant="outline" className="flex-1" onPress={() => onOpenChange(false)}>

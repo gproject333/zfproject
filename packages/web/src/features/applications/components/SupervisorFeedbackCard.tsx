@@ -61,12 +61,12 @@ export default function SupervisorFeedbackCard({
         </span>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-base leading-tight">
-            {needsModification ? "مطلوب تعديل على طلبك" : "ملاحظات المشرف"}
+            {needsModification ? "مطلوب إجراء تعديل على الطلب" : "ملاحظات المشرف"}
           </h3>
           <p className="text-xs text-muted-foreground mt-1">
             {needsModification
-              ? "راجع الملاحظات أدناه، ثم عدّل طلبك وأعد تقديمه."
-              : "ملاحظات المشرف بعد مراجعة طلبك."}
+              ? "يُرجى الاطّلاع على الملاحظات أدناه، ثم تعديل الطلب وإعادة تقديمه."
+              : "ملاحظات المشرف عقب مراجعة الطلب."}
           </p>
         </div>
         {app.supervisorRating && (
@@ -88,7 +88,7 @@ export default function SupervisorFeedbackCard({
       {canEdit && onEdit && (
         <Button onPress={onEdit} variant="primary" size="sm" className="mt-4 group">
           <Edit3 className="w-4 h-4" />
-          عدّل وأعد التقديم
+          تعديل الطلب وإعادة تقديمه
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
         </Button>
       )}

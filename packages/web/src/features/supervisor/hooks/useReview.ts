@@ -60,7 +60,7 @@ export function useReview(app: Doc<"applications"> | null | undefined) {
     async (onSuccess?: () => void) => {
       if (!app) return;
       if (!status) {
-        toast.error("يرجى اختيار حالة الطلب");
+        toast.error("يُرجى تحديد حالة الطلب");
         return;
       }
       setIsSubmitting(true);
@@ -82,11 +82,11 @@ export function useReview(app: Doc<"applications"> | null | undefined) {
           ...(notes !== initialNotes ? { supervisorNotes: notes } : {}),
           ...(rating !== initialRating ? { supervisorRating: rating ?? undefined } : {}),
         });
-        toast.success("تم حفظ التقييم بنجاح");
+        toast.success("حُفِظ التقييم بنجاح");
         onSuccess?.();
       } catch (e: unknown) {
         toast.error(
-          "حدث خطأ أثناء الحفظ: " + (e instanceof Error ? e.message : "حاول مرة أخرى."),
+          "حدث خطأ أثناء الحفظ: " + (e instanceof Error ? e.message : "يُرجى المحاولة مجددًا."),
         );
       } finally {
         setIsSubmitting(false);

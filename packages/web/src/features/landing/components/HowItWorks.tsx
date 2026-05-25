@@ -26,33 +26,33 @@ interface Stage {
 const STAGES: Stage[] = [
   {
     num: "١",
-    title: "سجّل حسابك",
-    desc: "أنشئ حسابك بإيميل الجامعة الرسمي للوصول إلى لوحة الطالب.",
-    metaphor: "ازرع البذرة",
+    title: "تسجيل الطالب",
+    desc: "يُنشئ الطالب حسابه الرسمي على المنصة باستخدام البريد الجامعي المعتمد، للوصول إلى لوحة التحكم الأكاديمية.",
+    metaphor: "تسجيل الطالب",
     icon: Sprout,
     snippet: SignupSnippet,
   },
   {
     num: "٢",
-    title: "قدّم فكرتك",
-    desc: "اختر نوع الاحتضان (فكرة ريادية / مشروع IT / مشروع للجامعة) واملأ نموذج الطلب.",
-    metaphor: "اسقِ الفكرة",
+    title: "تقديم ملف المشروع",
+    desc: "يقوم الطالب باختيار نوع الاحتضان المناسب (فكرة ريادية / مشروع IT / مشروع يخدم الجامعة) وتعبئة نموذج الطلب وفق المتطلبات الرسمية.",
+    metaphor: "تقديم ملف المشروع",
     icon: Leaf,
     snippet: ApplicationSnippet,
   },
   {
     num: "٣",
-    title: "احصل على التقييم",
-    desc: "يراجع المشرف الأكاديمي طلبك ويرد عليك خلال أيام قليلة.",
-    metaphor: "تنمو الفروع",
+    title: "المراجعة الأكاديمية",
+    desc: "يتولّى المشرف الأكاديمي دراسة ملف المشروع وتقييمه وفق المعايير المعتمدة، ثم يُبلَّغ الطالب بالنتيجة خلال مدة وجيزة.",
+    metaphor: "المراجعة الأكاديمية",
     icon: Trees,
     snippet: ReviewSnippet,
   },
   {
     num: "٤",
-    title: "ابدأ الرحلة",
-    desc: "انطلق بمشروعك بدعم كامل من الفريق الأكاديمي وأدوات المنصة.",
-    metaphor: "اقطف الثمرة",
+    title: "اعتماد المشروع والبدء في التنفيذ",
+    desc: "بعد اعتماد المشروع رسميًّا، يشرع الطالب في تنفيذه بإشراف الفريق الأكاديمي وبالاستفادة من الأدوات المتاحة على المنصة.",
+    metaphor: "اعتماد المشروع",
     icon: Award,
     snippet: DashboardSnippet,
   },
@@ -72,16 +72,12 @@ export default function HowItWorks() {
     <section ref={sectionRef} className="relative px-4 py-20 sm:py-28 overflow-hidden">
       <div className="max-w-4xl mx-auto relative">
         <div className="text-center mb-14">
-          <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
-            <Sprout className="w-3.5 h-3.5" />
-            رحلة النمو
-          </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
-            من البذرة{" "}
-            <span className="text-primary">إلى الثمرة</span>
+            إجراءات{" "}
+            <span className="text-primary">الاحتضان الأكاديمي</span>
           </h2>
           <p className="text-foreground/60 mt-4 text-base sm:text-lg">
-            أربع مراحل بسيطة تأخذك من فكرة عابرة إلى مشروع حقيقي.
+            تعتمد الحاضنة منهجية واضحة تضمن سير المشروع داخل إطار أكاديمي منضبط، عبر أربع مراحل متسلسلة.
           </p>
         </div>
 
@@ -192,7 +188,7 @@ function ApplicationSnippet() {
       <div className="space-y-2">
         <div className="text-[10px] font-bold text-foreground/60">اسم المشروع</div>
         <div className="text-[11px] font-medium px-3 py-2 ds-border rounded-md bg-card text-foreground truncate">
-          بستان الزيتون الذكي
+          نظام إدارة المخزون الذكي
         </div>
       </div>
     </SnippetCard>
@@ -209,7 +205,7 @@ function ReviewSnippet() {
         </span>
       </div>
       <p className="text-xs font-bold text-foreground mb-2 leading-snug">
-        تم قبول طلبك &quot;بستان الزيتون الذكي&quot;
+        تم قبول طلبك &quot;نظام إدارة المخزون الذكي&quot;
       </p>
       <p className="text-[11px] text-muted-foreground font-medium mb-3 leading-relaxed line-clamp-2">
         راجع المشرف الأكاديمي طلبك ووافق عليه. تابع التحديثات في لوحتك.
@@ -230,7 +226,7 @@ function DashboardSnippet() {
       </div>
       <div className="bg-muted/40 rounded-lg p-3 ds-border mb-3">
         <p className="text-[10px] font-bold text-foreground/60 mb-1">مشروعك الحالي</p>
-        <p className="text-xs font-extrabold text-foreground mb-2">بستان الزيتون الذكي</p>
+        <p className="text-xs font-extrabold text-foreground mb-2">نظام إدارة المخزون الذكي</p>
         <div className="flex h-1 rounded-full overflow-hidden bg-muted">
           <div className="bg-status-accepted" style={{ width: "100%" }} />
         </div>

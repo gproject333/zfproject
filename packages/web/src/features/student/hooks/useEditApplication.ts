@@ -88,7 +88,7 @@ export function useEditApplication(
         onSaved();
       } catch (e: unknown) {
         form.setFormError(
-          "حدث خطأ: " + (e instanceof Error ? e.message : "حاول مرة أخرى.")
+          "حدث خطأ: " + (e instanceof Error ? e.message : "يُرجى المحاولة لاحقًا.")
         );
       } finally {
         setSaving(false);

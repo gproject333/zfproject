@@ -71,10 +71,10 @@ export default function HeroCarousel() {
               <GraduationCap className="w-8 h-8 text-primary" />
             </div>
             <h2 className="text-xl md:text-2xl font-extrabold text-white mb-1">
-              حاضنة الزيتونة
+              نظام إدارة المخزون الذكي
             </h2>
             <p className="text-xs md:text-sm text-white/50 font-bold max-w-sm">
-              منصة احتضان المشاريع الريادية ومشاريع التخرج
+              منصة لاحتضان المشاريع الريادية ومشاريع التخرج
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function HeroCarousel() {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         role="region"
-        aria-label="بنرات عرض"
+        aria-label="إعلانات معروضة"
       >
         {slides.map((slide, i) => {
           const isActive = i === index;

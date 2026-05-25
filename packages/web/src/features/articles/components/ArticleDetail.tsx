@@ -45,11 +45,11 @@ export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {
       <EmptyState
         variant="no-results"
         title="المقالة غير متاحة"
-        description="قد تكون المقالة قد حُذفت أو لم تُنشر بعد."
+        description="قد تكون المقالة محذوفة أو لم تُنشر بعد."
         action={
           <Link href={backHref} className={buttonVariants({ variant: "outline" })}>
             <ChevronRight className="w-4 h-4" />
-            العودة للمقالات
+            العودة إلى المقالات
           </Link>
         }
       />

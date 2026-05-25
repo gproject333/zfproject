@@ -38,21 +38,21 @@ function validateFieldValue(
   extraFields: readonly ExtraField[],
 ): string | null {
   if (name === "projectName") {
-    if (typeof value !== "string" || !value.trim()) return "اسم المشروع مطلوب";
+    if (typeof value !== "string" || !value.trim()) return "اسم المشروع حقل مطلوب.";
     return null;
   }
   if (name === "description") {
-    if (typeof value !== "string" || !value.trim()) return "وصف المشروع مطلوب";
-    if (value.trim().length < 50) return "الوصف يجب أن يكون 50 حرفاً على الأقل";
+    if (typeof value !== "string" || !value.trim()) return "وصف المشروع حقل مطلوب.";
+    if (value.trim().length < 50) return "يجب ألّا يقل الوصف عن 50 حرفًا.";
     return null;
   }
   if (name === "problemStatement") {
-    if (typeof value !== "string" || !value.trim()) return "المشكلة مطلوبة";
+    if (typeof value !== "string" || !value.trim()) return "بيان المشكلة حقل مطلوب.";
     return null;
   }
   if (name === "targetAudience") {
     if (typeof value !== "string" || !value.trim())
-      return "الجمهور المستهدف مطلوب";
+      return "الجمهور المستهدف حقل مطلوب.";
     return null;
   }
   if (name === "phone") {
@@ -62,10 +62,10 @@ function validateFieldValue(
   const cfg = extraFields.find((f) => f.name === name);
   if (!cfg?.required) return null;
   if (cfg.type === "multiselect") {
-    if (!Array.isArray(value) || value.length === 0) return `${cfg.label} مطلوب`;
+    if (!Array.isArray(value) || value.length === 0) return `${cfg.label} حقل مطلوب.`;
     return null;
   }
-  if (typeof value !== "string" || !value.trim()) return `${cfg.label} مطلوب`;
+  if (typeof value !== "string" || !value.trim()) return `${cfg.label} حقل مطلوب.`;
   return null;
 }
 
@@ -113,9 +113,9 @@ export function useApplicationForm({ type, initialData }: UseApplicationFormArgs
     // member at once instead of fixing them one by one.
     const memberErrors: string[] = [];
     formData.teamMembers.forEach((member, i) => {
-      const label = `عضو ${i + 1}`;
+      const label = `العضو ${i + 1}`;
       if (!member.name.trim() || !member.phone.trim()) {
-        memberErrors.push(`${label}: يجب تعبئة الاسم والرقم أو حذف العضو`);
+        memberErrors.push(`${label}: يجب تعبئة الاسم والرقم أو حذف العضو.`);
         return;
       }
       const phoneErr = validatePhone(member.phone, { required: true });

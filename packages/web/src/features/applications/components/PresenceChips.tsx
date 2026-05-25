@@ -26,7 +26,7 @@ export default function PresenceChips({ others }: PresenceChipsProps) {
       aria-label={`${others.length} مستخدم آخر يشاهد هذا الطلب`}
     >
       <Eye className="w-3.5 h-3.5 text-info" aria-hidden="true" />
-      <span>أيضاً يشاهد:</span>
+      <span>يشاهده أيضًا:</span>
       <ul className="flex flex-wrap items-center gap-1.5">
         {others.map((u) => (
           <li

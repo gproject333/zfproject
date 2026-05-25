@@ -73,7 +73,7 @@ export default function SponsorReelOverlayActions({
       )}
       <div className="absolute bottom-32 left-4 z-20 flex flex-col items-center gap-5">
         <OverlayButton
-          label={interested ? "أنت مهتم" : "اهتمام"}
+          label={interested ? "تم إبداء الاهتمام" : "إبداء اهتمام"}
           onClick={handleToggle}
           disabled={isLiking}
           active={interested}

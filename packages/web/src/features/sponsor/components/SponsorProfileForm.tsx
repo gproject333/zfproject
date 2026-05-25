@@ -63,7 +63,7 @@ export default function SponsorProfileForm() {
   if (user === null) {
     return (
       <Card className="p-6 text-center text-sm font-bold text-muted-foreground">
-        تعذّر تحميل البيانات. حاول إعادة تحميل الصفحة.
+        تعذّر تحميل البيانات. يُرجى إعادة تحميل الصفحة.
       </Card>
     );
   }
@@ -75,7 +75,7 @@ export default function SponsorProfileForm() {
       headers: { "Content-Type": file.type },
       body: file,
     });
-    if (!res.ok) throw new Error("فشل في رفع الصورة");
+    if (!res.ok) throw new Error("تعذّر رفع الصورة");
     const { storageId } = (await res.json()) as { storageId: Id<"_storage"> };
     return storageId;
   }
@@ -106,7 +106,7 @@ export default function SponsorProfileForm() {
       setForm((prev) => ({ ...prev, avatarFile: null }));
       setSuccess(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "حدث خطأ");
+      setError(e instanceof Error ? e.message : "حدث خطأ غير متوقّع");
     } finally {
       setSaving(false);
     }
@@ -152,7 +152,7 @@ export default function SponsorProfileForm() {
           />
         </button>
         <p className="text-xs text-muted-foreground font-semibold">
-          اضغط على الصورة لتغييرها
+          يمكن النقر على الصورة لتغييرها
         </p>
       </div>
 
@@ -199,7 +199,7 @@ export default function SponsorProfileForm() {
           />
           {form.phone && !/^07\d{8}$/.test(form.phone) && (
             <p className="text-[10px] text-destructive mt-1 font-bold">
-              يجب أن يكون 10 أرقام ويبدأ بـ 07
+              يجب أن يتكوّن من 10 أرقام ويبدأ بـ 07
             </p>
           )}
         </div>
@@ -227,7 +227,7 @@ export default function SponsorProfileForm() {
       {success && (
         <p className="text-xs font-bold text-success flex items-center gap-1">
           <CheckCircle2 className="w-4 h-4" />
-          تم حفظ التغييرات بنجاح
+          حُفظت التغييرات بنجاح
         </p>
       )}
 

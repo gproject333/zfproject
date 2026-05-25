@@ -24,7 +24,7 @@ export function useFileUpload() {
     const file = files[0];
     if (!file) return;
     if (file.size > PDF_MAX_SIZE) {
-      setErrors((prev) => ({ ...prev, pdf: "حجم الملف يجب أن لا يتجاوز 10MB" }));
+      setErrors((prev) => ({ ...prev, pdf: "يجب ألّا يتجاوز حجم الملف 10MB" }));
       return;
     }
     setPdfFile(file);
@@ -39,7 +39,7 @@ export function useFileUpload() {
     const file = files[0];
     if (!file) return;
     if (file.size > VIDEO_MAX_SIZE) {
-      setErrors((prev) => ({ ...prev, video: "حجم الفيديو يجب أن لا يتجاوز 100MB" }));
+      setErrors((prev) => ({ ...prev, video: "يجب ألّا يتجاوز حجم الفيديو 100MB" }));
       return;
     }
     setVideoFile(file);
@@ -72,7 +72,7 @@ export function useFileUpload() {
         body: file,
       });
       if (!res.ok) {
-        throw new Error(`فشل رفع الملف (${res.status})`);
+        throw new Error(`تعذّر رفع الملف (${res.status})`);
       }
       const { storageId } = await res.json();
       return storageId as Id<"_storage">;

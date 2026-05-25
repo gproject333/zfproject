@@ -63,7 +63,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
             onValueChange={(v) => setStatus((v as SupervisorStatus) || null)}
           >
             <SelectTrigger aria-labelledby="review-status">
-              <SelectValue placeholder="اختر الحركة..." />
+              <SelectValue placeholder="اختر الإجراء..." />
             </SelectTrigger>
             <SelectContent>
               {SUPERVISOR_STATUS_KEYS.map((key) => (
@@ -87,7 +87,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="none">بدون تقييم</SelectItem>
+              <SelectItem value="none">دون تقييم</SelectItem>
               {RATING_KEYS.map((key) => (
                 <SelectItem key={key} value={key}>
                   {RATING_CONFIG[key].selectLabel}
@@ -111,14 +111,14 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
             id="review-notes"
             fullWidth
             className="min-h-[120px] bg-card"
-            placeholder="اكتب ملاحظاتك للطالب (ستظهر له في تفاصيل الطلب)..."
+            placeholder="اكتب الملاحظات الموجَّهة إلى الطالب (تظهر له في تفاصيل الطلب)..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             maxLength={2000}
             aria-describedby="review-notes-count review-notes-help"
           />
           <p id="review-notes-help" className="text-xs text-muted-foreground mt-1">
-            يدعم Markdown — استخدم الأزرار أعلاه أو اكتب الصياغة مباشرة
+            يدعم تنسيق Markdown — يمكن استخدام الأزرار أعلاه أو كتابة الصياغة مباشرة
           </p>
           <p
             id="review-notes-count"
@@ -130,7 +130,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
         </div>
 
         {!isDirty ? (
-          <Tooltip content="لا تغييرات للحفظ">
+          <Tooltip content="لا توجد تغييرات للحفظ">
             <Button
               variant="primary"
               fullWidth
@@ -138,7 +138,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
               isDisabled={isSubmitting || !status || !isDirty}
             >
               {isSubmitting ? <Spinner size="sm" color="current" /> : <Send className="w-5 h-5" />}
-              حفظ وإرسال إشعار
+              حفظ وإرسال الإشعار
             </Button>
           </Tooltip>
         ) : (

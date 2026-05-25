@@ -36,8 +36,8 @@ export function useAuthForm(): UseAuthFormResult {
   const signInWithPassword = useCallback(
     async (onSuccess: () => void | Promise<void>) => {
       setError("");
-      if (!email.trim()) { setError("البريد الإلكتروني مطلوب"); return; }
-      if (!password) { setError("كلمة المرور مطلوبة"); return; }
+      if (!email.trim()) { setError("حقل البريد الإلكتروني مطلوب"); return; }
+      if (!password) { setError("حقل كلمة المرور مطلوب"); return; }
       setLoading(true);
       try {
         const result = await signIn!.create({ identifier: email, password });
@@ -48,7 +48,7 @@ export function useAuthForm(): UseAuthFormResult {
           await result.prepareSecondFactor({ strategy: "email_code" });
           setNeedsSecondFactor(true);
         } else {
-          setError("حدث خطأ غير متوقع. حاول مجدداً.");
+          setError("حدث خطأ غير متوقّع. يُرجى إعادة المحاولة.");
         }
       } catch (err: unknown) {
         const clerkErr = err as { errors?: { code?: string }[] };
@@ -56,7 +56,7 @@ export function useAuthForm(): UseAuthFormResult {
         if (code === "form_password_incorrect" || code === "form_identifier_not_found") {
           setError("البريد الإلكتروني أو كلمة المرور غير صحيحة.");
         } else if (code === "too_many_requests") {
-          setError("محاولات كثيرة جداً. انتظر قليلاً وحاول مجدداً.");
+          setError("عدد المحاولات تجاوز الحدّ المسموح. يُرجى الانتظار قليلًا ثم إعادة المحاولة.");
         } else {
           setError("البريد الإلكتروني أو كلمة المرور غير صحيحة.");
         }
@@ -70,7 +70,7 @@ export function useAuthForm(): UseAuthFormResult {
   const verifySecondFactor = useCallback(
     async (onSuccess: () => void | Promise<void>) => {
       setError("");
-      if (!otp.trim()) { setError("رمز التحقق مطلوب"); return; }
+      if (!otp.trim()) { setError("حقل رمز التحقّق مطلوب"); return; }
       setLoading(true);
       try {
         const result = await signIn!.attemptSecondFactor({ strategy: "email_code", code: otp });
@@ -78,17 +78,17 @@ export function useAuthForm(): UseAuthFormResult {
           await setActive!({ session: result.createdSessionId });
           await onSuccess();
         } else {
-          setError("حدث خطأ غير متوقع. حاول مجدداً.");
+          setError("حدث خطأ غير متوقّع. يُرجى إعادة المحاولة.");
         }
       } catch (err: unknown) {
         const clerkErr = err as { errors?: { code?: string }[] };
         const code = clerkErr?.errors?.[0]?.code ?? "";
         if (code === "form_code_incorrect") {
-          setError("رمز التحقق غير صحيح.");
+          setError("رمز التحقّق غير صحيح.");
         } else if (code === "too_many_requests") {
-          setError("محاولات كثيرة جداً. انتظر قليلاً وحاول مجدداً.");
+          setError("عدد المحاولات تجاوز الحدّ المسموح. يُرجى الانتظار قليلًا ثم إعادة المحاولة.");
         } else {
-          setError("رمز التحقق غير صحيح. حاول مجدداً.");
+          setError("رمز التحقّق غير صحيح. يُرجى إعادة المحاولة.");
         }
       } finally {
         setLoading(false);

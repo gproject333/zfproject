@@ -1,6 +1,6 @@
 "use client";
 
-import { Target, Compass, HeartHandshake, Sparkles, type LucideIcon } from "lucide-react";
+import { Target, Compass, HeartHandshake, type LucideIcon } from "lucide-react";
 import Image from "next/image";
 
 interface PillarCard {
@@ -18,23 +18,23 @@ interface PillarCard {
 const PILLARS: PillarCard[] = [
   {
     icon: Compass,
-    title: "رؤيتنا",
+    title: "الرؤية",
     body:
-      "أن نكون البيئة الجامعية الأولى والوجهة الرائدة في المملكة لاحتضان المشاريع التكنولوجية، ونقطة الانطلاق الأقوى لتخريج جيل من روّاد الأعمال المبتكرين.",
+      "أن تكون الحاضنة بيئةً جامعيةً رائدةً في المملكة الأردنية الهاشمية في احتضان مشاريع الطلبة، وإسهامًا في إعداد جيل من رواد الأعمال وفق معايير أكاديمية معتمدة.",
     tone: "accent",
   },
   {
     icon: Target,
-    title: "رسالتنا",
+    title: "الرسالة",
     body:
-      "تمكين طاقات طلبة جامعة الزيتونة وتوجيهها، من خلال توفير منصة رقمية تفاعلية تربط أصحاب الأفكار بالخبرات الأكاديمية، لتطوير مشاريعهم وفق أحدث المعايير.",
+      "تقديم منصة أكاديمية رقمية تربط طلبة جامعة الزيتونة الأردنية بالمشرفين الأكاديميين، لتطوير مشاريعهم وفق المعايير العلمية والمنهجية المعتمدة في الجامعة.",
     tone: "secondary",
   },
   {
     icon: HeartHandshake,
-    title: "ما نقدّمه",
+    title: "الخدمات المقدَّمة",
     body:
-      "إرشاد أكاديمي متخصص، ومتابعة حثيثة لكل مرحلة من مراحل بناء المشروع. نحن نوفر لك التقييم والدعم المستمر لضمان تطور فكرتك من المخطط الأولي وحتى التنفيذ النهائي.",
+      "إشراف أكاديمي متخصص ومتابعة منهجية لكل مرحلة من مراحل المشروع، تشمل المراجعة والتقييم والدعم الفني، من تقديم الطلب وحتى اعتماد المشروع والبدء في تنفيذه.",
     tone: "primary",
   },
 ];
@@ -77,23 +77,15 @@ export default function AboutSection() {
 
           {/* Text column */}
           <div className="text-right">
-            <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
-              من نحن
-            </span>
             <h2
               id="about-heading"
               className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground mb-6 leading-tight"
             >
-              بوابتك{" "}
-              <span className="text-primary">الرقمية</span>{" "}
-              نحو الريادة
+              التعريف{" "}
+              <span className="text-primary">بالحاضنة</span>
             </h2>
             <p className="text-base sm:text-lg text-foreground/70 dark:text-foreground/80 font-medium max-w-2xl leading-relaxed">
-              حاضنة الزيتونة منصة متكاملة تابعة لجامعة الزيتونة الأردنية، صُممت
-              لتمهّد الطريق أمام إبداعات الطلاب ومشاريع تخرجهم، عبر ربطهم بنخبة
-              من المشرفين الأكاديميين. نرافقك في رحلة منهجية واضحة لتحويل فكرتك
-              الطموحة إلى مشروع حقيقي وواقع ملموس.
+              حاضنة الزيتونة منصة رسمية تابعة لجامعة الزيتونة الأردنية، تُعنى باحتضان مشاريع الطلبة وأفكارهم الريادية ومشاريع تخرّجهم، وفق منهجية أكاديمية واضحة تربط الطالب بالمشرف الأكاديمي المختص خلال جميع مراحل المشروع.
             </p>
           </div>
         </div>

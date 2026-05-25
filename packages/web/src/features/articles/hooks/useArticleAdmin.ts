@@ -96,7 +96,7 @@ export function useArticleAdmin() {
       headers: { "Content-Type": file.type },
       body: file,
     });
-    if (!res.ok) throw new Error("فشل في رفع صورة الغلاف");
+    if (!res.ok) throw new Error("تعذّر رفع صورة الغلاف");
     const { storageId } = (await res.json()) as { storageId: Id<"_storage"> };
     return storageId;
   }
@@ -105,7 +105,7 @@ export function useArticleAdmin() {
     setFormError(null);
 
     if (!formState.title.trim()) {
-      setFormError("العنوان مطلوب");
+      setFormError("حقل العنوان مطلوب");
       return false;
     }
     if (!formState.body.trim()) {

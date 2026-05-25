@@ -35,7 +35,7 @@ export function BannerFormFields({
           onChange={(e) => admin.setFormField("title", e.target.value)}
           placeholder={
             isScrolling
-              ? "مثال: إعلان هام للطلاب"
+              ? "مثال: إعلان هامّ للطلاب"
               : "مثال: يوم وظيفي في الجامعة"
           }
         />
@@ -59,7 +59,7 @@ export function BannerFormFields({
           onChange={(e) => admin.setFormField("message", e.target.value)}
           placeholder={
             isScrolling
-              ? "اكتب النص الذي سيظهر كشريط متحرك..."
+              ? "اكتب النص الذي يظهر ضمن الشريط المتحرك..."
               : "وصف مختصر للإعلان (اختياري)..."
           }
         />
@@ -87,7 +87,7 @@ export function BannerFormFields({
             <SelectContent>
               <SelectItem value="all">الكل</SelectItem>
               <SelectItem value="student">الطلاب</SelectItem>
-              <SelectItem value="supervisor">المشرفين</SelectItem>
+              <SelectItem value="supervisor">المشرفون</SelectItem>
               <SelectItem value="landing">
                 الصفحة الرئيسية / الزوار
               </SelectItem>
@@ -138,7 +138,7 @@ export function BannerFormFields({
               onChange={(e) =>
                 admin.setFormField("linkLabel", e.target.value)
               }
-              placeholder="مثال: اضغط هنا"
+              placeholder="مثال: للمزيد من التفاصيل"
             />
           </div>
           <div>
@@ -165,7 +165,7 @@ export function BannerFormFields({
           onChange={(e) => admin.setFormField("isActive", e.target.checked)}
           className="w-4 h-4"
         />
-        <span className="text-sm font-bold">نشط — يظهر فوراً</span>
+        <span className="text-sm font-bold">مفعَّل — يُعرض فورًا</span>
       </label>
     </>
   );

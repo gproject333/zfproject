@@ -64,7 +64,7 @@ export default function SettingsMenu({
         <DropdownMenuContent align="end">
           <DropdownMenuItem onSelect={() => router.push(profileHref)}>
             <UserCircle className="w-4 h-4" />
-            ملفي الشخصي
+            الملفّ الشخصي
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => setTheme(isDark ? "light" : "dark")}
@@ -89,7 +89,7 @@ export default function SettingsMenu({
           if (!logout.isLoggingOut) logout.setShowConfirm(open);
         }}
         title="تسجيل الخروج"
-        description="هل أنت متأكد من رغبتك في تسجيل الخروج من الحساب؟"
+        description="هل تودّ تأكيد تسجيل الخروج من الحساب؟"
         icon={<LogOut className="w-6 h-6 text-destructive" />}
         destructive
         confirmLabel="تسجيل الخروج"

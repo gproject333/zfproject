@@ -67,7 +67,7 @@ export default function FileUploadFields({
             ) : (
               <>
                 ملف PDF <span className="text-destructive">*</span>{" "}
-                {existingPdfId && <span className="text-success">(مرفق مسبقاً)</span>}
+                {existingPdfId && <span className="text-success">(مرفق مسبقًا)</span>}
               </>
             )}
           </label>
@@ -100,7 +100,7 @@ export default function FileUploadFields({
               <input {...getPdfInputProps()} />
               {isCreate && <FileText className="w-8 h-8 text-muted-foreground mx-auto mb-2" />}
               <p className={`font-bold text-muted-foreground ${isCreate ? "text-sm" : "text-xs"}`}>
-                {isPdfDragActive ? "أفلت الملف هنا" : isCreate ? "اسحب ملف PDF أو انقر للاختيار" : "اسحب PDF أو انقر"}
+                {isPdfDragActive ? "أفلت الملف هنا" : isCreate ? "اسحب ملف PDF أو انقر للاختيار" : "اسحب PDF أو انقر للاختيار"}
               </p>
             </div>
           )}
@@ -108,9 +108,9 @@ export default function FileUploadFields({
           {!errors.pdf && (
             <div className="mt-2 border-r-4 border-primary/60 bg-primary/5 px-3 py-2 rounded-md">
               <p className="text-xs leading-relaxed">
-                <span className="font-extrabold">نصيحة: </span>
+                <span className="font-extrabold">إرشاد: </span>
                 <span className="text-muted-foreground">
-                  اجعل الملف شاملاً للفكرة ومُصاغاً بشكل جيد، أو عرض تقديمي (presentation) مفصّل وواضح.
+                  يُستحسَن أن يكون الملف شاملًا للفكرة ومُحكَم الصياغة، أو عرضًا تقديميًا مفصّلًا وواضحًا.
                 </span>
               </p>
             </div>
@@ -128,7 +128,7 @@ export default function FileUploadFields({
             ) : (
               <>
                 فيديو تقديمي <span className="text-destructive">*</span>{" "}
-                {existingVideoId && <span className="text-success">(مرفق مسبقاً)</span>}
+                {existingVideoId && <span className="text-success">(مرفق مسبقًا)</span>}
               </>
             )}
           </label>
@@ -161,7 +161,7 @@ export default function FileUploadFields({
               <input {...getVideoInputProps()} />
               {isCreate && <Video className="w-8 h-8 text-muted-foreground mx-auto mb-2" />}
               <p className={`font-bold text-muted-foreground ${isCreate ? "text-sm" : "text-xs"}`}>
-                {isVideoDragActive ? "أفلت الفيديو هنا" : isCreate ? "اسحب فيديو أو انقر للاختيار" : "اسحب فيديو أو انقر"}
+                {isVideoDragActive ? "أفلت الفيديو هنا" : isCreate ? "اسحب الفيديو أو انقر للاختيار" : "اسحب الفيديو أو انقر للاختيار"}
               </p>
             </div>
           )}
@@ -169,9 +169,9 @@ export default function FileUploadFields({
           {!errors.video && (
             <div className="mt-2 border-r-4 border-info/60 bg-info/5 px-3 py-2 rounded-md">
               <p className="text-xs leading-relaxed">
-                <span className="font-extrabold">نصيحة: </span>
+                <span className="font-extrabold">إرشاد: </span>
                 <span className="text-muted-foreground">
-                  فيديو تعريفي قصير بشرح مختصر للفكرة — صياغة جيدة تجذب الانتباه وتزيد فرص القبول.
+                  فيديو تعريفي قصير يتضمّن شرحًا موجزًا للفكرة — الصياغة المتقنة تُسهم في رفع فرص القبول.
                 </span>
               </p>
             </div>

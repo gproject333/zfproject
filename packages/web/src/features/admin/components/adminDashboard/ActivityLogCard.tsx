@@ -25,7 +25,7 @@ export default function ActivityLogCard({ logs }: { logs: ActivityLog[] | undefi
     <Card className="p-5">
       <h3 className="font-extrabold text-base mb-3 flex items-center gap-2">
         <Activity className="w-4 h-4 text-primary" />
-        آخر النشاطات
+        أحدث الأنشطة
       </h3>
       {logs === undefined ? (
         <div className="space-y-1.5">
@@ -34,7 +34,7 @@ export default function ActivityLogCard({ logs }: { logs: ActivityLog[] | undefi
           ))}
         </div>
       ) : logs.length === 0 ? (
-        <p className="text-sm text-muted-foreground text-center py-5">لا توجد نشاطات مسجّلة بعد</p>
+        <p className="text-sm text-muted-foreground text-center py-5">لا توجد أنشطة مسجّلة بعد</p>
       ) : (
         <ul className="divide-y divide-border/50">
           {logs.map((log) => (

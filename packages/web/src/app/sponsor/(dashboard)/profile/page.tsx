@@ -15,9 +15,9 @@ export default function SponsorProfilePage() {
   return (
     <div className="space-y-6 animate-fade-in" dir="rtl">
       <header className="space-y-1">
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight">بروفايلي</h1>
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight">الملف الشخصي</h1>
         <p className="text-sm text-muted-foreground font-medium">
-          عدّل بياناتك الشخصية وراجع نشاطك على المنصة.
+          تعديل البيانات الشخصية ومراجعة النشاط على المنصة.
         </p>
       </header>
 
@@ -29,12 +29,12 @@ export default function SponsorProfilePage() {
         <aside className="space-y-4">
           <StatCard
             icon={<Heart className="w-5 h-5" fill="currentColor" />}
-            label="مشاريع أبديت اهتمامك بها"
+            label="مشاريع مسجَّل عليها اهتمام"
             value={totalInterests}
           />
           <StatCard
             icon={<CheckCircle2 className="w-5 h-5" />}
-            label="تواصلت معك الإدارة بشأنها"
+            label="مشاريع تواصلت الإدارة بشأنها"
             value={contactedCount}
             variant="success"
           />

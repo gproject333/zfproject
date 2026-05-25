@@ -108,7 +108,7 @@ export default function GuideFormDialog({
               size="sm"
               isDisabled={saving}
             >
-              {saving ? "جاري الحفظ..." : editing ? "حفظ التعديلات" : "إضافة"}
+              {saving ? "جارٍ الحفظ..." : editing ? "حفظ التعديلات" : "إضافة"}
             </Button>
           </div>
         </form>

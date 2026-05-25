@@ -92,7 +92,7 @@ function AttachmentTile({ kind, present, url, onPreview }: TileProps) {
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold truncate">{title}</p>
         <p className="text-xs text-muted-foreground truncate">
-          {isPdf ? "اعرض الملف أو حمّله" : "شاهد العرض التقديمي"}
+          {isPdf ? "عرض الملف أو تنزيله" : "عرض الفيديو التقديمي"}
         </p>
         {url && (
           <div className="flex items-center gap-1.5 mt-2.5">
@@ -110,11 +110,11 @@ function AttachmentTile({ kind, present, url, onPreview }: TileProps) {
                 <a
                   href={url}
                   download
-                  title="تحميل الملف"
+                  title="تنزيل الملف"
                   className="inline-flex items-center gap-1 px-2.5 py-1 border border-foreground/[0.12] rounded-lg text-xs font-semibold bg-background hover:bg-muted transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  تحميل
+                  تنزيل
                 </a>
               </>
             ) : (

@@ -26,7 +26,7 @@ export default function SponsorLayout({ children }: { children: ReactNode }) {
         ),
         iconBgStyle: { background: "var(--secondary)" },
         homeHref: "/sponsor",
-        subtitle: user?.name ? `مرحباً، ${user.name}` : "بوابة الرعاة",
+        subtitle: user?.name ? `أهلًا بكم، ${user.name}` : "بوابة الجهات الداعمة",
         subtitleStyle: { color: "var(--secondary)" },
       },
       navItems: sponsorNavItems,

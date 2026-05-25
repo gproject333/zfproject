@@ -51,11 +51,11 @@ export function useQuickAction() {
           status: pending.status,
           ...(notes && notes.trim().length > 0 ? { supervisorNotes: notes } : {}),
         });
-        toast.success("تم تحديث الطلب بنجاح");
+        toast.success("حُدِّث الطلب بنجاح");
         setPending(null);
       } catch (e: unknown) {
         toast.error(
-          "حدث خطأ: " + (e instanceof Error ? e.message : "حاول مرة أخرى."),
+          "حدث خطأ: " + (e instanceof Error ? e.message : "يُرجى المحاولة مجددًا."),
         );
       } finally {
         setIsSubmitting(false);

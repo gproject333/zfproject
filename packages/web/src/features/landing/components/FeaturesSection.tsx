@@ -1,7 +1,7 @@
 "use client";
 
 import { type ComponentType, type MouseEvent, type SVGProps } from "react";
-import { ArrowLeft, Users, Sparkles, Lightbulb, Code2, Building2 } from "lucide-react";
+import { ArrowLeft, Users, Lightbulb, Code2, Building2 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import CountUp from "./CountUp";
@@ -38,15 +38,15 @@ const FEATURES: Feature[] = [
   {
     icon: Lightbulb,
     title: "فكرة ريادية",
-    desc: "حوّل فكرتك إلى مشروع حقيقي بدعم أكاديمي وخارطة طريق واضحة. ادرس السوق، اختبر النموذج، وأطلق نسخة أولى تحت إشراف خبراء.",
+    desc: "مسار مخصَّص لتطوير الأفكار التجارية الناشئة بإشراف أكاديمي، يشمل دراسة السوق وبناء النموذج الأولي وفق منهجية معتمدة.",
     tag: "Startup",
     tone: "primary",
     typeId: "entrepreneurial_idea",
   },
   {
     icon: Code2,
-    title: "مشروع IT",
-    desc: "احصل على الدعم التقني والإرشاد الأكاديمي لمشروعك.",
+    title: "مشروع تخرج (IT)",
+    desc: "مسار لمشاريع التخرج التقنية ضمن تخصصات تكنولوجيا المعلومات، بدعم تقني وإشراف أكاديمي مباشر.",
     tag: "Tech",
     tone: "secondary",
     typeId: "it_graduation",
@@ -54,7 +54,7 @@ const FEATURES: Feature[] = [
   {
     icon: Building2,
     title: "مشروع يخدم الجامعة",
-    desc: "حلول مبتكرة تضيف قيمة مباشرة للمجتمع الجامعي.",
+    desc: "مسار للمشاريع التي تقدم حلولًا تطبيقية تخدم المجتمع الجامعي وتُسهم في تطوير الخدمات الأكاديمية والإدارية.",
     tag: "Academic",
     tone: "accent",
     typeId: "university_entrepreneurial",
@@ -128,7 +128,7 @@ function FeatureCard({
         </p>
 
         <div className="flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-3 transition-all">
-          <span>تقديم طلب</span>
+          <span>تقديم الطلب</span>
           <ArrowLeft className="w-4 h-4" />
         </div>
       </div>
@@ -144,16 +144,12 @@ export default function FeaturesSection() {
     <section className="relative px-4 py-20 sm:py-28 overflow-hidden">
       <div className="relative z-[1] max-w-7xl mx-auto">
         <div className="text-center mb-14 max-w-2xl mx-auto">
-          <span className="inline-flex items-center gap-2 text-xs font-bold text-primary mb-4 bg-primary/10 rounded-full px-3 py-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
-            ثلاثة مسارات للاحتضان
-          </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
-            مسار مختلف،{" "}
-            <span className="text-primary">لكل طموح</span>
+            مسارات{" "}
+            <span className="text-primary">الاحتضان المعتمدة</span>
           </h2>
           <p className="text-foreground/60 mt-4 text-base sm:text-lg">
-            اختر المسار الذي يناسب فكرتك وابدأ رحلتك مع أحد المشرفين الأكاديميين.
+            تُتاح ثلاثة مسارات رسمية للاحتضان وفق طبيعة المشروع، ويُختار المسار المناسب بالتنسيق مع المشرف الأكاديمي.
           </p>
         </div>
 
@@ -188,14 +184,14 @@ export default function FeaturesSection() {
               <div>
                 <div className="flex items-center gap-2 mb-2 text-xs font-bold text-secondary">
                   <Users className="w-3.5 h-3.5" />
-                  مجتمع نشط
+                  مجتمع الحاضنة
                 </div>
                 <h3 className="text-xl sm:text-2xl font-black mb-1.5">
-                  انضمّ إلى{" "}
-                  <CountUp to={1200} prefix="+" className="text-primary" /> طالب يبنون مستقبلهم
+                  أكثر من{" "}
+                  <CountUp to={1200} prefix="+" className="text-primary" /> طالب مسجَّل على المنصة
                 </h3>
                 <p className="text-sm text-foreground/65 font-medium">
-                  مشاريع تخرج، ريادة أعمال، وأبحاث تطبيقية — كلها تنطلق من هنا.
+                  تشمل المنصة مشاريع التخرج والأفكار الريادية والمشاريع التطبيقية التي تخدم الجامعة.
                 </p>
               </div>
 

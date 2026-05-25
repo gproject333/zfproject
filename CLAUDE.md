@@ -5,47 +5,65 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 <!-- convex-ai-start -->
 This project uses [Convex](https://convex.dev) as its backend.
 
-When working on Convex code, **always read `convex/_generated/ai/guidelines.md` first** for important guidelines on how to correctly use Convex APIs and patterns. The file contains rules that override what you may have learned about Convex from training data.
+When working on Convex code, **always read `packages/convex/convex/_generated/ai/guidelines.md` first** for important guidelines on how to correctly use Convex APIs and patterns. The file contains rules that override what you may have learned about Convex from training data.
 
-Convex agent skills for common tasks can be installed by running `npx convex ai-files install`.
+Convex agent skills for common tasks can be installed by running `npx convex ai-files install` from inside `packages/convex/`.
 <!-- convex-ai-end -->
 
-## Commands
+## Monorepo layout
+
+This is a **pnpm workspace** monorepo (`pnpm-workspace.yaml` → `packages/*`):
+
+- `packages/web/` — Next.js 16 App Router frontend (`@smart-zuj/web`)
+- `packages/convex/` — Convex backend: schema, queries, mutations, actions, HTTP routes, crons (`@smart-zuj/convex`)
+- `packages/core/` — shared TypeScript code consumed by web + convex (`@smart-zuj/core`)
+
+## Commands (run from repo root)
 
 ```bash
-# Start development (runs Convex backend + Next.js frontend concurrently)
+# Start all packages in dev concurrently (Convex backend + Next.js)
 pnpm dev
 
-# Production build
+# Production build (deploys Convex first, then builds web)
 pnpm build
 
-# Lint
+# Lint all packages
 pnpm lint
 
-# Run Convex backend tests (requires vitest + convex-test setup)
-npx vitest --environment edge-runtime
+# Tests across all packages
+pnpm test
+
+# Backend-only: cd packages/convex && pnpm dev     (or `pnpm test` for vitest)
+# Web-only:     cd packages/web     && pnpm dev
 ```
 
 ## Architecture
 
-This is a **Next.js + Convex + Clerk** full-stack app using the Next.js App Router.
+This is a **Next.js + Convex + Clerk** full-stack app using the Next.js App Router. Web and backend live in separate workspace packages.
 
-### Layers
+### Frontend — `packages/web/`
 
-**Frontend** (`app/`, `components/`)
-- `app/layout.tsx` — root layout; wraps the entire tree in `<ConvexClientProvider>` (which in turn wraps Convex + Clerk providers)
-- `app/page.tsx` — client component; shows authenticated/unauthenticated UI with real-time Convex data
-- `app/server/page.tsx` + `app/server/inner.tsx` — demonstrates server-component preloading via `preloadQuery`
-- `components/ConvexClientProvider.tsx` — wires `ConvexProviderWithClerk` so auth tokens are forwarded to Convex on every request
+- `src/app/layout.tsx` — root layout; wraps the tree in `<ClerkProvider>` → `<ThemeProvider>` → `<Providers>` → `<TooltipProvider>` → `<ConvexClientProvider>`
+- `src/app/ConvexClientProvider.tsx` — wires `ConvexProviderWithClerk` so Clerk JWTs are forwarded to Convex on every request
+- `src/app/(auth)/`, `src/app/student/`, `src/app/supervisor/`, `src/app/admin/`, `src/app/sponsor/` — role-scoped route groups
+- `src/features/<domain>/` — feature-based architecture (components, hooks, utils, types per domain). Large components are split into directories with an `index.tsx` entry; sibling files hold sub-components.
+- `src/proxy.ts` — Clerk middleware
 
-**Backend** (`convex/`)
-- `convex/schema.ts` — single source of truth for database tables; edit here first when adding data
-- `convex/myFunctions.ts` — example query (`listNumbers`), mutation (`addNumber`), and action (`myAction`)
-- `convex/auth.config.ts` — Clerk JWT provider config; the `providers` array is currently commented out — uncomment and set the correct Clerk issuer URL before enabling auth-protected queries
-- `convex/_generated/` — auto-generated; never edit manually; regenerated on `npx convex dev`
+### Backend — `packages/convex/convex/`
 
-**Middleware** (`proxy.ts`)
-- Clerk middleware protects the `/server` route; all other routes are public
+- `schema.ts` — single source of truth for database tables; edit here first when adding data
+- `auth.config.ts` — Clerk JWT provider config (uses `CLERK_JWT_ISSUER_DOMAIN` env var)
+- `http.ts` — HTTP endpoints (e.g. Clerk webhooks via svix)
+- `crons.ts` — scheduled jobs
+- Feature files at the root: `articles.ts`, `banners.ts`, `colleges.ts`, `meetings.ts`, `notifications.ts`, `socialLinks.ts`, `entrepreneurialGuide.ts`, `presence.ts`, `studentNotes.ts`, `supervisorUpgradeRequests.ts`, `activityLogs.ts`, `files.ts`, `users.ts`, `supervisorUpgradeRequests.ts`
+- Feature folders for larger domains:
+  - `applications/` — `student.ts`, `supervisor.ts`, `sponsor.ts`, `shared.ts`
+  - `users/` — `admin.ts`, `adminActions.ts`, `dev.ts`, `shared.ts`
+- `lib/` — shared helpers (`auth.ts`, `notifications.ts`, `statuses.ts`, `uploads.ts`, `users.ts`, `validation.ts`)
+- `_generated/` — auto-generated; never edit manually; regenerated on `pnpm --filter @smart-zuj/convex dev`
+- Tests are colocated as `*.test.ts` (run with vitest)
+
+The Convex package's `src/index.ts` re-exports types/utilities so other packages can import them as `@smart-zuj/convex`.
 
 ### Auth flow
 
@@ -53,7 +71,7 @@ Client → `ConvexProviderWithClerk` fetches a Clerk JWT → Convex validates it
 
 ### Convex function routing
 
-File-based: `convex/foo/bar.ts` → `api.foo.bar.*` (public) or `internal.foo.bar.*` (internal). Always use `internalQuery/Mutation/Action` for functions that must not be callable from the client.
+File-based: `packages/convex/convex/foo/bar.ts` → `api.foo.bar.*` (public) or `internal.foo.bar.*` (internal). Always use `internalQuery/Mutation/Action` for functions that must not be callable from the client.
 
 ### Key constraints (from Convex guidelines)
 

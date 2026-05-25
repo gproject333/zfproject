@@ -74,7 +74,7 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
         >
           {saving && saveMode === "submit" ? (
             <>
-              <Spinner size="sm" color="current" /> جاري التقديم...
+              <Spinner size="sm" color="current" /> جارٍ التقديم...
             </>
           ) : (
             <>
@@ -90,9 +90,9 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
           if (!saving) setConfirmResubmit(open);
         }}
         title="إعادة تقديم الطلب"
-        description="بعد إعادة التقديم سيعود طلبك إلى قائمة المراجعة عند المشرف ولن تقدر تعدّله حتى يصدر القرار. هل أنت متأكد؟"
+        description="بعد إعادة التقديم يُعاد الطلب إلى قائمة مراجعة المشرف، ولا يمكن تعديله حتى صدور القرار. هل تريد المتابعة؟"
         icon={<Send className="w-6 h-6 text-primary" />}
-        confirmLabel="نعم، أعد التقديم"
+        confirmLabel="نعم، إعادة التقديم"
         cancelLabel="إلغاء"
         isSubmitting={saving}
         onConfirm={() => {
