@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { Card } from "@/components/ui";
 import type { StudentProfile } from "./types";
@@ -10,9 +12,19 @@ interface ProfileModalProps {
 }
 
 export function ProfileModal({ profileStudent, setProfileStudent }: ProfileModalProps) {
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+  if (!mounted) return null;
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4"
       onClick={() => setProfileStudent(null)}
     >
       <Card
@@ -54,7 +66,8 @@ export function ProfileModal({ profileStudent, setProfileStudent }: ProfileModal
           )}
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

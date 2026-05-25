@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { Card } from "@/components/ui";
 import type { Id } from "@smart-zuj/convex";
@@ -23,8 +25,18 @@ export default function ProfileModal({
   config: UserManagementConfig;
   onClose: () => void;
 }) {
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={onClose}>
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+  if (!mounted) return null;
+  return createPortal(
+    <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4" onClick={onClose}>
       <Card className="p-6 w-full max-w-sm space-y-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <h3 className="font-extrabold text-lg">الملف الشخصي</h3>
@@ -63,6 +75,7 @@ export default function ProfileModal({
           </div>
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }
