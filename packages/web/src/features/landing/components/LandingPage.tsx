@@ -151,10 +151,10 @@ export default function LandingPage() {
             for a frame before the sidebar takes over. */}
         {layoutReady && !usesSidebar && (
           <nav
-            className={`fixed top-0 right-0 left-0 w-full z-50 transition-all duration-300 text-foreground ${
+            className={`fixed top-0 right-0 left-0 w-full z-50 transition-all duration-300 ${
               isScrolled
-                ? "bg-background/85 backdrop-blur-md border-b border-border/20"
-                : "bg-transparent border-b border-transparent"
+                ? "bg-background/85 backdrop-blur-md border-b border-border/20 text-foreground"
+                : "bg-transparent border-b border-transparent text-white"
             }`}
           >
             <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
@@ -197,7 +197,11 @@ export default function LandingPage() {
                         className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 border ${
                           isActive
                             ? "bg-white text-gray-900 border-white shadow-md"
-                            : "bg-transparent text-foreground/80 border-transparent hover:bg-foreground/8 hover:text-foreground hover:border-foreground/15"
+                            : `bg-transparent border-transparent opacity-80 hover:opacity-100 ${
+                                isScrolled
+                                  ? "hover:bg-foreground/8 hover:border-foreground/20"
+                                  : "hover:bg-white/10 hover:border-white/25"
+                              }`
                         }`}
                       >
                         <Icon className="w-4 h-4" />
