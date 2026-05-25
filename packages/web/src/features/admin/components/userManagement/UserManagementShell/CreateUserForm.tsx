@@ -1,6 +1,7 @@
 "use client";
 
-import { Plus, Mail, User, Building, Phone, KeyRound, AlertCircle } from "lucide-react";
+import { useState } from "react";
+import { Plus, Mail, User, Building, Phone, KeyRound, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { Button, Input, Spinner, Card } from "@/components/ui";
 import type { UserManagementConfig } from "../config";
 
@@ -15,6 +16,7 @@ interface CreateUserFormProps {
 
 export function CreateUserForm({ config, formData, setFormData, loading, error, onSubmit }: CreateUserFormProps) {
   const FormIcon = config.formIcon;
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <Card className="p-6 border-[3px] animate-slide-up" style={{ borderColor: config.color.primary }}>
       <h3 className="font-extrabold text-lg mb-4 flex items-center gap-2">
@@ -58,8 +60,8 @@ export function CreateUserForm({ config, formData, setFormData, loading, error, 
               <KeyRound className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 fullWidth
-                className="pr-10"
-                type="password"
+                className="pr-10 pl-10"
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -67,6 +69,15 @@ export function CreateUserForm({ config, formData, setFormData, loading, error, 
                 style={{ textAlign: "left" }}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
         )}
