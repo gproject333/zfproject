@@ -12,6 +12,20 @@ function isUniversityEmail(email: string): boolean {
   return UNIVERSITY_EMAIL_DOMAINS.some((d) => lower.endsWith(d));
 }
 
+/**
+ * Student emails are `<id>@std-zuj.edu.jo` or `<id>@std.zuj.edu.jo`,
+ * where `<id>` is the 6-10 digit university ID. We derive it directly
+ * from the email so students never have to type it during signup.
+ *
+ * Returns undefined for staff emails (`@zuj.edu.jo`) or any other
+ * shape — those users get their `studentId` from admin provisioning
+ * (or stay null for supervisors/admins/sponsors).
+ */
+function extractStudentIdFromEmail(email: string): string | undefined {
+  const match = email.toLowerCase().match(/^(\d{6,10})@std[-.]zuj\.edu\.jo$/);
+  return match ? match[1] : undefined;
+}
+
 export const handleClerkWebhook = internalMutation({
   args: {
     type: v.string(),
@@ -29,7 +43,11 @@ export const handleClerkWebhook = internalMutation({
         ?.phone_number;
 
       const meta = (data.unsafe_metadata ?? {}) as Record<string, string>;
-      const studentId = meta.studentId as string | undefined;
+      // Prefer email-derived studentId; fall back to whatever the
+      // registration form passed in unsafeMetadata (legacy clients).
+      const studentId =
+        extractStudentIdFromEmail(email) ??
+        (meta.studentId as string | undefined);
       const college = meta.college as string | undefined;
       const department = meta.department as string | undefined;
 

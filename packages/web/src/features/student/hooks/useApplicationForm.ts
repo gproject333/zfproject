@@ -24,6 +24,11 @@ const EMPTY_FORM_DATA: ApplicationFormData = {
 interface UseApplicationFormArgs {
   type: ApplicationType;
   initialData?: ApplicationFormData;
+  /**
+   * Field values to seed an otherwise-empty form with (create flow).
+   * Ignored when `initialData` is provided (edit flow).
+   */
+  prefill?: Partial<ApplicationFormData>;
 }
 
 /**
@@ -69,9 +74,44 @@ function validateFieldValue(
   return null;
 }
 
-export function useApplicationForm({ type, initialData }: UseApplicationFormArgs) {
-  const [formData, setFormData] = useState<ApplicationFormData>(initialData ?? EMPTY_FORM_DATA);
+function applyPrefill(
+  base: ApplicationFormData,
+  prefill: Partial<ApplicationFormData> | undefined,
+): ApplicationFormData {
+  if (!prefill) return base;
+  const next: ApplicationFormData = { ...base };
+  for (const [key, value] of Object.entries(prefill)) {
+    if (value !== undefined) {
+      (next as Record<string, FieldValue>)[key] = value as FieldValue;
+    }
+  }
+  return next;
+}
+
+export function useApplicationForm({ type, initialData, prefill }: UseApplicationFormArgs) {
+  const [formData, setFormData] = useState<ApplicationFormData>(
+    initialData ?? applyPrefill(EMPTY_FORM_DATA, prefill),
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Late-arriving prefill (e.g. currentUser query resolves after mount):
+  // apply it once, but only into fields the student hasn't filled. This
+  // way they never lose typing they had already done.
+  const [hydratedFromPrefill, setHydratedFromPrefill] = useState(false);
+  if (!initialData && !hydratedFromPrefill && prefill && Object.keys(prefill).length > 0) {
+    setHydratedFromPrefill(true);
+    setFormData((prev) => {
+      const next = { ...prev };
+      for (const [k, v] of Object.entries(prefill)) {
+        if (v === undefined) continue;
+        const cur = (prev as Record<string, FieldValue | undefined>)[k];
+        if (cur === "" || cur === undefined) {
+          (next as Record<string, FieldValue>)[k] = v as FieldValue;
+        }
+      }
+      return next;
+    });
+  }
 
   const extraFields = FORM_EXTRA_FIELDS[type];
 

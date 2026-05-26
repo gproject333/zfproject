@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Hash, ArrowRight } from "lucide-react";
+import { User, ArrowRight } from "lucide-react";
 import {
   FloatingTextInput,
   FloatingEmailInput,
@@ -11,15 +11,13 @@ interface CredentialsStepProps {
   formData: {
     name: string;
     email: string;
-    studentId: string;
   };
   errors: {
     name?: string;
     email?: string;
-    studentId?: string;
   };
   loading: boolean;
-  updateField: (name: "name" | "email" | "studentId", value: string) => void;
+  updateField: (name: "name" | "email", value: string) => void;
   submitStep1: () => void;
 }
 
@@ -49,19 +47,6 @@ export function CredentialsStep({
         onChange={(val) => updateField("email", val)}
         error={errors.email}
         required
-      />
-      <FloatingTextInput
-        id="register-studentId"
-        label="الرقم الجامعي"
-        value={formData.studentId}
-        onChange={(val) => updateField("studentId", val)}
-        error={errors.studentId}
-        icon={<Hash className="w-5 h-5" />}
-        required
-        maxLength={9}
-        inputMode="numeric"
-        dir="ltr"
-        autoComplete="off"
       />
       <Button
         type="button"

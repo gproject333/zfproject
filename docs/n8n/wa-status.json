@@ -1,0 +1,78 @@
+{
+  "name": "wa-status",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wa-status",
+        "responseMode": "onReceived",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "3a000000-0000-0000-0000-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "wa-status-webhook"
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const crypto = require('crypto');\nconst inputJson = $input.first().json;\nconst headers = inputJson.headers || {};\nconst sig = headers['x-signature'] || headers['X-Signature'];\n\nlet rawBody;\nif (typeof inputJson.body === 'string') {\n  rawBody = inputJson.body;\n} else if (inputJson.body !== undefined) {\n  rawBody = JSON.stringify(inputJson.body);\n} else {\n  rawBody = JSON.stringify(inputJson);\n}\n\nconst secret = $env.N8N_WEBHOOK_SECRET;\nif (!secret) throw new Error('N8N_WEBHOOK_SECRET not set');\n\nconst expected = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');\nif (sig !== expected) throw new Error('invalid signature');\n\nconst parsed = typeof inputJson.body === 'string' ? JSON.parse(inputJson.body) : (inputJson.body || inputJson);\nreturn [{ json: parsed }];"
+      },
+      "id": "3a000000-0000-0000-0000-000000000002",
+      "name": "Verify HMAC",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const d = $input.first().json.data || {};\nconst name = d.applicationName || 'طلبك';\nconst notes = d.supervisorNotes && String(d.supervisorNotes).trim() ? `\\nالملاحظات: ${d.supervisorNotes}` : '';\nlet text;\nswitch (d.newStatus) {\n  case 'accepted':\n    text = `🎉 تمت الموافقة على طلبك \"${name}\".`;\n    break;\n  case 'rejected':\n    text = `📝 طلبك \"${name}\" لم يُقبل.${notes}`;\n    break;\n  case 'needs_modification':\n    text = `✏️ طلبك \"${name}\" يحتاج إلى تعديل.${notes}`;\n    break;\n  case 'under_review':\n    text = `📂 طلبك \"${name}\" قيد المراجعة الآن.`;\n    break;\n  default:\n    // Skip sending for unknown statuses by returning empty items\n    return [];\n}\nconst phone = $input.first().json.phone || '';\nconst to = (phone.startsWith('+') ? phone.slice(1) : phone) + '@s.whatsapp.net';\nreturn [{ json: { to, text } }];"
+      },
+      "id": "3a000000-0000-0000-0000-000000000003",
+      "name": "Build message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://evolution.yazeid.site/message/sendText/zuj",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "2b94d5f6bc2e5113a8e9a078d60fd72305c333e33272635af86b1886654af0d4"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.to }}\",\n  \"text\": {{ JSON.stringify($json.text) }}\n}",
+        "options": {}
+      },
+      "id": "3a000000-0000-0000-0000-000000000004",
+      "name": "Send via Evolution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Verify HMAC", "type": "main", "index": 0 }]] },
+    "Verify HMAC": { "main": [[{ "node": "Build message", "type": "main", "index": 0 }]] },
+    "Build message": { "main": [[{ "node": "Send via Evolution", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
