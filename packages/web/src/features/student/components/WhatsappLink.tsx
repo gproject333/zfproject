@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { CheckCircle2, MessageCircle } from "lucide-react";
 import { api } from "@smart-zuj/convex";
-import { Button, Card, Input, InputOTP, Spinner } from "@/components/ui";
+import { Button, Card, Input, InputOTP, Spinner, Switch } from "@/components/ui";
 import { toast } from "@/lib/toast";
 
 type Step = "enter-phone" | "enter-code" | "verified";
@@ -13,6 +13,7 @@ export function WhatsappLink() {
   const me = useQuery(api.users.shared.currentUser);
   const requestOtp = useMutation(api.whatsapp.requestWhatsappOtp);
   const verifyOtp = useMutation(api.whatsapp.verifyWhatsappOtp);
+  const setOptOut = useMutation(api.whatsapp.setWhatsappOptOut);
 
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -58,8 +59,9 @@ export function WhatsappLink() {
   }
 
   if (effectiveStep === "verified") {
+    const optedOut = me?.whatsappOptOut === true;
     return (
-      <Card className="p-6 space-y-3">
+      <Card className="p-6 space-y-4">
         <div className="flex items-center gap-2">
           <MessageCircle className="w-5 h-5 text-green-600" />
           <h3 className="font-bold text-base">ربط الواتساب</h3>
@@ -71,9 +73,36 @@ export function WhatsappLink() {
             {me?.phone}
           </span>
         </p>
-        <p className="text-xs text-muted-foreground">
-          ستصلك إشعارات المواعيد ونتائج الطلبات على واتساب.
-        </p>
+
+        <div className="flex items-start gap-3 rounded-lg bg-muted/40 ds-border p-3">
+          <Switch
+            isSelected={!optedOut}
+            onChange={(checked: boolean) => {
+              void (async () => {
+                try {
+                  await setOptOut({ optOut: !checked });
+                  toast.success(
+                    checked
+                      ? "تم تفعيل رسائل الواتساب"
+                      : "تم إيقاف رسائل الواتساب",
+                  );
+                } catch (err) {
+                  toast.error(
+                    err instanceof Error ? err.message : "تعذّر حفظ التفضيل",
+                  );
+                }
+              })();
+            }}
+            aria-label={optedOut ? "تفعيل رسائل الواتساب" : "إيقاف رسائل الواتساب"}
+          />
+          <div className="text-xs leading-relaxed">
+            <p className="font-bold text-foreground">رسائل الواتساب</p>
+            <p className="text-muted-foreground">
+              عند الإيقاف، ستصلك الإشعارات داخل التطبيق فقط دون رسائل خارجية.
+            </p>
+          </div>
+        </div>
+
         <Button
           variant="outline"
           size="sm"

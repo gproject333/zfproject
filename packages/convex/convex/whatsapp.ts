@@ -133,3 +133,18 @@ export const verifyWhatsappOtp = mutation({
     return { ok: true as const };
   },
 });
+
+/**
+ * Let a verified student silence WhatsApp messages without
+ * un-verifying. Opted-out users still see in-app bell notifications.
+ */
+export const setWhatsappOptOut = mutation({
+  args: { optOut: v.boolean() },
+  handler: async (ctx, args) => {
+    const user = await requireUser(ctx);
+    await ctx.db.patch(user._id, {
+      whatsappOptOut: args.optOut,
+      updatedAt: Date.now(),
+    });
+  },
+});

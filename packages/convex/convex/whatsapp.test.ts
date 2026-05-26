@@ -204,3 +204,28 @@ describe("whatsapp.verifyWhatsappOtp", () => {
     ).rejects.toThrow();
   });
 });
+
+describe("whatsapp.setWhatsappOptOut", () => {
+  test("toggles opt-out flag on caller user", async () => {
+    const t = convexTest(schema, modules);
+    const studentId = await seedStudent(t);
+    const asStudent = t.withIdentity({ subject: "stu-1", tokenIdentifier: "stu-1" });
+
+    await asStudent.mutation(api.whatsapp.setWhatsappOptOut, { optOut: true });
+    await t.run(async (ctx) => {
+      expect((await ctx.db.get(studentId))?.whatsappOptOut).toBe(true);
+    });
+
+    await asStudent.mutation(api.whatsapp.setWhatsappOptOut, { optOut: false });
+    await t.run(async (ctx) => {
+      expect((await ctx.db.get(studentId))?.whatsappOptOut).toBe(false);
+    });
+  });
+
+  test("rejects unauthenticated caller", async () => {
+    const t = convexTest(schema, modules);
+    await expect(
+      t.mutation(api.whatsapp.setWhatsappOptOut, { optOut: true }),
+    ).rejects.toThrow();
+  });
+});
