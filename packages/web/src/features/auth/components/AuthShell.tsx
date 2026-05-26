@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, GraduationCap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { buttonVariants } from "@/components/ui";
+import OliveLogo from "@/components/OliveLogo";
 
 /**
  * Shared shell for the public auth surfaces (login, register, forgot,
@@ -41,8 +42,8 @@ export default function AuthShell({
 
       <div className={`w-full ${widthClass} animate-scale-in`}>
         <header className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 mx-auto ds-shadow-sm bg-primary">
-            <GraduationCap className="w-9 h-9 text-primary-foreground" />
+          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 mx-auto">
+            <OliveLogo className="w-full h-full" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold mb-2 text-foreground">{title}</h1>
           <p className="text-sm font-medium text-muted-foreground">{subtitle}</p>

@@ -8,6 +8,7 @@ import { Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui";
 import { Tooltip } from "@/components/ui/Tooltip";
+import OliveLogo from "@/components/OliveLogo";
 
 export interface SidebarNavItem {
   label: string;
@@ -25,14 +26,15 @@ export interface AppSidebarConfig {
   navItems: SidebarNavItem[];
   /** Brand link target. */
   homeHref: string;
-  /** Lucide icon shown in the 48px brand badge. */
-  brandIcon: LucideIcon;
-  /** Extra classes for the brand badge wrapper (background). */
+  /**
+   * Legacy fields — the sidebar now always renders the platform
+   * OliveLogo so admin/supervisor/sponsor share one identity. Kept
+   * optional to avoid breaking existing call sites.
+   */
+  brandIcon?: LucideIcon;
   brandBadgeClassName?: string;
-  /** Inline style for the brand badge wrapper (background color). */
   brandBadgeStyle?: CSSProperties;
-  /** Classes for the brand icon glyph (color). */
-  brandIconClassName: string;
+  brandIconClassName?: string;
   /** Caption shown under "حاضنة الزيتونة". */
   subtitle: string;
   /** Profile + logout targets handed to the settings menu. */
@@ -67,8 +69,6 @@ export default function AppSidebar({ config }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
-
-  const BrandIcon = config.brandIcon;
 
   useEffect(() => {
     // Read the persisted preference only after mount — a lazy useState
@@ -171,11 +171,8 @@ export default function AppSidebar({ config }: Props) {
               collapsed ? "md:justify-center" : ""
             }`}
           >
-            <div
-              className={`w-12 h-12 ds-border rounded-xl flex items-center justify-center ds-shadow-sm shrink-0 ${config.brandBadgeClassName ?? ""}`}
-              style={config.brandBadgeStyle}
-            >
-              <BrandIcon className={`w-6 h-6 ${config.brandIconClassName}`} />
+            <div className="w-12 h-12 flex items-center justify-center shrink-0">
+              <OliveLogo className="w-full h-full" />
             </div>
             <div className={collapsed ? "md:hidden" : ""}>
               <p className="font-extrabold text-base leading-tight">حاضنة الزيتونة</p>
