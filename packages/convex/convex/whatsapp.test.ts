@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { api } from "./_generated/api";
 import schema from "./schema";
 import { hashOtpCode } from "./whatsapp/helpers";
+import type { Id } from "./_generated/dataModel";
 
 const modules = import.meta.glob("./**/*.*s");
 
@@ -112,7 +113,7 @@ describe("whatsapp.requestWhatsappOtp", () => {
 describe("whatsapp.verifyWhatsappOtp", () => {
   async function seedActiveOtp(
     t: ReturnType<typeof convexTest>,
-    studentId: any,
+    studentId: Id<"users">,
     code: string,
     overrides: { expiresAt?: number; attempts?: number; consumed?: boolean } = {},
   ) {

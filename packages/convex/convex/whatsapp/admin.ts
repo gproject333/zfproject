@@ -3,12 +3,6 @@ import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import { requireAdmin } from "../lib/auth";
 
-const KIND_VALIDATOR = v.union(
-  v.literal("otp"),
-  v.literal("meeting"),
-  v.literal("status_change"),
-);
-
 const STATUS_VALIDATOR = v.union(
   v.literal("queued"),
   v.literal("sent"),
