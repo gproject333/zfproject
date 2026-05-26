@@ -13,12 +13,13 @@ export interface ProfileCompleteness {
 }
 
 /**
- * "Complete enough to submit an application" check. Requires the three
- * student-only fields a supervisor will need to identify the applicant —
- * studentId, college, and department. Phone/LinkedIn/avatar stay optional.
+ * "Complete enough to submit an application" check. Requires the two
+ * student-only fields a supervisor will need — college and department.
+ * studentId is derived from the email at signup, so we don't gate on it
+ * here. Phone/LinkedIn/avatar stay optional.
  *
  * Returns the missing fields in display order so callers can render a
- * concrete prompt ("أكمل: الرقم الجامعي، الكلية") instead of a vague
+ * concrete prompt ("أكمل: الكلية") instead of a vague
  * "complete your profile" message.
  */
 export function useProfileComplete(): ProfileCompleteness {
@@ -32,7 +33,6 @@ export function useProfileComplete(): ProfileCompleteness {
   }
 
   const missing: string[] = [];
-  if (!user.studentId?.trim()) missing.push("الرقم الجامعي");
   if (!user.college?.trim()) missing.push("الكلية");
   if (!user.department?.trim()) missing.push("التخصص");
 

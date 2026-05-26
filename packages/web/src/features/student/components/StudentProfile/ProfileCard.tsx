@@ -87,19 +87,6 @@ export function ProfileCard({
           />
         </div>
 
-        <div>
-          <label className="block text-xs font-medium mb-1.5">
-            الرقم الجامعي
-          </label>
-          <Input
-            fullWidth
-            value={profile.form.studentId}
-            onChange={(e) => profile.setField("studentId", e.target.value)}
-            placeholder="مثال: 202010001"
-            dir="ltr"
-          />
-        </div>
-
         {showAcademicFields && (
           <>
             <div>
@@ -147,30 +134,6 @@ export function ProfileCard({
             </div>
           </>
         )}
-
-        <div>
-          <label className="block text-xs font-medium mb-1.5">
-            رقم الهاتف
-          </label>
-          <Input
-            fullWidth
-            value={profile.form.phone}
-            onChange={(e) => {
-              const val = e.target.value.replace(/\D/g, "").slice(0, 10);
-              profile.setField("phone", val);
-            }}
-            placeholder="07XXXXXXXX"
-            dir="ltr"
-            maxLength={10}
-            inputMode="numeric"
-          />
-          {profile.form.phone &&
-            !/^07\d{8}$/.test(profile.form.phone) && (
-              <p className="text-[10px] text-destructive mt-1 font-bold">
-                يجب أن يتألف من عشرة أرقام تبدأ بـ 07.
-              </p>
-            )}
-        </div>
 
         <div>
           <label className="block text-xs font-medium mb-1.5 flex items-center gap-1.5">

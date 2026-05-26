@@ -26,6 +26,9 @@ interface ApplicationFormFieldsProps {
   updateField: (name: string, value: string | string[] | TeamMember[]) => void;
   validateField: (name: string, valueOverride?: string | string[] | TeamMember[]) => void;
   extraFields: readonly ExtraField[];
+  /** When true, swap the default phone hint with a "verified via
+   *  WhatsApp" note so the student knows where the prefill came from. */
+  phoneVerified?: boolean;
 }
 
 /**
@@ -43,6 +46,7 @@ export default function ApplicationFormFields({
   updateField,
   validateField,
   extraFields,
+  phoneVerified = false,
 }: ApplicationFormFieldsProps) {
   const teamMembers = formData.teamMembers;
 
@@ -208,7 +212,13 @@ export default function ApplicationFormFields({
           label="رقم الهاتف"
           required
           error={errors.phone}
-          hint={<HintIcon text="عشرة أرقام تبدأ بـ 07." />}
+          hint={
+            phoneVerified ? (
+              <HintIcon text="📱 مرتبط بواتساب — يمكنك تعديله للمشروع." />
+            ) : (
+              <HintIcon text="عشرة أرقام تبدأ بـ 07." />
+            )
+          }
         >
           <Input
             type="tel"

@@ -83,8 +83,9 @@ export default function StudentDashboard() {
 
       {/* Incomplete profile banner — sits ABOVE AttentionSection because
           the student literally cannot submit a new application until they
-          fill it. */}
-      {!profile.loading && !profile.isComplete && profile.hasUser && (
+          fill it. Gated on role=student so a sponsor/supervisor account
+          accidentally rendered through this surface never sees it. */}
+      {!profile.loading && !profile.isComplete && profile.hasUser && user?.role === "student" && (
         <Card className="p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 border-warning/40 bg-warning/[0.06]">
           <div className="w-12 h-12 rounded-xl bg-warning/15 text-warning ds-border flex items-center justify-center shrink-0">
             <UserCircle className="w-6 h-6" />

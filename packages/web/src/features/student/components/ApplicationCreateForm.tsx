@@ -26,7 +26,7 @@ interface ApplicationCreateFormProps {
 export default function ApplicationCreateForm({ type }: ApplicationCreateFormProps) {
   const router = useRouter();
   const config = TYPE_CONFIG[type];
-  const { form, upload, loading, submitMode, submit, success, goToApplication, draft } =
+  const { form, upload, loading, submitMode, submit, success, goToApplication, draft, phoneVerified } =
     useCreateApplication(type);
 
   const handleRestore = () => {
@@ -121,6 +121,7 @@ export default function ApplicationCreateForm({ type }: ApplicationCreateFormPro
               updateField={form.updateField}
               validateField={form.validateField}
               extraFields={form.extraFields}
+              phoneVerified={phoneVerified}
             />
           </div>
 

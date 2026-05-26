@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
+import { e164ToLocalJordan } from "@smart-zuj/core";
 import { useFileUpload } from "@/features/applications/hooks/useFileUpload";
 import { useApplicationForm, type ApplicationType } from "./useApplicationForm";
 import { useDraftAutoSave, isFormDirty } from "./useDraftAutoSave";
@@ -25,7 +26,16 @@ type SubmitMode = "draft" | "submit";
 export function useCreateApplication(type: ApplicationType) {
   const router = useRouter();
   const createApplication = useMutation(api.applications.student.createApplication);
-  const form = useApplicationForm({ type });
+  const me = useQuery(api.users.shared.currentUser);
+  // Seed the form's contact phone from the verified WhatsApp number on
+  // the profile so the student doesn't re-key it for every application.
+  // E.164 (`+962...`) is converted to local `07...` because the form
+  // validates against the local format.
+  const verifiedLocalPhone = e164ToLocalJordan(me?.phone ?? undefined);
+  const form = useApplicationForm({
+    type,
+    prefill: verifiedLocalPhone ? { phone: verifiedLocalPhone } : undefined,
+  });
   const upload = useFileUpload();
 
   const [loading, setLoading] = useState(false);
@@ -115,5 +125,6 @@ export function useCreateApplication(type: ApplicationType) {
     success,
     goToApplication,
     draft,
+    phoneVerified: me?.whatsappVerified === true && !!verifiedLocalPhone,
   };
 }

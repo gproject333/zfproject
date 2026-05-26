@@ -4,24 +4,19 @@ import { useCallback, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
-import { validatePhone } from "@smart-zuj/core";
 
 export interface ProfileFormState {
   name: string;
-  phone: string;
   college: string;
   department: string;
-  studentId: string;
   linkedinUrl: string;
   avatarFile: File | null;
 }
 
 const EMPTY: ProfileFormState = {
   name: "",
-  phone: "",
   college: "",
   department: "",
-  studentId: "",
   linkedinUrl: "",
   avatarFile: null,
 };
@@ -48,10 +43,8 @@ export function useStudentProfile() {
     setLastUserId(user._id);
     setForm({
       name: user.name ?? "",
-      phone: user.phone ?? "",
       college: user.college ?? "",
       department: user.department ?? "",
-      studentId: user.studentId ?? "",
       linkedinUrl: user.linkedinUrl ?? "",
       avatarFile: null,
     });
@@ -95,12 +88,6 @@ export function useStudentProfile() {
       return false;
     }
 
-    const phoneError = validatePhone(form.phone.trim());
-    if (phoneError) {
-      setError(phoneError);
-      return false;
-    }
-
     setSaving(true);
     try {
       let avatarId: Id<"_storage"> | undefined;
@@ -110,10 +97,8 @@ export function useStudentProfile() {
 
       await updateProfile({
         name: form.name.trim(),
-        phone: form.phone.trim() || undefined,
         college: form.college || undefined,
         department: form.department || undefined,
-        studentId: form.studentId.trim() || undefined,
         linkedinUrl: form.linkedinUrl.trim() || undefined,
         avatar: avatarId,
       });
