@@ -149,15 +149,20 @@ describe("whatsapp.verifyWhatsappOtp", () => {
     });
   });
 
-  test("rejects wrong code and increments attempts", async () => {
+  test("returns failure on wrong code and increments attempts", async () => {
     const t = convexTest(schema, modules);
     const studentId = await seedStudent(t);
     const asStudent = t.withIdentity({ subject: "stu-1", tokenIdentifier: "stu-1" });
     await seedActiveOtp(t, studentId, "123456");
 
-    await expect(
-      asStudent.mutation(api.whatsapp.verifyWhatsappOtp, { code: "999999" }),
-    ).rejects.toThrow();
+    const result = await asStudent.mutation(api.whatsapp.verifyWhatsappOtp, {
+      code: "999999",
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.attemptsLeft).toBe(4);
+      expect(result.error).toMatch(/تبقى/);
+    }
 
     await t.run(async (ctx) => {
       const verif = (await ctx.db.query("whatsappVerifications").collect())[0];

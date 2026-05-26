@@ -105,14 +105,20 @@ export const verifyWhatsappOtp = mutation({
 
     const submittedHash = await hashOtpCode(args.code);
     if (submittedHash !== verif.codeHash) {
+      // Convex mutations are transactional: throwing would roll back the
+      // attempts patch. Return a structured failure so the increment
+      // commits and the UI can surface the message.
       const attempts = verif.attempts + 1;
       await ctx.db.patch(verif._id, { attempts });
       const remaining = MAX_ATTEMPTS - attempts;
-      throw new Error(
-        remaining > 0
-          ? `رمز غير صحيح، تبقى ${remaining} محاولات`
-          : "تم تجاوز عدد المحاولات، اطلب رمز جديد",
-      );
+      return {
+        ok: false as const,
+        error:
+          remaining > 0
+            ? `رمز غير صحيح، تبقى ${remaining} محاولات`
+            : "تم تجاوز عدد المحاولات، اطلب رمز جديد",
+        attemptsLeft: Math.max(0, remaining),
+      };
     }
 
     const now = Date.now();
@@ -124,6 +130,6 @@ export const verifyWhatsappOtp = mutation({
       updatedAt: now,
     });
 
-    return { ok: true };
+    return { ok: true as const };
   },
 });
