@@ -1,5 +1,6 @@
 import type { MutationCtx } from "../_generated/server";
 import type { Doc, Id } from "../_generated/dataModel";
+import { internal } from "../_generated/api";
 
 interface FanoutNotificationArgs {
   title: string;
@@ -86,6 +87,51 @@ export async function notifyAllAdmins(
       createdAt: now,
     });
   }
+}
+
+type WhatsappKind = "meeting" | "status_change";
+
+interface MaybeSendWhatsappArgs {
+  userId: Id<"users">;
+  kind: WhatsappKind;
+  data: Record<string, unknown>;
+}
+
+/**
+ * Best-effort WhatsApp dispatch sitting alongside in-app notification
+ * inserts. Skips silently if the user is not a verified, opted-in
+ * student — the bell-icon notification has already been written by the
+ * caller, so we don't need to surface an error.
+ */
+export async function maybeSendWhatsapp(
+  ctx: MutationCtx,
+  args: MaybeSendWhatsappArgs,
+): Promise<void> {
+  const user = await ctx.db.get(args.userId);
+  if (!user) return;
+  if (user.role !== "student") return;
+  if (user.whatsappVerified !== true) return;
+  if (user.whatsappOptOut === true) return;
+  if (!user.phone) return;
+
+  const now = Date.now();
+  const outboxId = await ctx.db.insert("whatsappOutbox", {
+    userId: user._id,
+    phone: user.phone,
+    kind: args.kind,
+    payload: args.data,
+    status: "queued",
+    attempts: 0,
+    createdAt: now,
+    updatedAt: now,
+  });
+
+  const actionRef =
+    args.kind === "meeting"
+      ? internal.whatsapp.actions.sendMeeting
+      : internal.whatsapp.actions.sendStatusChange;
+
+  await ctx.scheduler.runAfter(0, actionRef, { outboxId });
 }
 
 export async function notifyAllStudents(
