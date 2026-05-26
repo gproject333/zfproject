@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Plus, ArrowUpCircle, Clock, XCircle, UserCircle, ArrowLeft, Rocket, BookOpen, Compass, Send } from "lucide-react";
+import { Plus, ArrowUpCircle, Clock, XCircle, UserCircle, ArrowLeft, Rocket, BookOpen, Compass, Send, MessageCircle } from "lucide-react";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
 import { Button, Card, Spinner, TextArea } from "@/components/ui";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
@@ -107,6 +107,34 @@ export default function StudentDashboard() {
           </Link>
         </Card>
       )}
+
+      {/* WhatsApp verification nudge — shown to students who completed
+          their profile but never linked their WhatsApp. Motivational,
+          not blocking. Skipped once the student is verified or has
+          explicitly opted out. */}
+      {profile.isComplete &&
+        user?.role === "student" &&
+        user?.whatsappVerified !== true &&
+        user?.whatsappOptOut !== true && (
+          <Card className="p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 border-emerald-500/40 bg-emerald-500/[0.06]">
+            <div className="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 ds-border flex items-center justify-center shrink-0">
+              <MessageCircle className="w-6 h-6" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-extrabold text-base">فعّل تنبيهات الواتساب</h3>
+              <p className="text-sm text-muted-foreground font-medium mt-0.5">
+                اربط رقمك ليصلك إشعار فوري على واتساب بمواعيد اللقاءات ونتائج مراجعة الطلبات.
+              </p>
+            </div>
+            <Link
+              href="/student/profile"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-emerald-600 text-white font-bold text-sm shrink-0 hover:bg-emerald-700 transition-colors"
+            >
+              ربط الواتساب
+              <ArrowLeft className="w-4 h-4" />
+            </Link>
+          </Card>
+        )}
 
       {/* First-time student welcome — only when zero applications AND
           profile is complete so we don't double-stack onboarding cards. */}
