@@ -1,0 +1,180 @@
+"use client";
+
+import { useState } from "react";
+import { useMutation, useQuery } from "convex/react";
+import { CheckCircle2, MessageCircle } from "lucide-react";
+import { api } from "@smart-zuj/convex";
+import { Button, Card, Input, InputOTP, Spinner } from "@/components/ui";
+import { toast } from "@/lib/toast";
+
+type Step = "enter-phone" | "enter-code" | "verified";
+
+export function WhatsappLink() {
+  const me = useQuery(api.users.shared.currentUser);
+  const requestOtp = useMutation(api.whatsapp.requestWhatsappOtp);
+  const verifyOtp = useMutation(api.whatsapp.verifyWhatsappOtp);
+
+  const [phone, setPhone] = useState("");
+  const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState<Step | null>(null);
+
+  if (me === undefined) return null;
+
+  const verified = me?.whatsappVerified === true;
+  const effectiveStep: Step = step ?? (verified ? "verified" : "enter-phone");
+
+  async function onRequestOtp(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await requestOtp({ phone });
+      toast.success("تم إرسال الرمز إلى واتساب");
+      setStep("enter-code");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "تعذّر إرسال الرمز");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function onVerifyOtp(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const result = await verifyOtp({ code });
+      if (result.ok) {
+        toast.success("تم التحقق من رقمك");
+        setStep("verified");
+      } else {
+        toast.error(result.error);
+        setCode("");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "تعذّر التحقق");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (effectiveStep === "verified") {
+    return (
+      <Card className="p-6 space-y-3">
+        <div className="flex items-center gap-2">
+          <MessageCircle className="w-5 h-5 text-green-600" />
+          <h3 className="font-bold text-base">ربط الواتساب</h3>
+          <CheckCircle2 className="w-4 h-4 text-success ms-auto" />
+        </div>
+        <p className="text-sm text-muted-foreground">
+          رقمك مرتبط:{" "}
+          <span dir="ltr" className="font-mono text-foreground">
+            {me?.phone}
+          </span>
+        </p>
+        <p className="text-xs text-muted-foreground">
+          ستصلك إشعارات المواعيد ونتائج الطلبات على واتساب.
+        </p>
+        <Button
+          variant="outline"
+          size="sm"
+          onPress={() => {
+            setStep("enter-phone");
+            setPhone("");
+          }}
+        >
+          تغيير الرقم
+        </Button>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="p-6 space-y-4">
+      <div className="flex items-center gap-2">
+        <MessageCircle className="w-5 h-5 text-green-600" />
+        <h3 className="font-bold text-base">ربط الواتساب</h3>
+      </div>
+      <p className="text-sm text-muted-foreground">
+        سنرسل لك رمزاً مكوناً من 6 أرقام عبر واتساب لتأكيد رقمك. بعد التأكيد،
+        ستصلك إشعارات المواعيد ونتائج الطلبات مباشرةً.
+      </p>
+
+      {effectiveStep === "enter-phone" && (
+        <form onSubmit={onRequestOtp} className="space-y-3">
+          <div>
+            <label className="block text-xs font-medium mb-1.5">
+              رقم الواتساب (مع رمز الدولة)
+            </label>
+            <Input
+              fullWidth
+              dir="ltr"
+              placeholder="+962795551234"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+            <p className="text-[10px] text-muted-foreground mt-1">
+              يقبل صيغة دولية ‎+962795551234‎ أو محلية ‎0795551234‎.
+            </p>
+          </div>
+          <Button
+            type="submit"
+            variant="secondary"
+            fullWidth
+            isDisabled={loading || !phone}
+          >
+            {loading ? <Spinner size="sm" color="current" /> : "أرسل الرمز"}
+          </Button>
+        </form>
+      )}
+
+      {effectiveStep === "enter-code" && (
+        <form onSubmit={onVerifyOtp} className="space-y-3">
+          <div>
+            <label className="block text-xs font-medium mb-1.5">
+              الرمز المرسل
+            </label>
+            <div className="flex justify-center" dir="ltr">
+              <InputOTP
+                value={code}
+                onChange={setCode}
+                maxLength={6}
+                autoFocus
+              >
+                <InputOTP.Group>
+                  <InputOTP.Slot index={0} />
+                  <InputOTP.Slot index={1} />
+                  <InputOTP.Slot index={2} />
+                  <InputOTP.Slot index={3} />
+                  <InputOTP.Slot index={4} />
+                  <InputOTP.Slot index={5} />
+                </InputOTP.Group>
+              </InputOTP>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              type="submit"
+              variant="secondary"
+              fullWidth
+              isDisabled={loading || code.length !== 6}
+            >
+              {loading ? <Spinner size="sm" color="current" /> : "تحقق"}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              isDisabled={loading}
+              onPress={() => {
+                setStep("enter-phone");
+                setCode("");
+              }}
+            >
+              تغيير الرقم
+            </Button>
+          </div>
+        </form>
+      )}
+    </Card>
+  );
+}

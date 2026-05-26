@@ -9,6 +9,7 @@ import { api } from "@smart-zuj/convex";
 import { Id } from "@smart-zuj/convex";
 import { ProfileCard } from "./ProfileCard";
 import { SecurityCard } from "./SecurityCard";
+import { WhatsappLink } from "../WhatsappLink";
 
 interface StudentProfileProps {
   /** Show college & department dropdowns. Default: true. */
@@ -55,6 +56,9 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
           collegeDepartments={collegeDepartments}
           handleAvatarChange={handleAvatarChange}
         />
+
+        {/* ─── بطاقة الواتساب ─── */}
+        <WhatsappLink />
 
         {/* ─── بطاقة الأمان ─── */}
         <SecurityCard
