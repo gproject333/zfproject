@@ -1,19 +1,12 @@
 /**
- * Monogram-style brand mark for حاضنة الزيتونة (ZUJ Incubator).
+ * Minimal monogram mark — bold Z (for ZUJ) with a smaller Z nested
+ * inside, sitting on a soft drop shadow. Same logo language as
+ * cache-team.com (one bold brand-color letter, a smaller inverted copy
+ * carved into it, subtle shadow). No background tile, no extra
+ * ornament — the letter is the whole identity.
  *
- * Direct nod to cache-team.com's logo language: one oversized brand-color
- * letter, a smaller white counter-form nested inside, and a soft drop
- * shadow underneath so the mark reads as a tactile object rather than a
- * flat glyph. The chosen letter is "ز" — the leading character of
- * الزيتونة (the olive) and a recognisable hook for the brand. A tiny
- * olive replaces the diacritical dot so the icon stays unmistakably ours.
- *
- * Theme-aware via tokens: the body uses var(--primary), the inner copy
- * uses var(--background) so it inverts cleanly in dark mode, and the
- * olive accent uses var(--secondary).
- *
- * Rendered with SVG `<text>` so the Arabic glyph is always shaped
- * correctly by the system font stack — no fragile hand-drawn paths.
+ * Theme-aware: outer Z uses var(--primary), inner Z uses
+ * var(--background) so it inverts cleanly in dark mode.
  */
 export default function OliveLogo({ className = "w-full h-full" }: { className?: string }) {
   return (
@@ -24,70 +17,70 @@ export default function OliveLogo({ className = "w-full h-full" }: { className?:
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        {/* Soft drop shadow under the mark */}
-        <filter id="oliveLogoShadow" x="-25%" y="-15%" width="150%" height="140%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="2.6" />
+        <filter id="logoZShadow" x="-15%" y="-10%" width="130%" height="135%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2.4" />
           <feOffset dx="0" dy="3.5" result="off" />
           <feComponentTransfer>
-            <feFuncA type="linear" slope="0.32" />
+            <feFuncA type="linear" slope="0.35" />
           </feComponentTransfer>
           <feMerge>
             <feMergeNode />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        {/* Subtle vertical sheen for depth on the body */}
-        <linearGradient id="oliveLogoBody" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="var(--accent)" />
-          <stop offset="55%" stopColor="var(--primary)" />
-          <stop offset="100%" stopColor="var(--primary)" />
-        </linearGradient>
       </defs>
 
-      <g filter="url(#oliveLogoShadow)">
-        {/* Rounded brand-colored container */}
-        <rect
-          x="10"
-          y="14"
-          width="100"
-          height="100"
-          rx="28"
-          fill="url(#oliveLogoBody)"
+      <g filter="url(#logoZShadow)">
+        {/* Outer bold Z */}
+        <path
+          d="
+            M 16 18
+            H 104
+            Q 110 18, 110 24
+            Q 110 30, 106 35
+            L 40 95
+            H 104
+            Q 110 95, 110 101
+            V 108
+            Q 110 114, 104 114
+            H 16
+            Q 10 114, 10 108
+            Q 10 102, 14 97
+            L 80 37
+            H 16
+            Q 10 37, 10 31
+            V 24
+            Q 10 18, 16 18
+            Z
+          "
+          fill="var(--primary)"
         />
 
-        {/* Big inverted ز in the background color — the main letterform */}
-        <text
-          x="60"
-          y="92"
-          textAnchor="middle"
-          fontFamily="'Cairo','Tajawal','IBM Plex Sans Arabic',system-ui,sans-serif"
-          fontWeight="900"
-          fontSize="78"
+        {/* Inner nested Z — slightly inset, in the background color */}
+        <path
+          d="
+            M 32 38
+            H 88
+            Q 91 38, 91 41
+            Q 91 44, 89 46
+            L 48 84
+            H 88
+            Q 91 84, 91 87
+            V 91
+            Q 91 94, 88 94
+            H 32
+            Q 29 94, 29 91
+            Q 29 88, 31 86
+            L 72 48
+            H 32
+            Q 29 48, 29 45
+            V 41
+            Q 29 38, 32 38
+            Z
+          "
           fill="var(--background)"
-          style={{ direction: "rtl" }}
-        >
-          ز
-        </text>
-
-        {/* Tiny olive sitting on top-right corner — accent that ties the
-            monogram to the brand (الزيتونة = the olive). */}
-        <g transform="translate(86 26)">
-          <ellipse cx="0" cy="0" rx="10" ry="13" fill="var(--secondary)" />
-          {/* Curling leaf off the olive */}
-          <path
-            d="M 7 -10 Q 18 -16, 19 -5 Q 13 -2, 6 -7 Z"
-            fill="url(#oliveLogoBody)"
-          />
-          {/* Highlight */}
-          <ellipse
-            cx="-3"
-            cy="-4"
-            rx="2.4"
-            ry="3.5"
-            fill="var(--background)"
-            fillOpacity="0.5"
-          />
-        </g>
+          fillOpacity="0.95"
+        />
       </g>
     </svg>
   );
