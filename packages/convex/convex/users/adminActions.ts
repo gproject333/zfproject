@@ -1,9 +1,12 @@
 "use node";
 import { action } from "../_generated/server";
-import { v } from "convex/values";
+import { v, ConvexError } from "convex/values";
 import { api, internal } from "../_generated/api";
 
 async function createClerkUser(secretKey: string, email: string, password: string, name: string) {
+  if (!secretKey) {
+    throw new ConvexError("CLERK_SECRET_KEY غير مضبوط في بيئة Convex");
+  }
   const { createClerkClient } = await import("@clerk/backend");
   const clerk = createClerkClient({ secretKey });
   try {
@@ -14,12 +17,21 @@ async function createClerkUser(secretKey: string, email: string, password: strin
       skipPasswordChecks: false,
     });
   } catch (e: unknown) {
-    const err = e as { errors?: { message?: string; longMessage?: string }[] };
+    // Clerk errors come back as `{ errors: [{ message, longMessage, code }] }`.
+    // We forward longMessage/message to the admin so they can see exactly
+    // why Clerk rejected the signup (weak password, duplicate email, …)
+    // instead of Convex's generic "internal error".
+    const err = e as {
+      errors?: { message?: string; longMessage?: string; code?: string }[];
+      message?: string;
+    };
     const msg =
       err?.errors?.[0]?.longMessage ??
       err?.errors?.[0]?.message ??
+      err?.message ??
       "فشل إنشاء الحساب";
-    throw new Error(msg);
+    console.error("[createClerkUser] Clerk error:", JSON.stringify(err?.errors ?? err));
+    throw new ConvexError(msg);
   }
 }
 
@@ -33,7 +45,7 @@ export const createSupervisor = action({
   },
   handler: async (ctx, args) => {
     const user = await ctx.runQuery(api.users.shared.currentUser);
-    if (!user || user.role !== "admin") throw new Error("غير مصرح");
+    if (!user || user.role !== "admin") throw new ConvexError("غير مصرح");
 
     const clerkUser = await createClerkUser(
       process.env.CLERK_SECRET_KEY!,
@@ -61,7 +73,7 @@ export const createSponsor = action({
   },
   handler: async (ctx, args) => {
     const user = await ctx.runQuery(api.users.shared.currentUser);
-    if (!user || user.role !== "admin") throw new Error("غير مصرح");
+    if (!user || user.role !== "admin") throw new ConvexError("غير مصرح");
 
     const clerkUser = await createClerkUser(
       process.env.CLERK_SECRET_KEY!,
