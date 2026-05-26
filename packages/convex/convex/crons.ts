@@ -14,4 +14,10 @@ crons.daily(
   internal.notifications.cleanupOld,
 );
 
+crons.daily(
+  "whatsapp-retry-failed",
+  { hourUTC: 4, minuteUTC: 0 },
+  internal.whatsapp.internal.retryFailed,
+);
+
 export default crons;

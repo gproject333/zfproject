@@ -6,6 +6,7 @@ import { getOptionalUser, getOptionalSupervisor, requireSupervisor } from "../li
 import { STATUS_LABELS, canTransition } from "../lib/statuses";
 import { assertMaxLength } from "../lib/validation";
 import { loadUsersMap, loadStudentsMap } from "../lib/users";
+import { maybeSendWhatsapp } from "../lib/notifications";
 
 /**
  * Returns the next application waiting for a supervisor decision, oldest
@@ -306,6 +307,16 @@ export const updateApplicationStatus = mutation({
       requireAck: true,
       createdAt: now,
     });
+
+    await maybeSendWhatsapp(ctx, {
+      userId: app.studentId,
+      kind: "status_change",
+      data: {
+        applicationName: app.projectName,
+        newStatus: args.status,
+        supervisorNotes: args.supervisorNotes ?? "",
+      },
+    });
   },
 });
 
@@ -379,6 +390,16 @@ export const bulkUpdateStatus = mutation({
         read: false,
         requireAck: true,
         createdAt: now,
+      });
+
+      await maybeSendWhatsapp(ctx, {
+        userId: app.studentId,
+        kind: "status_change",
+        data: {
+          applicationName: app.projectName,
+          newStatus: args.status,
+          supervisorNotes: args.notes ?? "",
+        },
       });
 
       succeeded.push(id);

@@ -2,6 +2,7 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { getOptionalUser, requireSupervisor } from "./lib/auth";
 import { assertMaxLength } from "./lib/validation";
+import { maybeSendWhatsapp } from "./lib/notifications";
 
 /**
  * Schedule a meeting between a supervisor and a student. The meeting row
@@ -55,6 +56,17 @@ export const scheduleMeeting = mutation({
       read: false,
       requireAck: true,
       createdAt: Date.now(),
+    });
+
+    await maybeSendWhatsapp(ctx, {
+      userId: args.studentId,
+      kind: "meeting",
+      data: {
+        action: "scheduled",
+        meetingDate: when,
+        supervisorName: supervisorLabel,
+        location: args.location?.trim() ?? "",
+      },
     });
 
     return meetingId;
@@ -145,6 +157,18 @@ export const cancelMeeting = mutation({
       read: false,
       requireAck: true,
       createdAt: Date.now(),
+    });
+
+    await maybeSendWhatsapp(ctx, {
+      userId: meeting.studentId,
+      kind: "meeting",
+      data: {
+        action: "cancelled",
+        meetingDate: new Date(meeting.scheduledAt).toLocaleString("ar-EG", {
+          dateStyle: "long",
+          timeStyle: "short",
+        }),
+      },
     });
   },
 });

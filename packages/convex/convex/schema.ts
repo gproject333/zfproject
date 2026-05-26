@@ -52,6 +52,10 @@ export default defineSchema({
     // Auth-provider bookkeeping (kept for compatibility with @convex-dev/auth)
     emailVerificationTime: v.optional(v.number()),
     phoneVerificationTime: v.optional(v.number()),
+    // WhatsApp notification preferences (set only after OTP verification)
+    whatsappVerified: v.optional(v.boolean()),
+    whatsappOptOut: v.optional(v.boolean()),
+
     isAnonymous: v.optional(v.boolean()),
     createdAt: v.optional(v.number()),
     updatedAt: v.optional(v.number()),
@@ -61,6 +65,55 @@ export default defineSchema({
     .index("phone", ["phone"])
     .index("by_role", ["role"])
     .index("by_studentId", ["studentId"]),
+
+  // ============================================
+  // WhatsApp OTP verifications
+  // ============================================
+  // Pending OTPs for phone-number verification. Codes are stored as
+  // SHA-256 hashes; the plaintext code lives only in the scheduler
+  // argument that triggers the n8n send action. Rows stay around after
+  // `consumed=true` so we can audit "when did this user verify?". An
+  // expiry cleanup cron drops old consumed rows.
+  whatsappVerifications: defineTable({
+    userId: v.id("users"),
+    phone: v.string(),
+    codeHash: v.string(),
+    expiresAt: v.number(),
+    attempts: v.number(),
+    consumed: v.boolean(),
+    createdAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_user_active", ["userId", "consumed"]),
+
+  // ============================================
+  // WhatsApp send log (durable outbox)
+  // ============================================
+  // One row per send attempt. The mutation creates a `queued` row and
+  // schedules the matching action; the action patches it to `sent` or
+  // `failed`. Admin log page reads this table.
+  whatsappOutbox: defineTable({
+    userId: v.id("users"),
+    phone: v.string(),
+    kind: v.union(
+      v.literal("otp"),
+      v.literal("meeting"),
+      v.literal("status_change"),
+    ),
+    payload: v.any(),
+    status: v.union(
+      v.literal("queued"),
+      v.literal("sent"),
+      v.literal("failed"),
+    ),
+    errorMessage: v.optional(v.string()),
+    n8nRequestId: v.optional(v.string()),
+    attempts: v.number(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_status_created", ["status", "createdAt"]),
 
   // ============================================
   // Applications (incubation requests / projects)
