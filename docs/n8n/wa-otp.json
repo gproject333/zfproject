@@ -1,0 +1,128 @@
+{
+  "name": "wa-otp",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wa-otp",
+        "responseMode": "onReceived",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "1a000000-0000-0000-0000-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "wa-otp-webhook"
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const crypto = require('crypto');\nconst inputJson = $input.first().json;\nconst headers = inputJson.headers || {};\nconst sig = headers['x-signature'] || headers['X-Signature'];\n\nlet rawBody;\nif (typeof inputJson.body === 'string') {\n  rawBody = inputJson.body;\n} else if (inputJson.body !== undefined) {\n  rawBody = JSON.stringify(inputJson.body);\n} else {\n  rawBody = JSON.stringify(inputJson);\n}\n\nconst secret = $env.N8N_WEBHOOK_SECRET;\nif (!secret) throw new Error('N8N_WEBHOOK_SECRET not set');\n\nconst expected = crypto\n  .createHmac('sha256', secret)\n  .update(rawBody)\n  .digest('hex');\n\nif (sig !== expected) {\n  throw new Error('invalid signature');\n}\n\nconst parsed = typeof inputJson.body === 'string'\n  ? JSON.parse(inputJson.body)\n  : (inputJson.body || inputJson);\nreturn [{ json: parsed }];"
+      },
+      "id": "1a000000-0000-0000-0000-000000000002",
+      "name": "Verify HMAC",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "to-1",
+              "name": "to",
+              "value": "={{ $json.phone.startsWith('+') ? $json.phone.slice(1) : $json.phone }}@s.whatsapp.net",
+              "type": "string"
+            },
+            {
+              "id": "text-1",
+              "name": "text",
+              "value": "=رمز التحقق: {{ $json.code }}\nصالح لمدة {{ $json.expiresInMinutes }} دقائق.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1a000000-0000-0000-0000-000000000003",
+      "name": "Build message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.EVOLUTION_BASE_URL}}/message/sendText/{{$env.EVOLUTION_INSTANCE_NAME}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{$env.EVOLUTION_API_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.to }}\",\n  \"text\": {{ JSON.stringify($json.text) }}\n}",
+        "options": {}
+      },
+      "id": "1a000000-0000-0000-0000-000000000004",
+      "name": "Send via Evolution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Verify HMAC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify HMAC": {
+      "main": [
+        [
+          {
+            "node": "Build message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build message": {
+      "main": [
+        [
+          {
+            "node": "Send via Evolution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
