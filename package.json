@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "pnpm -r --parallel --stream dev",
-    "build": "pnpm --filter @smart-zuj/convex run deploy && pnpm --filter @smart-zuj/web build",
+    "build": "pnpm --filter @smart-zuj/web build",
+    "build:convex": "pnpm --filter @smart-zuj/convex run deploy",
+    "build:all": "pnpm build:convex && pnpm build",
     "start": "pnpm --filter @smart-zuj/web start",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test"
