@@ -1,99 +1,93 @@
 /**
- * Olive branch mark — two leaves growing from a central stem with an
- * olive fruit at the base. Theme-aware via tokens: leaves use
- * var(--primary), the olive fruit uses var(--secondary), and the
- * stem + outline use var(--foreground) at low opacity so the mark
- * follows light and dark themes automatically.
+ * Monogram-style brand mark for حاضنة الزيتونة (ZUJ Incubator).
  *
- * Designed to read at all sizes, from a 24px navbar tile to a 96px
- * footer hero.
+ * Direct nod to cache-team.com's logo language: one oversized brand-color
+ * letter, a smaller white counter-form nested inside, and a soft drop
+ * shadow underneath so the mark reads as a tactile object rather than a
+ * flat glyph. The chosen letter is "ز" — the leading character of
+ * الزيتونة (the olive) and a recognisable hook for the brand. A tiny
+ * olive replaces the diacritical dot so the icon stays unmistakably ours.
+ *
+ * Theme-aware via tokens: the body uses var(--primary), the inner copy
+ * uses var(--background) so it inverts cleanly in dark mode, and the
+ * olive accent uses var(--secondary).
+ *
+ * Rendered with SVG `<text>` so the Arabic glyph is always shaped
+ * correctly by the system font stack — no fragile hand-drawn paths.
  */
 export default function OliveLogo({ className = "w-full h-full" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 120" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 120 120"
+      className={className}
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <defs>
-        <linearGradient id="leafGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        {/* Soft drop shadow under the mark */}
+        <filter id="oliveLogoShadow" x="-25%" y="-15%" width="150%" height="140%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2.6" />
+          <feOffset dx="0" dy="3.5" result="off" />
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.32" />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        {/* Subtle vertical sheen for depth on the body */}
+        <linearGradient id="oliveLogoBody" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="var(--accent)" />
+          <stop offset="55%" stopColor="var(--primary)" />
           <stop offset="100%" stopColor="var(--primary)" />
         </linearGradient>
-        <radialGradient id="oliveGradient" cx="40%" cy="35%" r="70%">
-          <stop offset="0%" stopColor="var(--secondary)" stopOpacity="1" />
-          <stop offset="100%" stopColor="var(--secondary)" stopOpacity="0.85" />
-        </radialGradient>
       </defs>
 
-      {/* Central stem */}
-      <path
-        d="M 60 22 Q 60 50, 60 85"
-        stroke="var(--foreground)"
-        strokeOpacity="0.7"
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-      />
+      <g filter="url(#oliveLogoShadow)">
+        {/* Rounded brand-colored container */}
+        <rect
+          x="10"
+          y="14"
+          width="100"
+          height="100"
+          rx="28"
+          fill="url(#oliveLogoBody)"
+        />
 
-      {/* Left leaf — tilts upward, pointed tip away from stem */}
-      <g>
-        <path
-          d="M 60 42 Q 28 30, 18 50 Q 28 64, 60 52 Z"
-          fill="url(#leafGradient)"
-          stroke="var(--foreground)"
-          strokeOpacity="0.7"
-          strokeWidth="2.5"
-          strokeLinejoin="round"
-        />
-        {/* Leaf vein */}
-        <path
-          d="M 58 47 Q 38 47, 22 50"
-          stroke="var(--foreground)"
-          strokeOpacity="0.25"
-          strokeWidth="1.2"
-          fill="none"
-          strokeLinecap="round"
-        />
-      </g>
-
-      {/* Right leaf — mirror, sits slightly lower for natural look */}
-      <g>
-        <path
-          d="M 60 56 Q 92 44, 102 64 Q 92 78, 60 66 Z"
-          fill="url(#leafGradient)"
-          stroke="var(--foreground)"
-          strokeOpacity="0.7"
-          strokeWidth="2.5"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M 62 61 Q 82 61, 98 64"
-          stroke="var(--foreground)"
-          strokeOpacity="0.25"
-          strokeWidth="1.2"
-          fill="none"
-          strokeLinecap="round"
-        />
-      </g>
-
-      {/* Olive fruit at the base of the stem */}
-      <g>
-        <ellipse
-          cx="60"
-          cy="90"
-          rx="13"
-          ry="17"
-          fill="url(#oliveGradient)"
-          stroke="var(--foreground)"
-          strokeOpacity="0.75"
-          strokeWidth="2.5"
-        />
-        {/* Small highlight on the fruit — adds depth */}
-        <ellipse
-          cx="55"
-          cy="83"
-          rx="3.5"
-          ry="5"
+        {/* Big inverted ز in the background color — the main letterform */}
+        <text
+          x="60"
+          y="92"
+          textAnchor="middle"
+          fontFamily="'Cairo','Tajawal','IBM Plex Sans Arabic',system-ui,sans-serif"
+          fontWeight="900"
+          fontSize="78"
           fill="var(--background)"
-          fillOpacity="0.35"
-        />
+          style={{ direction: "rtl" }}
+        >
+          ز
+        </text>
+
+        {/* Tiny olive sitting on top-right corner — accent that ties the
+            monogram to the brand (الزيتونة = the olive). */}
+        <g transform="translate(86 26)">
+          <ellipse cx="0" cy="0" rx="10" ry="13" fill="var(--secondary)" />
+          {/* Curling leaf off the olive */}
+          <path
+            d="M 7 -10 Q 18 -16, 19 -5 Q 13 -2, 6 -7 Z"
+            fill="url(#oliveLogoBody)"
+          />
+          {/* Highlight */}
+          <ellipse
+            cx="-3"
+            cy="-4"
+            rx="2.4"
+            ry="3.5"
+            fill="var(--background)"
+            fillOpacity="0.5"
+          />
+        </g>
       </g>
     </svg>
   );
