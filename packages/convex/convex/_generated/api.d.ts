@@ -37,6 +37,9 @@ import type * as users_admin from "../users/admin.js";
 import type * as users_adminActions from "../users/adminActions.js";
 import type * as users_dev from "../users/dev.js";
 import type * as users_shared from "../users/shared.js";
+import type * as whatsapp from "../whatsapp.js";
+import type * as whatsapp_actions from "../whatsapp/actions.js";
+import type * as whatsapp_helpers from "../whatsapp/helpers.js";
 
 import type {
   ApiFromModules,
@@ -74,6 +77,9 @@ declare const fullApi: ApiFromModules<{
   "users/adminActions": typeof users_adminActions;
   "users/dev": typeof users_dev;
   "users/shared": typeof users_shared;
+  whatsapp: typeof whatsapp;
+  "whatsapp/actions": typeof whatsapp_actions;
+  "whatsapp/helpers": typeof whatsapp_helpers;
 }>;
 
 /**
