@@ -37,6 +37,7 @@ export const studentNavItems: NavItem[] = [
   { label: "طلب جديد", href: "/student/new", icon: Plus },
   { label: "طلباتي", href: "/student/applications", icon: FileText },
   { label: "المقالات", href: "/student/articles", icon: BookOpen },
+  { label: "الدليل الريادي", href: "/student/entrepreneurial-guide", icon: Compass },
   { label: "دليل التقديم", href: "/student/guide", icon: HelpCircle },
 ];
 
