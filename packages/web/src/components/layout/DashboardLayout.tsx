@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Menu, X, ChevronLeft } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui";
@@ -67,15 +67,31 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ config, children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Same scroll-triggered navbar behavior as the landing page so the
+  // student/sponsor dashboards share one unified header treatment.
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const backgroundClass = config.backgroundClass ?? "bg-pattern";
 
   return (
     <RoleGuard allowedRoles={[...config.roles]}>
       <div className={`min-h-screen ${backgroundClass} flex flex-col`}>
-        {/* Top Navbar */}
-        <nav className="sticky top-0 z-50 bg-card ds-border-thick border-t-0 border-x-0">
-          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Top Navbar — matches the landing page: transparent at rest,
+            soft blurred background once the user scrolls. */}
+        <nav
+          className={`sticky top-0 z-50 transition-all duration-300 text-foreground ${
+            isScrolled
+              ? "bg-background/85 backdrop-blur-md border-b border-border/20"
+              : "bg-transparent border-b border-transparent"
+          }`}
+        >
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
             {/* Right Side: hamburger + brand */}
             <div className="flex items-center gap-3">
               <Button
@@ -111,20 +127,19 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
               </Link>
             </div>
 
-            {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-2.5">
+            {/* Desktop Nav — unified pill style with the landing navbar */}
+            <div className="hidden md:flex items-center gap-1">
               {config.navItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ds-border ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-200 border ${
                       isActive
-                        ? config.active.className ?? ""
-                        : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
+                        ? "bg-white text-gray-900 border-white shadow-md"
+                        : "bg-transparent border-transparent opacity-80 hover:opacity-100 hover:bg-foreground/8 hover:border-foreground/20"
                     }`}
-                    style={isActive ? config.active.style : undefined}
                   >
                     <item.icon className="w-4 h-4" />
                     {item.label}
@@ -148,12 +163,12 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
           <div
             className="md:hidden overflow-hidden"
             style={{
-              maxHeight: sidebarOpen ? '400px' : '0px',
+              maxHeight: sidebarOpen ? '480px' : '0px',
               opacity: sidebarOpen ? 1 : 0,
               transition: 'max-height 0.35s ease-in-out, opacity 0.25s ease-in-out',
             }}
           >
-            <div className="border-t border-border/50 px-3 py-2 space-y-1">
+            <div className="border-t border-border/30 bg-background/95 backdrop-blur-md px-3 py-2 space-y-1">
               {config.navItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -161,12 +176,11 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
                     key={item.href}
                     href={item.href}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all ds-border ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-full font-bold whitespace-nowrap transition-all border ${
                       isActive
-                        ? config.active.className ?? ""
-                        : "bg-transparent border-transparent hover:bg-muted hover:border-foreground"
+                        ? "bg-white text-gray-900 border-white shadow-md"
+                        : "bg-transparent border-transparent opacity-80 hover:opacity-100 hover:bg-foreground/8 hover:border-foreground/20"
                     }`}
-                    style={isActive ? config.active.style : undefined}
                   >
                     <item.icon className="w-5 h-5" />
                     {item.label}

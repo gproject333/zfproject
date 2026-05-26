@@ -194,10 +194,10 @@ export default function LandingPage() {
                       <Link
                         key={href}
                         href={href}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 border ${
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-200 border ${
                           isActive
                             ? "bg-white text-gray-900 border-white shadow-md"
-                            : "bg-transparent text-foreground/80 border-transparent hover:bg-foreground/8 hover:text-foreground hover:border-foreground/15"
+                            : "bg-transparent border-transparent opacity-80 hover:opacity-100 hover:bg-foreground/8 hover:border-foreground/20"
                         }`}
                       >
                         <Icon className="w-4 h-4" />
