@@ -19,6 +19,7 @@ import {
   Bell,
   UserRound,
   ClipboardList,
+  MessageCircle,
 } from "lucide-react";
 import type { NavItem } from "./DashboardLayout";
 import type { AppSidebarConfig } from "./AppSidebar";
@@ -60,6 +61,7 @@ export const adminNavItems: NavItem[] = [
   { label: "إدارة الكليات", href: "/admin/colleges", icon: BookOpen },
   { label: "طلبات الترقية", href: "/admin/upgrade-requests", icon: TrendingUp },
   { label: "سجل النشاط", href: "/admin/logs", icon: ClipboardList },
+  { label: "سجل الواتساب", href: "/admin/whatsapp-log", icon: MessageCircle },
   { label: "روابط التواصل", href: "/admin/social", icon: Share2 },
 ];
 
