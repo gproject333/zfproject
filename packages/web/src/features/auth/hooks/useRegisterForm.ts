@@ -8,7 +8,6 @@ interface RegisterFormData {
   email: string;
   password: string;
   confirmPassword: string;
-  studentId: string;
   college: string;
   department: string;
 }
@@ -18,7 +17,6 @@ const EMPTY: RegisterFormData = {
   email: "",
   password: "",
   confirmPassword: "",
-  studentId: "",
   college: "",
   department: "",
 };
@@ -61,9 +59,8 @@ export function useRegisterForm(): UseRegisterFormResult {
   const isStudent = isStudentEmail(formData.email);
 
   const updateField = useCallback((name: keyof RegisterFormData, value: string) => {
-    const sanitized = name === "studentId" ? value.replace(/\D/g, "") : value;
     setFormData((prev) => {
-      const next = { ...prev, [name]: sanitized };
+      const next = { ...prev, [name]: value };
       if (name === "college") next.department = "";
       return next;
     });
@@ -88,11 +85,8 @@ export function useRegisterForm(): UseRegisterFormResult {
     } else if (!VALID_EMAIL_DOMAINS.some((d) => formData.email.endsWith(d))) {
       e.email = "يجب استخدام البريد الجامعي (@zuj.edu.jo أو @std-zuj.edu.jo)";
     }
-    if (!formData.studentId.trim()) {
-      e.studentId = "حقل الرقم الجامعي مطلوب";
-    } else if (!/^\d{9}$/.test(formData.studentId)) {
-      e.studentId = "يجب أن يتكوّن الرقم الجامعي من 9 أرقام بالضبط";
-    }
+    // studentId is derived server-side from the email at signup —
+    // see extractStudentIdFromEmail in convex/users.ts.
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -111,7 +105,6 @@ export function useRegisterForm(): UseRegisterFormResult {
         emailAddress: formData.email,
         firstName,
         ...(lastName && { lastName }),
-        unsafeMetadata: { studentId: formData.studentId },
       });
       await signUp!.prepareEmailAddressVerification({ strategy: "email_code" });
       setStep(2);
@@ -129,7 +122,7 @@ export function useRegisterForm(): UseRegisterFormResult {
       setLoading(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.name, formData.email, formData.studentId, signUp]);
+  }, [formData.name, formData.email, signUp]);
 
   /** Step 2: verify the OTP code submitted by the user. */
   const submitOtp = useCallback(
@@ -183,13 +176,12 @@ export function useRegisterForm(): UseRegisterFormResult {
       try {
         const result = await signUp!.update({
           password: formData.password,
-          unsafeMetadata: {
-            studentId: formData.studentId,
-            ...(isStudent && {
+          ...(isStudent && {
+            unsafeMetadata: {
               college: formData.college,
               department: formData.department,
-            }),
-          },
+            },
+          }),
         });
         if (result.status === "complete" && result.createdSessionId) {
           await setActive!({ session: result.createdSessionId });
