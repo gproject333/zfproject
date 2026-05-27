@@ -83,7 +83,7 @@ export default function CinematicHero({
         {/* Massive headline with gradient brand phrase */}
         <motion.h1
           {...fadeUp(0.18)}
-          className="font-black leading-[1.50] text-foreground text-[clamp(2.25rem,7.5vw,5.75rem)] flex flex-col gap-3 sm:gap-4"
+          className="font-black leading-[1.40] text-foreground text-[clamp(2.25rem,7.5vw,5.75rem)] flex flex-col gap-3 sm:gap-4"
         >
           <span className="block pb-3">من فكرة </span>
           <span
