@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   // --noEmit` we run on every PR), so re-running it here is just
   // duplicate work in the wrong place.
   typescript: { ignoreBuildErrors: true },
+  // @ts-expect-error eslint field is accepted at runtime but missing from this version's NextConfig type
   eslint: { ignoreDuringBuilds: true },
   images: {
     remotePatterns: [

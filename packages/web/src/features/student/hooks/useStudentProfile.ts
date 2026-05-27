@@ -84,8 +84,9 @@ export function useStudentProfile() {
     setSuccess(false);
 
     if (!form.name.trim()) {
-      setError("الاسم حقل مطلوب.");
-      return false;
+      const msg = "الاسم حقل مطلوب.";
+      setError(msg);
+      return { ok: false as const, error: msg };
     }
 
     setSaving(true);
@@ -105,10 +106,11 @@ export function useStudentProfile() {
 
       setForm((prev) => ({ ...prev, avatarFile: null }));
       setSuccess(true);
-      return true;
+      return { ok: true as const };
     } catch (e) {
-      setError(e instanceof Error ? e.message : "حدث خطأ.");
-      return false;
+      const msg = e instanceof Error ? e.message : "حدث خطأ.";
+      setError(msg);
+      return { ok: false as const, error: msg };
     } finally {
       setSaving(false);
     }
