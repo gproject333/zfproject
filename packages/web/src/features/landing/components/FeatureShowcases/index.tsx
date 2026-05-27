@@ -10,6 +10,8 @@ import { getRoleHomepage } from "@smart-zuj/core";
 import { SubmitShowcase } from "./showcases/Submit";
 import { TrackShowcase } from "./showcases/Track";
 import { LearnShowcase } from "./showcases/Learn";
+import { WhatsappShowcase } from "./showcases/Whatsapp";
+import { ThemeShowcase } from "./showcases/Theme";
 
 /**
  * Auth-aware CTA targets for the three showcases. Non-authed visitors are
@@ -67,7 +69,9 @@ export default function FeatureShowcases() {
   return (
     <div className="relative">
       <SubmitShowcase ctaHref={ctas.submitHref} />
+      <WhatsappShowcase ctaHref={ctas.submitHref} />
       <TrackShowcase ctaHref={ctas.trackHref} />
+      <ThemeShowcase ctaHref={ctas.trackHref} />
       <LearnShowcase ctaHref={ctas.learnHref} />
     </div>
   );
