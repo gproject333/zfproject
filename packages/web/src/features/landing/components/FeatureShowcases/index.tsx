@@ -131,7 +131,7 @@ export function FeatureSection({
             className={`${copyOrder} text-right`}
           >
             <h2
-              className={`text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.15] ${
+              className={`text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.45] sm:leading-[1.4] pb-1 ${
                 isDark ? "text-white" : "text-foreground"
               }`}
             >

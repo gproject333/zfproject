@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button, Card, Spinner } from "@/components/ui";
 import { api } from "@smart-zuj/convex";
+import OliveSpinner from "@/components/OliveSpinner";
 
 const PAGE_SIZE = 40;
 
@@ -107,7 +108,7 @@ export default function AdminWhatsappLogPage() {
       <Card className="p-0 overflow-hidden">
         {status === "LoadingFirstPage" ? (
           <div className="flex justify-center py-16">
-            <Spinner size="lg" color="current" className="text-accent" />
+            <OliveSpinner size="lg" className="text-accent" />
           </div>
         ) : results.length === 0 ? (
           <EmptyState filtered={statusFilter !== ""} />

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { UserCircle, ArrowLeft, Sparkles } from "lucide-react";
 import { Card, Spinner } from "@/components/ui";
 import { useProfileComplete } from "../hooks/useProfileComplete";
+import OliveSpinner from "@/components/OliveSpinner";
 
 /**
  * Wraps any route that should only be available once the student profile
@@ -21,7 +22,7 @@ export default function ProfileCompletionGate({ children }: { children: ReactNod
   if (loading) {
     return (
       <div className="flex justify-center py-24">
-        <Spinner size="xl" color="current" className="text-primary" />
+        <OliveSpinner size="xl" className="text-primary" />
       </div>
     );
   }

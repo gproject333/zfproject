@@ -5,6 +5,7 @@ import { Spinner } from "@/components/ui";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ArticleCard from "./ArticleCard";
 import { useStudentArticlesList } from "../hooks/useArticlesList";
+import OliveSpinner from "@/components/OliveSpinner";
 
 /**
  * Student-facing article list page content.
@@ -26,7 +27,7 @@ export default function ArticlesList() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <Spinner size="lg" color="current" className="text-accent" />
+          <OliveSpinner size="lg" className="text-accent" />
         </div>
       ) : articles.length === 0 ? (
         <EmptyState

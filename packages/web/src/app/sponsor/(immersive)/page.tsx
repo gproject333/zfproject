@@ -9,6 +9,7 @@ import { Spinner } from "@/components/ui";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import SponsorReelOverlayActions from "@/features/applications/components/SponsorReelOverlayActions";
 import FloatingSponsorBottomBar from "@/features/sponsor/components/FloatingSponsorBottomBar";
+import OliveSpinner from "@/components/OliveSpinner";
 
 type Reel = NonNullable<
   ReturnType<
@@ -40,7 +41,7 @@ export default function SponsorReelsFeed() {
 function LoadingState() {
   return (
     <div className="h-full w-full flex flex-col items-center justify-center gap-4 text-white/80">
-      <Spinner size="xl" color="current" className="text-secondary" />
+      <OliveSpinner size="xl" className="text-secondary" />
       <p className="font-bold animate-pulse">يجري تحميل المشاريع...</p>
     </div>
   );

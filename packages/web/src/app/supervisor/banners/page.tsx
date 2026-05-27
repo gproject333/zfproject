@@ -7,6 +7,7 @@ import { BannerFormDialog } from "@/features/banners/components/BannerFormDialog
 import { DeleteBannerDialog } from "@/features/banners/components/DeleteBannerDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Button, Spinner} from "@/components/ui";
+import OliveSpinner from "@/components/OliveSpinner";
 
 export default function SupervisorBannersPage() {
   const form = useBannerForm();
@@ -47,7 +48,7 @@ export default function SupervisorBannersPage() {
 
       {admin.loading ? (
         <div className="flex justify-center py-20">
-          <Spinner size="lg" color="current" className="text-accent" />
+          <OliveSpinner size="lg" className="text-accent" />
         </div>
       ) : banners.length === 0 ? (
         <EmptyState

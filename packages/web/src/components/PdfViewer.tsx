@@ -6,6 +6,7 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import {X, Download, ExternalLink, ZoomIn, ZoomOut, ChevronRight, ChevronLeft, FileText, AlertTriangle, GripVertical} from "lucide-react";
 import { buttonVariants, Spinner} from "@/components/ui";
+import OliveSpinner from "@/components/OliveSpinner";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -118,14 +119,16 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
       aria-modal="true"
       role="dialog"
       style={{ cursor: isDragging ? "col-resize" : undefined }}
     >
-      {/* Backdrop */}
+      {/* Backdrop — opaque enough to fully hide the page footer/sidebar
+          underneath. 0.4 opacity let those bleed through and felt like
+          the footer was "sticking up" into the PDF. */}
       <div
-        className="absolute inset-0 bg-foreground/40 transition-opacity duration-300"
+        className="absolute inset-0 bg-foreground/80 backdrop-blur-sm transition-opacity duration-300"
         style={{ opacity: visible ? 1 : 0 }}
         onClick={isDragging ? undefined : handleClose}
       />
@@ -135,7 +138,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
         className="relative flex flex-col bg-card ds-border ds-shadow-lg rounded-xl overflow-hidden w-full max-w-[calc(100vw-32px)]"
         style={{
           width: panelWidth,
-          height: "min(90vh, 900px)",
+          height: "min(94vh, 1100px)",
           transition: isDragging ? "none" : "transform 300ms ease-out, opacity 300ms ease-out",
           transform: visible ? "scale(1)" : "scale(0.95)",
           opacity: visible ? 1 : 0,
@@ -213,7 +216,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
             onLoadSuccess={({ numPages }) => { setNumPages(numPages); setPage(1); }}
             loading={
               <div className="flex flex-col items-center justify-center gap-3 py-20">
-                <Spinner size="lg" color="current" className="text-muted-foreground" />
+                <OliveSpinner size="lg" className="text-muted-foreground" />
                 <p className="text-sm font-bold text-muted-foreground">يجري تحميل الملفّ...</p>
               </div>
             }

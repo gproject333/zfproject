@@ -4,7 +4,8 @@ import { Dispatch, SetStateAction } from "react";
 import { CheckCircle2, Shield, KeyRound, Mail } from "lucide-react";
 import { useStudentProfile } from "../../hooks/useStudentProfile";
 import { usePasswordChange } from "../../hooks/usePasswordChange";
-import { Button, Input, Spinner, Card } from "@/components/ui";
+import { Button, Input, Card } from "@/components/ui";
+import OliveSpinner from "@/components/OliveSpinner";
 
 interface PasswordForm {
   code: string;
@@ -26,35 +27,51 @@ export function SecurityCard({
 }: SecurityCardProps) {
   return (
     <Card className="p-6 space-y-4">
-      <h3 className="font-semibold text-base flex items-center gap-2">
-        <Shield className="w-5 h-5 text-accent" />
-        الأمان
-      </h3>
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded-xl bg-accent/12 text-accent flex items-center justify-center shrink-0">
+          <Shield className="w-5 h-5" />
+        </div>
+        <div>
+          <h3 className="font-bold text-base">الأمان</h3>
+          <p className="text-xs text-muted-foreground font-medium mt-0.5">
+            إدارة كلمة المرور وحماية حسابك.
+          </p>
+        </div>
+      </div>
 
       {password.step === "idle" && (
-        <Button
-          onPress={() =>
-            profile.user?.email &&
-            void password.requestReset(profile.user.email)
-          }
-          isDisabled={password.loading}
-          variant="outline"
-          size="sm"
-        >
-          {password.loading ? (
-            <Spinner size="sm" color="current" />
-          ) : (
-            <KeyRound className="w-4 h-4" />
-          )}
-          تغيير كلمة المرور
-        </Button>
+        <div className="space-y-2">
+          <Button
+            onPress={() =>
+              profile.user?.email &&
+              void password.requestReset(profile.user.email)
+            }
+            isDisabled={password.loading || !profile.user?.email}
+            variant="outline"
+            size="sm"
+          >
+            {password.loading ? (
+              <OliveSpinner size="xs" className="text-current" />
+            ) : (
+              <KeyRound className="w-4 h-4" />
+            )}
+            تغيير كلمة المرور
+          </Button>
+          <p className="text-[11px] text-muted-foreground font-medium">
+            سنرسل رمز تحقق إلى{" "}
+            <span dir="ltr" className="font-mono text-foreground/85">
+              {profile.user?.email ?? "بريدك الإلكتروني"}
+            </span>{" "}
+            لتأكيد التغيير.
+          </p>
+        </div>
       )}
 
       {password.step === "verifying" && (
         <div className="space-y-3">
           <p className="text-sm text-muted-foreground flex items-center gap-2">
             <Mail className="w-4 h-4" />
-            تم إرسال رمز التحقق إلى بريدك الإلكتروني.
+            تم إرسال رمز التحقق إلى بريدك الإلكتروني. أدخله مع كلمة المرور الجديدة.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
@@ -70,6 +87,7 @@ export function SecurityCard({
                 placeholder="123456"
                 dir="ltr"
                 maxLength={6}
+                inputMode="numeric"
               />
             </div>
             <div>
@@ -86,7 +104,7 @@ export function SecurityCard({
                     newPassword: e.target.value,
                   }))
                 }
-                placeholder="••••••••"
+                placeholder="ثمانية أحرف على الأقل"
                 dir="ltr"
               />
             </div>
@@ -101,16 +119,20 @@ export function SecurityCard({
                   passwordForm.newPassword,
                 )
               }
-              isDisabled={password.loading}
+              isDisabled={
+                password.loading ||
+                passwordForm.code.length !== 6 ||
+                passwordForm.newPassword.length < 8
+              }
               variant="secondary"
               size="sm"
             >
               {password.loading ? (
-                <Spinner size="sm" color="current" />
+                <OliveSpinner size="xs" className="text-current" />
               ) : (
                 <CheckCircle2 className="w-4 h-4" />
               )}
-              تأكيد
+              تأكيد التغيير
             </Button>
             <Button
               onPress={() => {
@@ -127,10 +149,15 @@ export function SecurityCard({
       )}
 
       {password.step === "done" && (
-        <p className="text-sm font-semibold text-success flex items-center gap-2">
-          <CheckCircle2 className="w-5 h-5" />
-          تم تغيير كلمة المرور بنجاح.
-        </p>
+        <div className="rounded-lg bg-success/10 ds-border border-success/30 p-3 flex items-start gap-2">
+          <CheckCircle2 className="w-5 h-5 text-success shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <p className="font-bold text-foreground">تم تغيير كلمة المرور بنجاح</p>
+            <p className="text-xs text-muted-foreground font-medium mt-0.5">
+              يمكنك الآن استخدام كلمة المرور الجديدة لتسجيل الدخول.
+            </p>
+          </div>
+        </div>
       )}
 
       {password.error && (

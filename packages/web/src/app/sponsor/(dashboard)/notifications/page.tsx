@@ -9,6 +9,7 @@ import type { Doc } from "@smart-zuj/convex";
 import { Button, Spinner } from "@/components/ui";
 import NotificationItem from "@/components/NotificationItem";
 import AckRequiredModal from "@/components/AckRequiredModal";
+import OliveSpinner from "@/components/OliveSpinner";
 
 export default function SponsorNotificationsPage() {
   const router = useRouter();
@@ -57,7 +58,7 @@ export default function SponsorNotificationsPage() {
       <div className="rounded-2xl border border-foreground/[0.08] bg-card overflow-hidden">
         {notifications === undefined ? (
           <div className="flex justify-center py-16">
-            <Spinner size="lg" color="current" className="text-secondary" />
+            <OliveSpinner size="lg" className="text-secondary" />
           </div>
         ) : notifications.length === 0 ? (
           <EmptyState />

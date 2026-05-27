@@ -16,6 +16,7 @@ import { formatArabicDate } from "@smart-zuj/core";
 import ArticleFormDialog from "./ArticleFormDialog";
 import { useArticleForm } from "../hooks/useArticleForm";
 import { Button, Spinner} from "@/components/ui";
+import OliveSpinner from "@/components/OliveSpinner";
 
 const AUDIENCE_LABEL = {
   student: "الطلاب",
@@ -57,7 +58,7 @@ export default function ArticlesManager() {
 
       {admin.loading ? (
         <div className="flex justify-center py-20">
-          <Spinner size="lg" color="current" className="text-accent" />
+          <OliveSpinner size="lg" className="text-accent" />
         </div>
       ) : !admin.articles || admin.articles.length === 0 ? (
         <EmptyState

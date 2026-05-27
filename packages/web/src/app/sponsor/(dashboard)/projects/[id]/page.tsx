@@ -9,6 +9,7 @@ import { Spinner } from "@/components/ui";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import { useApplication } from "@/features/applications/hooks/useApplication";
 import SponsorReelOverlayActions from "@/features/applications/components/SponsorReelOverlayActions";
+import OliveSpinner from "@/components/OliveSpinner";
 
 export default function SponsorProjectReelsPage() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function SponsorProjectReelsPage() {
   if (app === undefined) {
     return (
       <div className="flex justify-center flex-col items-center h-[60vh] gap-4">
-        <Spinner size="xl" color="current" className="text-primary" />
+        <OliveSpinner size="xl" className="text-primary" />
         <p className="font-bold text-muted-foreground animate-pulse">
           يجري تحميل العرض...
         </p>

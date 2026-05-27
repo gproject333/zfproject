@@ -8,6 +8,7 @@ import { useConvexAuth } from "convex/react";
 import { AlertTriangle, ArrowLeft } from "lucide-react";
 import { api } from "@smart-zuj/convex";
 import { getRoleHomepage } from "@smart-zuj/core";
+import OliveSpinner from "@/components/OliveSpinner";
 
 /**
  * Post-login waiting room. Clerk hands us a session immediately, but the
@@ -75,29 +76,7 @@ export default function LoginRedirectPage() {
   return (
     <div className="min-h-screen bg-pattern flex items-center justify-center px-4">
       <div className="flex flex-col items-center gap-4 max-w-sm text-center">
-        <svg
-          viewBox="0 0 300 300"
-          className="w-20 h-20"
-          style={{ animation: "olive-spin 2.4s linear infinite" }}
-        >
-          <style>{`
-            @keyframes olive-spin {
-              from { transform: rotate(0deg); }
-              to   { transform: rotate(360deg); }
-            }
-          `}</style>
-          <g transform="translate(150 150)">
-            <g fill="#5B7A3A" stroke="#1A1A1A" strokeWidth="3.5" strokeLinejoin="round">
-              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z"/>
-              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(60)"/>
-              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(120)"/>
-              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(180)"/>
-              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(240)"/>
-              <path d="M 0 -20 Q 14 -54, 0 -90 Q -14 -54, 0 -20 Z" transform="rotate(300)"/>
-            </g>
-            <ellipse cx="0" cy="0" rx="13" ry="17" fill="#2B1F3A" stroke="#1A1A1A" strokeWidth="3"/>
-          </g>
-        </svg>
+        <OliveSpinner size="xl" className="text-primary" />
         <p className="text-base font-extrabold text-foreground">{headline}</p>
         {sub && (
           <p className="text-sm text-muted-foreground font-medium">{sub}</p>

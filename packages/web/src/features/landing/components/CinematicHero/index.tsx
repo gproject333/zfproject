@@ -83,12 +83,12 @@ export default function CinematicHero({
         {/* Massive headline with gradient brand phrase */}
         <motion.h1
           {...fadeUp(0.18)}
-          className="font-black leading-[1.08] tracking-tight text-foreground text-[clamp(2.25rem,7.5vw,5.75rem)]"
+          className="font-black leading-[1.35] sm:leading-[1.3] text-foreground text-[clamp(2.25rem,7.5vw,5.75rem)]"
         >
-          من فكرة طالب
+          <span className="inline-block pb-2">من فكرة طالب</span>
           <br />
           <span
-            className="bg-clip-text text-transparent"
+            className="inline-block bg-clip-text text-transparent pb-2"
             style={{
               backgroundImage:
                 "linear-gradient(to left, var(--foreground) 10%, var(--primary) 65%, var(--accent) 100%)",
