@@ -1,0 +1,45 @@
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#E8F0E0','primaryBorderColor':'#5B7A3A','primaryTextColor':'#1f2a17','lineColor':'#5B7A3A','fontFamily':'Helvetica','fontSize':'14px'}}}%%
+flowchart TB
+  classDef browser fill:#FFFFFF,stroke:#1f2a17,stroke-width:2px,color:#1f2a17,font-weight:bold
+  classDef convex  fill:#F4F7EF,stroke:#5B7A3A,stroke-width:2px,color:#1f2a17
+  classDef clerk   fill:#EEF6FF,stroke:#1F6FB3,stroke-width:2px,color:#1f2a17
+  classDef n8n     fill:#FFF4D6,stroke:#C9A227,stroke-width:2px,color:#1f2a17
+  classDef evo     fill:#E8F8EC,stroke:#28A35E,stroke-width:2px,color:#1f2a17
+  classDef external fill:#F9F9F9,stroke:#999,color:#333
+
+  subgraph Browser ["Browser — student / supervisor / admin / sponsor"]
+    direction TB
+    UI["Next.js 16 App Router<br/>(Turbopack, RTL, HeroUI)"]
+    CP["ConvexProviderWithClerk"]
+    UI --- CP
+  end
+  class Browser browser
+
+  subgraph CV ["Convex backend (self-hosted) — convex.yazeid.site"]
+    direction TB
+    SCH["schema.ts<br/>(15+ tables)"]
+    QRY["queries / mutations"]
+    ACT["actions (`use node`)<br/>HMAC + fetch"]
+    CRON["crons<br/>daily retry @ 04:00 UTC"]
+    STO["File storage<br/>PDF / video"]
+    HTTP["http.ts<br/>Clerk webhook (svix)"]
+  end
+  class CV convex
+
+  CLERK["Clerk<br/>auth + JWT + webhook"]:::clerk
+  N8N["n8n<br/>webhooks:<br/>• wa-otp<br/>• wa-meeting<br/>• wa-status"]:::n8n
+  EVO["Evolution API<br/>/message/sendText/zuj"]:::evo
+  WA["WhatsApp recipient"]:::external
+
+  CP -- "Clerk JWT (Bearer)" --> QRY
+  UI -- "Clerk JS SDK" --> CLERK
+  CLERK -. "user.created webhook<br/>(svix signature)" .-> HTTP
+  HTTP --> SCH
+  QRY <--> SCH
+  ACT <--> QRY
+  CRON --> QRY
+  QRY --> STO
+
+  ACT -- "POST + X-Signature (HMAC-SHA256)" --> N8N
+  N8N -- "verify HMAC<br/>build text" --> EVO
+  EVO -- "send" --> WA

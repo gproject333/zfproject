@@ -1,0 +1,16 @@
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#E8F0E0','primaryBorderColor':'#5B7A3A','primaryTextColor':'#1f2a17','lineColor':'#5B7A3A','fontFamily':'Helvetica','fontSize':'14px'}}}%%
+flowchart LR
+  classDef step fill:#F4F7EF,stroke:#5B7A3A,stroke-width:2px,color:#1f2a17
+  classDef src  fill:#FFFFFF,stroke:#1f2a17,stroke-width:2px,color:#1f2a17,font-weight:bold
+  classDef out  fill:#E8F8EC,stroke:#28A35E,stroke-width:2px,color:#1f2a17,font-weight:bold
+
+  A["Convex mutation"]:::src --> B["whatsappOutbox row<br/>status = queued"]:::step
+  B --> C["ctx.scheduler.runAfter(0, action)"]:::step
+  C --> D["Node action (use node)"]:::step
+  D --> E["HMAC-SHA256(body, secret)<br/>X-Signature header"]:::step
+  E --> F["n8n webhook<br/>wa-otp / wa-meeting / wa-status"]:::step
+  F --> G["Build localized text<br/>(Arabic templates)"]:::step
+  G --> H["Evolution API<br/>POST /message/sendText/zuj"]:::step
+  H --> I["WhatsApp recipient"]:::out
+  D -.->|on failure| J["whatsappOutbox<br/>status = failed<br/>errorMessage saved"]:::step
+  K["Daily cron 04:00 UTC<br/>retryFailed"]:::step -.->|attempts under 3| C

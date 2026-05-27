@@ -1,0 +1,61 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor':'#E8F0E0','primaryBorderColor':'#5B7A3A','primaryTextColor':'#1f2a17','lineColor':'#5B7A3A','fontFamily':'Helvetica','fontSize':'14px'}}}%%
+flowchart LR
+  classDef actor fill:#fff,stroke:#1f2a17,stroke-width:2px,color:#1f2a17,font-weight:bold
+  classDef sys fill:#F4F7EF,stroke:#5B7A3A,stroke-width:2px,color:#1f2a17
+  classDef student fill:#E8F0E0,stroke:#5B7A3A,color:#1f2a17
+  classDef sup fill:#FFF4D6,stroke:#C9A227,color:#1f2a17
+  classDef adm fill:#F3E4F6,stroke:#7E3D9D,color:#1f2a17
+  classDef spo fill:#E5F2FC,stroke:#1F6FB3,color:#1f2a17
+
+  S(("👤<br/>Student"))
+  V(("🎓<br/>Supervisor"))
+  A(("⚙️<br/>Admin"))
+  P(("🏢<br/>Sponsor"))
+  class S,V,A,P actor
+
+  subgraph SYS [" ZUJ Incubator "]
+    direction TB
+    UC1[Sign up with university email]:::student
+    UC2[Verify WhatsApp via OTP]:::student
+    UC3[Submit application]:::student
+    UC4[Track application status]:::student
+    UC5[Resubmit after revision]:::student
+
+    UC6[Review application]:::sup
+    UC7[Decide status accept / reject / revise]:::sup
+    UC8[Schedule meeting]:::sup
+    UC9[Bulk-update status]:::sup
+
+    UC10[Provision supervisor / sponsor]:::adm
+    UC11[Manage colleges &amp; departments]:::adm
+    UC12[Approve supervisor upgrade]:::adm
+    UC13[Audit activity &amp; WhatsApp log]:::adm
+
+    UC14[Browse accepted projects]:::spo
+    UC15[Express interest]:::spo
+  end
+  class SYS sys
+
+  S --- UC1
+  S --- UC2
+  S --- UC3
+  S --- UC4
+  S --- UC5
+
+  V --- UC6
+  V --- UC7
+  V --- UC8
+  V --- UC9
+
+  A --- UC10
+  A --- UC11
+  A --- UC12
+  A --- UC13
+
+  P --- UC14
+  P --- UC15
+
+  UC3 -. include .-> UC2
+  UC7 -. include .-> UC6
+  UC8 -. extend .-> UC7
+  UC15 -. include .-> UC14

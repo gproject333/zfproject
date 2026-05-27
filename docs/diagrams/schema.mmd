@@ -1,0 +1,141 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor':'#E8F0E0','primaryBorderColor':'#5B7A3A','primaryTextColor':'#1f2a17','lineColor':'#5B7A3A','fontFamily':'Helvetica','fontSize':'13px'}}}%%
+erDiagram
+  USERS ||--o{ APPLICATIONS : submits
+  USERS ||--o{ APPLICATION_REVIEWS : authors
+  USERS ||--o{ MEETINGS : "scheduled_by"
+  USERS ||--o{ MEETINGS : student
+  USERS ||--o{ NOTIFICATIONS : receives
+  USERS ||--o{ WHATSAPP_VERIFICATIONS : owns
+  USERS ||--o{ WHATSAPP_OUTBOX : receives
+  USERS ||--o{ SUPERVISOR_UPGRADE_REQUESTS : "requests"
+  USERS ||--o{ SPONSOR_INTERESTS : "from_sponsor"
+  COLLEGES ||--o{ DEPARTMENTS : has
+  APPLICATIONS ||--o{ APPLICATION_REVIEWS : "history"
+  APPLICATIONS ||--o{ SPONSOR_INTERESTS : "draws"
+  APPLICATIONS ||--o{ MEETINGS : about
+
+  USERS {
+    Id _id PK
+    string clerkId UK
+    string email
+    string role "student|supervisor|admin|sponsor"
+    string name
+    string studentId
+    string college
+    string department
+    string phone "E.164"
+    boolean whatsappVerified
+    boolean whatsappOptOut
+    string linkedinUrl
+    Id avatar "storageId"
+    boolean isActive
+    number createdAt
+    number updatedAt
+  }
+
+  APPLICATIONS {
+    Id _id PK
+    Id studentId FK
+    string type "entrepreneurial|it|university"
+    string projectName
+    string description
+    string problemStatement
+    string targetAudience
+    object extraFields
+    array  teamMembers
+    Id pdfFileId "storageId"
+    Id videoFileId "storageId"
+    string status "draft|under_review|accepted|rejected|needs_modification"
+    string supervisorNotes
+    string supervisorRating
+    Id reviewerId FK
+    number reviewedAt
+    number submittedAt
+    number createdAt
+    number updatedAt
+  }
+
+  APPLICATION_REVIEWS {
+    Id _id PK
+    Id applicationId FK
+    Id reviewerId FK
+    string fromStatus
+    string toStatus
+    string notes
+    string rating
+    number createdAt
+  }
+
+  MEETINGS {
+    Id _id PK
+    Id studentId FK
+    Id scheduledBy FK
+    Id applicationId FK
+    number scheduledAt
+    string location
+    string notes
+    number createdAt
+  }
+
+  NOTIFICATIONS {
+    Id _id PK
+    Id userId FK
+    string title
+    string message
+    string type
+    Id applicationId FK
+    boolean read
+    boolean requireAck
+    number createdAt
+  }
+
+  WHATSAPP_VERIFICATIONS {
+    Id _id PK
+    Id userId FK
+    string phone
+    string codeHash "SHA-256"
+    number expiresAt
+    number attempts
+    boolean consumed
+    number createdAt
+  }
+
+  WHATSAPP_OUTBOX {
+    Id _id PK
+    Id userId FK
+    string phone
+    string kind "otp|meeting|status_change"
+    object payload
+    string status "queued|sent|failed"
+    string errorMessage
+    number attempts
+    number createdAt
+    number updatedAt
+  }
+
+  COLLEGES {
+    Id _id PK
+    string name
+    string nameAr
+  }
+
+  DEPARTMENTS {
+    Id _id PK
+    Id collegeId FK
+    string name
+  }
+
+  SPONSOR_INTERESTS {
+    Id _id PK
+    Id sponsorId FK
+    Id applicationId FK
+    number createdAt
+  }
+
+  SUPERVISOR_UPGRADE_REQUESTS {
+    Id _id PK
+    Id userId FK
+    string reason
+    string status "pending|approved|rejected"
+    number createdAt
+  }

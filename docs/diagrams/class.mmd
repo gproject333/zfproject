@@ -1,0 +1,104 @@
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#F4F7EF','primaryBorderColor':'#5B7A3A','primaryTextColor':'#1f2a17','lineColor':'#5B7A3A','fontFamily':'Helvetica','fontSize':'13px'}}}%%
+classDiagram
+  direction LR
+
+  class User {
+    +Id _id
+    +string clerkId
+    +string email
+    +string role
+    +string name
+    +string studentId
+    +string phone
+    +boolean whatsappVerified
+    +boolean whatsappOptOut
+    +signIn()
+    +updateProfile()
+    +verifyWhatsapp(code)
+  }
+
+  class Application {
+    +Id _id
+    +Id studentId
+    +string type
+    +string projectName
+    +string description
+    +string status
+    +Id pdfFileId
+    +Id videoFileId
+    +array teamMembers
+    +submit()
+    +saveDraft()
+    +canTransitionTo(next) boolean
+  }
+
+  class ApplicationReview {
+    +Id _id
+    +Id applicationId
+    +Id reviewerId
+    +string fromStatus
+    +string toStatus
+    +string notes
+    +string rating
+    +number createdAt
+  }
+
+  class Meeting {
+    +Id _id
+    +Id studentId
+    +Id scheduledBy
+    +number scheduledAt
+    +string location
+    +cancel()
+  }
+
+  class Notification {
+    +Id _id
+    +Id userId
+    +string type
+    +string title
+    +string message
+    +markRead()
+  }
+
+  class WhatsappOutbox {
+    +Id _id
+    +Id userId
+    +string phone
+    +string kind
+    +object payload
+    +string status
+    +number attempts
+    +patchSuccess()
+    +patchFailure(error)
+  }
+
+  class WhatsappVerification {
+    +Id _id
+    +Id userId
+    +string phone
+    +string codeHash
+    +number expiresAt
+    +number attempts
+    +boolean consumed
+    +verify(code) boolean
+  }
+
+  class SponsorInterest {
+    +Id _id
+    +Id sponsorId
+    +Id applicationId
+    +number createdAt
+  }
+
+  User "1" --> "0..*" Application : submits
+  User "1" --> "0..*" ApplicationReview : authors
+  User "1" --> "0..*" Meeting : student
+  User "1" --> "0..*" Meeting : scheduledBy
+  User "1" --> "0..*" Notification : receives
+  User "1" --> "0..*" WhatsappOutbox : addressed
+  User "1" --> "0..*" WhatsappVerification : pending
+
+  Application "1" --> "0..*" ApplicationReview : history
+  Application "1" --> "0..*" Meeting : about
+  Application "1" --> "0..*" SponsorInterest : draws
