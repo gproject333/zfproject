@@ -93,7 +93,7 @@ export default function CinematicHero({
                 "linear-gradient(to left, var(--foreground) 10%, var(--primary) 65%, var(--accent) 100%)",
             }}
           >
-            إلى مشروع رياديs
+            إلى مشروع ريادي
           </span>
         </motion.h1>
 
