@@ -85,7 +85,7 @@ export default function CinematicHero({
           {...fadeUp(0.18)}
           className="font-black leading-[1.50] text-foreground text-[clamp(2.25rem,7.5vw,5.75rem)] flex flex-col gap-3 sm:gap-4"
         >
-          <span className="block pb-3">من فكرة طالب</span>
+          <span className="block pb-3">من فكرة ريادية</span>
           <span
             className="block bg-clip-text text-transparent pb-3"
             style={{
@@ -93,11 +93,11 @@ export default function CinematicHero({
                 "linear-gradient(to left, var(--foreground) 10%, var(--primary) 65%, var(--accent) 100%)",
             }}
           >
-            إلى مشروع معتمد
+            إلى مشروع منتج
           </span>
         </motion.h1>
 
-        {/* One subline, narrow column for comfortable reading */}
+        {/* One subline, narrئow column for comfortable reading */}
         <motion.p
           {...fadeUp(0.32)}
           className="mt-7 sm:mt-8 mx-auto max-w-2xl text-base sm:text-lg lg:text-xl text-foreground/65 leading-relaxed font-medium"
