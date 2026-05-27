@@ -1,0 +1,35 @@
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#F4F7EF','primaryBorderColor':'#5B7A3A','primaryTextColor':'#1f2a17','lineColor':'#5B7A3A','fontFamily':'Helvetica','fontSize':'13px'}}}%%
+sequenceDiagram
+  autonumber
+  actor S as Student
+  participant UI as Web (Next.js)
+  participant CX as Convex mutation
+  participant DB as Convex DB
+  participant SC as Scheduler
+  participant AC as sendStatusChange (Node action)
+  participant N8 as n8n webhook
+  participant EV as Evolution API
+  participant WA as WhatsApp
+
+  S->>UI: click "Submit"
+  UI->>CX: applications.student.createApplication(args)
+  CX->>DB: insert applications row (status=under_review)
+  CX->>DB: insert notifications (fan-out to supervisors)
+  CX->>DB: insert whatsappOutbox (status=queued)
+  CX->>SC: ctx.scheduler.runAfter(0, sendStatusChange)
+  CX-->>UI: ack {appId}
+  UI-->>S: toast "تم إرسال الطلب"
+
+  Note over SC,AC: action runs after the mutation commits
+
+  SC->>AC: invoke sendStatusChange({outboxId})
+  AC->>DB: _getOutbox(outboxId)
+  AC->>AC: body = JSON.stringify(payload)<br/>signature = HMAC-SHA256(body, N8N_WEBHOOK_SECRET)
+  AC->>N8: POST /webhook/wa-status<br/>X-Signature: signature
+  N8->>N8: verify HMAC<br/>build text per status
+  N8->>EV: POST /message/sendText/zuj<br/>apikey, number, text
+  EV-->>N8: 200 OK
+  N8-->>AC: 200 "Workflow was started"
+  AC->>DB: _patchOutbox(status=sent)
+  EV->>WA: deliver message
+  WA-->>S: rendered in chat
