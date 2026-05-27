@@ -1,7 +1,7 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
-import { CheckCircle2, Shield, KeyRound, Mail } from "lucide-react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { CheckCircle2, Shield, KeyRound, Eye, EyeOff } from "lucide-react";
 import { useStudentProfile } from "../../hooks/useStudentProfile";
 import { usePasswordChange } from "../../hooks/usePasswordChange";
 import { Button, Input, Card } from "@/components/ui";
@@ -15,6 +15,8 @@ interface PasswordForm {
 interface SecurityCardProps {
   profile: ReturnType<typeof useStudentProfile>;
   password: ReturnType<typeof usePasswordChange>;
+  /** Parent still owns the form state. `code` is unused now but kept
+   *  on the shared shape to avoid touching the parent in this PR. */
   passwordForm: PasswordForm;
   setPasswordForm: Dispatch<SetStateAction<PasswordForm>>;
 }
@@ -25,6 +27,22 @@ export function SecurityCard({
   passwordForm,
   setPasswordForm,
 }: SecurityCardProps) {
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+
+  const newPassword = passwordForm.newPassword;
+  const canSubmit =
+    current.length >= 8 && newPassword.length >= 8 && !password.loading;
+
+  const closeAndReset = () => {
+    password.reset();
+    setOpen(false);
+    setCurrent("");
+    setPasswordForm({ code: "", newPassword: "" });
+  };
+
   return (
     <Card className="p-6 space-y-4">
       <div className="flex items-start gap-3">
@@ -39,91 +57,85 @@ export function SecurityCard({
         </div>
       </div>
 
-      {password.step === "idle" && (
-        <div className="space-y-2">
-          <Button
-            onPress={() =>
-              profile.user?.email &&
-              void password.requestReset(profile.user.email)
-            }
-            isDisabled={password.loading || !profile.user?.email}
-            variant="outline"
-            size="sm"
-          >
-            {password.loading ? (
-              <OliveSpinner size="xs" className="text-current" />
-            ) : (
-              <KeyRound className="w-4 h-4" />
-            )}
-            تغيير كلمة المرور
-          </Button>
-          <p className="text-[11px] text-muted-foreground font-medium">
-            سنرسل رمز تحقق إلى{" "}
-            <span dir="ltr" className="font-mono text-foreground/85">
-              {profile.user?.email ?? "بريدك الإلكتروني"}
-            </span>{" "}
-            لتأكيد التغيير.
-          </p>
-        </div>
+      {!open && password.step !== "done" && (
+        <Button
+          onPress={() => {
+            password.reset();
+            setOpen(true);
+          }}
+          variant="outline"
+          size="sm"
+        >
+          <KeyRound className="w-4 h-4" />
+          تغيير كلمة المرور
+        </Button>
       )}
 
-      {password.step === "verifying" && (
+      {open && password.step !== "done" && (
         <div className="space-y-3">
-          <p className="text-sm text-muted-foreground flex items-center gap-2">
-            <Mail className="w-4 h-4" />
-            تم إرسال رمز التحقق إلى بريدك الإلكتروني. أدخله مع كلمة المرور الجديدة.
-          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium mb-1.5">
-                رمز التحقق
+                كلمة المرور الحالية
               </label>
-              <Input
-                fullWidth
-                value={passwordForm.code}
-                onChange={(e) =>
-                  setPasswordForm((p) => ({ ...p, code: e.target.value }))
-                }
-                placeholder="123456"
-                dir="ltr"
-                maxLength={6}
-                inputMode="numeric"
-              />
+              <div className="relative">
+                <Input
+                  type={showCurrent ? "text" : "password"}
+                  fullWidth
+                  value={current}
+                  onChange={(e) => setCurrent(e.target.value)}
+                  placeholder="••••••••"
+                  dir="ltr"
+                  autoComplete="current-password"
+                  className="pl-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrent((v) => !v)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={showCurrent ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+                  tabIndex={-1}
+                >
+                  {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
             <div>
               <label className="block text-xs font-medium mb-1.5">
                 كلمة المرور الجديدة
               </label>
-              <Input
-                type="password"
-                fullWidth
-                value={passwordForm.newPassword}
-                onChange={(e) =>
-                  setPasswordForm((p) => ({
-                    ...p,
-                    newPassword: e.target.value,
-                  }))
-                }
-                placeholder="ثمانية أحرف على الأقل"
-                dir="ltr"
-              />
+              <div className="relative">
+                <Input
+                  type={showNew ? "text" : "password"}
+                  fullWidth
+                  value={newPassword}
+                  onChange={(e) =>
+                    setPasswordForm((p) => ({
+                      ...p,
+                      newPassword: e.target.value,
+                    }))
+                  }
+                  placeholder="ثمانية أحرف على الأقل"
+                  dir="ltr"
+                  autoComplete="new-password"
+                  className="pl-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNew((v) => !v)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={showNew ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+                  tabIndex={-1}
+                >
+                  {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
           </div>
           <div className="flex gap-2">
             <Button
-              onPress={() =>
-                profile.user?.email &&
-                void password.verifyAndChange(
-                  profile.user.email,
-                  passwordForm.code,
-                  passwordForm.newPassword,
-                )
-              }
-              isDisabled={
-                password.loading ||
-                passwordForm.code.length !== 6 ||
-                passwordForm.newPassword.length < 8
-              }
+              onPress={() => void password.change(current, newPassword)}
+              isDisabled={!canSubmit}
               variant="secondary"
               size="sm"
             >
@@ -135,35 +147,36 @@ export function SecurityCard({
               تأكيد التغيير
             </Button>
             <Button
-              onPress={() => {
-                password.reset();
-                setPasswordForm({ code: "", newPassword: "" });
-              }}
+              onPress={closeAndReset}
               variant="outline"
               size="sm"
             >
               إلغاء
             </Button>
           </div>
+          <p className="text-[11px] text-muted-foreground font-medium">
+            تغيير كلمة المرور سيؤدّي إلى تسجيل الخروج من باقي الأجهزة لحماية حسابك.
+          </p>
         </div>
       )}
 
       {password.step === "done" && (
         <div className="rounded-lg bg-success/10 ds-border border-success/30 p-3 flex items-start gap-2">
           <CheckCircle2 className="w-5 h-5 text-success shrink-0 mt-0.5" />
-          <div className="text-sm">
+          <div className="text-sm flex-1">
             <p className="font-bold text-foreground">تم تغيير كلمة المرور بنجاح</p>
             <p className="text-xs text-muted-foreground font-medium mt-0.5">
               يمكنك الآن استخدام كلمة المرور الجديدة لتسجيل الدخول.
             </p>
           </div>
+          <Button onPress={closeAndReset} variant="outline" size="sm">
+            حسناً
+          </Button>
         </div>
       )}
 
       {password.error && (
-        <p className="text-xs font-semibold text-destructive">
-          {password.error}
-        </p>
+        <p className="text-xs font-semibold text-destructive">{password.error}</p>
       )}
     </Card>
   );

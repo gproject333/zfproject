@@ -1,10 +1,35 @@
 "use client";
 
 import { type ComponentType, type MouseEvent, type SVGProps } from "react";
-import { ArrowLeft, Users, Lightbulb, Code2, Building2, GraduationCap, BookOpen, UserRound, Sparkles } from "lucide-react";
+import { ArrowLeft, Users, Lightbulb, Code2, Building2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import CountUp from "./CountUp";
+
+/**
+ * Stable Unsplash portraits used as community avatars next to the
+ * "+1200 طالب مسجَّل" stat. They're free to embed and Unsplash is
+ * already allow-listed in next.config remotePatterns.
+ */
+const COMMUNITY_AVATARS: { src: string; alt: string }[] = [
+  {
+    src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces&q=80",
+    alt: "طالبة في حاضنة الزيتونة",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces&q=80",
+    alt: "طالب في حاضنة الزيتونة",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces&q=80",
+    alt: "طالبة في حاضنة الزيتونة",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&h=120&fit=crop&crop=faces&q=80",
+    alt: "طالب في حاضنة الزيتونة",
+  },
+];
 
 /** Update CSS variables on the card so the spotlight tracks the cursor. */
 function useSpotlight() {
@@ -196,20 +221,18 @@ export default function FeaturesSection() {
               </div>
 
               <div className="flex -space-x-2 -space-x-reverse shrink-0">
-                {([
-                  { tone: "primary", Icon: GraduationCap },
-                  { tone: "accent", Icon: UserRound },
-                  { tone: "secondary", Icon: BookOpen },
-                  { tone: "primary", Icon: Sparkles },
-                ] as const).map(({ tone, Icon }, i) => (
+                {COMMUNITY_AVATARS.map((avatar, i) => (
                   <div
                     key={i}
-                    className="w-10 h-10 rounded-full ring-2 ring-background shadow flex items-center justify-center text-white"
-                    style={{
-                      background: `linear-gradient(135deg, var(--color-${tone}), color-mix(in srgb, var(--color-${tone}) 55%, white))`,
-                    }}
+                    className="relative w-10 h-10 rounded-full ring-2 ring-background shadow overflow-hidden bg-muted"
                   >
-                    <Icon className="w-4 h-4" />
+                    <Image
+                      src={avatar.src}
+                      alt={avatar.alt}
+                      fill
+                      sizes="40px"
+                      className="object-cover"
+                    />
                   </div>
                 ))}
                 <div className="w-10 h-10 rounded-full ring-2 ring-background bg-foreground/10 flex items-center justify-center text-xs font-black text-foreground/70">
