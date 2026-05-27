@@ -7,8 +7,10 @@ import { SkeletonDashboard } from "@/components/ui/Skeleton";
 import { useQuery } from "convex/react";
 import { api } from "@smart-zuj/convex";
 import { Id } from "@smart-zuj/convex";
+import { ProfileHeader } from "./ProfileHeader";
 import { ProfileCard } from "./ProfileCard";
 import { SecurityCard } from "./SecurityCard";
+import { AccountInfoCard } from "./AccountInfoCard";
 import { WhatsappLink } from "../WhatsappLink";
 
 interface StudentProfileProps {
@@ -16,6 +18,14 @@ interface StudentProfileProps {
   showAcademicFields?: boolean;
 }
 
+/**
+ * Profile shell shared by /student/profile and /supervisor/profile.
+ *
+ * Layout: hero header on top (avatar + identity + status chips), then a
+ * 7/5 grid on wide screens: editable fields on the right, supporting
+ * cards (WhatsApp link, password change, read-only account info) on
+ * the left. Stacks to a single column on mobile.
+ */
 export default function StudentProfile({ showAcademicFields = true }: StudentProfileProps) {
   const profile = useStudentProfile();
   const password = usePasswordChange();
@@ -25,7 +35,7 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
     newPassword: "",
   });
 
-  // hooks must be called before any conditional return
+  // Hooks must run unconditionally — even when the user data hasn't loaded yet.
   const colleges = useQuery(api.colleges.list, {});
   const selectedCollege = colleges?.find((c) => c.name === profile.form.college);
   const departments = useQuery(
@@ -43,30 +53,33 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
   };
 
   return (
-    <div className="animate-fade-in flex justify-center">
-      <div className="w-full max-w-xl space-y-6">
-        <h2 className="text-2xl font-bold text-center">الملف الشخصي</h2>
+    <div className="max-w-6xl mx-auto space-y-6 animate-fade-in">
+      <ProfileHeader
+        profile={profile}
+        fileInputRef={fileInputRef}
+        handleAvatarChange={handleAvatarChange}
+        showApplicationStats={showAcademicFields}
+      />
 
-        {/* ─── بطاقة البيانات الشخصية ─── */}
-        <ProfileCard
-          profile={profile}
-          fileInputRef={fileInputRef}
-          showAcademicFields={showAcademicFields}
-          collegeNames={collegeNames}
-          collegeDepartments={collegeDepartments}
-          handleAvatarChange={handleAvatarChange}
-        />
-
-        {/* ─── بطاقة الواتساب ─── */}
-        <WhatsappLink />
-
-        {/* ─── بطاقة الأمان ─── */}
-        <SecurityCard
-          profile={profile}
-          password={password}
-          passwordForm={passwordForm}
-          setPasswordForm={setPasswordForm}
-        />
+      <div className="grid gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-7 space-y-6">
+          <ProfileCard
+            profile={profile}
+            showAcademicFields={showAcademicFields}
+            collegeNames={collegeNames}
+            collegeDepartments={collegeDepartments}
+          />
+        </div>
+        <div className="lg:col-span-5 space-y-6">
+          <WhatsappLink />
+          <SecurityCard
+            profile={profile}
+            password={password}
+            passwordForm={passwordForm}
+            setPasswordForm={setPasswordForm}
+          />
+          <AccountInfoCard user={profile.user} />
+        </div>
       </div>
     </div>
   );

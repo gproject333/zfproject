@@ -62,10 +62,22 @@ export function WhatsappLink() {
     const optedOut = me?.whatsappOptOut === true;
     return (
       <Card className="p-6 space-y-4">
-        <div className="flex items-center gap-2">
-          <MessageCircle className="w-5 h-5 text-green-600" />
-          <h3 className="font-bold text-base">ربط الواتساب</h3>
-          <CheckCircle2 className="w-4 h-4 text-success ms-auto" />
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <MessageCircle className="w-5 h-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="font-bold text-base">ربط الواتساب</h3>
+              <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/12 text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="w-3 h-3" />
+                موثّق
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground font-medium mt-0.5">
+              ستصلك إشعارات المواعيد ونتائج الطلبات على واتساب.
+            </p>
+          </div>
         </div>
         <p className="text-sm text-muted-foreground">
           رقمك مرتبط:{" "}
@@ -119,14 +131,17 @@ export function WhatsappLink() {
 
   return (
     <Card className="p-6 space-y-4">
-      <div className="flex items-center gap-2">
-        <MessageCircle className="w-5 h-5 text-green-600" />
-        <h3 className="font-bold text-base">ربط الواتساب</h3>
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+          <MessageCircle className="w-5 h-5" />
+        </div>
+        <div>
+          <h3 className="font-bold text-base">ربط الواتساب</h3>
+          <p className="text-xs text-muted-foreground font-medium mt-0.5">
+            رمز تحقّق من 6 أرقام عبر واتساب يفعّل إشعارات المواعيد ونتائج الطلبات.
+          </p>
+        </div>
       </div>
-      <p className="text-sm text-muted-foreground">
-        سنرسل لك رمزاً مكوناً من 6 أرقام عبر واتساب لتأكيد رقمك. بعد التأكيد،
-        ستصلك إشعارات المواعيد ونتائج الطلبات مباشرةً.
-      </p>
 
       {effectiveStep === "enter-phone" && (
         <form onSubmit={onRequestOtp} className="space-y-3">
