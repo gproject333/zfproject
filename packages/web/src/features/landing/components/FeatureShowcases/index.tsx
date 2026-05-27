@@ -88,6 +88,7 @@ export function FeatureSection({
   ctaHref,
   mockup,
   mockupSide,
+  tone = "light",
 }: {
   headline: string;
   highlight: string;
@@ -97,65 +98,115 @@ export function FeatureSection({
   ctaHref: string;
   mockup: React.ReactNode;
   mockupSide: "left" | "right";
+  /**
+   * "dark" wraps the section in a near-black band with light copy —
+   * used by the theme showcase so the section visually demonstrates
+   * what "dark mode" looks like.
+   */
+  tone?: "light" | "dark";
 }) {
   const reduce = useReducedMotion();
   const copyOrder = mockupSide === "right" ? "order-1 lg:order-1" : "order-1 lg:order-2";
   const mockupOrder = mockupSide === "right" ? "order-2 lg:order-2" : "order-2 lg:order-1";
+  const isDark = tone === "dark";
 
   return (
-    <section className="relative px-4 py-20 sm:py-28">
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Copy */}
-        <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className={`${copyOrder} text-right`}
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.15] text-foreground">
-            {headline}{" "}
-            <span className="text-primary">{highlight}</span>
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-foreground/65 font-medium leading-relaxed max-w-xl">
-            {description}
-          </p>
-
-          <ul className="mt-7 space-y-3">
-            {bullets.map((b) => (
-              <li key={b.label} className="flex items-start gap-3 text-sm sm:text-base">
-                <span className="mt-0.5 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <b.icon className="w-3.5 h-3.5 text-primary" />
-                </span>
-                <span className="font-medium text-foreground/85">{b.label}</span>
-              </li>
-            ))}
-          </ul>
-
-          <Link
-            href={ctaHref}
-            className="inline-flex items-center justify-center gap-2 mt-8 px-6 py-3 rounded-md bg-primary text-primary-foreground font-bold text-base ds-shadow-sm hover:bg-accent transition-colors"
+    <section
+      className={`relative ${isDark ? "" : "px-4 py-20 sm:py-28"}`}
+    >
+      <div
+        className={
+          isDark
+            ? "mx-4 sm:mx-8 my-12 sm:my-16 rounded-3xl bg-[#0a0d0a] text-white px-6 sm:px-12 py-20 sm:py-24 overflow-hidden ring-1 ring-white/10 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]"
+            : ""
+        }
+      >
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Copy */}
+          <motion.div
+            initial={{ opacity: 0, y: reduce ? 0 : 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className={`${copyOrder} text-right`}
           >
-            {cta}
-            <ArrowLeft className="w-4 h-4" />
-          </Link>
-        </motion.div>
+            <h2
+              className={`text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.15] ${
+                isDark ? "text-white" : "text-foreground"
+              }`}
+            >
+              {headline}{" "}
+              <span className={isDark ? "text-emerald-400" : "text-primary"}>
+                {highlight}
+              </span>
+            </h2>
+            <p
+              className={`mt-5 text-base sm:text-lg font-medium leading-relaxed max-w-xl ${
+                isDark ? "text-white/70" : "text-foreground/65"
+              }`}
+            >
+              {description}
+            </p>
 
-        {/* Mockup */}
-        <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-          className={`${mockupOrder} relative`}
-        >
-          {/* Decorative offset card behind */}
-          <div
-            aria-hidden
-            className="absolute inset-0 rounded-2xl bg-primary/8 -rotate-[2deg] translate-x-3 translate-y-3"
-          />
-          <div className="relative">{mockup}</div>
-        </motion.div>
+            <ul className="mt-7 space-y-3">
+              {bullets.map((b) => (
+                <li
+                  key={b.label}
+                  className="flex items-start gap-3 text-sm sm:text-base"
+                >
+                  <span
+                    className={`mt-0.5 w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
+                      isDark ? "bg-emerald-400/15" : "bg-primary/10"
+                    }`}
+                  >
+                    <b.icon
+                      className={`w-3.5 h-3.5 ${
+                        isDark ? "text-emerald-400" : "text-primary"
+                      }`}
+                    />
+                  </span>
+                  <span
+                    className={`font-medium ${
+                      isDark ? "text-white/85" : "text-foreground/85"
+                    }`}
+                  >
+                    {b.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href={ctaHref}
+              className={`inline-flex items-center justify-center gap-2 mt-8 px-6 py-3 rounded-md font-bold text-base ds-shadow-sm transition-colors ${
+                isDark
+                  ? "bg-emerald-400 text-zinc-950 hover:bg-emerald-300"
+                  : "bg-primary text-primary-foreground hover:bg-accent"
+              }`}
+            >
+              {cta}
+              <ArrowLeft className="w-4 h-4" />
+            </Link>
+          </motion.div>
+
+          {/* Mockup */}
+          <motion.div
+            initial={{ opacity: 0, y: reduce ? 0 : 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+            className={`${mockupOrder} relative`}
+          >
+            {/* Decorative offset card behind */}
+            <div
+              aria-hidden
+              className={`absolute inset-0 rounded-2xl -rotate-[2deg] translate-x-3 translate-y-3 ${
+                isDark ? "bg-emerald-400/12" : "bg-primary/8"
+              }`}
+            />
+            <div className="relative">{mockup}</div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
