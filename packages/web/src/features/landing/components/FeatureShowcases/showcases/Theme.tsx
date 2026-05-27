@@ -19,6 +19,7 @@ export function ThemeShowcase({ ctaHref }: { ctaHref: string }) {
       cta="جرّبها الآن"
       ctaHref={ctaHref}
       mockupSide="right"
+      tone="dark"
       mockup={<ThemeMockup />}
     />
   );
