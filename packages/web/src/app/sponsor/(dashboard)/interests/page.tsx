@@ -5,6 +5,7 @@ import { Heart } from "lucide-react";
 import { api } from "@smart-zuj/convex";
 import { Spinner } from "@/components/ui";
 import SponsorInterestCard from "@/features/sponsor/components/SponsorInterestCard";
+import OliveSpinner from "@/components/OliveSpinner";
 
 export default function SponsorInterestsPage() {
   const rows = useQuery(api.applications.sponsor.myInterests, {});
@@ -48,7 +49,7 @@ export default function SponsorInterestsPage() {
 function LoadingGrid() {
   return (
     <div className="flex items-center justify-center py-24">
-      <Spinner size="xl" color="current" className="text-secondary" />
+      <OliveSpinner size="xl" className="text-secondary" />
     </div>
   );
 }

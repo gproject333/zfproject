@@ -19,6 +19,7 @@ import ReviewPanel from "./ReviewPanel";
 import ReviewHistoryTimeline from "./ReviewHistoryTimeline";
 import StudentProfileButton from "./StudentProfileButton";
 import ScheduleMeetingButton from "./ScheduleMeetingButton";
+import OliveSpinner from "@/components/OliveSpinner";
 
 /**
  * Supervisor application review page. Composes a hero card (title +
@@ -44,7 +45,7 @@ export default function SupervisorApplicationReview() {
   if (app === undefined) {
     return (
       <div className="flex justify-center py-20">
-        <Spinner size="lg" color="current" className="text-accent" />
+        <OliveSpinner size="lg" className="text-accent" />
       </div>
     );
   }

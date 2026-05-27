@@ -17,6 +17,7 @@ import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
 import { Button, Card, Spinner } from "@/components/ui";
 import { TYPE_CONFIG } from "@/lib/configs/application";
+import OliveSpinner from "@/components/OliveSpinner";
 
 const TIME_UNITS: Array<[string, number]> = [
   ["يوم", 86_400_000],
@@ -73,7 +74,7 @@ export default function AdminSponsorInterestsPage() {
 
       {rows === undefined ? (
         <div className="flex justify-center py-20">
-          <Spinner size="xl" color="current" className="text-accent" />
+          <OliveSpinner size="xl" className="text-accent" />
         </div>
       ) : rows.length === 0 ? (
         <EmptyState />

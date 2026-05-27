@@ -15,6 +15,7 @@ import { useApplicationFilters } from "@/features/supervisor/hooks/useApplicatio
 import { BulkActionBar } from "./BulkActionBar";
 import { FilterBar } from "./FilterBar";
 import { ApplicationsTable } from "./ApplicationsTable";
+import OliveSpinner from "@/components/OliveSpinner";
 
 /**
  * Supervisor applications list. Filter state / paginated fetch /
@@ -121,7 +122,7 @@ export default function SupervisorApplicationList() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <Spinner size="lg" color="current" className="text-accent" />
+          <OliveSpinner size="lg" className="text-accent" />
         </div>
       ) : filtered.length === 0 ? (
         <EmptyState

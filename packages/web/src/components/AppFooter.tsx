@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useQuery } from "convex/react";
-import { Mail, Heart } from "lucide-react";
+import { Mail } from "lucide-react";
 import { api } from "@smart-zuj/convex";
 import { getPlatformMeta } from "@/lib/configs/socialPlatforms";
 import OliveLogo from "./OliveLogo";
@@ -84,7 +84,7 @@ export default function AppFooter() {
 
           {/* Student links column */}
           <nav aria-label="روابط الطلاب">
-            <p className="text-xs font-extrabold text-foreground/80 uppercase tracking-[0.15em] mb-4">
+            <p className="text-lg font-extrabold text-foreground mb-4">
               للطلاب
             </p>
             <ul className="space-y-3 text-base font-semibold">
@@ -103,7 +103,7 @@ export default function AppFooter() {
 
           {/* Platform links column */}
           <nav aria-label="روابط المنصة">
-            <p className="text-xs font-extrabold text-foreground/80 uppercase tracking-[0.15em] mb-4">
+            <p className="text-lg font-extrabold text-foreground mb-4">
               المنصة
             </p>
             <ul className="space-y-3 text-base font-semibold">
@@ -122,7 +122,7 @@ export default function AppFooter() {
 
           {/* Contact column */}
           <div>
-            <p className="text-xs font-extrabold text-foreground/80 uppercase tracking-[0.15em] mb-4">
+            <p className="text-lg font-extrabold text-foreground mb-4">
               تواصل
             </p>
             <a
@@ -171,13 +171,8 @@ export default function AppFooter() {
           aria-hidden
         />
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-foreground/80 font-semibold">
+        <div className="text-sm text-foreground/80 font-semibold">
           <p>© {year} حاضنة الزيتونة — جميع الحقوق محفوظة</p>
-          <p className="inline-flex items-center gap-1.5">
-            طُوِّرت في
-            <Heart className="w-3.5 h-3.5 text-secondary fill-secondary" aria-hidden />
-            جامعة الزيتونة الأردنية
-          </p>
         </div>
       </div>
     </footer>

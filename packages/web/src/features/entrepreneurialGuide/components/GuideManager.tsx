@@ -16,6 +16,7 @@ import { formatArabicDate } from "@smart-zuj/core";
 import GuideFormDialog from "./GuideFormDialog";
 import { useGuideForm } from "../hooks/useGuideForm";
 import { Button, Spinner} from "@/components/ui";
+import OliveSpinner from "@/components/OliveSpinner";
 
 const TYPE_LABEL = {
   video: "فيديو",
@@ -58,7 +59,7 @@ export default function GuideManager() {
 
       {admin.loading ? (
         <div className="flex justify-center py-20">
-          <Spinner size="lg" color="current" className="text-accent" />
+          <OliveSpinner size="lg" className="text-accent" />
         </div>
       ) : !admin.resources || admin.resources.length === 0 ? (
         <EmptyState

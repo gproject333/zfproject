@@ -1,7 +1,7 @@
 "use client";
 
 import { type ComponentType, type MouseEvent, type SVGProps } from "react";
-import { ArrowLeft, Users, Lightbulb, Code2, Building2 } from "lucide-react";
+import { ArrowLeft, Users, Lightbulb, Code2, Building2, GraduationCap, BookOpen, UserRound, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import CountUp from "./CountUp";
@@ -197,19 +197,19 @@ export default function FeaturesSection() {
 
               <div className="flex -space-x-2 -space-x-reverse shrink-0">
                 {([
-                  { tone: "primary", initial: "ل" },
-                  { tone: "accent", initial: "ع" },
-                  { tone: "secondary", initial: "ن" },
-                  { tone: "primary", initial: "ك" },
-                ] as const).map(({ tone, initial }, i) => (
+                  { tone: "primary", Icon: GraduationCap },
+                  { tone: "accent", Icon: UserRound },
+                  { tone: "secondary", Icon: BookOpen },
+                  { tone: "primary", Icon: Sparkles },
+                ] as const).map(({ tone, Icon }, i) => (
                   <div
                     key={i}
-                    className="w-10 h-10 rounded-full ring-2 ring-background shadow flex items-center justify-center text-xs font-black text-white"
+                    className="w-10 h-10 rounded-full ring-2 ring-background shadow flex items-center justify-center text-white"
                     style={{
                       background: `linear-gradient(135deg, var(--color-${tone}), color-mix(in srgb, var(--color-${tone}) 55%, white))`,
                     }}
                   >
-                    {initial}
+                    <Icon className="w-4 h-4" />
                   </div>
                 ))}
                 <div className="w-10 h-10 rounded-full ring-2 ring-background bg-foreground/10 flex items-center justify-center text-xs font-black text-foreground/70">

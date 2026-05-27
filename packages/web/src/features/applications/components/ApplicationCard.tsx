@@ -30,31 +30,41 @@ export default function ApplicationCard({
   const TypeIcon = typeCfg.icon;
 
   if (square) {
+    // Gradient hero band keyed off the project type so the tile isn't
+    // a wall of text. Maps the existing token classes (text-primary,
+    // text-secondary, text-accent) to matching gradient backgrounds.
+    const gradient =
+      application.type === "entrepreneurial_idea"
+        ? "from-primary/25 via-primary/12 to-primary/5"
+        : application.type === "it_graduation"
+          ? "from-secondary/25 via-secondary/12 to-secondary/5"
+          : "from-accent/25 via-accent/12 to-accent/5";
     return (
       <button
         onClick={onClick}
-        className="ds-card-interactive p-4 text-right aspect-square flex flex-col gap-2"
+        className="ds-card-interactive text-right aspect-square flex flex-col overflow-hidden"
       >
-        <div className="flex items-start justify-between gap-2">
-          <div className={`ds-badge ${statusCfg.bg} ${statusCfg.text}`}>
+        {/* Visual hero */}
+        <div
+          className={`relative h-24 sm:h-28 bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}
+        >
+          <TypeIcon className={`w-12 h-12 ${typeCfg.color} drop-shadow-sm`} />
+          <div className={`absolute top-2 right-2 ds-badge ${statusCfg.bg} ${statusCfg.text}`}>
             <StatusIcon className="w-3 h-3" />
             {statusCfg.label}
           </div>
-          <Eye className="w-4 h-4 text-muted-foreground shrink-0" />
+          <Eye className="absolute top-2 left-2 w-4 h-4 text-foreground/40" />
         </div>
 
-        <h4 className="font-bold text-base line-clamp-3 flex-1">
-          {application.projectName}
-        </h4>
-
-        <div className="min-w-0">
-          <div className="flex items-center gap-1.5">
-            <TypeIcon className={`w-4 h-4 ${typeCfg.color} shrink-0`} />
-            <span className="text-xs text-muted-foreground font-medium truncate">
-              {typeCfg.label}
-            </span>
-          </div>
-          <span className="text-xs text-muted-foreground">
+        {/* Body */}
+        <div className="flex-1 p-4 flex flex-col gap-1.5">
+          <h4 className="font-bold text-sm line-clamp-2 flex-1">
+            {application.projectName}
+          </h4>
+          <span className="text-[11px] text-muted-foreground font-medium truncate">
+            {typeCfg.label}
+          </span>
+          <span className="text-[11px] text-muted-foreground">
             {formatArabicDate(application.createdAt)}
           </span>
         </div>

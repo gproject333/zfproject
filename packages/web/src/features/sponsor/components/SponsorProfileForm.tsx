@@ -7,6 +7,7 @@ import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
 import { Button, Card, Input, Spinner } from "@/components/ui";
 import { validatePhone } from "@smart-zuj/core";
+import OliveSpinner from "@/components/OliveSpinner";
 
 interface FormState {
   name: string;
@@ -56,7 +57,7 @@ export default function SponsorProfileForm() {
   if (user === undefined) {
     return (
       <Card className="p-10 flex justify-center">
-        <Spinner size="lg" color="current" className="text-secondary" />
+        <OliveSpinner size="lg" className="text-secondary" />
       </Card>
     );
   }

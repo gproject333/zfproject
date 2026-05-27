@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Breadcrumbs, buttonVariants, Spinner, Card} from "@/components/ui";
 import { useArticleDetail } from "../hooks/useArticlesList";
 import type { Id } from "@smart-zuj/convex";
+import OliveSpinner from "@/components/OliveSpinner";
 
 interface ArticleDetailProps {
   id: Id<"articles">;
@@ -35,7 +36,7 @@ export default function ArticleDetail({ id, backHref }: ArticleDetailProps) {
   if (loading) {
     return (
       <div className="flex justify-center py-20">
-        <Spinner size="lg" color="current" className="text-accent" />
+        <OliveSpinner size="lg" className="text-accent" />
       </div>
     );
   }

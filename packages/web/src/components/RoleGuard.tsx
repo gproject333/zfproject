@@ -4,7 +4,7 @@ import { useQuery, useConvexAuth } from "convex/react";
 import { api } from "@smart-zuj/convex";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Spinner } from "@/components/ui";
+import OliveSpinner from "@/components/OliveSpinner";
 import { getRoleHomepage, type Role } from "@smart-zuj/core";
 
 interface RoleGuardProps {
@@ -75,7 +75,7 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
   if (stillLoading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
-        <Spinner size="xl" color="current" className="text-primary" />
+        <OliveSpinner size="xl" className="text-primary" />
       </div>
     );
   }
