@@ -85,7 +85,7 @@ export default function CinematicHero({
           {...fadeUp(0.18)}
           className="font-black leading-[1.50] text-foreground text-[clamp(2.25rem,7.5vw,5.75rem)] flex flex-col gap-3 sm:gap-4"
         >
-          <span className="block pb-3">من فكرة ريادية</span>
+          <span className="block pb-3">من فكرة</span>
           <span
             className="block bg-clip-text text-transparent pb-3"
             style={{
@@ -93,7 +93,7 @@ export default function CinematicHero({
                 "linear-gradient(to left, var(--foreground) 10%, var(--primary) 65%, var(--accent) 100%)",
             }}
           >
-            إلى مشروع منتج
+            إلى مشروع رياديs
           </span>
         </motion.h1>
 
