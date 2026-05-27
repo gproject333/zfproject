@@ -150,7 +150,7 @@ export default function CinematicHero({
         >
           {[
             { label: "ثلاثة مسارات احتضان", dot: "var(--primary)" },
-            { label: "إشراف أكاديمي معتمد", dot: "var(--accent)" },
+            { label: "إشراف أكاديمي ", dot: "var(--accent)" },
             { label: "شراكات مع جهات داعمة", dot: "var(--secondary)" },
           ].map(({ label, dot }) => (
             <li
