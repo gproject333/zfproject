@@ -55,7 +55,7 @@ This is a **Next.js + Convex + Clerk** full-stack app using the Next.js App Rout
 - `auth.config.ts` — Clerk JWT provider config (uses `CLERK_JWT_ISSUER_DOMAIN` env var)
 - `http.ts` — HTTP endpoints (e.g. Clerk webhooks via svix)
 - `crons.ts` — scheduled jobs
-- Feature files at the root: `articles.ts`, `banners.ts`, `colleges.ts`, `meetings.ts`, `notifications.ts`, `socialLinks.ts`, `entrepreneurialGuide.ts`, `presence.ts`, `studentNotes.ts`, `supervisorUpgradeRequests.ts`, `activityLogs.ts`, `files.ts`, `users.ts`, `supervisorUpgradeRequests.ts`
+- Feature files at the root: `articles.ts`, `banners.ts`, `colleges.ts`, `meetings.ts`, `notifications.ts`, `socialLinks.ts`, `entrepreneurialGuide.ts`, `studentNotes.ts`, `supervisorUpgradeRequests.ts`, `activityLogs.ts`, `files.ts`, `users.ts`
 - Feature folders for larger domains:
   - `applications/` — `student.ts`, `supervisor.ts`, `sponsor.ts`, `shared.ts`
   - `users/` — `admin.ts`, `adminActions.ts`, `dev.ts`, `shared.ts`
@@ -80,3 +80,48 @@ File-based: `packages/convex/convex/foo/bar.ts` → `api.foo.bar.*` (public) or 
 - Never use `.collect()` for unbounded tables — use `.take(n)` or paginate.
 - Never pass a userId as a function argument for auth — derive it server-side with `ctx.auth.getUserIdentity()`.
 - Actions cannot use `ctx.db`; keep Node.js-only code in separate files with `"use node";` at the top.
+
+## Convex Deployment
+
+This project runs Convex on **two separate environments** that must both be updated after any schema or function change:
+
+| البيئة | الرابط | الوصف |
+|--------|--------|-------|
+| ☁️ Convex Cloud | `https://trustworthy-sheep-722.eu-west-1.convex.cloud` | Production on Convex hosted cloud |
+| 🏠 Self-Hosted | `https://convex.yazeid.site` | Production on Coolify (self-hosted) |
+| 🖥️ Dev (local) | `http://127.0.0.1:3210` | Local development machine |
+
+### One-command deploy to both environments
+
+```bash
+cd packages/convex
+bash deploy.sh
+```
+
+This script (`packages/convex/deploy.sh`) deploys to **Cloud first**, then **Self-Hosted**.
+
+### Setup (first time on a new machine)
+
+1. Create `packages/convex/.env.selfhosted` (already in `.gitignore`, never commit):
+   ```env
+   CONVEX_SELF_HOSTED_URL=https://convex.yazeid.site
+   CONVEX_SELF_HOSTED_ADMIN_KEY=<admin-key-from-coolify>
+   ```
+2. The Convex Cloud credentials are in `packages/web/.env.local` (already configured).
+
+### Deploy to Cloud only
+
+```bash
+cd packages/convex
+npx convex deploy --env-file ../web/.env.local
+```
+
+### Deploy to Self-Hosted only
+
+```bash
+cd packages/convex
+npx convex deploy --env-file .env.selfhosted
+```
+
+> **Note:** The Self-Hosted dashboard is available at https://convex-dash.yazeid.site/
+> The Admin Key is stored in Coolify under the Convex service environment variables.
