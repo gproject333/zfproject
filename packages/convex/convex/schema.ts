@@ -233,23 +233,7 @@ export default defineSchema({
     .index("by_application", ["applicationId"])
     .index("by_reviewer", ["reviewerId"]),
 
-  // ============================================
-  // Application presence (live viewers)
-  // ============================================
-  // Lightweight heartbeat-based presence — every user viewing an
-  // application page upserts a row with `lastSeenAt = Date.now()` on
-  // mount and on a 10-second interval. The query reads rows whose
-  // lastSeenAt is within the last 30 seconds; older rows are filtered
-  // out and lazily cleaned up by the next heartbeat. No cron job
-  // needed: stale rows are invisible to readers and replaced (not
-  // accumulated) by the user's next visit.
-  applicationPresence: defineTable({
-    applicationId: v.id("applications"),
-    userId: v.id("users"),
-    lastSeenAt: v.number(),
-  })
-    .index("by_application", ["applicationId"])
-    .index("by_user_application", ["userId", "applicationId"]),
+
 
   // ============================================
   // Social links (footer)

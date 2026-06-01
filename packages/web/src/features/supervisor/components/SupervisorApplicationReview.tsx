@@ -13,7 +13,7 @@ import ApplicationDetailsView from "@/features/applications/components/Applicati
 import ApplicationHeader from "@/features/applications/components/ApplicationHeader";
 import StatusStepper from "@/features/applications/components/StatusStepper";
 import { useApplication } from "@/features/applications/hooks/useApplication";
-import { usePresence } from "@/features/applications/hooks/usePresence";
+
 import { useReview } from "@/features/supervisor/hooks/useReview";
 import ReviewPanel from "./ReviewPanel";
 import ReviewHistoryTimeline from "./ReviewHistoryTimeline";
@@ -33,7 +33,7 @@ export default function SupervisorApplicationReview() {
 
   const { app, pdfUrl, videoUrl } = useApplication(appId);
   const review = useReview(app);
-  const presenceOthers = usePresence(app?._id);
+
   const [showPdf, setShowPdf] = useState(false);
   const [savedDialog, setSavedDialog] = useState(false);
   // Live-updated pool of still-pending applications, current one excluded
@@ -62,7 +62,7 @@ export default function SupervisorApplicationReview() {
 
       <ApplicationHeader
         app={app}
-        presenceOthers={presenceOthers}
+
         onBack={() => router.push("/supervisor/applications")}
         titleSize="2xl"
       />

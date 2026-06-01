@@ -6,12 +6,12 @@ import type { Doc } from "@smart-zuj/convex";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import { formatArabicDate } from "@smart-zuj/core";
 import StatusBadge from "@/features/applications/components/StatusBadge";
-import PresenceChips from "@/features/applications/components/PresenceChips";
+
 import StatusStepper from "@/features/applications/components/StatusStepper";
 
 interface StudentApplicationHeroProps {
   app: Doc<"applications">;
-  presenceOthers: Parameters<typeof PresenceChips>[0]["others"];
+
   onBack: () => void;
   /** Audience-specific actions (edit / delete / cancel) shown top-end. */
   actions?: ReactNode;
@@ -26,7 +26,7 @@ interface StudentApplicationHeroProps {
  */
 export default function StudentApplicationHero({
   app,
-  presenceOthers,
+
   onBack,
   actions,
   showStepper = true,
@@ -76,11 +76,7 @@ export default function StudentApplicationHero({
           </span>
         </div>
 
-        {presenceOthers.length > 0 && (
-          <div className="mt-3">
-            <PresenceChips others={presenceOthers} />
-          </div>
-        )}
+
       </div>
 
       {showStepper && (

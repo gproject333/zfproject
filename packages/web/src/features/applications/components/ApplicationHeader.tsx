@@ -6,11 +6,11 @@ import type { Doc } from "@smart-zuj/convex";
 import { TYPE_CONFIG } from "@/lib/configs/application";
 import { formatArabicDate } from "@smart-zuj/core";
 import StatusBadge from "./StatusBadge";
-import PresenceChips from "./PresenceChips";
+
 
 interface ApplicationHeaderProps {
   app: Doc<"applications">;
-  presenceOthers: Parameters<typeof PresenceChips>[0]["others"];
+
   onBack: () => void;
   /** Buttons/actions rendered to the right of the title block. */
   rightSlot?: ReactNode;
@@ -25,7 +25,7 @@ interface ApplicationHeaderProps {
  */
 export default function ApplicationHeader({
   app,
-  presenceOthers,
+
   onBack,
   rightSlot,
   titleSize = "xl",
@@ -62,11 +62,7 @@ export default function ApplicationHeader({
               {formatArabicDate(app.submittedAt ?? app.createdAt)}
             </span>
           </div>
-          {presenceOthers.length > 0 && (
-            <div className="mt-2">
-              <PresenceChips others={presenceOthers} />
-            </div>
-          )}
+
         </div>
       </div>
 

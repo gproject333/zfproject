@@ -29,7 +29,7 @@ export default function StudentApplicationDetails() {
     app,
     pdfUrl,
     videoUrl,
-    presenceOthers,
+
     isEditing,
     setIsEditing,
     showDeleteConfirm,
@@ -131,7 +131,7 @@ export default function StudentApplicationDetails() {
 
       <StudentApplicationHero
         app={app}
-        presenceOthers={presenceOthers}
+
         onBack={goBack}
         actions={actions}
         showStepper={!isEditing}

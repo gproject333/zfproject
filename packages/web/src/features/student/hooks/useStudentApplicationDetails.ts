@@ -7,7 +7,6 @@ import { toast } from "@/lib/toast";
 import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
 import { useApplication } from "@/features/applications/hooks/useApplication";
-import { usePresence } from "@/features/applications/hooks/usePresence";
 
 /**
  * Orchestrates the student application details page: data fetching,
@@ -17,7 +16,7 @@ import { usePresence } from "@/features/applications/hooks/usePresence";
 export function useStudentApplicationDetails(appId: Id<"applications">) {
   const router = useRouter();
   const { app, pdfUrl, videoUrl } = useApplication(appId);
-  const presenceOthers = usePresence(app?._id);
+
   const deleteApplication = useMutation(api.applications.student.deleteApplication);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -52,7 +51,7 @@ export function useStudentApplicationDetails(appId: Id<"applications">) {
     app,
     pdfUrl,
     videoUrl,
-    presenceOthers,
+
     isEditing,
     setIsEditing,
     showDeleteConfirm,
