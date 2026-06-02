@@ -37,13 +37,16 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
 
   // Hooks must run unconditionally — even when the user data hasn't loaded yet.
   const colleges = useQuery(api.colleges.list, {});
-  const selectedCollege = colleges?.find((c) => c.name === profile.form.college);
+  // Use the structured ID if available; fall back to name-matching for legacy rows.
+  const selectedCollegeId: Id<"colleges"> | undefined =
+    (profile.form.collegeId as Id<"colleges">) || undefined;
   const departments = useQuery(
     api.colleges.getDepartmentsByCollege,
-    selectedCollege ? { collegeId: selectedCollege._id as Id<"colleges"> } : "skip",
+    selectedCollegeId ? { collegeId: selectedCollegeId } : "skip",
   );
-  const collegeNames = colleges?.map((c) => c.name) ?? [];
-  const collegeDepartments = departments?.map((d) => d.name) ?? [];
+  // Pass full objects so ProfileCard can render names while storing IDs.
+  const collegeOptions = colleges ?? [];
+  const departmentOptions = departments ?? [];
 
   if (profile.loading) return <SkeletonDashboard />;
 
@@ -66,8 +69,8 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
           <ProfileCard
             profile={profile}
             showAcademicFields={showAcademicFields}
-            collegeNames={collegeNames}
-            collegeDepartments={collegeDepartments}
+            collegeOptions={collegeOptions}
+            departmentOptions={departmentOptions}
           />
         </div>
         <div className="lg:col-span-5 space-y-6">

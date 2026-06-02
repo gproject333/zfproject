@@ -7,16 +7,16 @@ import type { Id } from "@smart-zuj/convex";
 
 export interface ProfileFormState {
   name: string;
-  college: string;
-  department: string;
+  collegeId: string;
+  departmentId: string;
   linkedinUrl: string;
   avatarFile: File | null;
 }
 
 const EMPTY: ProfileFormState = {
   name: "",
-  college: "",
-  department: "",
+  collegeId: "",
+  departmentId: "",
   linkedinUrl: "",
   avatarFile: null,
 };
@@ -43,8 +43,8 @@ export function useStudentProfile() {
     setLastUserId(user._id);
     setForm({
       name: user.name ?? "",
-      college: user.college ?? "",
-      department: user.department ?? "",
+      collegeId: (user.collegeId as string) ?? "",
+      departmentId: (user.departmentId as string) ?? "",
       linkedinUrl: user.linkedinUrl ?? "",
       avatarFile: null,
     });
@@ -98,8 +98,8 @@ export function useStudentProfile() {
 
       await updateProfile({
         name: form.name.trim(),
-        college: form.college || undefined,
-        department: form.department || undefined,
+        collegeId: form.collegeId ? (form.collegeId as Id<"colleges">) : undefined,
+        departmentId: form.departmentId ? (form.departmentId as Id<"departments">) : undefined,
         linkedinUrl: form.linkedinUrl.trim() || undefined,
         avatar: avatarId,
       });

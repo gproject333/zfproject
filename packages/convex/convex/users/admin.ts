@@ -17,13 +17,25 @@ export const getStudentByApplication = query({
 
     const avatarUrl = student.avatar ? await ctx.storage.getUrl(student.avatar) : null;
 
+    // Resolve college/department name: prefer ID lookup, fall back to string.
+    let collegeName: string | null = student.college ?? null;
+    let deptName: string | null = student.department ?? null;
+    if (student.collegeId) {
+      const col = await ctx.db.get(student.collegeId);
+      if (col) collegeName = col.name;
+    }
+    if (student.departmentId) {
+      const dep = await ctx.db.get(student.departmentId);
+      if (dep) deptName = dep.name;
+    }
+
     return {
       _id: student._id,
       name: student.name ?? null,
       email: student.email,
       studentId: student.studentId ?? null,
-      college: student.college ?? null,
-      department: student.department ?? null,
+      college: collegeName,
+      department: deptName,
       phone: student.phone ?? null,
       linkedinUrl: student.linkedinUrl ?? null,
       avatarUrl,
@@ -250,6 +262,12 @@ export const getStudentsWithStats = query({
       .withIndex("by_role", (q) => q.eq("role", "student"))
       .collect();
 
+    // Build lookup maps to resolve IDs → names without N+1 queries.
+    const allColleges = await ctx.db.query("colleges").collect();
+    const allDepts = await ctx.db.query("departments").collect();
+    const collegeMap = new Map(allColleges.map((c) => [c._id as string, c.name]));
+    const deptMap = new Map(allDepts.map((d) => [d._id as string, d.name]));
+
     const filtered = students.filter((s) => {
       if (args.search) {
         const q = args.search.toLowerCase();
@@ -259,8 +277,15 @@ export const getStudentsWithStats = query({
         )
           return false;
       }
-      if (args.college && s.college !== args.college) return false;
-      if (args.department && s.department !== args.department) return false;
+      // Resolve the effective college name for filtering.
+      const effectiveCollege = s.collegeId
+        ? (collegeMap.get(s.collegeId) ?? s.college)
+        : s.college;
+      const effectiveDept = s.departmentId
+        ? (deptMap.get(s.departmentId) ?? s.department)
+        : s.department;
+      if (args.college && effectiveCollege !== args.college) return false;
+      if (args.department && effectiveDept !== args.department) return false;
       return true;
     });
 
@@ -277,8 +302,12 @@ export const getStudentsWithStats = query({
       name: student.name ?? null,
       email: student.email,
       studentId: student.studentId ?? null,
-      college: student.college ?? null,
-      department: student.department ?? null,
+      college: student.collegeId
+        ? (collegeMap.get(student.collegeId) ?? student.college ?? null)
+        : (student.college ?? null),
+      department: student.departmentId
+        ? (deptMap.get(student.departmentId) ?? student.department ?? null)
+        : (student.department ?? null),
       phone: student.phone ?? null,
       linkedinUrl: student.linkedinUrl ?? null,
       isActive: student.isActive ?? true,
@@ -296,9 +325,16 @@ export const getStudentDistributionByCollege = query({
       .query("users")
       .withIndex("by_role", (q) => q.eq("role", "student"))
       .collect();
+
+    // Build ID → name map to resolve FK references.
+    const allColleges = await ctx.db.query("colleges").collect();
+    const collegeMap = new Map(allColleges.map((c) => [c._id as string, c.name]));
+
     const counts: Record<string, number> = {};
     for (const s of students) {
-      const college = s.college ?? "غير محدد";
+      const college = s.collegeId
+        ? (collegeMap.get(s.collegeId) ?? s.college ?? "غير محدد")
+        : (s.college ?? "غير محدد");
       counts[college] = (counts[college] ?? 0) + 1;
     }
     return Object.entries(counts).map(([college, count]) => ({ college, count }));
@@ -383,5 +419,62 @@ export const getSupervisorsManagement = query({
       isActive: s.isActive ?? true,
       createdAt: s.createdAt ?? null,
     }));
+  },
+});
+
+export const backfillCollegeIds = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const users = await ctx.db.query("users").collect();
+    const allColleges = await ctx.db.query("colleges").collect();
+    const allDepts = await ctx.db.query("departments").collect();
+
+    let migrated = 0;
+    let skipped = 0;
+    let unmatched = 0;
+
+    for (const user of users) {
+      if (user.collegeId) {
+        skipped++;
+        continue;
+      }
+      if (!user.college) {
+        skipped++;
+        continue;
+      }
+      const col = allColleges.find((c) => c.name === user.college);
+      if (!col) {
+        console.warn(
+          `[collegeToId] No match for college="${user.college}" (user ${user._id})`
+        );
+        unmatched++;
+        continue;
+      }
+
+      let departmentId = undefined;
+      if (user.department) {
+        const dep = allDepts.find(
+          (d) => d.collegeId === col._id && d.name === user.department
+        );
+        if (dep) departmentId = dep._id;
+        else {
+          console.warn(
+            `[collegeToId] No match for department="${user.department}" in college="${user.college}" (user ${user._id})`
+          );
+        }
+      }
+
+      await ctx.db.patch(user._id, {
+        collegeId: col._id,
+        ...(departmentId && { departmentId }),
+        college: undefined,
+        department: undefined,
+      });
+      migrated++;
+    }
+
+    const resultMsg = `[collegeToId] Done: migrated=${migrated}, skipped=${skipped}, unmatched=${unmatched}`;
+    console.log(resultMsg);
+    return { migrated, skipped, unmatched, message: resultMsg };
   },
 });

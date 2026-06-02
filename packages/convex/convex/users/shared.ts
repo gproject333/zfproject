@@ -22,8 +22,12 @@ export const updateProfile = mutation({
   args: {
     name: v.optional(v.string()),
     phone: v.optional(v.string()),
+    // Deprecated — prefer collegeId / departmentId.
     college: v.optional(v.string()),
     department: v.optional(v.string()),
+    // Structured FK references (preferred over string fields above).
+    collegeId: v.optional(v.id("colleges")),
+    departmentId: v.optional(v.id("departments")),
     linkedinUrl: v.optional(v.string()),
     avatar: v.optional(v.id("_storage")),
   },
@@ -45,6 +49,16 @@ export const updateProfile = mutation({
     }
     if (args.college !== undefined) updates.college = args.college;
     if (args.department !== undefined) updates.department = args.department;
+    if (args.collegeId !== undefined) {
+      updates.collegeId = args.collegeId;
+      // Clear the deprecated string field when the ID is set.
+      updates.college = undefined;
+    }
+    if (args.departmentId !== undefined) {
+      updates.departmentId = args.departmentId;
+      // Clear the deprecated string field when the ID is set.
+      updates.department = undefined;
+    }
     if (args.linkedinUrl !== undefined) updates.linkedinUrl = args.linkedinUrl;
     if (args.avatar !== undefined) updates.avatar = args.avatar;
 

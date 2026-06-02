@@ -38,8 +38,14 @@ export default defineSchema({
 
     // Student-specific profile
     studentId: v.optional(v.string()),
+    // Deprecated string fields — kept during migration window.
+    // Prefer collegeId / departmentId (structured FK references) for new writes.
+    // See convex/migrations/collegeToId.ts for the backfill migration.
     college: v.optional(v.string()),
     department: v.optional(v.string()),
+    // Structured FK references to colleges / departments tables.
+    collegeId: v.optional(v.id("colleges")),
+    departmentId: v.optional(v.id("departments")),
 
     // Optional profile extras
     phone: v.optional(v.string()),

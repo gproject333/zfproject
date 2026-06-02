@@ -10,8 +10,10 @@ import { toast } from "@/lib/toast";
 interface ProfileCardProps {
   profile: ReturnType<typeof useStudentProfile>;
   showAcademicFields: boolean;
-  collegeNames: string[];
-  collegeDepartments: string[];
+  /** Full college objects — label is `name`, value is `_id`. */
+  collegeOptions: { _id: string; name: string }[];
+  /** Full department objects — label is `name`, value is `_id`. */
+  departmentOptions: { _id: string; name: string }[];
 }
 
 /**
@@ -27,8 +29,8 @@ interface ProfileCardProps {
 export function ProfileCard({
   profile,
   showAcademicFields,
-  collegeNames,
-  collegeDepartments,
+  collegeOptions,
+  departmentOptions,
 }: ProfileCardProps) {
   const linkedinHint =
     profile.form.linkedinUrl &&
@@ -114,19 +116,19 @@ export function ProfileCard({
             <div>
               <label className="block text-xs font-medium mb-1.5">الكلية</label>
               <Select
-                value={profile.form.college}
+                value={profile.form.collegeId}
                 onValueChange={(v) => {
-                  profile.setField("college", v);
-                  profile.setField("department", "");
+                  profile.setField("collegeId", v);
+                  profile.setField("departmentId", "");
                 }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="اختيار الكلية" />
                 </SelectTrigger>
                 <SelectContent>
-                  {collegeNames.map((c) => (
-                    <SelectItem key={c} value={c}>
-                      {c}
+                  {collegeOptions.map((c) => (
+                    <SelectItem key={c._id} value={c._id}>
+                      {c.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -136,23 +138,23 @@ export function ProfileCard({
             <div>
               <label className="block text-xs font-medium mb-1.5">التخصص</label>
               <Select
-                value={profile.form.department}
-                onValueChange={(v) => profile.setField("department", v)}
-                isDisabled={!profile.form.college}
+                value={profile.form.departmentId}
+                onValueChange={(v) => profile.setField("departmentId", v)}
+                isDisabled={!profile.form.collegeId}
               >
                 <SelectTrigger>
                   <SelectValue
                     placeholder={
-                      profile.form.college
+                      profile.form.collegeId
                         ? "اختيار التخصص"
                         : "يُرجى اختيار الكلية أولًا."
                     }
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {collegeDepartments.map((d) => (
-                    <SelectItem key={d} value={d}>
-                      {d}
+                  {departmentOptions.map((d) => (
+                    <SelectItem key={d._id} value={d._id}>
+                      {d.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

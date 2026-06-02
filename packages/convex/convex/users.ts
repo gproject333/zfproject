@@ -1,5 +1,6 @@
 import { internalMutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import type { Id } from "./_generated/dataModel";
 
 const UNIVERSITY_EMAIL_DOMAINS = [
   "@zuj.edu.jo",
@@ -51,6 +52,25 @@ export const handleClerkWebhook = internalMutation({
       const college = meta.college as string | undefined;
       const department = meta.department as string | undefined;
 
+      // Resolve structured IDs from name strings written by the registration form.
+      let collegeId: Id<"colleges"> | undefined;
+      let departmentId: Id<"departments"> | undefined;
+      if (college) {
+        const allColleges = await ctx.db.query("colleges").collect();
+        const col = allColleges.find((c) => c.name === college);
+        if (col) {
+          collegeId = col._id;
+          if (department) {
+            const deps = await ctx.db
+              .query("departments")
+              .withIndex("by_college", (q) => q.eq("collegeId", collegeId!))
+              .collect();
+            const dep = deps.find((d) => d.name === department);
+            if (dep) departmentId = dep._id;
+          }
+        }
+      }
+
       const existing = await ctx.db
         .query("users")
         .withIndex("by_clerkId", (q) => q.eq("clerkId", clerkId))
@@ -65,6 +85,8 @@ export const handleClerkWebhook = internalMutation({
           ...(studentId !== undefined && { studentId }),
           ...(college !== undefined && { college }),
           ...(department !== undefined && { department }),
+          ...(collegeId !== undefined && { collegeId }),
+          ...(departmentId !== undefined && { departmentId }),
           updatedAt: Date.now(),
         });
       } else {
@@ -84,6 +106,8 @@ export const handleClerkWebhook = internalMutation({
           studentId,
           college,
           department,
+          collegeId,
+          departmentId,
           isActive: true,
           createdAt: Date.now(),
           updatedAt: Date.now(),

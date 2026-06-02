@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
@@ -9,9 +12,13 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "resolveJsonModule": true,
-    "jsx": "react-jsx"
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "convex/**/*.ts"],
-  "exclude": ["convex/_generated"]
+  "include": [
+    "convex/**/*.ts"
+  ],
+  "exclude": [
+    "convex/_generated",
+    "node_modules"
+  ]
 }
