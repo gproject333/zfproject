@@ -70,8 +70,9 @@ export default function ArticleFormDialog({
             e.preventDefault();
             onSubmit();
           }}
-          className="space-y-4"
+          className="flex flex-col gap-4"
         >
+          <div className="overflow-y-auto space-y-4 pe-1 max-h-[60vh]">
           {/* Title */}
           <div>
             <label className="text-xs font-extrabold mb-1 block">العنوان *</label>
@@ -244,6 +245,8 @@ export default function ArticleFormDialog({
                 منشورة
               </label>
             </div>
+          </div>
+
           </div>
 
           {formError && (
