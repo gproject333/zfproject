@@ -34,6 +34,7 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
   );
   const router = useRouter();
   const [graceExpired, setGraceExpired] = useState(false);
+  const [authGraceExpired, setAuthGraceExpired] = useState(false);
 
   // Start the grace timer as soon as we know the user is authed but the
   // Convex row hasn't shown up yet. Reset every time the trigger flips.
@@ -47,11 +48,26 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
     return () => window.clearTimeout(id);
   }, [authLoading, isAuthenticated, user]);
 
+  // Convex's auth handshake lags a beat behind Clerk, so isAuthenticated can
+  // read false right after a fresh sign-in (or on a hard refresh of a guarded
+  // page) while the Clerk session is actually live. Hold a grace window before
+  // treating that as "not logged in" so we don't bounce to /login on a flicker.
+  useEffect(() => {
+    if (authLoading || isAuthenticated) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAuthGraceExpired(false);
+      return;
+    }
+    const id = window.setTimeout(() => setAuthGraceExpired(true), USER_GRACE_MS);
+    return () => window.clearTimeout(id);
+  }, [authLoading, isAuthenticated]);
+
   useEffect(() => {
     if (authLoading) return;
 
     if (!isAuthenticated) {
-      router.push("/login");
+      // Only give up once the handshake grace has elapsed — see the timer above.
+      if (authGraceExpired) router.push("/login");
       return;
     }
 
@@ -65,12 +81,15 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
     if (user && !isAllowedRole(user.role, allowedRoles)) {
       router.push(getRoleHomepage(user.role));
     }
-  }, [authLoading, isAuthenticated, user, graceExpired, allowedRoles, router]);
+  }, [authLoading, isAuthenticated, user, graceExpired, authGraceExpired, allowedRoles, router]);
 
-  // Loading state covers both the auth handshake and the post-auth grace
-  // window while we wait for the Convex user row.
+  // Loading state covers the auth handshake, the post-auth grace window while
+  // we wait for the Convex user row, and the brief isAuthenticated flicker.
   const stillLoading =
-    authLoading || user === undefined || (user === null && !graceExpired);
+    authLoading ||
+    (!isAuthenticated && !authGraceExpired) ||
+    user === undefined ||
+    (user === null && !graceExpired);
 
   if (stillLoading) {
     return (
@@ -80,7 +99,7 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
     );
   }
 
-  if (user === null || !isAllowedRole(user.role, allowedRoles)) {
+  if (!isAuthenticated || user === null || !isAllowedRole(user.role, allowedRoles)) {
     return null;
   }
 

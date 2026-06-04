@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useConvexAuth } from "convex/react";
 import { LogIn, AlertCircle, Sparkles } from "lucide-react";
 import { useAuthForm } from "@/features/auth/hooks/useAuthForm";
 import { buttonVariants, Spinner } from "@/components/ui";
@@ -24,6 +26,15 @@ import { FloatingPasswordInput } from "./FloatingPasswordInput";
 export default function LoginForm() {
   const router = useRouter();
   const auth = useAuthForm();
+  const { isAuthenticated } = useConvexAuth();
+
+  // Already signed in (e.g. revisited /login with a live session, or bounced
+  // here during the post-login handshake) — forward to the redirect router
+  // instead of showing the form again. /login-redirect waits for the auth
+  // handshake to settle, so this never loops.
+  useEffect(() => {
+    if (isAuthenticated) router.replace("/login-redirect");
+  }, [isAuthenticated, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

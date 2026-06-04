@@ -41,15 +41,21 @@ export default function LoginRedirectPage() {
 
   useEffect(() => {
     if (authLoading) return;
+    // Convex runs its own auth handshake (validating the Clerk JWT against the
+    // issuer) which lags a beat behind Clerk's setActive(). During that beat
+    // useConvexAuth reports { isLoading: false, isAuthenticated: false } even
+    // though the Clerk session is live. Don't bounce to /login on that
+    // transient state — wait for it to settle, and only give up once the hard
+    // timeout has fired (a genuinely expired/invalid session).
     if (!isAuthenticated) {
-      router.replace("/login");
+      if (timedOut) router.replace("/login");
       return;
     }
     // Wait for the Convex user doc — the hard-timeout branch below renders
     // a manual retry instead of silently bouncing.
     if (user === undefined || user === null) return;
     router.replace(getRoleHomepage(user.role));
-  }, [authLoading, isAuthenticated, user, router]);
+  }, [authLoading, isAuthenticated, user, timedOut, router]);
 
   const stillWaiting = isAuthenticated && (user === undefined || user === null);
 
