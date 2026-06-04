@@ -153,7 +153,13 @@ export default function StudentApplicationDetails() {
       />
 
       {isEditing ? (
-        <ApplicationEditForm app={app} onSaved={() => setIsEditing(false)} />
+        <ApplicationEditForm
+          app={app}
+          onSaved={() => setIsEditing(false)}
+          pdfUrl={pdfUrl}
+          videoUrl={videoUrl}
+          onShowPdf={() => setShowPdf(true)}
+        />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Main column — the submitted project details */}

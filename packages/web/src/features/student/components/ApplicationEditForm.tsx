@@ -13,6 +13,11 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog";
 interface ApplicationEditFormProps {
   app: Doc<"applications">;
   onSaved: () => void;
+  /** Download/preview URLs for the currently-attached files. */
+  pdfUrl?: string | null;
+  videoUrl?: string | null;
+  /** Opens the in-app PDF viewer for the current PDF. */
+  onShowPdf?: () => void;
 }
 
 /**
@@ -21,7 +26,13 @@ interface ApplicationEditFormProps {
  * All state, validation, mutations, and upload logic live in
  * useEditApplication.
  */
-export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFormProps) {
+export default function ApplicationEditForm({
+  app,
+  onSaved,
+  pdfUrl,
+  videoUrl,
+  onShowPdf,
+}: ApplicationEditFormProps) {
   const { form, upload, saving, saveMode, save } = useEditApplication(app, onSaved);
   const [confirmResubmit, setConfirmResubmit] = useState(false);
 
@@ -49,6 +60,9 @@ export default function ApplicationEditForm({ app, onSaved }: ApplicationEditFor
           variant="edit"
           existingPdfId={app.pdfFileId}
           existingVideoId={app.videoFileId}
+          existingPdfUrl={pdfUrl}
+          existingVideoUrl={videoUrl}
+          onPreviewPdf={onShowPdf}
         />
       </div>
 
