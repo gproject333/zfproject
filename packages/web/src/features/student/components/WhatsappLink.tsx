@@ -106,7 +106,11 @@ export function WhatsappLink() {
               })();
             }}
             aria-label={optedOut ? "تفعيل رسائل الواتساب" : "إيقاف رسائل الواتساب"}
-          />
+          >
+            <Switch.Control>
+              <Switch.Thumb />
+            </Switch.Control>
+          </Switch>
           <div className="text-xs leading-relaxed">
             <p className="font-bold text-foreground">رسائل الواتساب</p>
             <p className="text-muted-foreground">

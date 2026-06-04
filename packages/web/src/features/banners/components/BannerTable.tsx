@@ -170,7 +170,11 @@ export function BannerTable({
                   onChange={(checked) => void onToggle(b._id, checked)}
                   aria-label={b.isActive ? "تعطيل الإعلان" : "تفعيل الإعلان"}
                   size="sm"
-                />
+                >
+                  <Switch.Control>
+                    <Switch.Thumb />
+                  </Switch.Control>
+                </Switch>
               </TableCell>
               <TableCell>
                 <span
