@@ -6,6 +6,7 @@ import type { useReview, SupervisorStatus, SupervisorRating } from "@/features/s
 import {
   SUPERVISOR_STATUS_KEYS,
   STATUS_LABELS,
+  requiresStudentNote,
 } from "@smart-zuj/convex/statuses";
 import { RATING_CONFIG, RATING_KEYS } from "@/lib/configs/application";
 import MarkdownToolbar from "@/components/ui/MarkdownToolbar";
@@ -45,6 +46,11 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
   } = review;
 
   const notesRef = useRef<HTMLTextAreaElement>(null);
+
+  // Rejecting or requesting changes requires a note for the student — flag
+  // it in the UI and block the save button until one is written.
+  const noteRequired = requiresStudentNote(status);
+  const noteMissing = noteRequired && notes.trim().length === 0;
 
   return (
     <Card className="p-5 border-accent border-[3px] bg-accent/5">
@@ -99,7 +105,8 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
 
         <div>
           <label htmlFor="review-notes" className="block text-sm font-bold mb-2">
-            ملاحظات لفريق العمل
+            ملاحظات للطالب
+            {noteRequired && <span className="text-destructive"> *</span>}
           </label>
           <MarkdownToolbar
             textareaRef={notesRef}
@@ -120,6 +127,13 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
           <p id="review-notes-help" className="text-xs text-muted-foreground mt-1">
             يدعم تنسيق Markdown — يمكن استخدام الأزرار أعلاه أو كتابة الصياغة مباشرة
           </p>
+          {noteMissing && (
+            <p className="text-xs font-semibold text-destructive mt-1">
+              {status === "rejected"
+                ? "يجب كتابة ملاحظة للطالب عند رفض الطلب."
+                : "يجب كتابة ملاحظة للطالب عند طلب التعديل."}
+            </p>
+          )}
           <p
             id="review-notes-count"
             className="text-xs text-muted-foreground mt-1 text-left"
@@ -135,7 +149,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
               variant="primary"
               fullWidth
               onPress={() => void handleUpdate(onSaved)}
-              isDisabled={isSubmitting || !status || !isDirty}
+              isDisabled={isSubmitting || !status || !isDirty || noteMissing}
             >
               {isSubmitting ? <Spinner size="sm" color="current" /> : <Send className="w-5 h-5" />}
               حفظ وإرسال الإشعار
@@ -146,7 +160,7 @@ export default function ReviewPanel({ review, onSaved }: ReviewPanelProps) {
             variant="primary"
             fullWidth
             onPress={() => void handleUpdate(onSaved)}
-            isDisabled={isSubmitting || !status}
+            isDisabled={isSubmitting || !status || noteMissing}
           >
             {isSubmitting ? <Spinner size="sm" color="current" /> : <Send className="w-5 h-5" />}
             حفظ وإرسال إشعار

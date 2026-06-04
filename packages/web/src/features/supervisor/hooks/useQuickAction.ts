@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "@/lib/toast";
+import { getConvexErrorMessage } from "@/lib/errors";
 import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
 import type { SupervisorStatus } from "@smart-zuj/convex/statuses";
@@ -54,9 +55,7 @@ export function useQuickAction() {
         toast.success("حُدِّث الطلب بنجاح");
         setPending(null);
       } catch (e: unknown) {
-        toast.error(
-          "حدث خطأ: " + (e instanceof Error ? e.message : "يُرجى المحاولة مجددًا."),
-        );
+        toast.error(getConvexErrorMessage(e, "تعذّر تحديث الطلب، يُرجى المحاولة مجددًا."));
       } finally {
         setIsSubmitting(false);
       }

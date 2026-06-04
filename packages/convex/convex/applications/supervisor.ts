@@ -1,9 +1,9 @@
 import { query, mutation } from "../_generated/server";
-import { v } from "convex/values";
+import { v, ConvexError } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import type { Doc, Id } from "../_generated/dataModel";
 import { getOptionalUser, getOptionalSupervisor, requireSupervisor } from "../lib/auth";
-import { STATUS_LABELS, canTransition } from "../lib/statuses";
+import { STATUS_LABELS, canTransition, requiresStudentNote } from "../lib/statuses";
 import { assertMaxLength } from "../lib/validation";
 import { loadUsersMap, loadStudentsMap } from "../lib/users";
 import { maybeSendWhatsapp } from "../lib/notifications";
@@ -267,11 +267,23 @@ export const updateApplicationStatus = mutation({
     assertMaxLength("supervisorNotes", args.supervisorNotes);
 
     const app = await ctx.db.get(args.id);
-    if (!app) throw new Error("الطلب غير موجود");
+    if (!app) throw new ConvexError("الطلب غير موجود");
 
     if (!canTransition(app.status, args.status)) {
-      throw new Error(
+      throw new ConvexError(
         `لا يمكن الانتقال من حالة "${STATUS_LABELS[app.status]}" إلى "${STATUS_LABELS[args.status]}"`,
+      );
+    }
+
+    // Rejecting an application or returning it for changes must always carry
+    // a note for the student. Fall back to the already-saved note so the
+    // supervisor isn't forced to retype it when only flipping the status.
+    const effectiveNotes = args.supervisorNotes ?? app.supervisorNotes ?? "";
+    if (requiresStudentNote(args.status) && effectiveNotes.trim().length === 0) {
+      throw new ConvexError(
+        args.status === "rejected"
+          ? "يجب كتابة ملاحظة للطالب عند رفض الطلب."
+          : "يجب كتابة ملاحظة للطالب عند طلب التعديل.",
       );
     }
 
@@ -346,7 +358,7 @@ export const bulkUpdateStatus = mutation({
     if (args.ids.length === 0) {
       return { succeeded: [] as Id<"applications">[], skipped: [] as { id: Id<"applications">; reason: string }[] };
     }
-    if (args.ids.length > 100) throw new Error("لا يمكن تحديث أكثر من 100 طلب دفعة واحدة");
+    if (args.ids.length > 100) throw new ConvexError("لا يمكن تحديث أكثر من 100 طلب دفعة واحدة");
 
     const succeeded: Id<"applications">[] = [];
     const skipped: { id: Id<"applications">; reason: string }[] = [];
@@ -357,6 +369,12 @@ export const bulkUpdateStatus = mutation({
       if (!app) { skipped.push({ id, reason: "الطلب غير موجود" }); continue; }
       if (!canTransition(app.status, args.status)) {
         skipped.push({ id, reason: `انتقال غير مسموح من "${STATUS_LABELS[app.status]}"` });
+        continue;
+      }
+
+      const effectiveNotes = args.notes ?? app.supervisorNotes ?? "";
+      if (requiresStudentNote(args.status) && effectiveNotes.trim().length === 0) {
+        skipped.push({ id, reason: "يلزم كتابة ملاحظة للطالب عند الرفض أو طلب التعديل" });
         continue;
       }
 

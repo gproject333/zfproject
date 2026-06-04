@@ -94,6 +94,70 @@ describe("supervisor.updateApplicationStatus — allowed transitions", () => {
   });
 });
 
+describe("supervisor.updateApplicationStatus — note required for rejection / changes", () => {
+  test("rejecting without a note is refused", async () => {
+    const t = convexTest(schema, modules);
+    const stu = await seedStudent(t, "stu-1");
+    await seedSupervisor(t, "sup-1");
+    const id = await insertAppUnderReview(t, stu);
+
+    await expect(
+      t.withIdentity({ subject: "sup-1" }).mutation(
+        api.applications.supervisor.updateApplicationStatus,
+        { id, status: "rejected" },
+      ),
+    ).rejects.toThrow();
+
+    const unchanged = await t.run((ctx) => ctx.db.get(id));
+    expect(unchanged?.status).toBe("under_review");
+  });
+
+  test("requesting changes with a blank note is refused", async () => {
+    const t = convexTest(schema, modules);
+    const stu = await seedStudent(t, "stu-1");
+    await seedSupervisor(t, "sup-1");
+    const id = await insertAppUnderReview(t, stu);
+
+    await expect(
+      t.withIdentity({ subject: "sup-1" }).mutation(
+        api.applications.supervisor.updateApplicationStatus,
+        { id, status: "needs_modification", supervisorNotes: "   " },
+      ),
+    ).rejects.toThrow();
+  });
+
+  test("rejecting with a note succeeds", async () => {
+    const t = convexTest(schema, modules);
+    const stu = await seedStudent(t, "stu-1");
+    await seedSupervisor(t, "sup-1");
+    const id = await insertAppUnderReview(t, stu);
+
+    await t.withIdentity({ subject: "sup-1" }).mutation(
+      api.applications.supervisor.updateApplicationStatus,
+      { id, status: "rejected", supervisorNotes: "الفكرة غير مكتملة." },
+    );
+
+    const updated = await t.run((ctx) => ctx.db.get(id));
+    expect(updated?.status).toBe("rejected");
+    expect(updated?.supervisorNotes).toBe("الفكرة غير مكتملة.");
+  });
+
+  test("bulk request-changes skips entries that lack a note", async () => {
+    const t = convexTest(schema, modules);
+    await seedSupervisor(t, "sup-1");
+    const stu = await seedStudent(t, "stu-1");
+    const id = await insertAppUnderReview(t, stu);
+
+    const result = await t.withIdentity({ subject: "sup-1" }).mutation(
+      api.applications.supervisor.bulkUpdateStatus,
+      { ids: [id], status: "needs_modification" },
+    );
+
+    expect(result.succeeded).toHaveLength(0);
+    expect(result.skipped.find((s) => s.id === id)).toBeTruthy();
+  });
+});
+
 describe("supervisor.updateApplicationStatus — forbidden transitions", () => {
   test("accepted → rejected is rejected (terminal status)", async () => {
     const t = convexTest(schema, modules);

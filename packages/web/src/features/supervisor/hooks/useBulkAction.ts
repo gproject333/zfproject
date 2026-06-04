@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "@/lib/toast";
+import { getConvexErrorMessage } from "@/lib/errors";
 import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
 import type { SupervisorStatus } from "@smart-zuj/convex/statuses";
@@ -42,7 +43,7 @@ export function useBulkAction(onSuccess?: () => void) {
         const result = await bulkUpdate({
           ids: pending.ids,
           status: pending.status,
-          ...(notes && notes.trim().length > 0 ? { supervisorNotes: notes } : {}),
+          ...(notes && notes.trim().length > 0 ? { notes } : {}),
         });
         if (result.skipped.length === 0) {
           toast.success(`حُدِّث ${result.succeeded.length} طلب بنجاح`);
@@ -54,9 +55,7 @@ export function useBulkAction(onSuccess?: () => void) {
         setPending(null);
         onSuccess?.();
       } catch (e: unknown) {
-        toast.error(
-          "حدث خطأ: " + (e instanceof Error ? e.message : "يُرجى المحاولة مجددًا."),
-        );
+        toast.error(getConvexErrorMessage(e, "تعذّر تحديث الطلبات، يُرجى المحاولة مجددًا."));
       } finally {
         setIsSubmitting(false);
       }

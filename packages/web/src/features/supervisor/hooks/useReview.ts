@@ -3,10 +3,12 @@
 import { useCallback, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "@/lib/toast";
+import { getConvexErrorMessage } from "@/lib/errors";
 import { api } from "@smart-zuj/convex";
 import type { Doc } from "@smart-zuj/convex";
 import {
   isSupervisorStatus,
+  requiresStudentNote,
   type SupervisorStatus,
 } from "@smart-zuj/convex/statuses";
 import type { SupervisorRating } from "@/lib/configs/application";
@@ -63,6 +65,17 @@ export function useReview(app: Doc<"applications"> | null | undefined) {
         toast.error("يُرجى تحديد حالة الطلب");
         return;
       }
+      // Rejecting or requesting changes must carry a note for the student —
+      // mirror the server-side guard so the supervisor gets instant feedback
+      // instead of a round-trip error.
+      if (requiresStudentNote(status) && notes.trim().length === 0) {
+        toast.error(
+          status === "rejected"
+            ? "يجب كتابة ملاحظة للطالب عند رفض الطلب"
+            : "يجب كتابة ملاحظة للطالب عند طلب التعديل",
+        );
+        return;
+      }
       setIsSubmitting(true);
       try {
         // Only send fields that actually changed so the backend does not
@@ -85,9 +98,7 @@ export function useReview(app: Doc<"applications"> | null | undefined) {
         toast.success("حُفِظ التقييم بنجاح");
         onSuccess?.();
       } catch (e: unknown) {
-        toast.error(
-          "حدث خطأ أثناء الحفظ: " + (e instanceof Error ? e.message : "يُرجى المحاولة مجددًا."),
-        );
+        toast.error(getConvexErrorMessage(e, "تعذّر حفظ التقييم، يُرجى المحاولة مجددًا."));
       } finally {
         setIsSubmitting(false);
       }
