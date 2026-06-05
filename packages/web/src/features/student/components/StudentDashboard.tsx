@@ -29,6 +29,10 @@ export default function StudentDashboard() {
   const profile = useProfileComplete();
   const upgradeRequest = useQuery(api.supervisorUpgradeRequests.getMyRequest, {});
   const submitRequest = useMutation(api.supervisorUpgradeRequests.submitRequest);
+  // Department display name — resolved from the ID (the profile form clears
+  // the legacy string field).
+  const academic = useQuery(api.users.shared.myAcademicNames, {});
+  const departmentName = academic?.departmentName ?? user?.department ?? null;
 
   const isZujStaff = user?.email?.endsWith("@zuj.edu.jo") ?? false;
   const [upgradeOpen, setUpgradeOpen] = useState(false);
@@ -65,9 +69,9 @@ export default function StudentDashboard() {
         <StudentAvatar name={user?.name} avatarId={user?.avatar} size="lg" />
         <div className="min-w-0">
           <h2 className="text-2xl font-bold">مرحبًا، {user?.name ?? "بك"}</h2>
-          {user?.department && (
+          {departmentName && (
             <p className="text-sm text-muted-foreground mt-0.5">
-              {user.department}
+              {departmentName}
             </p>
           )}
         </div>

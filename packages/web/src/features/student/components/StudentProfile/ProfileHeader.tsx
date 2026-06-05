@@ -41,18 +41,27 @@ export function ProfileHeader({
     api.applications.shared.applicationStats,
     showApplicationStats ? {} : "skip",
   );
+  // Resolve college/department to display names — the profile form stores
+  // them as IDs and clears the legacy string fields, so reading the raw user
+  // doc here would show nothing.
+  const academic = useQuery(api.users.shared.myAcademicNames, {});
 
   const user = profile.user;
   const roleLabel = user?.role ? ROLE_LABEL[user.role] ?? user.role : null;
   const whatsappVerified = user?.whatsappVerified === true;
 
+  const collegeName = academic?.collegeName ?? user?.college ?? null;
+  const departmentName = academic?.departmentName ?? user?.department ?? null;
+
   // Compact info row under the name: studentId · college · email.
   const infoBits: string[] = [];
   if (user?.studentId) infoBits.push(user.studentId);
-  if (user?.college && user?.department) {
-    infoBits.push(`${user.college} — ${user.department}`);
-  } else if (user?.college) {
-    infoBits.push(user.college);
+  if (collegeName && departmentName) {
+    infoBits.push(`${collegeName} — ${departmentName}`);
+  } else if (collegeName) {
+    infoBits.push(collegeName);
+  } else if (departmentName) {
+    infoBits.push(departmentName);
   }
 
   const avatarInner = profile.avatarPreviewUrl ? (

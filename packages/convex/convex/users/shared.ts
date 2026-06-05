@@ -84,6 +84,33 @@ export const getAvatarUrl = query({
 });
 
 /**
+ * Resolves the signed-in user's college / department to display names,
+ * preferring the structured FK (collegeId / departmentId) and falling back
+ * to the deprecated string fields. Lets surfaces that only have the raw user
+ * doc (dashboard header, profile hero) show the names without each resolving
+ * the lookup tables themselves.
+ */
+export const myAcademicNames = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getOptionalUser(ctx);
+    if (!user) return { collegeName: null, departmentName: null };
+
+    let collegeName: string | null = user.college ?? null;
+    let departmentName: string | null = user.department ?? null;
+    if (user.collegeId) {
+      const college = await ctx.db.get(user.collegeId);
+      if (college) collegeName = college.name;
+    }
+    if (user.departmentId) {
+      const department = await ctx.db.get(user.departmentId);
+      if (department) departmentName = department.name;
+    }
+    return { collegeName, departmentName };
+  },
+});
+
+/**
  * Permanently removes the signed-in user's avatar: deletes the blob from
  * storage and clears the `avatar` reference. Idempotent — a no-op when the
  * user has no avatar set.

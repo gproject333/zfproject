@@ -73,24 +73,26 @@ export const scheduleMeeting = mutation({
   },
 });
 
-/** Student-facing: upcoming meetings sorted soonest-first. */
-export const myUpcomingMeetings = query({
+/**
+ * Student-facing: every meeting scheduled with the student, oldest-first.
+ * The client splits these into upcoming vs past for display — returning the
+ * full set (instead of upcoming-only) lets the dashboard show a history.
+ */
+export const myMeetings = query({
   args: {},
   handler: async (ctx) => {
     const user = await getOptionalUser(ctx);
     if (!user || user.role !== "student") return [];
 
-    const now = Date.now();
     const rows = await ctx.db
       .query("meetings")
       .withIndex("by_student_scheduled", (q) => q.eq("studentId", user._id))
       .collect();
 
-    const upcoming = rows.filter((m) => m.scheduledAt >= now - 30 * 60_000);
-    upcoming.sort((a, b) => a.scheduledAt - b.scheduledAt);
+    rows.sort((a, b) => a.scheduledAt - b.scheduledAt);
 
     return await Promise.all(
-      upcoming.map(async (m) => {
+      rows.map(async (m) => {
         const supervisor = await ctx.db.get(m.scheduledBy);
         return {
           _id: m._id,
