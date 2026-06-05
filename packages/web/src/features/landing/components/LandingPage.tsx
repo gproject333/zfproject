@@ -77,18 +77,10 @@ export default function LandingPage() {
   const { isLoaded: clerkLoaded, isSignedIn } = useAuth();
   const user = useQuery(api.users.shared.currentUser);
   const mounted = useHydrated();
-  const [isScrolled, setIsScrolled] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   // True while a scrolling announcement is pinned above the navbar — the
   // navbar and page content shift down by the bar's height (40px).
   const pathname = usePathname();
-
-  // Scroll-triggered navbar background
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // `effectiveRole` is computed below from Convex (`user.role`) with a
   // localStorage fallback, so we delay these derivations until afterward.
@@ -150,13 +142,7 @@ export default function LandingPage() {
             `layoutReady` so admin/supervisor users don't flash the navbar
             for a frame before the sidebar takes over. */}
         {layoutReady && !usesSidebar && (
-          <nav
-            className={`fixed top-0 right-0 left-0 w-full z-50 transition-all duration-300 text-foreground ${
-              isScrolled
-                ? "bg-background/85 backdrop-blur-md border-b border-border/20"
-                : "bg-transparent border-b border-transparent"
-            }`}
-          >
+          <nav className="fixed top-0 right-0 left-0 w-full z-50 text-foreground bg-background">
             <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
               {/* Brand */}
               <div className="flex items-center gap-3">

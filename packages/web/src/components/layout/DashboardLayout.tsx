@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Menu, X, ChevronLeft } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui";
@@ -67,30 +67,14 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ config, children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  // Same scroll-triggered navbar behavior as the landing page so the
-  // student/sponsor dashboards share one unified header treatment.
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const backgroundClass = config.backgroundClass ?? "bg-pattern";
 
   return (
     <RoleGuard allowedRoles={[...config.roles]}>
       <div className={`min-h-screen ${backgroundClass} flex flex-col`}>
-        {/* Top Navbar — matches the landing page: transparent at rest,
-            soft blurred background once the user scrolls. */}
-        <nav
-          className={`sticky top-0 z-50 transition-all duration-300 text-foreground ${
-            isScrolled
-              ? "bg-background/85 backdrop-blur-md border-b border-border/20"
-              : "bg-transparent border-b border-transparent"
-          }`}
-        >
+        {/* Top Navbar — solid opaque background, no border, no blur. */}
+        <nav className="sticky top-0 z-50 text-foreground bg-background">
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
             {/* Right Side: hamburger + brand */}
             <div className="flex items-center gap-3">
@@ -168,7 +152,7 @@ export default function DashboardLayout({ config, children }: DashboardLayoutPro
               transition: 'max-height 0.35s ease-in-out, opacity 0.25s ease-in-out',
             }}
           >
-            <div className="border-t border-border/30 bg-background/95 backdrop-blur-md px-3 py-2 space-y-1">
+            <div className="border-t border-border/30 bg-background px-3 py-2 space-y-1">
               {config.navItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
