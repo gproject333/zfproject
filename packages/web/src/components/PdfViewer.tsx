@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import {X, Download, ExternalLink, ZoomIn, ZoomOut, ChevronRight, ChevronLeft, FileText, AlertTriangle, GripVertical} from "lucide-react";
-import { buttonVariants, Spinner} from "@/components/ui";
+import { buttonVariants } from "@/components/ui";
 import OliveSpinner from "@/components/OliveSpinner";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -30,6 +31,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
   const [panelWidth, setPanelWidth] = useState(DEFAULT_WIDTH);
   const [isDragging, setIsDragging] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const pageInputRef = useRef<HTMLInputElement>(null);
   const dragStartX = useRef(0);
@@ -48,6 +50,30 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
     setPanelWidth(clampWidth(DEFAULT_WIDTH));
     requestAnimationFrame(() => setVisible(true));
   }, [clampWidth]);
+
+  // Lock background scroll while the viewer is open. The viewer itself is
+  // portaled to document.body (see the return) — the radical fix for the
+  // footer/navbar bleeding over it: it escapes the `animate-fade-in` wrapper
+  // whose transient opacity<1 creates a stacking context that trapped the
+  // old z-[100]. Safe to touch `document` directly — PdfViewerLazy loads this
+  // with `ssr: false`, so it only ever renders on the client.
+  useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+
+  // Drive the full-screen-on-mobile layout. Drag-to-resize handles and the
+  // centered desktop panel only make sense on pointer-driven widths.
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -117,9 +143,9 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
     </div>
   );
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[120] flex items-center justify-center md:p-4"
       aria-modal="true"
       role="dialog"
       style={{ cursor: isDragging ? "col-resize" : undefined }}
@@ -135,17 +161,17 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
 
       {/* Panel */}
       <div
-        className="relative flex flex-col bg-card ds-border ds-shadow-lg rounded-xl overflow-hidden w-full max-w-[calc(100vw-32px)]"
+        className="relative flex flex-col bg-card ds-border ds-shadow-lg overflow-hidden rounded-none md:rounded-xl w-full md:max-w-[calc(100vw-32px)]"
         style={{
-          width: panelWidth,
-          height: "min(94vh, 1100px)",
+          width: isMobile ? "100%" : panelWidth,
+          height: isMobile ? "100%" : "min(94vh, 1100px)",
           transition: isDragging ? "none" : "transform 300ms ease-out, opacity 300ms ease-out",
-          transform: visible ? "scale(1)" : "scale(0.95)",
+          transform: visible ? "scale(1)" : "scale(0.97)",
           opacity: visible ? 1 : 0,
         }}
       >
-        {renderDragHandle(1)}
-        {renderDragHandle(-1)}
+        {!isMobile && renderDragHandle(1)}
+        {!isMobile && renderDragHandle(-1)}
 
         {/* Header */}
         <div className="flex items-center gap-3 px-5 py-3 border-b-2 border-foreground/10 shrink-0">
@@ -246,6 +272,7 @@ export default function PdfViewer({ url, title, onClose }: PdfViewerProps) {
           </Document>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
