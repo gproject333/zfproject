@@ -57,14 +57,14 @@ export default function UpcomingMeetingsCard() {
       </header>
 
       {upcoming.length > 0 && (
-        <section className="mb-4 last:mb-0">
+        <section className="mb-3 last:mb-0">
           <SectionLabel
             icon={<CalendarClock className="w-3.5 h-3.5" />}
             label="القادمة"
             count={upcoming.length}
             tone="accent"
           />
-          <ul className="space-y-3 mt-2.5">
+          <ul className="space-y-2 mt-2">
             {upcoming.map((m) => (
               <li key={m._id}>
                 <MeetingRow meeting={m} />
@@ -75,14 +75,14 @@ export default function UpcomingMeetingsCard() {
       )}
 
       {past.length > 0 && (
-        <section className={upcoming.length > 0 ? "pt-4 border-t border-foreground/[0.08]" : ""}>
+        <section className={upcoming.length > 0 ? "pt-3 border-t border-foreground/[0.08]" : ""}>
           <SectionLabel
             icon={<History className="w-3.5 h-3.5" />}
             label="السابقة"
             count={past.length}
             tone="muted"
           />
-          <ul className="space-y-3 mt-2.5">
+          <ul className="space-y-2 mt-2">
             {visiblePast.map((m) => (
               <li key={m._id}>
                 <MeetingRow meeting={m} isPast />
@@ -149,17 +149,17 @@ function MeetingRow({ meeting, isPast = false }: { meeting: Meeting; isPast?: bo
     : "bg-gradient-to-br from-accent to-accent/80 text-accent-foreground";
 
   const body = (
-    <div className="flex items-start gap-3">
+    <div className="flex items-center gap-2.5">
       <div
-        className={`flex flex-col items-center justify-center w-14 shrink-0 rounded-lg p-2 shadow-sm ${dateBlockClass}`}
+        className={`flex flex-col items-center justify-center w-10 shrink-0 rounded-md py-1 shadow-sm ${dateBlockClass}`}
       >
-        <span className="text-[10px] font-bold uppercase tracking-wide">
+        <span className="text-[9px] font-bold uppercase tracking-wide leading-none">
           {date.toLocaleDateString("ar-EG", { month: "short" })}
         </span>
-        <span className="text-xl font-black leading-none">{date.getDate()}</span>
+        <span className="text-base font-black leading-tight">{date.getDate()}</span>
       </div>
-      <div className="flex-1 min-w-0 space-y-1">
-        <p className="font-extrabold text-sm leading-snug flex flex-wrap items-center gap-x-1.5 gap-y-1">
+      <div className="flex-1 min-w-0">
+        <p className="font-bold text-sm leading-tight flex items-center gap-1.5 flex-wrap">
           <span>
             {dateLabel} —{" "}
             <span className={isPast ? "text-muted-foreground" : "text-accent"}>
@@ -167,35 +167,37 @@ function MeetingRow({ meeting, isPast = false }: { meeting: Meeting; isPast?: bo
             </span>
           </span>
           {isPast && (
-            <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+            <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
               منتهٍ
             </span>
           )}
         </p>
-        {meeting.location && (
-          <p className="text-xs text-muted-foreground font-medium flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate" dir="auto">
-              {meeting.location}
-            </span>
+        {(meeting.location || meeting.supervisorName) && (
+          <p className="text-[11px] text-muted-foreground font-medium flex items-center gap-x-2.5 gap-y-0.5 flex-wrap mt-0.5">
+            {meeting.location && (
+              <span className="inline-flex items-center gap-1 min-w-0">
+                <MapPin className="w-3 h-3 shrink-0" />
+                <span className="truncate" dir="auto">{meeting.location}</span>
+              </span>
+            )}
+            {meeting.supervisorName && (
+              <span className="inline-flex items-center gap-1">
+                <UserIcon className="w-3 h-3 shrink-0" />
+                {meeting.supervisorName}
+              </span>
+            )}
           </p>
         )}
         {meeting.notes && (
-          <p className="text-xs text-foreground/80 font-medium line-clamp-2 leading-relaxed">
+          <p className="text-[11px] text-foreground/70 font-medium line-clamp-1 mt-0.5">
             {meeting.notes}
-          </p>
-        )}
-        {meeting.supervisorName && (
-          <p className="text-[10px] text-muted-foreground font-bold flex items-center gap-1">
-            <UserIcon className="w-3 h-3" />
-            مع {meeting.supervisorName}
           </p>
         )}
       </div>
     </div>
   );
 
-  const baseClass = `block rounded-xl border p-4 transition-all ${
+  const baseClass = `block rounded-lg border px-3 py-2.5 transition-all ${
     isPast
       ? "border-foreground/[0.06] bg-card/60 opacity-90"
       : "border-foreground/[0.08] bg-card"
