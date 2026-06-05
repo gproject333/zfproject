@@ -2,10 +2,10 @@
 
 import { RefObject } from "react";
 import { useQuery } from "convex/react";
-import { Camera, MessageCircle, FileText } from "lucide-react";
+import { Camera, MessageCircle, FileText, Pencil, Trash2 } from "lucide-react";
 import { api } from "@smart-zuj/convex";
 import { useStudentProfile } from "../../hooks/useStudentProfile";
-import { Card } from "@/components/ui";
+import { Button, Card } from "@/components/ui";
 
 const ROLE_LABEL: Record<string, string> = {
   student: "طالب",
@@ -20,6 +20,10 @@ interface ProfileHeaderProps {
   handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   /** When false (supervisor / non-student surface), skip the applications chip. */
   showApplicationStats?: boolean;
+  /** Edit-mode flag — controls avatar editing + the header edit button. */
+  isEditing: boolean;
+  onEdit: () => void;
+  onRequestDeleteAvatar: () => void;
 }
 
 export function ProfileHeader({
@@ -27,6 +31,9 @@ export function ProfileHeader({
   fileInputRef,
   handleAvatarChange,
   showApplicationStats = true,
+  isEditing,
+  onEdit,
+  onRequestDeleteAvatar,
 }: ProfileHeaderProps) {
   // Only fetch stats when we're actually going to render the chip — saves a
   // Convex round-trip on the supervisor profile, which doesn't show it.
@@ -48,31 +55,68 @@ export function ProfileHeader({
     infoBits.push(user.college);
   }
 
+  const avatarInner = profile.avatarPreviewUrl ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={profile.avatarPreviewUrl}
+      alt="الصورة الشخصية"
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-muted-foreground">
+      {user?.name?.charAt(0) ?? "?"}
+    </div>
+  );
+
   return (
-    <Card className="p-6 sm:p-7 overflow-hidden">
-      <div className="flex flex-col sm:flex-row items-start gap-5">
-        {/* Avatar */}
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full ds-border overflow-hidden bg-muted group shrink-0"
-          aria-label="تغيير الصورة الشخصية"
+    <Card className="p-6 sm:p-7 overflow-hidden relative">
+      {/* Top-trailing edit toggle — only the entry point into edit mode. */}
+      {!isEditing && (
+        <Button
+          onPress={onEdit}
+          variant="outline"
+          size="sm"
+          className="absolute top-4 left-4 z-10"
         >
-          {profile.avatarPreviewUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={profile.avatarPreviewUrl}
-              alt="الصورة الشخصية"
-              className="w-full h-full object-cover"
-            />
+          <Pencil className="w-4 h-4" />
+          تعديل الملف
+        </Button>
+      )}
+
+      <div className="flex flex-col sm:flex-row items-start gap-5">
+        {/* Avatar — clickable to change only in edit mode. */}
+        <div className="relative shrink-0">
+          {isEditing ? (
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full ds-border overflow-hidden bg-muted group block"
+              aria-label="تغيير الصورة الشخصية"
+            >
+              {avatarInner}
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Camera className="w-7 h-7 text-white" />
+              </div>
+            </button>
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-muted-foreground">
-              {user?.name?.charAt(0) ?? "?"}
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full ds-border overflow-hidden bg-muted">
+              {avatarInner}
             </div>
           )}
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <Camera className="w-7 h-7 text-white" />
-          </div>
+
+          {isEditing && profile.hasAvatar && (
+            <button
+              type="button"
+              onClick={onRequestDeleteAvatar}
+              disabled={profile.deletingAvatar}
+              aria-label="حذف الصورة الشخصية"
+              title="حذف الصورة"
+              className="absolute -bottom-1 -left-1 w-8 h-8 rounded-full bg-destructive text-white ds-border flex items-center justify-center hover:bg-destructive/90 transition-colors disabled:opacity-50"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
+
           <input
             ref={fileInputRef}
             type="file"
@@ -80,7 +124,7 @@ export function ProfileHeader({
             className="hidden"
             onChange={handleAvatarChange}
           />
-        </button>
+        </div>
 
         {/* Identity + chips */}
         <div className="flex-1 min-w-0 w-full">

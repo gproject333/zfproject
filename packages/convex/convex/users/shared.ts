@@ -82,3 +82,18 @@ export const getAvatarUrl = query({
     return await ctx.storage.getUrl(user.avatar);
   },
 });
+
+/**
+ * Permanently removes the signed-in user's avatar: deletes the blob from
+ * storage and clears the `avatar` reference. Idempotent — a no-op when the
+ * user has no avatar set.
+ */
+export const deleteAvatar = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireUser(ctx);
+    if (!user.avatar) return;
+    await ctx.storage.delete(user.avatar);
+    await ctx.db.patch(user._id, { avatar: undefined, updatedAt: Date.now() });
+  },
+});

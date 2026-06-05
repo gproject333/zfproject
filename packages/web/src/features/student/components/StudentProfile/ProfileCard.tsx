@@ -1,6 +1,6 @@
 "use client";
 
-import { Save, Link2, UserRound, GraduationCap } from "lucide-react";
+import { Save, Link2, UserRound, GraduationCap, ExternalLink, X } from "lucide-react";
 import { useStudentProfile } from "../../hooks/useStudentProfile";
 import { Button, Input, Card } from "@/components/ui";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select";
@@ -14,6 +14,33 @@ interface ProfileCardProps {
   collegeOptions: { _id: string; name: string }[];
   /** Full department objects — label is `name`, value is `_id`. */
   departmentOptions: { _id: string; name: string }[];
+  /** When false, fields render read-only; the header drives the toggle. */
+  isEditing: boolean;
+  onCancel: () => void;
+  onSaved: () => void;
+}
+
+/** Read-only label/value row used in the profile's view mode. */
+function ViewRow({ label, value, href }: { label: string; value: string; href?: string }) {
+  return (
+    <div className="flex flex-col gap-0.5 py-2 border-b border-foreground/[0.06] last:border-0">
+      <span className="text-xs font-medium text-muted-foreground">{label}</span>
+      {href ? (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          dir="ltr"
+          className="text-sm font-semibold text-primary hover:underline inline-flex items-center gap-1 break-all text-right"
+        >
+          <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+          {value}
+        </a>
+      ) : (
+        <span className="text-sm font-semibold">{value || "—"}</span>
+      )}
+    </div>
+  );
 }
 
 /**
@@ -31,6 +58,9 @@ export function ProfileCard({
   showAcademicFields,
   collegeOptions,
   departmentOptions,
+  isEditing,
+  onCancel,
+  onSaved,
 }: ProfileCardProps) {
   const linkedinHint =
     profile.form.linkedinUrl &&
@@ -38,10 +68,20 @@ export function ProfileCard({
       ? "يبدأ الرابط عادةً بـ https://"
       : null;
 
+  const collegeName =
+    collegeOptions.find((c) => c._id === profile.form.collegeId)?.name ??
+    profile.user?.college ??
+    "—";
+  const departmentName =
+    departmentOptions.find((d) => d._id === profile.form.departmentId)?.name ??
+    profile.user?.department ??
+    "—";
+
   const handleSubmit = async () => {
     const result = await profile.submit();
     if (result.ok) {
       toast.success("تم حفظ التغييرات");
+      onSaved();
     } else {
       toast.error(result.error);
     }
@@ -63,38 +103,49 @@ export function ProfileCard({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="sm:col-span-2">
-            <label className="block text-xs font-medium mb-1.5">
-              الاسم الكامل
-            </label>
-            <Input
-              fullWidth
-              value={profile.form.name}
-              onChange={(e) => profile.setField("name", e.target.value)}
-              placeholder="الاسم الكامل"
-            />
-          </div>
+        {isEditing ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium mb-1.5">
+                الاسم الكامل
+              </label>
+              <Input
+                fullWidth
+                value={profile.form.name}
+                onChange={(e) => profile.setField("name", e.target.value)}
+                placeholder="الاسم الكامل"
+              />
+            </div>
 
-          <div className="sm:col-span-2">
-            <label className="block text-xs font-medium mb-1.5 flex items-center gap-1.5">
-              <Link2 className="w-3.5 h-3.5 text-[#0A66C2]" />
-              رابط LinkedIn
-            </label>
-            <Input
-              fullWidth
-              value={profile.form.linkedinUrl}
-              onChange={(e) => profile.setField("linkedinUrl", e.target.value)}
-              placeholder="https://linkedin.com/in/..."
-              dir="ltr"
-            />
-            {linkedinHint && (
-              <p className="text-[11px] text-muted-foreground font-medium mt-1">
-                {linkedinHint}
-              </p>
-            )}
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium mb-1.5 flex items-center gap-1.5">
+                <Link2 className="w-3.5 h-3.5 text-[#0A66C2]" />
+                رابط LinkedIn
+              </label>
+              <Input
+                fullWidth
+                value={profile.form.linkedinUrl}
+                onChange={(e) => profile.setField("linkedinUrl", e.target.value)}
+                placeholder="https://linkedin.com/in/..."
+                dir="ltr"
+              />
+              {linkedinHint && (
+                <p className="text-[11px] text-muted-foreground font-medium mt-1">
+                  {linkedinHint}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div>
+            <ViewRow label="الاسم الكامل" value={profile.form.name} />
+            <ViewRow
+              label="رابط LinkedIn"
+              value={profile.form.linkedinUrl || "—"}
+              href={profile.form.linkedinUrl || undefined}
+            />
+          </div>
+        )}
       </section>
 
       {/* Section: academic — students only */}
@@ -112,71 +163,86 @@ export function ProfileCard({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-medium mb-1.5">الكلية</label>
-              <Select
-                value={profile.form.collegeId}
-                onValueChange={(v) => {
-                  profile.setField("collegeId", v);
-                  profile.setField("departmentId", "");
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="اختيار الكلية" />
-                </SelectTrigger>
-                <SelectContent>
-                  {collegeOptions.map((c) => (
-                    <SelectItem key={c._id} value={c._id}>
-                      {c.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          {isEditing ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-medium mb-1.5">الكلية</label>
+                <Select
+                  value={profile.form.collegeId}
+                  onValueChange={(v) => {
+                    profile.setField("collegeId", v);
+                    profile.setField("departmentId", "");
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="اختيار الكلية" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {collegeOptions.map((c) => (
+                      <SelectItem key={c._id} value={c._id}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div>
-              <label className="block text-xs font-medium mb-1.5">التخصص</label>
-              <Select
-                value={profile.form.departmentId}
-                onValueChange={(v) => profile.setField("departmentId", v)}
-                isDisabled={!profile.form.collegeId}
-              >
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={
-                      profile.form.collegeId
-                        ? "اختيار التخصص"
-                        : "يُرجى اختيار الكلية أولًا."
-                    }
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {departmentOptions.map((d) => (
-                    <SelectItem key={d._id} value={d._id}>
-                      {d.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div>
+                <label className="block text-xs font-medium mb-1.5">التخصص</label>
+                <Select
+                  value={profile.form.departmentId}
+                  onValueChange={(v) => profile.setField("departmentId", v)}
+                  isDisabled={!profile.form.collegeId}
+                >
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={
+                        profile.form.collegeId
+                          ? "اختيار التخصص"
+                          : "يُرجى اختيار الكلية أولًا."
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {departmentOptions.map((d) => (
+                      <SelectItem key={d._id} value={d._id}>
+                        {d.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              <ViewRow label="الكلية" value={collegeName} />
+              <ViewRow label="التخصص" value={departmentName} />
+            </div>
+          )}
         </section>
       )}
 
-      <Button
-        onPress={() => void handleSubmit()}
-        isDisabled={profile.saving}
-        variant="secondary"
-        fullWidth
-      >
-        {profile.saving ? (
-          <OliveSpinner size="xs" className="text-current" />
-        ) : (
-          <Save className="w-4 h-4" />
-        )}
-        حفظ التغييرات
-      </Button>
+      {isEditing && (
+        <div className="flex gap-3">
+          <Button onPress={onCancel} isDisabled={profile.saving} variant="outline" className="flex-1">
+            <X className="w-4 h-4" />
+            إلغاء
+          </Button>
+          <Button
+            onPress={() => void handleSubmit()}
+            isDisabled={profile.saving}
+            variant="secondary"
+            className="flex-[2]"
+          >
+            {profile.saving ? (
+              <OliveSpinner size="xs" className="text-current" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+            حفظ التغييرات
+          </Button>
+        </div>
+      )}
     </Card>
   );
 }

@@ -25,12 +25,14 @@ export function useStudentProfile() {
   const user = useQuery(api.users.shared.currentUser);
   const avatarUrl = useQuery(api.users.shared.getAvatarUrl);
   const updateProfile = useMutation(api.users.shared.updateProfile);
+  const deleteAvatarMut = useMutation(api.users.shared.deleteAvatar);
   const generateUploadUrl = useMutation(
     api.users.shared.generateAvatarUploadUrl,
   );
 
   const [form, setForm] = useState<ProfileFormState>(EMPTY);
   const [saving, setSaving] = useState(false);
+  const [deletingAvatar, setDeletingAvatar] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -64,6 +66,47 @@ export function useStudentProfile() {
   const avatarPreviewUrl = form.avatarFile
     ? URL.createObjectURL(form.avatarFile)
     : avatarUrl ?? null;
+
+  /** Whether there's any avatar to remove — a saved one or a pending pick. */
+  const hasAvatar = Boolean(form.avatarFile || avatarUrl);
+
+  /** Re-hydrate the form from the saved user — used by "cancel edit". */
+  const resetForm = useCallback(() => {
+    if (!user) return;
+    setForm({
+      name: user.name ?? "",
+      collegeId: (user.collegeId as string) ?? "",
+      departmentId: (user.departmentId as string) ?? "",
+      linkedinUrl: user.linkedinUrl ?? "",
+      avatarFile: null,
+    });
+    setError(null);
+    setSuccess(false);
+  }, [user]);
+
+  /**
+   * Removes the avatar. A freshly-picked (unsaved) file is cleared locally;
+   * an already-saved avatar is deleted on the server via `deleteAvatar`.
+   */
+  const removeAvatar = useCallback(async () => {
+    if (form.avatarFile) {
+      setForm((prev) => ({ ...prev, avatarFile: null }));
+      setSuccess(false);
+      return { ok: true as const };
+    }
+    if (!avatarUrl) return { ok: true as const };
+    setDeletingAvatar(true);
+    try {
+      await deleteAvatarMut();
+      return { ok: true as const };
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "تعذّر حذف الصورة.";
+      setError(msg);
+      return { ok: false as const, error: msg };
+    } finally {
+      setDeletingAvatar(false);
+    }
+  }, [form.avatarFile, avatarUrl, deleteAvatarMut]);
 
   async function uploadAvatar(file: File): Promise<Id<"_storage">> {
     const url = await generateUploadUrl();
@@ -126,6 +169,10 @@ export function useStudentProfile() {
     success,
     submit,
     avatarPreviewUrl,
+    hasAvatar,
+    removeAvatar,
+    deletingAvatar,
+    resetForm,
     loading: user === undefined,
   };
 }

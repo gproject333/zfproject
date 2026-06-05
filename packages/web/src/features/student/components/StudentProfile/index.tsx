@@ -1,12 +1,15 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { Trash2 } from "lucide-react";
 import { useStudentProfile } from "../../hooks/useStudentProfile";
 import { usePasswordChange } from "../../hooks/usePasswordChange";
 import { SkeletonDashboard } from "@/components/ui/Skeleton";
 import { useQuery } from "convex/react";
 import { api } from "@smart-zuj/convex";
 import { Id } from "@smart-zuj/convex";
+import { toast } from "@/lib/toast";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { ProfileHeader } from "./ProfileHeader";
 import { ProfileCard } from "./ProfileCard";
 import { SecurityCard } from "./SecurityCard";
@@ -34,6 +37,32 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
     code: "",
     newPassword: "",
   });
+  // The profile opens in read-only "view" mode; the user explicitly enters
+  // edit mode to change fields or the avatar.
+  const [isEditing, setIsEditing] = useState(false);
+  const [confirmDeleteAvatar, setConfirmDeleteAvatar] = useState(false);
+
+  const cancelEdit = () => {
+    profile.resetForm();
+    setIsEditing(false);
+  };
+
+  // A freshly-picked (unsaved) avatar is cleared immediately; an already-saved
+  // one needs a confirm since deletion is permanent.
+  const requestDeleteAvatar = () => {
+    if (profile.form.avatarFile) {
+      void profile.removeAvatar();
+      return;
+    }
+    setConfirmDeleteAvatar(true);
+  };
+
+  const handleDeleteAvatar = async () => {
+    const res = await profile.removeAvatar();
+    if (res.ok) toast.success("تم حذف الصورة الشخصية");
+    else toast.error(res.error);
+    setConfirmDeleteAvatar(false);
+  };
 
   // Hooks must run unconditionally — even when the user data hasn't loaded yet.
   const colleges = useQuery(api.colleges.list, {});
@@ -62,6 +91,9 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
         fileInputRef={fileInputRef}
         handleAvatarChange={handleAvatarChange}
         showApplicationStats={showAcademicFields}
+        isEditing={isEditing}
+        onEdit={() => setIsEditing(true)}
+        onRequestDeleteAvatar={requestDeleteAvatar}
       />
 
       <div className="grid gap-6 lg:grid-cols-12">
@@ -71,6 +103,9 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
             showAcademicFields={showAcademicFields}
             collegeOptions={collegeOptions}
             departmentOptions={departmentOptions}
+            isEditing={isEditing}
+            onCancel={cancelEdit}
+            onSaved={() => setIsEditing(false)}
           />
         </div>
         <div className="lg:col-span-5 space-y-6">
@@ -84,6 +119,21 @@ export default function StudentProfile({ showAcademicFields = true }: StudentPro
           <AccountInfoCard user={profile.user} />
         </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmDeleteAvatar}
+        onOpenChange={(open) => {
+          if (!profile.deletingAvatar) setConfirmDeleteAvatar(open);
+        }}
+        title="حذف الصورة الشخصية"
+        description="سيتم حذف صورتك الشخصية نهائيًا. هل أنت متأكد؟"
+        icon={<Trash2 className="w-6 h-6 text-destructive" />}
+        destructive
+        confirmLabel="نعم، حذف"
+        cancelLabel="إلغاء"
+        isSubmitting={profile.deletingAvatar}
+        onConfirm={() => void handleDeleteAvatar()}
+      />
     </div>
   );
 }
