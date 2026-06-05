@@ -1,13 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useMutation } from "convex/react";
 import { Edit3, X, Trash2, FileQuestion } from "lucide-react";
+import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
 import PdfViewer from "@/components/PdfViewerLazy";
 import ProjectDetailsCard from "@/features/applications/components/ProjectDetailsCard";
 import AttachmentsSection from "@/features/applications/components/AttachmentsSection";
 import SupervisorFeedbackCard from "@/features/applications/components/SupervisorFeedbackCard";
+import { useFileUpload } from "@/features/applications/hooks/useFileUpload";
 import { useStudentApplicationDetails } from "@/features/student/hooks/useStudentApplicationDetails";
+import { toast } from "@/lib/toast";
+import { getConvexErrorMessage } from "@/lib/errors";
 import ApplicationEditForm from "./ApplicationEditForm";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import StudentApplicationHero from "./StudentApplicationHero";
@@ -42,6 +48,41 @@ export default function StudentApplicationDetails() {
     handleDelete,
     goBack,
   } = useStudentApplicationDetails(appId);
+
+  // Quick-attach support: let the owner add/replace the PDF or video straight
+  // from the attachments card on an editable draft, without entering the full
+  // edit form.
+  const updateApplication = useMutation(api.applications.student.updateApplication);
+  const { uploadFile } = useFileUpload();
+  const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+
+  const handleAttach = async (kind: "pdf" | "video", file: File) => {
+    if (!app) return;
+    const maxBytes = kind === "pdf" ? 10 * 1024 * 1024 : 100 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      toast.error(
+        kind === "pdf"
+          ? "يجب ألّا يتجاوز حجم الملف 10MB"
+          : "يجب ألّا يتجاوز حجم الفيديو 100MB",
+      );
+      return;
+    }
+    const setUploading = kind === "pdf" ? setUploadingPdf : setUploadingVideo;
+    setUploading(true);
+    try {
+      const storageId = await uploadFile(file);
+      await updateApplication({
+        id: app._id,
+        ...(kind === "pdf" ? { pdfFileId: storageId } : { videoFileId: storageId }),
+      });
+      toast.success(kind === "pdf" ? "تم إرفاق ملف PDF" : "تم إرفاق الفيديو");
+    } catch (e: unknown) {
+      toast.error(getConvexErrorMessage(e, "تعذّر إرفاق الملف، يُرجى المحاولة مجددًا."));
+    } finally {
+      setUploading(false);
+    }
+  };
 
   if (app === undefined) {
     return (
@@ -176,6 +217,11 @@ export default function StudentApplicationDetails() {
               videoUrl={videoUrl}
               onShowPdf={() => setShowPdf(true)}
               stack
+              editable={canEdit}
+              onAttachPdf={(file) => void handleAttach("pdf", file)}
+              onAttachVideo={(file) => void handleAttach("video", file)}
+              uploadingPdf={uploadingPdf}
+              uploadingVideo={uploadingVideo}
             />
           </div>
         </div>
