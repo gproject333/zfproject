@@ -1,5 +1,6 @@
 import { query, mutation, internalMutation } from "../_generated/server";
-import { v } from "convex/values";
+import type { MutationCtx } from "../_generated/server";
+import { v, ConvexError } from "convex/values";
 import { requireAdmin, requireSupervisor, getOptionalSupervisor } from "../lib/auth";
 import { internal } from "../_generated/api";
 
@@ -169,6 +170,14 @@ export const createUserByAdmin = mutation({
   },
 });
 
+export const getUserById = query({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    await requireAdmin(ctx);
+    return await ctx.db.get(args.userId);
+  },
+});
+
 export const getAllUsers = query({
   args: {
     role: v.optional(
@@ -230,11 +239,33 @@ export const getAdminStats = query({
   },
 });
 
+/** Counts admins that are still active — used to protect the last admin. */
+async function countActiveAdmins(ctx: MutationCtx): Promise<number> {
+  const admins = await ctx.db
+    .query("users")
+    .withIndex("by_role", (q) => q.eq("role", "admin"))
+    .collect();
+  return admins.filter((a) => a.isActive !== false).length;
+}
+
 export const toggleUserActive = mutation({
   args: { userId: v.id("users"), isActive: v.boolean() },
   handler: async (ctx, args) => {
     const admin = await requireAdmin(ctx);
     const target = await ctx.db.get(args.userId);
+    if (!target) throw new ConvexError("المستخدم غير موجود");
+
+    // Freezing guards: an admin must not lock themselves out, and the
+    // platform must always keep at least one active admin who can manage it.
+    if (!args.isActive) {
+      if (args.userId === admin._id) {
+        throw new ConvexError("لا يمكنك تجميد حسابك الخاص.");
+      }
+      if (target.role === "admin" && (await countActiveAdmins(ctx)) <= 1) {
+        throw new ConvexError("لا يمكن تجميد آخر مدير فعّال في المنصّة.");
+      }
+    }
+
     await ctx.db.patch(args.userId, { isActive: args.isActive });
     await ctx.runMutation(internal.activityLogs.log, {
       actorId: admin._id,
@@ -246,6 +277,140 @@ export const toggleUserActive = mutation({
       entityType: "user",
       entityId: args.userId,
     });
+  },
+});
+
+export const updateUserByAdmin = mutation({
+  args: {
+    userId: v.id("users"),
+    name: v.optional(v.string()),
+    department: v.optional(v.string()),
+    phone: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const admin = await requireAdmin(ctx);
+    const target = await ctx.db.get(args.userId);
+    if (!target) throw new ConvexError("المستخدم غير موجود");
+
+    const updates: Record<string, unknown> = { updatedAt: Date.now() };
+    if (args.name !== undefined) updates.name = args.name;
+    if (args.department !== undefined) updates.department = args.department;
+    if (args.phone !== undefined) updates.phone = args.phone;
+    await ctx.db.patch(args.userId, updates);
+
+    await ctx.runMutation(internal.activityLogs.log, {
+      actorId: admin._id,
+      actorName: admin.name ?? admin.email,
+      actorRole: "admin",
+      action: `عدّل بيانات حساب ${args.name ?? target.name ?? target.email}`,
+      entityType: "user",
+      entityId: args.userId,
+    });
+  },
+});
+
+/**
+ * Hard-deletes a user and every row that belongs to them, branching by role.
+ * Internal-only — the public path is the `deleteUserByAdmin` action, which
+ * also removes the Clerk account and enforces the admin/self/last-admin
+ * guards. Storage files (PDFs, videos, avatars) are removed too so we don't
+ * leak orphaned blobs.
+ */
+export const deleteUserCascade = internalMutation({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.userId);
+    if (!user) return;
+
+    const deleteFile = async (id: typeof user.avatar) => {
+      if (id) {
+        try {
+          await ctx.storage.delete(id);
+        } catch {
+          // Blob already gone — nothing to clean up.
+        }
+      }
+    };
+
+    if (user.role === "student") {
+      const apps = await ctx.db
+        .query("applications")
+        .withIndex("by_student", (q) => q.eq("studentId", args.userId))
+        .collect();
+      for (const app of apps) {
+        const reviews = await ctx.db
+          .query("applicationReviews")
+          .withIndex("by_application", (q) => q.eq("applicationId", app._id))
+          .collect();
+        for (const r of reviews) await ctx.db.delete(r._id);
+
+        const assignments = await ctx.db
+          .query("sponsorAssignments")
+          .withIndex("by_application", (q) => q.eq("applicationId", app._id))
+          .collect();
+        for (const a of assignments) await ctx.db.delete(a._id);
+
+        await deleteFile(app.pdfFileId);
+        await deleteFile(app.videoFileId);
+        await ctx.db.delete(app._id);
+      }
+
+      const meetings = await ctx.db
+        .query("meetings")
+        .withIndex("by_student", (q) => q.eq("studentId", args.userId))
+        .collect();
+      for (const m of meetings) await ctx.db.delete(m._id);
+
+      const upgrades = await ctx.db
+        .query("supervisorUpgradeRequests")
+        .withIndex("by_student", (q) => q.eq("studentId", args.userId))
+        .collect();
+      for (const u of upgrades) await ctx.db.delete(u._id);
+
+      const notes = await ctx.db
+        .query("studentNotes")
+        .withIndex("by_user", (q) => q.eq("userId", args.userId))
+        .collect();
+      for (const n of notes) await ctx.db.delete(n._id);
+    } else if (user.role === "supervisor" || user.role === "admin") {
+      // Don't delete students' applications they reviewed — just detach the
+      // current-reviewer pointer so it isn't left dangling.
+      const reviewed = await ctx.db
+        .query("applications")
+        .withIndex("by_reviewer", (q) => q.eq("reviewerId", args.userId))
+        .collect();
+      for (const app of reviewed) {
+        await ctx.db.patch(app._id, { reviewerId: undefined });
+      }
+    } else if (user.role === "sponsor") {
+      const assignments = await ctx.db
+        .query("sponsorAssignments")
+        .withIndex("by_sponsor", (q) => q.eq("sponsorId", args.userId))
+        .collect();
+      for (const a of assignments) await ctx.db.delete(a._id);
+    }
+
+    // Common per-user cleanup for every role.
+    const notifications = await ctx.db
+      .query("notifications")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .collect();
+    for (const n of notifications) await ctx.db.delete(n._id);
+
+    const whatsappVerifications = await ctx.db
+      .query("whatsappVerifications")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .collect();
+    for (const w of whatsappVerifications) await ctx.db.delete(w._id);
+
+    const whatsappOutbox = await ctx.db
+      .query("whatsappOutbox")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .collect();
+    for (const w of whatsappOutbox) await ctx.db.delete(w._id);
+
+    await deleteFile(user.avatar);
+    await ctx.db.delete(args.userId);
   },
 });
 

@@ -58,6 +58,7 @@ export const adminNavItems: NavItem[] = [
   { label: "الطلاب", href: "/admin/students", icon: GraduationCap },
   { label: "المشرفون", href: "/admin/supervisors", icon: Users },
   { label: "الداعمون", href: "/admin/sponsors", icon: Building2 },
+  { label: "المدراء", href: "/admin/admins", icon: ShieldCheck },
   { label: "إدارة الكليات", href: "/admin/colleges", icon: BookOpen },
   { label: "طلبات الترقية", href: "/admin/upgrade-requests", icon: TrendingUp },
   { label: "سجل النشاط", href: "/admin/logs", icon: ClipboardList },

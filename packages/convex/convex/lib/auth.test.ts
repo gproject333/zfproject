@@ -16,14 +16,17 @@ const modules = import.meta.glob("../**/*.*s");
 type Role = "student" | "supervisor" | "admin" | "sponsor";
 
 /** Seeds a users row with the given role/clerkId and returns the doc id. */
-async function seedUser(t: ReturnType<typeof convexTest>, opts: { clerkId: string; role?: Role }) {
+async function seedUser(
+  t: ReturnType<typeof convexTest>,
+  opts: { clerkId: string; role?: Role; isActive?: boolean },
+) {
   return await t.run(async (ctx) => {
     return await ctx.db.insert("users", {
       clerkId: opts.clerkId,
       email: `${opts.clerkId}@test.local`,
       name: opts.clerkId,
       role: opts.role,
-      isActive: true,
+      isActive: opts.isActive ?? true,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
@@ -43,6 +46,33 @@ describe("requireUser", () => {
 
     const result = await asUser.run((ctx) => requireUser(ctx));
     expect(result.clerkId).toBe("stu-1");
+  });
+});
+
+describe("frozen accounts (isActive === false)", () => {
+  test("requireUser rejects a frozen account", async () => {
+    const t = convexTest(schema, modules);
+    await seedUser(t, { clerkId: "stu-1", role: "student", isActive: false });
+    const asUser = t.withIdentity({ subject: "stu-1" });
+
+    await expect(asUser.run((ctx) => requireUser(ctx))).rejects.toThrow();
+  });
+
+  test("getOptionalSupervisor / getOptionalAdmin return null when frozen", async () => {
+    const t = convexTest(schema, modules);
+    await seedUser(t, { clerkId: "sup-1", role: "supervisor", isActive: false });
+    await seedUser(t, { clerkId: "adm-1", role: "admin", isActive: false });
+
+    expect(await t.withIdentity({ subject: "sup-1" }).run((ctx) => getOptionalSupervisor(ctx))).toBeNull();
+    expect(await t.withIdentity({ subject: "adm-1" }).run((ctx) => getOptionalAdmin(ctx))).toBeNull();
+  });
+
+  test("getOptionalUser still returns the frozen doc (so the UI can show a block screen)", async () => {
+    const t = convexTest(schema, modules);
+    await seedUser(t, { clerkId: "stu-1", role: "student", isActive: false });
+
+    const result = await t.withIdentity({ subject: "stu-1" }).run((ctx) => getOptionalUser(ctx));
+    expect(result?.isActive).toBe(false);
   });
 });
 

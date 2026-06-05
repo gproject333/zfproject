@@ -9,6 +9,7 @@ import { AlertTriangle, ArrowLeft } from "lucide-react";
 import { api } from "@smart-zuj/convex";
 import { getRoleHomepage } from "@smart-zuj/core";
 import OliveSpinner from "@/components/OliveSpinner";
+import AccountFrozenScreen from "@/components/AccountFrozenScreen";
 
 /**
  * Post-login waiting room. Clerk hands us a session immediately, but the
@@ -54,8 +55,14 @@ export default function LoginRedirectPage() {
     // Wait for the Convex user doc — the hard-timeout branch below renders
     // a manual retry instead of silently bouncing.
     if (user === undefined || user === null) return;
+    // Frozen account — render the block screen below instead of routing in.
+    if (user.isActive === false) return;
     router.replace(getRoleHomepage(user.role));
   }, [authLoading, isAuthenticated, user, timedOut, router]);
+
+  if (isAuthenticated && user && user.isActive === false) {
+    return <AccountFrozenScreen />;
+  }
 
   const stillWaiting = isAuthenticated && (user === undefined || user === null);
 

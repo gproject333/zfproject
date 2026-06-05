@@ -1,3 +1,4 @@
+import { ConvexError } from "convex/values";
 import type { QueryCtx, MutationCtx } from "../_generated/server";
 import type { Doc } from "../_generated/dataModel";
 
@@ -12,10 +13,19 @@ async function getUserFromIdentity(ctx: AnyCtx): Promise<Doc<"users"> | null> {
     .unique();
 }
 
-/** Throws if not signed in. Returns the authenticated user document. */
+/**
+ * Throws if not signed in or if the account has been frozen. Returns the
+ * authenticated user document. Every `require*` helper funnels through here,
+ * so a frozen account (`isActive === false`) is blocked from all protected
+ * queries and mutations platform-wide — the single enforcement point that
+ * makes admin "تجميد" actually mean something.
+ */
 export async function requireUser(ctx: AnyCtx): Promise<Doc<"users">> {
   const user = await getUserFromIdentity(ctx);
   if (!user) throw new Error("غير مسجل دخول");
+  if (user.isActive === false) {
+    throw new ConvexError("حسابك مجمّد. يُرجى مراجعة إدارة المنصّة.");
+  }
   return user;
 }
 
@@ -67,6 +77,7 @@ export async function getOptionalSupervisor(
 ): Promise<Doc<"users"> | null> {
   const user = await getUserFromIdentity(ctx);
   if (!user) return null;
+  if (user.isActive === false) return null;
   if (user.role !== "supervisor" && user.role !== "admin") return null;
   return user;
 }
@@ -80,6 +91,7 @@ export async function getOptionalAdmin(
 ): Promise<Doc<"users"> | null> {
   const user = await getUserFromIdentity(ctx);
   if (!user) return null;
+  if (user.isActive === false) return null;
   if (user.role !== "admin") return null;
   return user;
 }

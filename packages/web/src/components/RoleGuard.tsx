@@ -5,6 +5,7 @@ import { api } from "@smart-zuj/convex";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import OliveSpinner from "@/components/OliveSpinner";
+import AccountFrozenScreen from "@/components/AccountFrozenScreen";
 import { getRoleHomepage, type Role } from "@smart-zuj/core";
 
 interface RoleGuardProps {
@@ -78,6 +79,9 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
       return;
     }
 
+    // Frozen account — render the block screen below, don't redirect.
+    if (user && user.isActive === false) return;
+
     if (user && !isAllowedRole(user.role, allowedRoles)) {
       router.push(getRoleHomepage(user.role));
     }
@@ -97,6 +101,10 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
         <OliveSpinner size="xl" className="text-primary" />
       </div>
     );
+  }
+
+  if (user && user.isActive === false) {
+    return <AccountFrozenScreen />;
   }
 
   if (!isAuthenticated || user === null || !isAllowedRole(user.role, allowedRoles)) {

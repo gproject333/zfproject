@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useAction } from "convex/react";
-import { Plus, X, CheckCircle2 } from "lucide-react";
+import { Plus, X, CheckCircle2, Trash2 } from "lucide-react";
 import { api } from "@smart-zuj/convex";
 import type { Id } from "@smart-zuj/convex";
 import { Button } from "@/components/ui";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { toast } from "@/lib/toast";
+import { getConvexErrorMessage } from "@/lib/errors";
 import ProfileModal, { type UserItem } from "../ProfileModal";
+import EditUserModal from "../EditUserModal";
 import type { UserManagementConfig } from "../config";
 import { CreateUserForm } from "./CreateUserForm";
 import { SearchFilter } from "./SearchFilter";
@@ -23,10 +26,12 @@ export default function UserManagementShell({ config }: { config: UserManagement
   const PageIcon = config.pageIcon;
 
   const users = useQuery(api.users.admin.getAllUsers, { role });
+  const currentUser = useQuery(api.users.shared.currentUser);
   const createUser = useMutation(api.users.admin.createUserByAdmin);
   const createSupervisor = useAction(api.users.adminActions.createSupervisor);
   const createSponsor = useAction(api.users.adminActions.createSponsor);
   const toggleActive = useMutation(api.users.admin.toggleUserActive);
+  const deleteUser = useAction(api.users.adminActions.deleteUserByAdmin);
 
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", department: "", phone: "", password: "" });
@@ -35,6 +40,9 @@ export default function UserManagementShell({ config }: { config: UserManagement
   const [success, setSuccess] = useState("");
   const [search, setSearch] = useState("");
   const [profileUser, setProfileUser] = useState<UserItem | null>(null);
+  const [editUser, setEditUser] = useState<UserItem | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<UserItem | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const filtered = (users ?? []).filter((u) => {
     if (!search.trim()) return true;
@@ -97,8 +105,22 @@ export default function UserManagementShell({ config }: { config: UserManagement
     try {
       await toggleActive({ userId: id, isActive });
       toast.success(isActive ? "تم تفعيل الحساب" : "تم تجميد الحساب");
-    } catch {
-      toast.error("حدث خطأ أثناء تنفيذ العملية");
+    } catch (e: unknown) {
+      toast.error(getConvexErrorMessage(e, "حدث خطأ أثناء تنفيذ العملية"));
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      await deleteUser({ userId: deleteTarget._id });
+      toast.success("تم حذف الحساب نهائيًا");
+      setDeleteTarget(null);
+    } catch (e: unknown) {
+      toast.error(getConvexErrorMessage(e, "تعذّر حذف الحساب، يُرجى المحاولة مجددًا."));
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -161,11 +183,37 @@ export default function UserManagementShell({ config }: { config: UserManagement
         search={search}
         setProfileUser={setProfileUser}
         handleToggle={handleToggle}
+        onEdit={setEditUser}
+        onDelete={setDeleteTarget}
+        currentUserId={currentUser?._id}
       />
 
       {profileUser && (
         <ProfileModal user={profileUser} config={config} onClose={() => setProfileUser(null)} />
       )}
+
+      {editUser && (
+        <EditUserModal
+          user={editUser}
+          showDepartment={config.showDepartment}
+          onClose={() => setEditUser(null)}
+        />
+      )}
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => {
+          if (!open && !deleting) setDeleteTarget(null);
+        }}
+        title="حذف الحساب نهائيًا"
+        description={`سيتم حذف حساب "${deleteTarget?.name ?? deleteTarget?.email ?? ""}" وكل بياناته نهائيًا، ولا يمكن التراجع. هل أنت متأكد؟`}
+        icon={<Trash2 className="w-6 h-6 text-destructive" />}
+        destructive
+        confirmLabel="نعم، حذف نهائي"
+        cancelLabel="إلغاء"
+        isSubmitting={deleting}
+        onConfirm={() => void handleDelete()}
+      />
     </div>
   );
 }

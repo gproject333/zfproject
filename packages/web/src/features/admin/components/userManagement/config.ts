@@ -8,7 +8,7 @@ export interface ColorScheme {
 }
 
 export interface UserManagementConfig {
-  role: "supervisor" | "sponsor";
+  role: "supervisor" | "sponsor" | "admin";
   pageTitle: string;
   pageIcon: LucideIcon;
   formIcon: LucideIcon;
@@ -96,4 +96,36 @@ export const SPONSOR_CONFIG: UserManagementConfig = {
   },
   successMessage: "تم إنشاء حساب الداعم بنجاح.",
   fallbackInitial: "د",
+};
+
+export const ADMIN_CONFIG: UserManagementConfig = {
+  role: "admin",
+  pageTitle: "إدارة المدراء",
+  pageIcon: ShieldCheck,
+  formIcon: ShieldCheck,
+  countLabel: (n) => `${n} مدير مسجَّل`,
+  emptyTitle: "لا يوجد مدراء",
+  emptyDescription: "لا توجد حسابات مدراء لعرضها.",
+  addButtonLabel: "إضافة مدير",
+  formTitle: "بيانات المدير",
+  color: {
+    primary: "var(--primary)",
+    border: "var(--primary)",
+    textOnPrimary: "var(--primary-foreground)",
+  },
+  nameField: { label: "الاسم الكامل *", placeholder: "اسم المدير" },
+  emailPlaceholder: "admin@zuj.edu.jo",
+  phoneLabel: "رقم الهاتف",
+  phonePlaceholder: "07XXXXXXXX",
+  showDepartment: false,
+  // Admin accounts are provisioned out-of-band, not created from this page.
+  hideAddForm: true,
+  formHint: {
+    text: "",
+    bg: "bg-info/10",
+    border: "border-info/30",
+    color: "text-info",
+  },
+  successMessage: "",
+  fallbackInitial: "أ",
 };

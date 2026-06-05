@@ -1,6 +1,6 @@
 "use client";
 
-import { ToggleLeft, ToggleRight, User } from "lucide-react";
+import { ToggleLeft, ToggleRight, User, Pencil, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui";
 import { Id } from "@smart-zuj/convex";
 import type { StudentProfile } from "./types";
@@ -9,9 +9,11 @@ interface StudentsTableProps {
   students: StudentProfile[] | undefined;
   setProfileStudent: (s: StudentProfile) => void;
   handleToggle: (id: Id<"users">, isActive: boolean) => void;
+  onEdit: (s: StudentProfile) => void;
+  onDelete: (s: StudentProfile) => void;
 }
 
-export function StudentsTable({ students, setProfileStudent, handleToggle }: StudentsTableProps) {
+export function StudentsTable({ students, setProfileStudent, handleToggle, onEdit, onDelete }: StudentsTableProps) {
   return (
     <Card className="overflow-hidden">
       {students === undefined ? (
@@ -74,13 +76,20 @@ export function StudentsTable({ students, setProfileStudent, handleToggle }: Stu
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       <button
                         onClick={() => setProfileStudent(student)}
                         className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
                       >
                         <User className="w-3.5 h-3.5" />
                         الملف
+                      </button>
+                      <button
+                        onClick={() => onEdit(student)}
+                        className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                        تعديل
                       </button>
                       <button
                         onClick={() => handleToggle(student._id, !student.isActive)}
@@ -92,6 +101,13 @@ export function StudentsTable({ students, setProfileStudent, handleToggle }: Stu
                           <ToggleLeft className="w-4 h-4 text-muted-foreground" />
                         )}
                         {student.isActive ? "تجميد" : "تفعيل"}
+                      </button>
+                      <button
+                        onClick={() => onDelete(student)}
+                        className="hover:bg-destructive/10 text-destructive rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        حذف
                       </button>
                     </div>
                   </td>

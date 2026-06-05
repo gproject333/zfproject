@@ -1,6 +1,6 @@
 "use client";
 
-import { User, ToggleLeft, ToggleRight } from "lucide-react";
+import { User, ToggleLeft, ToggleRight, Pencil, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui";
 import type { Id } from "@smart-zuj/convex";
 import type { UserItem } from "../ProfileModal";
@@ -13,9 +13,13 @@ interface UsersTableProps {
   search: string;
   setProfileUser: (u: UserItem) => void;
   handleToggle: (id: Id<"users">, isActive: boolean) => void;
+  onEdit: (u: UserItem) => void;
+  onDelete: (u: UserItem) => void;
+  /** The signed-in admin's id — used to disable self toggle/delete. */
+  currentUserId?: Id<"users">;
 }
 
-export function UsersTable({ config, users, filtered, search, setProfileUser, handleToggle }: UsersTableProps) {
+export function UsersTable({ config, users, filtered, search, setProfileUser, handleToggle, onEdit, onDelete, currentUserId }: UsersTableProps) {
   const { role } = config;
   const PageIcon = config.pageIcon;
   return (
@@ -89,7 +93,7 @@ export function UsersTable({ config, users, filtered, search, setProfileUser, ha
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       <button
                         onClick={() => setProfileUser(user)}
                         className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
@@ -98,16 +102,34 @@ export function UsersTable({ config, users, filtered, search, setProfileUser, ha
                         الملف
                       </button>
                       <button
-                        onClick={() => handleToggle(user._id, user.isActive === false)}
+                        onClick={() => onEdit(user)}
                         className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
                       >
-                        {user.isActive !== false ? (
-                          <ToggleRight className="w-4 h-4 text-success" />
-                        ) : (
-                          <ToggleLeft className="w-4 h-4 text-muted-foreground" />
-                        )}
-                        {user.isActive !== false ? "تجميد" : "تفعيل"}
+                        <Pencil className="w-3.5 h-3.5" />
+                        تعديل
                       </button>
+                      {user._id !== currentUserId && (
+                        <button
+                          onClick={() => handleToggle(user._id, user.isActive === false)}
+                          className="hover:bg-foreground/5 rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
+                        >
+                          {user.isActive !== false ? (
+                            <ToggleRight className="w-4 h-4 text-success" />
+                          ) : (
+                            <ToggleLeft className="w-4 h-4 text-muted-foreground" />
+                          )}
+                          {user.isActive !== false ? "تجميد" : "تفعيل"}
+                        </button>
+                      )}
+                      {user._id !== currentUserId && (
+                        <button
+                          onClick={() => onDelete(user)}
+                          className="hover:bg-destructive/10 text-destructive rounded transition-colors text-xs flex items-center gap-1 px-2 py-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          حذف
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
