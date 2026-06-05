@@ -32,9 +32,13 @@ export function useProfileComplete(): ProfileCompleteness {
     return { loading: false, isComplete: false, missing: [], hasUser: false };
   }
 
+  // Accept either the structured FK (collegeId / departmentId — written by the
+  // current profile form) or the deprecated string field (older rows). The
+  // profile form clears the string when it sets the ID, so checking only the
+  // string wrongly flagged a fully-filled profile as missing these fields.
   const missing: string[] = [];
-  if (!user.college?.trim()) missing.push("الكلية");
-  if (!user.department?.trim()) missing.push("التخصص");
+  if (!user.college?.trim() && !user.collegeId) missing.push("الكلية");
+  if (!user.department?.trim() && !user.departmentId) missing.push("التخصص");
 
   return {
     loading: false,
