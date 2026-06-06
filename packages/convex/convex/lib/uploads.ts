@@ -18,6 +18,21 @@ async function fileSize(
   return meta.size;
 }
 
+/**
+ * A submitted application MUST carry both a PDF and an introductory video.
+ * Server-side enforcement of the rule the client form already checks, so it
+ * holds even when a caller bypasses the UI and hits the mutation directly.
+ * Drafts are exempt — only call this on the transition into `under_review`.
+ */
+export function assertAttachmentsPresent(
+  pdfFileId: Id<"_storage"> | undefined,
+  videoFileId: Id<"_storage"> | undefined,
+): void {
+  if (!pdfFileId || !videoFileId) {
+    throw new Error("يجب إرفاق ملف PDF وفيديو تعريفي قبل تقديم الطلب");
+  }
+}
+
 export async function assertPdfWithinLimit(
   ctx: MutationCtx,
   fileId: Id<"_storage">,

@@ -13,6 +13,12 @@ const SHARED_DRAFT = {
   targetAudience: "مزارعو الزيتون في الأردن.",
 };
 
+// A submitted application needs both attachments. Store tiny blobs and
+// return their storage IDs for the submit happy-paths.
+async function storeFile(t: ReturnType<typeof convexTest>) {
+  return await t.run(async (ctx) => ctx.storage.store(new Blob(["demo"])));
+}
+
 async function seedStudent(t: ReturnType<typeof convexTest>, clerkId: string, name = "أحمد") {
   return await t.run(async (ctx) =>
     ctx.db.insert("users", {
@@ -58,14 +64,27 @@ describe("student.createApplication", () => {
     const t = convexTest(schema, modules);
     await seedStudent(t, "stu-1");
     await seedSupervisor(t, "sup-1");
+    const pdfFileId = await storeFile(t);
+    const videoFileId = await storeFile(t);
 
     const id = await t.withIdentity({ subject: "stu-1" }).mutation(
       api.applications.student.createApplication,
-      { ...SHARED_DRAFT, submitNow: true },
+      { ...SHARED_DRAFT, submitNow: true, pdfFileId, videoFileId },
     );
     const created = await t.run((ctx) => ctx.db.get(id));
     expect(created?.status).toBe("under_review");
     expect(typeof created?.submittedAt).toBe("number");
+  });
+
+  test("rejects submitNow=true without PDF + video attachments", async () => {
+    const t = convexTest(schema, modules);
+    await seedStudent(t, "stu-1");
+    await expect(
+      t.withIdentity({ subject: "stu-1" }).mutation(
+        api.applications.student.createApplication,
+        { ...SHARED_DRAFT, submitNow: true },
+      ),
+    ).rejects.toThrow();
   });
 
   test("rejects non-students", async () => {
@@ -105,10 +124,12 @@ describe("student.submitApplication", () => {
     const t = convexTest(schema, modules);
     await seedStudent(t, "stu-1");
     await seedSupervisor(t, "sup-1");
+    const pdfFileId = await storeFile(t);
+    const videoFileId = await storeFile(t);
 
     const id = await t.withIdentity({ subject: "stu-1" }).mutation(
       api.applications.student.createApplication,
-      SHARED_DRAFT,
+      { ...SHARED_DRAFT, pdfFileId, videoFileId },
     );
     await t.withIdentity({ subject: "stu-1" }).mutation(
       api.applications.student.submitApplication,
@@ -117,6 +138,22 @@ describe("student.submitApplication", () => {
 
     const after = await t.run((ctx) => ctx.db.get(id));
     expect(after?.status).toBe("under_review");
+  });
+
+  test("refuses to submit a draft missing its attachments", async () => {
+    const t = convexTest(schema, modules);
+    await seedStudent(t, "stu-1");
+
+    const id = await t.withIdentity({ subject: "stu-1" }).mutation(
+      api.applications.student.createApplication,
+      SHARED_DRAFT,
+    );
+    await expect(
+      t.withIdentity({ subject: "stu-1" }).mutation(
+        api.applications.student.submitApplication,
+        { id },
+      ),
+    ).rejects.toThrow();
   });
 
   test("refuses to submit an application owned by someone else", async () => {

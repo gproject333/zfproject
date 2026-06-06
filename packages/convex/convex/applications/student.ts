@@ -3,7 +3,11 @@ import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import { requireStudent, getOptionalUser } from "../lib/auth";
 import { assertArrayItemsMaxLength, assertMaxLength } from "../lib/validation";
-import { assertPdfWithinLimit, assertVideoWithinLimit } from "../lib/uploads";
+import {
+  assertAttachmentsPresent,
+  assertPdfWithinLimit,
+  assertVideoWithinLimit,
+} from "../lib/uploads";
 import { notifyAllSupervisors } from "../lib/notifications";
 
 export const myApplications = query({
@@ -64,6 +68,9 @@ export const createApplication = mutation({
     }
     if (args.pdfFileId) await assertPdfWithinLimit(ctx, args.pdfFileId);
     if (args.videoFileId) await assertVideoWithinLimit(ctx, args.videoFileId);
+
+    // Submitting straight away requires both attachments (drafts don't).
+    if (args.submitNow) assertAttachmentsPresent(args.pdfFileId, args.videoFileId);
 
     const now = Date.now();
     const { submitNow, ...data } = args;
@@ -157,6 +164,9 @@ export const submitApplication = mutation({
     if (app.studentId !== student._id) throw new Error("غير مصرح");
     if (app.status !== "draft" && app.status !== "needs_modification")
       throw new Error("لا يمكن تقديم طلب في هذه الحالة");
+
+    // Server-side guarantee: no application reaches review without its files.
+    assertAttachmentsPresent(app.pdfFileId, app.videoFileId);
 
     const now = Date.now();
     await ctx.db.patch(args.id, {
