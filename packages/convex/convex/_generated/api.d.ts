@@ -28,6 +28,8 @@ import type * as lib_users from "../lib/users.js";
 import type * as lib_validation from "../lib/validation.js";
 import type * as meetings from "../meetings.js";
 import type * as notifications from "../notifications.js";
+import type * as seedContent from "../seedContent.js";
+import type * as seedImages from "../seedImages.js";
 import type * as socialLinks from "../socialLinks.js";
 import type * as studentNotes from "../studentNotes.js";
 import type * as supervisorUpgradeRequests from "../supervisorUpgradeRequests.js";
@@ -69,6 +71,8 @@ declare const fullApi: ApiFromModules<{
   "lib/validation": typeof lib_validation;
   meetings: typeof meetings;
   notifications: typeof notifications;
+  seedContent: typeof seedContent;
+  seedImages: typeof seedImages;
   socialLinks: typeof socialLinks;
   studentNotes: typeof studentNotes;
   supervisorUpgradeRequests: typeof supervisorUpgradeRequests;
