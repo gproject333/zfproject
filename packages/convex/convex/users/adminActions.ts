@@ -148,3 +148,30 @@ export const createSponsor = action({
     });
   },
 });
+
+export const createAdmin = action({
+  args: {
+    email: v.string(),
+    name: v.string(),
+    password: v.string(),
+    phone: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.runQuery(api.users.shared.currentUser);
+    if (!user || user.role !== "admin") throw new ConvexError("غير مصرح");
+
+    const clerkUser = await createClerkUser(
+      process.env.CLERK_SECRET_KEY!,
+      args.email,
+      args.password,
+      args.name,
+    );
+
+    await ctx.runMutation(internal.users.admin.insertAdmin, {
+      clerkId: clerkUser.id,
+      email: args.email,
+      name: args.name,
+      phone: args.phone,
+    });
+  },
+});

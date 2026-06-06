@@ -30,6 +30,7 @@ export default function UserManagementShell({ config }: { config: UserManagement
   const createUser = useMutation(api.users.admin.createUserByAdmin);
   const createSupervisor = useAction(api.users.adminActions.createSupervisor);
   const createSponsor = useAction(api.users.adminActions.createSponsor);
+  const createAdmin = useAction(api.users.adminActions.createAdmin);
   const toggleActive = useMutation(api.users.admin.toggleUserActive);
   const deleteUser = useAction(api.users.adminActions.deleteUserByAdmin);
 
@@ -80,6 +81,13 @@ export default function UserManagementShell({ config }: { config: UserManagement
           email: formData.email,
           password: formData.password,
           department: formData.department || undefined,
+          phone: formData.phone || undefined,
+        });
+      } else if (role === "admin") {
+        await createAdmin({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
           phone: formData.phone || undefined,
         });
       } else {

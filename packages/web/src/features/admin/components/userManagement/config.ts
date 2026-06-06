@@ -118,14 +118,13 @@ export const ADMIN_CONFIG: UserManagementConfig = {
   phoneLabel: "رقم الهاتف",
   phonePlaceholder: "07XXXXXXXX",
   showDepartment: false,
-  // Admin accounts are provisioned out-of-band, not created from this page.
-  hideAddForm: true,
+  showPasswordField: true,
   formHint: {
-    text: "",
+    text: "يستخدم المدير هذا البريد الإلكتروني وكلمة المرور لتسجيل الدخول عبر صفحة /login، ويحصل على صلاحيات إدارية كاملة.",
     bg: "bg-info/10",
     border: "border-info/30",
     color: "text-info",
   },
-  successMessage: "",
+  successMessage: "تم إنشاء حساب المدير بنجاح.",
   fallbackInitial: "أ",
 };
