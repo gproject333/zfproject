@@ -29,6 +29,7 @@ import type * as lib_validation from "../lib/validation.js";
 import type * as meetings from "../meetings.js";
 import type * as notifications from "../notifications.js";
 import type * as seedContent from "../seedContent.js";
+import type * as seedExtend from "../seedExtend.js";
 import type * as seedImages from "../seedImages.js";
 import type * as socialLinks from "../socialLinks.js";
 import type * as studentNotes from "../studentNotes.js";
@@ -72,6 +73,7 @@ declare const fullApi: ApiFromModules<{
   meetings: typeof meetings;
   notifications: typeof notifications;
   seedContent: typeof seedContent;
+  seedExtend: typeof seedExtend;
   seedImages: typeof seedImages;
   socialLinks: typeof socialLinks;
   studentNotes: typeof studentNotes;
