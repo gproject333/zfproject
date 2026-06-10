@@ -3,7 +3,7 @@ import { v } from "convex/values";
 import { requireAdmin, requireUser } from "./lib/auth";
 import { loadUsersMap } from "./lib/users";
 import { notifyAllAdmins } from "./lib/notifications";
-import { internal } from "./_generated/api";
+import { logActivity } from "./lib/activity";
 
 export const submitRequest = mutation({
   args: {
@@ -141,10 +141,7 @@ export const reviewRequest = mutation({
     }
 
     // Append to the activity log.
-    await ctx.runMutation(internal.activityLogs.log, {
-      actorId: admin._id,
-      actorName: admin.name ?? admin.email,
-      actorRole: "admin",
+    await logActivity(ctx, admin, {
       action:
         args.decision === "approved"
           ? `وافق على ترقية ${student?.name ?? student?.email ?? ""} إلى مشرف`

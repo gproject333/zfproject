@@ -1,6 +1,6 @@
-import { internalMutation, query } from "./_generated/server";
+import { internalMutation } from "../_generated/server";
 import { v } from "convex/values";
-import type { Id } from "./_generated/dataModel";
+import type { Id } from "../_generated/dataModel";
 
 const UNIVERSITY_EMAIL_DOMAINS = [
   "@zuj.edu.jo",
@@ -126,20 +126,5 @@ export const handleClerkWebhook = internalMutation({
         await ctx.db.patch(existing._id, { isActive: false, updatedAt: Date.now() });
       }
     }
-  },
-});
-
-export const getCurrentUser = query({
-  args: {},
-  handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
-
-    return await ctx.db
-      .query("users")
-      .withIndex("by_clerkId", (q) =>
-        q.eq("clerkId", identity.subject)
-      )
-      .unique();
   },
 });

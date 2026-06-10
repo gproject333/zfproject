@@ -27,7 +27,7 @@ describe("whatsapp.requestWhatsappOtp", () => {
     await seedStudent(t);
     const asStudent = t.withIdentity({ subject: "stu-1", tokenIdentifier: "stu-1" });
     await expect(
-      asStudent.mutation(api.whatsapp.requestWhatsappOtp, { phone: "not-a-phone" }),
+      asStudent.mutation(api.whatsapp.otp.requestWhatsappOtp, { phone: "not-a-phone" }),
     ).rejects.toThrow();
   });
 
@@ -36,7 +36,7 @@ describe("whatsapp.requestWhatsappOtp", () => {
     const studentId = await seedStudent(t);
     const asStudent = t.withIdentity({ subject: "stu-1", tokenIdentifier: "stu-1" });
 
-    await asStudent.mutation(api.whatsapp.requestWhatsappOtp, {
+    await asStudent.mutation(api.whatsapp.otp.requestWhatsappOtp, {
       phone: "+962795551234",
     });
 
@@ -61,12 +61,12 @@ describe("whatsapp.requestWhatsappOtp", () => {
     await seedStudent(t);
     const asStudent = t.withIdentity({ subject: "stu-1", tokenIdentifier: "stu-1" });
 
-    await asStudent.mutation(api.whatsapp.requestWhatsappOtp, {
+    await asStudent.mutation(api.whatsapp.otp.requestWhatsappOtp, {
       phone: "+962795551234",
     });
 
     await expect(
-      asStudent.mutation(api.whatsapp.requestWhatsappOtp, { phone: "+962795551234" }),
+      asStudent.mutation(api.whatsapp.otp.requestWhatsappOtp, { phone: "+962795551234" }),
     ).rejects.toThrow(/انتظر/);
   });
 
@@ -88,7 +88,7 @@ describe("whatsapp.requestWhatsappOtp", () => {
       });
     });
 
-    await asStudent.mutation(api.whatsapp.requestWhatsappOtp, {
+    await asStudent.mutation(api.whatsapp.otp.requestWhatsappOtp, {
       phone: "+962795551234",
     });
 
@@ -105,7 +105,7 @@ describe("whatsapp.requestWhatsappOtp", () => {
   test("rejects unauthenticated caller", async () => {
     const t = convexTest(schema, modules);
     await expect(
-      t.mutation(api.whatsapp.requestWhatsappOtp, { phone: "+962795551234" }),
+      t.mutation(api.whatsapp.otp.requestWhatsappOtp, { phone: "+962795551234" }),
     ).rejects.toThrow();
   });
 });
@@ -137,7 +137,7 @@ describe("whatsapp.verifyWhatsappOtp", () => {
     const asStudent = t.withIdentity({ subject: "stu-1", tokenIdentifier: "stu-1" });
     await seedActiveOtp(t, studentId, "123456");
 
-    await asStudent.mutation(api.whatsapp.verifyWhatsappOtp, { code: "123456" });
+    await asStudent.mutation(api.whatsapp.otp.verifyWhatsappOtp, { code: "123456" });
 
     await t.run(async (ctx) => {
       const user = await ctx.db.get(studentId);
@@ -156,7 +156,7 @@ describe("whatsapp.verifyWhatsappOtp", () => {
     const asStudent = t.withIdentity({ subject: "stu-1", tokenIdentifier: "stu-1" });
     await seedActiveOtp(t, studentId, "123456");
 
-    const result = await asStudent.mutation(api.whatsapp.verifyWhatsappOtp, {
+    const result = await asStudent.mutation(api.whatsapp.otp.verifyWhatsappOtp, {
       code: "999999",
     });
     expect(result.ok).toBe(false);
@@ -179,7 +179,7 @@ describe("whatsapp.verifyWhatsappOtp", () => {
     await seedActiveOtp(t, studentId, "123456", { attempts: 5 });
 
     await expect(
-      asStudent.mutation(api.whatsapp.verifyWhatsappOtp, { code: "123456" }),
+      asStudent.mutation(api.whatsapp.otp.verifyWhatsappOtp, { code: "123456" }),
     ).rejects.toThrow();
   });
 
@@ -190,7 +190,7 @@ describe("whatsapp.verifyWhatsappOtp", () => {
     await seedActiveOtp(t, studentId, "123456", { expiresAt: Date.now() - 1 });
 
     await expect(
-      asStudent.mutation(api.whatsapp.verifyWhatsappOtp, { code: "123456" }),
+      asStudent.mutation(api.whatsapp.otp.verifyWhatsappOtp, { code: "123456" }),
     ).rejects.toThrow(/منتهي/);
   });
 
@@ -201,7 +201,7 @@ describe("whatsapp.verifyWhatsappOtp", () => {
     await seedActiveOtp(t, studentId, "123456", { consumed: true });
 
     await expect(
-      asStudent.mutation(api.whatsapp.verifyWhatsappOtp, { code: "123456" }),
+      asStudent.mutation(api.whatsapp.otp.verifyWhatsappOtp, { code: "123456" }),
     ).rejects.toThrow();
   });
 });
@@ -212,12 +212,12 @@ describe("whatsapp.setWhatsappOptOut", () => {
     const studentId = await seedStudent(t);
     const asStudent = t.withIdentity({ subject: "stu-1", tokenIdentifier: "stu-1" });
 
-    await asStudent.mutation(api.whatsapp.setWhatsappOptOut, { optOut: true });
+    await asStudent.mutation(api.whatsapp.otp.setWhatsappOptOut, { optOut: true });
     await t.run(async (ctx) => {
       expect((await ctx.db.get(studentId))?.whatsappOptOut).toBe(true);
     });
 
-    await asStudent.mutation(api.whatsapp.setWhatsappOptOut, { optOut: false });
+    await asStudent.mutation(api.whatsapp.otp.setWhatsappOptOut, { optOut: false });
     await t.run(async (ctx) => {
       expect((await ctx.db.get(studentId))?.whatsappOptOut).toBe(false);
     });
@@ -226,7 +226,7 @@ describe("whatsapp.setWhatsappOptOut", () => {
   test("rejects unauthenticated caller", async () => {
     const t = convexTest(schema, modules);
     await expect(
-      t.mutation(api.whatsapp.setWhatsappOptOut, { optOut: true }),
+      t.mutation(api.whatsapp.otp.setWhatsappOptOut, { optOut: true }),
     ).rejects.toThrow();
   });
 });

@@ -2,6 +2,7 @@
 import { action } from "../_generated/server";
 import { v, ConvexError } from "convex/values";
 import { api, internal } from "../_generated/api";
+import { logActivity } from "../lib/activity";
 
 async function createClerkUser(secretKey: string, email: string, password: string, name: string) {
   if (!secretKey) {
@@ -111,10 +112,7 @@ export const deleteUserByAdmin = action({
     });
     await deleteClerkUser(process.env.CLERK_SECRET_KEY!, target.clerkId);
 
-    await ctx.runMutation(internal.activityLogs.log, {
-      actorId: admin._id,
-      actorName: admin.name ?? admin.email,
-      actorRole: "admin",
+    await logActivity(ctx, admin, {
       action: `حذف حساب ${target.name ?? target.email}`,
       entityType: "user",
       entityId: args.userId,

@@ -2,7 +2,7 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireSupervisor, getOptionalUser } from "./lib/auth";
 import { assertMaxLength } from "./lib/validation";
-import { internal } from "./_generated/api";
+import { logActivity } from "./lib/activity";
 
 const RESOURCE_TYPE = v.union(
   v.literal("video"),
@@ -46,10 +46,7 @@ export const create = mutation({
       createdAt: now,
       updatedAt: now,
     });
-    await ctx.runMutation(internal.activityLogs.log, {
-      actorId: supervisor._id,
-      actorName: supervisor.name ?? supervisor.email,
-      actorRole: supervisor.role ?? "supervisor",
+    await logActivity(ctx, supervisor, {
       action: `أضاف ${TYPE_LABELS[args.type] ?? args.type} جديداً لدليل الريادة: "${args.title}"`,
       entityType: "guide",
       entityId: id,
@@ -75,10 +72,7 @@ export const update = mutation({
       if (val !== undefined) patch[key] = val;
     }
     await ctx.db.patch(id, patch);
-    await ctx.runMutation(internal.activityLogs.log, {
-      actorId: supervisor._id,
-      actorName: supervisor.name ?? supervisor.email,
-      actorRole: supervisor.role ?? "supervisor",
+    await logActivity(ctx, supervisor, {
       action: `عدّل عنصراً في دليل الريادة`,
       entityType: "guide",
       entityId: id,
@@ -92,10 +86,7 @@ export const remove = mutation({
     const supervisor = await requireSupervisor(ctx);
     const item = await ctx.db.get(args.id);
     await ctx.db.delete(args.id);
-    await ctx.runMutation(internal.activityLogs.log, {
-      actorId: supervisor._id,
-      actorName: supervisor.name ?? supervisor.email,
-      actorRole: supervisor.role ?? "supervisor",
+    await logActivity(ctx, supervisor, {
       action: `حذف "${item?.title ?? ""}" من دليل الريادة`,
       entityType: "guide",
       entityId: args.id,

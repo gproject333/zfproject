@@ -1,10 +1,10 @@
-import { internalAction, internalMutation, internalQuery } from "./_generated/server";
-import { internal } from "./_generated/api";
-import { Id } from "./_generated/dataModel";
+import { internalAction, internalMutation, internalQuery } from "../_generated/server";
+import { internal } from "../_generated/api";
+import { Id } from "../_generated/dataModel";
 import { v } from "convex/values";
 
 /**
- * Attaches cover images to the demo articles created by seedContent.ts.
+ * Attaches cover images to the demo articles created by seed/content.ts.
  *
  * Convex stores covers as a file in `_storage` (articles.coverStorageId);
  * the app resolves them via ctx.storage.getUrl(). So we fetch a real photo,
@@ -12,7 +12,7 @@ import { v } from "convex/values";
  * (deterministic per seed, always a valid JPEG) so a production run can't
  * fail on a dead external URL.
  *
- * Run:  npx convex run seedImages:attachCovers --env-file .env.selfhosted
+ * Run:  npx convex run seed/images:attachCovers --env-file .env.selfhosted
  * Idempotent — only touches the known demo articles that lack a cover.
  */
 
@@ -48,7 +48,7 @@ export const attachCovers = internalAction({
   handler: async (
     ctx,
   ): Promise<{ pending: number; attached: number; failed: string[] }> => {
-    const arts = await ctx.runQuery(internal.seedImages.pendingCovers, {});
+    const arts = await ctx.runQuery(internal.seed.images.pendingCovers, {});
     let attached = 0;
     const failed: string[] = [];
     for (let i = 0; i < arts.length; i++) {
@@ -62,7 +62,7 @@ export const attachCovers = internalAction({
         }
         const blob = await res.blob();
         const storageId = await ctx.storage.store(blob);
-        await ctx.runMutation(internal.seedImages.setCover, {
+        await ctx.runMutation(internal.seed.images.setCover, {
           articleId: art.id,
           storageId,
         });
