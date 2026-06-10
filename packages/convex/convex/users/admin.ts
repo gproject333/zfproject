@@ -2,7 +2,7 @@ import { query, mutation, internalMutation } from "../_generated/server";
 import type { MutationCtx } from "../_generated/server";
 import { v, ConvexError } from "convex/values";
 import { requireAdmin, requireSupervisor, getOptionalSupervisor } from "../lib/auth";
-import { internal } from "../_generated/api";
+import { logActivity } from "../lib/activity";
 
 export const getStudentByApplication = query({
   args: { applicationId: v.id("applications") },
@@ -298,10 +298,7 @@ export const toggleUserActive = mutation({
     }
 
     await ctx.db.patch(args.userId, { isActive: args.isActive });
-    await ctx.runMutation(internal.activityLogs.log, {
-      actorId: admin._id,
-      actorName: admin.name ?? admin.email,
-      actorRole: "admin",
+    await logActivity(ctx, admin, {
       action: args.isActive
         ? `فعّل حساب ${target?.name ?? target?.email ?? ""}`
         : `جمّد حساب ${target?.name ?? target?.email ?? ""}`,
@@ -329,10 +326,7 @@ export const updateUserByAdmin = mutation({
     if (args.phone !== undefined) updates.phone = args.phone;
     await ctx.db.patch(args.userId, updates);
 
-    await ctx.runMutation(internal.activityLogs.log, {
-      actorId: admin._id,
-      actorName: admin.name ?? admin.email,
-      actorRole: "admin",
+    await logActivity(ctx, admin, {
       action: `عدّل بيانات حساب ${args.name ?? target.name ?? target.email}`,
       entityType: "user",
       entityId: args.userId,

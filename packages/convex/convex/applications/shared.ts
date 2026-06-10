@@ -1,6 +1,79 @@
 import { query } from "../_generated/server";
+import type { MutationCtx } from "../_generated/server";
 import { v } from "convex/values";
+import type { Doc, Id } from "../_generated/dataModel";
 import { getOptionalUser } from "../lib/auth";
+import { STATUS_LABELS, type SupervisorStatus } from "../lib/statuses";
+import { maybeSendWhatsapp } from "../lib/notifications";
+
+type SupervisorRating = "excellent" | "good" | "average" | "poor";
+
+/**
+ * Apply one reviewed status transition to an application: patch the row,
+ * append the `applicationReviews` audit entry, notify the student, and
+ * queue the WhatsApp dispatch.
+ *
+ * Shared verbatim by the single (`updateApplicationStatus`) and bulk
+ * (`bulkUpdateStatus`) supervisor mutations so the side-effects of a
+ * transition live in exactly one place — change what a transition does
+ * here and both paths stay in lockstep. Callers MUST validate the
+ * transition (`canTransition`) and the student-note requirement
+ * (`requiresStudentNote`) before calling; this helper only writes.
+ */
+export async function writeStatusTransition(
+  ctx: MutationCtx,
+  app: Doc<"applications">,
+  args: {
+    reviewerId: Id<"users">;
+    status: SupervisorStatus;
+    notes?: string;
+    rating?: SupervisorRating;
+    now: number;
+  },
+): Promise<void> {
+  const { reviewerId, status, notes, rating, now } = args;
+
+  const patch: Record<string, unknown> = {
+    status,
+    reviewerId,
+    reviewedAt: now,
+    updatedAt: now,
+  };
+  if (notes !== undefined) patch.supervisorNotes = notes;
+  if (rating !== undefined) patch.supervisorRating = rating;
+  await ctx.db.patch(app._id, patch);
+
+  await ctx.db.insert("applicationReviews", {
+    applicationId: app._id,
+    reviewerId,
+    fromStatus: app.status,
+    toStatus: status,
+    notes,
+    rating,
+    createdAt: now,
+  });
+
+  await ctx.db.insert("notifications", {
+    userId: app.studentId,
+    title: "تحديث حالة الطلب",
+    message: `تم تغيير حالة طلب "${app.projectName}" إلى: ${STATUS_LABELS[status]}`,
+    type: "status_change",
+    applicationId: app._id,
+    read: false,
+    requireAck: true,
+    createdAt: now,
+  });
+
+  await maybeSendWhatsapp(ctx, {
+    userId: app.studentId,
+    kind: "status_change",
+    data: {
+      applicationName: app.projectName,
+      newStatus: status,
+      supervisorNotes: notes ?? "",
+    },
+  });
+}
 
 export const getApplication = query({
   args: { id: v.id("applications") },

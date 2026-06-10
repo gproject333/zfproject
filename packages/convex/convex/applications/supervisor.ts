@@ -6,7 +6,7 @@ import { getOptionalUser, getOptionalSupervisor, requireSupervisor } from "../li
 import { STATUS_LABELS, canTransition, requiresStudentNote } from "../lib/statuses";
 import { assertMaxLength } from "../lib/validation";
 import { loadUsersMap, loadStudentsMap } from "../lib/users";
-import { maybeSendWhatsapp } from "../lib/notifications";
+import { writeStatusTransition } from "./shared";
 
 /**
  * Returns the next application waiting for a supervisor decision, oldest
@@ -287,47 +287,12 @@ export const updateApplicationStatus = mutation({
       );
     }
 
-    const now = Date.now();
-    const patch: Record<string, unknown> = {
+    await writeStatusTransition(ctx, app, {
+      reviewerId: reviewer._id,
       status: args.status,
-      reviewerId: reviewer._id,
-      reviewedAt: now,
-      updatedAt: now,
-    };
-    if (args.supervisorNotes !== undefined) patch.supervisorNotes = args.supervisorNotes;
-    if (args.supervisorRating !== undefined) patch.supervisorRating = args.supervisorRating;
-
-    await ctx.db.patch(args.id, patch);
-
-    await ctx.db.insert("applicationReviews", {
-      applicationId: args.id,
-      reviewerId: reviewer._id,
-      fromStatus: app.status,
-      toStatus: args.status,
       notes: args.supervisorNotes,
       rating: args.supervisorRating,
-      createdAt: now,
-    });
-
-    await ctx.db.insert("notifications", {
-      userId: app.studentId,
-      title: "تحديث حالة الطلب",
-      message: `تم تغيير حالة طلب "${app.projectName}" إلى: ${STATUS_LABELS[args.status]}`,
-      type: "status_change",
-      applicationId: args.id,
-      read: false,
-      requireAck: true,
-      createdAt: now,
-    });
-
-    await maybeSendWhatsapp(ctx, {
-      userId: app.studentId,
-      kind: "status_change",
-      data: {
-        applicationName: app.projectName,
-        newStatus: args.status,
-        supervisorNotes: args.supervisorNotes ?? "",
-      },
+      now: Date.now(),
     });
   },
 });
@@ -378,46 +343,12 @@ export const bulkUpdateStatus = mutation({
         continue;
       }
 
-      const patch: Record<string, unknown> = {
+      await writeStatusTransition(ctx, app, {
+        reviewerId: reviewer._id,
         status: args.status,
-        reviewerId: reviewer._id,
-        reviewedAt: now,
-        updatedAt: now,
-      };
-      if (args.notes !== undefined) patch.supervisorNotes = args.notes;
-      if (args.rating !== undefined) patch.supervisorRating = args.rating;
-
-      await ctx.db.patch(id, patch);
-
-      await ctx.db.insert("applicationReviews", {
-        applicationId: id,
-        reviewerId: reviewer._id,
-        fromStatus: app.status,
-        toStatus: args.status,
         notes: args.notes,
         rating: args.rating,
-        createdAt: now,
-      });
-
-      await ctx.db.insert("notifications", {
-        userId: app.studentId,
-        title: "تحديث حالة الطلب",
-        message: `تم تغيير حالة طلب "${app.projectName}" إلى: ${STATUS_LABELS[args.status]}`,
-        type: "status_change",
-        applicationId: id,
-        read: false,
-        requireAck: true,
-        createdAt: now,
-      });
-
-      await maybeSendWhatsapp(ctx, {
-        userId: app.studentId,
-        kind: "status_change",
-        data: {
-          applicationName: app.projectName,
-          newStatus: args.status,
-          supervisorNotes: args.notes ?? "",
-        },
+        now,
       });
 
       succeeded.push(id);
