@@ -55,10 +55,12 @@ This is a **Next.js + Convex + Clerk** full-stack app using the Next.js App Rout
 - `auth.config.ts` — Clerk JWT provider config (uses `CLERK_JWT_ISSUER_DOMAIN` env var)
 - `http.ts` — HTTP endpoints (e.g. Clerk webhooks via svix)
 - `crons.ts` — scheduled jobs
-- Feature files at the root: `articles.ts`, `banners.ts`, `colleges.ts`, `meetings.ts`, `notifications.ts`, `socialLinks.ts`, `entrepreneurialGuide.ts`, `studentNotes.ts`, `supervisorUpgradeRequests.ts`, `activityLogs.ts`, `files.ts`, `users.ts`
-- Feature folders for larger domains:
+- Feature files at the root: `articles.ts`, `banners.ts`, `colleges.ts`, `meetings.ts`, `notifications.ts`, `socialLinks.ts`, `entrepreneurialGuide.ts`, `studentNotes.ts`, `supervisorUpgradeRequests.ts`, `activityLogs.ts`, `files.ts`
+- Feature folders for larger domains (one concern per file — never a `foo.ts` file *and* a `foo/` folder side by side):
   - `applications/` — `student.ts`, `supervisor.ts`, `sponsor.ts`, `shared.ts`
-  - `users/` — `admin.ts`, `adminActions.ts`, `dev.ts`, `shared.ts`
+  - `users/` — `admin.ts`, `adminActions.ts`, `dev.ts`, `shared.ts`, `webhook.ts` (Clerk user provisioning → `internal.users.webhook.handleClerkWebhook`)
+  - `whatsapp/` — `otp.ts` (public OTP mutations → `api.whatsapp.otp.*`), `actions.ts`, `admin.ts`, `internal.ts`, `helpers.ts`
+  - `seed/` — `content.ts`, `extend.ts`, `images.ts` (one-shot demo seeders, run via `npx convex run seed/<file>:<fn>`)
 - `lib/` — shared helpers (`auth.ts`, `notifications.ts`, `statuses.ts`, `uploads.ts`, `users.ts`, `validation.ts`)
 - `_generated/` — auto-generated; never edit manually; regenerated on `pnpm --filter @smart-zuj/convex dev`
 - Tests are colocated as `*.test.ts` (run with vitest)

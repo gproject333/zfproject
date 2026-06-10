@@ -28,22 +28,22 @@ import type * as lib_users from "../lib/users.js";
 import type * as lib_validation from "../lib/validation.js";
 import type * as meetings from "../meetings.js";
 import type * as notifications from "../notifications.js";
-import type * as seedContent from "../seedContent.js";
-import type * as seedExtend from "../seedExtend.js";
-import type * as seedImages from "../seedImages.js";
+import type * as seed_content from "../seed/content.js";
+import type * as seed_extend from "../seed/extend.js";
+import type * as seed_images from "../seed/images.js";
 import type * as socialLinks from "../socialLinks.js";
 import type * as studentNotes from "../studentNotes.js";
 import type * as supervisorUpgradeRequests from "../supervisorUpgradeRequests.js";
-import type * as users from "../users.js";
 import type * as users_admin from "../users/admin.js";
 import type * as users_adminActions from "../users/adminActions.js";
 import type * as users_dev from "../users/dev.js";
 import type * as users_shared from "../users/shared.js";
-import type * as whatsapp from "../whatsapp.js";
+import type * as users_webhook from "../users/webhook.js";
 import type * as whatsapp_actions from "../whatsapp/actions.js";
 import type * as whatsapp_admin from "../whatsapp/admin.js";
 import type * as whatsapp_helpers from "../whatsapp/helpers.js";
 import type * as whatsapp_internal from "../whatsapp/internal.js";
+import type * as whatsapp_otp from "../whatsapp/otp.js";
 
 import type {
   ApiFromModules,
@@ -72,22 +72,22 @@ declare const fullApi: ApiFromModules<{
   "lib/validation": typeof lib_validation;
   meetings: typeof meetings;
   notifications: typeof notifications;
-  seedContent: typeof seedContent;
-  seedExtend: typeof seedExtend;
-  seedImages: typeof seedImages;
+  "seed/content": typeof seed_content;
+  "seed/extend": typeof seed_extend;
+  "seed/images": typeof seed_images;
   socialLinks: typeof socialLinks;
   studentNotes: typeof studentNotes;
   supervisorUpgradeRequests: typeof supervisorUpgradeRequests;
-  users: typeof users;
   "users/admin": typeof users_admin;
   "users/adminActions": typeof users_adminActions;
   "users/dev": typeof users_dev;
   "users/shared": typeof users_shared;
-  whatsapp: typeof whatsapp;
+  "users/webhook": typeof users_webhook;
   "whatsapp/actions": typeof whatsapp_actions;
   "whatsapp/admin": typeof whatsapp_admin;
   "whatsapp/helpers": typeof whatsapp_helpers;
   "whatsapp/internal": typeof whatsapp_internal;
+  "whatsapp/otp": typeof whatsapp_otp;
 }>;
 
 /**

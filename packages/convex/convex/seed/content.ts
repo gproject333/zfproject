@@ -1,5 +1,5 @@
-import { internalMutation } from "./_generated/server";
-import { Id } from "./_generated/dataModel";
+import { internalMutation } from "../_generated/server";
+import { Id } from "../_generated/dataModel";
 
 /**
  * Demo content seeder for the ZUJ Incubator platform.
@@ -10,7 +10,7 @@ import { Id } from "./_generated/dataModel";
  * have realistic, professional Arabic content for demos/presentations.
  *
  * Mirrors the `bootstrapSeed` pattern in colleges.ts: an internalMutation
- * run once via `npx convex run seedContent:bootstrap`. Idempotent — a second
+ * run once via `npx convex run seed/content:bootstrap`. Idempotent — a second
  * run detects the sentinel article and no-ops.
  *
  * All demo users are created with a `seed_demo_` clerkId prefix so they can

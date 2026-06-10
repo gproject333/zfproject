@@ -1,8 +1,8 @@
-import { mutation } from "./_generated/server";
-import { internal } from "./_generated/api";
+import { mutation } from "../_generated/server";
+import { internal } from "../_generated/api";
 import { v } from "convex/values";
-import { requireUser } from "./lib/auth";
-import { generateOtpCode, hashOtpCode, normalizePhone } from "./whatsapp/helpers";
+import { requireUser } from "../lib/auth";
+import { generateOtpCode, hashOtpCode, normalizePhone } from "./helpers";
 
 const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes
 const RESEND_COOLDOWN_MS = 60 * 1000; // 60 seconds

@@ -1,6 +1,6 @@
-import { internalAction, internalMutation, internalQuery } from "./_generated/server";
-import { internal } from "./_generated/api";
-import { Id } from "./_generated/dataModel";
+import { internalAction, internalMutation, internalQuery } from "../_generated/server";
+import { internal } from "../_generated/api";
+import { Id } from "../_generated/dataModel";
 import { v } from "convex/values";
 
 /**
@@ -15,7 +15,7 @@ import { v } from "convex/values";
  *   5. adds fresh applications that DO carry attachments, including a few
  *      accepted-with-video so the sponsor reel feed has content.
  *
- * Run:  npx convex run seedExtend:extendDemo --env-file .env.selfhosted
+ * Run:  npx convex run seed/extend:extendDemo --env-file .env.selfhosted
  */
 
 const SAMPLE_PDF_URL =
@@ -182,7 +182,7 @@ export const ensureColleges = internalMutation({
     let departmentsAdded = 0;
     const existingColleges = await ctx.db.query("colleges").collect();
     for (const item of COLLEGE_SEED) {
-      let col = existingColleges.find((c) => c.name === item.college);
+      const col = existingColleges.find((c) => c.name === item.college);
       let collegeId: Id<"colleges">;
       if (col) {
         collegeId = col._id;
@@ -358,26 +358,26 @@ export const extendDemo = internalAction({
       ctx.storage.store(new Blob([vidBuf], { type: "video/mp4" }));
 
     // 3. colleges/departments (additive)
-    const colleges = await ctx.runMutation(internal.seedExtend.ensureColleges, {});
-    const opts = await ctx.runQuery(internal.seedExtend.collegeOptions, {});
-    const supId = await ctx.runQuery(internal.seedExtend.supervisorId, {});
+    const colleges = await ctx.runMutation(internal.seed.extend.ensureColleges, {});
+    const opts = await ctx.runQuery(internal.seed.extend.collegeOptions, {});
+    const supId = await ctx.runQuery(internal.seed.extend.supervisorId, {});
 
     // 1. needs_modification → attach files
-    const nm = await ctx.runQuery(internal.seedExtend.filelessByStatus, {
+    const nm = await ctx.runQuery(internal.seed.extend.filelessByStatus, {
       status: "needs_modification",
     });
     for (const id of nm) {
       const pdfFileId = await newPdf();
       const videoFileId = await newVid();
-      await ctx.runMutation(internal.seedExtend.setFiles, { id, pdfFileId, videoFileId });
+      await ctx.runMutation(internal.seed.extend.setFiles, { id, pdfFileId, videoFileId });
     }
 
     // 2. file-less accepted → delete
-    const acc = await ctx.runQuery(internal.seedExtend.filelessByStatus, {
+    const acc = await ctx.runQuery(internal.seed.extend.filelessByStatus, {
       status: "accepted",
     });
     for (const id of acc) {
-      await ctx.runMutation(internal.seedExtend.removeApp, { id });
+      await ctx.runMutation(internal.seed.extend.removeApp, { id });
     }
 
     // 4. students tied to colleges/departments
@@ -385,7 +385,7 @@ export const extendDemo = internalAction({
     for (let i = 0; i < NEW_STUDENTS.length; i++) {
       const s = NEW_STUDENTS[i];
       const pick = opts.length ? opts[i % opts.length] : undefined;
-      const id = await ctx.runMutation(internal.seedExtend.addStudent, {
+      const id = await ctx.runMutation(internal.seed.extend.addStudent, {
         ...s,
         collegeId: pick?.collegeId,
         departmentId: pick?.departmentId,
@@ -401,7 +401,7 @@ export const extendDemo = internalAction({
       const app = NEW_APPS[i];
       const pdfFileId = await newPdf();
       const videoFileId = await newVid();
-      await ctx.runMutation(internal.seedExtend.addApplication, {
+      await ctx.runMutation(internal.seed.extend.addApplication, {
         studentId: studentIds[app.studentIndex % studentIds.length],
         reviewerId: supId ?? undefined,
         type: app.type,

@@ -11,9 +11,9 @@ type Step = "enter-phone" | "enter-code" | "verified";
 
 export function WhatsappLink() {
   const me = useQuery(api.users.shared.currentUser);
-  const requestOtp = useMutation(api.whatsapp.requestWhatsappOtp);
-  const verifyOtp = useMutation(api.whatsapp.verifyWhatsappOtp);
-  const setOptOut = useMutation(api.whatsapp.setWhatsappOptOut);
+  const requestOtp = useMutation(api.whatsapp.otp.requestWhatsappOtp);
+  const verifyOtp = useMutation(api.whatsapp.otp.verifyWhatsappOtp);
+  const setOptOut = useMutation(api.whatsapp.otp.setWhatsappOptOut);
 
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");

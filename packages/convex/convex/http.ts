@@ -36,7 +36,7 @@ http.route({
       return new Response("Invalid webhook signature", { status: 400 });
     }
 
-    await ctx.runMutation(internal.users.handleClerkWebhook, {
+    await ctx.runMutation(internal.users.webhook.handleClerkWebhook, {
       type: event.type,
       data: event.data,
     });
