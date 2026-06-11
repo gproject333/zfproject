@@ -50,7 +50,7 @@ export default function AboutSection() {
         {/* Header — image + text two-column */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-16">
           {/* Image column */}
-          <div className="relative w-full aspect-video md:aspect-[4/3] rounded-[2rem] overflow-hidden ring-1 ring-foreground/10 shadow-2xl shadow-primary/10 group">
+          <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden ring-1 ring-foreground/10 shadow-2xl shadow-primary/10 group">
             <div
               aria-hidden
               className="absolute -top-12 -right-12 w-40 h-40 rounded-full blur-2xl transition-all duration-500 group-hover:scale-150 z-10"
