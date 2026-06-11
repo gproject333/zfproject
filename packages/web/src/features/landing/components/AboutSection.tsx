@@ -50,7 +50,7 @@ export default function AboutSection() {
         {/* Header — image + text two-column */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-16">
           {/* Image column */}
-          <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden ring-1 ring-foreground/10 shadow-2xl shadow-primary/10 group">
+          <div className="relative w-full max-w-md mx-auto lg:max-w-none aspect-[4/5] rounded-[2rem] overflow-hidden ring-1 ring-foreground/10 shadow-2xl shadow-primary/10 group">
             <div
               aria-hidden
               className="absolute -top-12 -right-12 w-40 h-40 rounded-full blur-2xl transition-all duration-500 group-hover:scale-150 z-10"
@@ -63,15 +63,10 @@ export default function AboutSection() {
             />
             <Image
               src="/incubator-poster.png"
-              alt="بوستر حاضنة الزيتونة"
+              alt="ملصق حاضنة الزيتونة - برج ساعة جامعة الزيتونة الأردنية"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-            {/* Soft gradient overlay for legibility / depth */}
-            <div
-              aria-hidden
-              className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-foreground/30 to-transparent pointer-events-none z-[5]"
             />
           </div>
 
