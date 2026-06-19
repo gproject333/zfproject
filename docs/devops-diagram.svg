@@ -4,14 +4,6 @@
       <stop offset="0%" stop-color="#0b1f17"/>
       <stop offset="100%" stop-color="#06120d"/>
     </linearGradient>
-    <linearGradient id="olive" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#6fae4f"/>
-      <stop offset="100%" stop-color="#3f7d2e"/>
-    </linearGradient>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#e8c45f"/>
-      <stop offset="100%" stop-color="#c79a2e"/>
-    </linearGradient>
     <linearGradient id="cardg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#13261c"/>
       <stop offset="100%" stop-color="#0e1f16"/>
@@ -19,40 +11,51 @@
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.45"/>
     </filter>
+    <filter id="logoZShadow" x="-15%" y="-10%" width="130%" height="135%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4"/>
+      <feOffset dx="0" dy="3.5" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
     <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M2,2 L10,6 L2,10 Z" fill="#6fae4f"/>
     </marker>
     <marker id="arrowg" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M2,2 L10,6 L2,10 Z" fill="#c79a2e"/>
     </marker>
+    <marker id="arrowp" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#9fbf8c"/>
+    </marker>
   </defs>
 
   <rect width="1600" height="900" fill="url(#bg)"/>
 
-  <!-- Title -->
-  <text x="60" y="74" fill="#f3f6f1" font-size="42" font-weight="700">حاضنة الزيتونة — DevOps &amp; Delivery Pipeline</text>
-  <text x="60" y="112" fill="#9fbf8c" font-size="22" font-weight="400">ZUJ Incubator · from commit to production across two environments</text>
+  <!-- ===== Header with platform logo (Z monogram) ===== -->
+  <g transform="translate(60,30) scale(0.62)">
+    <path filter="url(#logoZShadow)" fill="#6fae4f" fill-rule="evenodd"
+      d="M 16 18 H 104 Q 110 18, 110 24 Q 110 30, 106 35 L 40 95 H 104 Q 110 95, 110 101 V 108 Q 110 114, 104 114 H 16 Q 10 114, 10 108 Q 10 102, 14 97 L 80 37 H 16 Q 10 37, 10 31 V 24 Q 10 18, 16 18 Z
+         M 32 38 H 88 Q 91 38, 91 41 Q 91 44, 89 46 L 48 84 H 88 Q 91 84, 91 87 V 91 Q 91 94, 88 94 H 32 Q 29 94, 29 91 Q 29 88, 31 86 L 72 48 H 32 Q 29 48, 29 45 V 41 Q 29 38, 32 38 Z"/>
+  </g>
+  <text x="155" y="72" fill="#f3f6f1" font-size="40" font-weight="700">ZUJ Incubator — DevOps &amp; Delivery Pipeline</text>
+  <text x="155" y="108" fill="#9fbf8c" font-size="21" font-weight="400">From commit to production across two parallel environments</text>
   <line x1="60" y1="132" x2="1540" y2="132" stroke="#234430" stroke-width="2"/>
 
   <!-- ========= LANE 1: SOURCE & CI ========= -->
   <text x="60" y="186" fill="#6fae4f" font-size="20" font-weight="700" letter-spacing="2">1 · SOURCE &amp; CI</text>
 
-  <!-- Developer -->
   <g filter="url(#shadow)">
     <rect x="60" y="206" width="200" height="120" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <text x="160" y="256" fill="#f3f6f1" font-size="40" text-anchor="middle">👨‍💻</text>
+    <text x="160" y="256" font-size="40" text-anchor="middle">👨‍💻</text>
     <text x="160" y="296" fill="#dfe9d8" font-size="20" font-weight="600" text-anchor="middle">Developer</text>
   </g>
 
-  <!-- GitHub -->
   <g filter="url(#shadow)">
     <rect x="330" y="206" width="220" height="120" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <text x="440" y="256" fill="#f3f6f1" font-size="36" text-anchor="middle">🐙</text>
+    <text x="440" y="256" font-size="36" text-anchor="middle">🐙</text>
     <text x="440" y="294" fill="#dfe9d8" font-size="20" font-weight="600" text-anchor="middle">GitHub</text>
     <text x="440" y="316" fill="#8fb27e" font-size="14" text-anchor="middle">monorepo · pnpm</text>
   </g>
 
-  <!-- CI checks -->
   <g filter="url(#shadow)">
     <rect x="620" y="206" width="280" height="120" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
     <text x="760" y="244" fill="#dfe9d8" font-size="19" font-weight="600" text-anchor="middle">CI Quality Gates</text>
@@ -86,29 +89,25 @@
   <!-- ========= LANE 3: DEPLOY (two envs) ========= -->
   <text x="60" y="616" fill="#c79a2e" font-size="20" font-weight="700" letter-spacing="2">3 · DEPLOY · TWO PARALLEL ENVIRONMENTS</text>
 
-  <!-- Coolify (web) -->
   <g filter="url(#shadow)">
     <rect x="60" y="636" width="380" height="150" rx="16" fill="url(#cardg)" stroke="#7a611f" stroke-width="1.5"/>
     <text x="84" y="678" fill="#f0d98a" font-size="20" font-weight="700">🚀 Coolify (Self-hosted)</text>
     <text x="84" y="710" fill="#cbb878" font-size="15">Web auto-deploy on main</text>
-    <text x="84" y="736" fill="#cbb878" font-size="15">Server: yazeid.site</text>
-    <text x="84" y="762" fill="#9fbf8c" font-size="14">pnpm build → container</text>
+    <text x="84" y="736" fill="#9fbf8c" font-size="14">pnpm build → container</text>
   </g>
 
-  <!-- Convex Cloud -->
   <g filter="url(#shadow)">
     <rect x="480" y="636" width="290" height="150" rx="16" fill="url(#cardg)" stroke="#7a611f" stroke-width="1.5"/>
     <text x="504" y="678" fill="#f0d98a" font-size="19" font-weight="700">☁️ Convex Cloud</text>
-    <text x="504" y="710" fill="#cbb878" font-size="14">eu-west-1 hosted</text>
-    <text x="504" y="736" fill="#9fbf8c" font-size="14">npx convex deploy</text>
+    <text x="504" y="712" fill="#cbb878" font-size="14">managed hosting</text>
+    <text x="504" y="738" fill="#9fbf8c" font-size="14">convex deploy</text>
   </g>
 
-  <!-- Convex Self-hosted -->
   <g filter="url(#shadow)">
     <rect x="800" y="636" width="290" height="150" rx="16" fill="url(#cardg)" stroke="#7a611f" stroke-width="1.5"/>
     <text x="824" y="678" fill="#f0d98a" font-size="19" font-weight="700">🏠 Convex Self-hosted</text>
-    <text x="824" y="710" fill="#cbb878" font-size="14">convex.yazeid.site</text>
-    <text x="824" y="736" fill="#9fbf8c" font-size="14">deploy.sh → both envs</text>
+    <text x="824" y="712" fill="#cbb878" font-size="14">runs on own server</text>
+    <text x="824" y="738" fill="#9fbf8c" font-size="14">deploy.sh → both envs</text>
   </g>
 
   <line x1="250" y1="546" x2="250" y2="632" stroke="#c79a2e" stroke-width="3" marker-end="url(#arrowg)"/>
@@ -118,42 +117,78 @@
   <!-- ========= RIGHT COLUMN: RUNTIME SERVICES ========= -->
   <text x="1140" y="186" fill="#6fae4f" font-size="20" font-weight="700" letter-spacing="2">RUNTIME SERVICES</text>
 
+  <!-- Auth -->
   <g filter="url(#shadow)">
-    <rect x="1140" y="206" width="400" height="100" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
+    <rect x="1140" y="206" width="400" height="92" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
     <text x="1164" y="246" fill="#dfe9d8" font-size="19" font-weight="600">🔐 Clerk — Auth</text>
-    <text x="1164" y="278" fill="#9fbf8c" font-size="15">JWT → Convex · webhooks (svix)</text>
+    <text x="1164" y="276" fill="#9fbf8c" font-size="15">JWT → Convex · webhooks (svix)</text>
   </g>
 
+  <!-- ===== WhatsApp pipeline with n8n + Evolution drawings ===== -->
   <g filter="url(#shadow)">
-    <rect x="1140" y="326" width="400" height="120" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <text x="1164" y="366" fill="#dfe9d8" font-size="19" font-weight="600">📲 WhatsApp Pipeline</text>
-    <text x="1164" y="398" fill="#9fbf8c" font-size="15">Convex → n8n → Evolution API</text>
-    <text x="1164" y="422" fill="#9fbf8c" font-size="15">HMAC-signed outbound webhooks</text>
+    <rect x="1140" y="318" width="400" height="268" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
+    <text x="1164" y="356" fill="#dfe9d8" font-size="19" font-weight="600">📲 WhatsApp Notification Pipeline</text>
+    <text x="1164" y="382" fill="#9fbf8c" font-size="14">HMAC-signed outbound webhooks</text>
+
+    <!-- node row: Convex -> n8n -> Evolution -> phone -->
+    <!-- Convex node -->
+    <g transform="translate(1170,420)">
+      <rect x="0" y="0" width="74" height="74" rx="14" fill="#16301f" stroke="#3a6b48" stroke-width="1.5"/>
+      <!-- convex mark: three chevrons -->
+      <path d="M22 30 L37 22 L37 30 L29 34 L37 38 L37 46 L22 38 Z" fill="#dfe9d8"/>
+      <path d="M52 30 L37 22 L37 30 L45 34 L37 38 L37 46 L52 38 Z" fill="#9fbf8c"/>
+      <text x="37" y="66" fill="#cfe0c4" font-size="13" text-anchor="middle" font-weight="600">Convex</text>
+    </g>
+
+    <!-- n8n node graph drawing -->
+    <g transform="translate(1290,420)">
+      <rect x="0" y="0" width="74" height="74" rx="14" fill="#1f1420" stroke="#7a3a6b" stroke-width="1.5"/>
+      <!-- connected nodes: n8n style -->
+      <line x1="16" y1="37" x2="37" y2="22" stroke="#e06aa6" stroke-width="2.5"/>
+      <line x1="16" y1="37" x2="37" y2="52" stroke="#e06aa6" stroke-width="2.5"/>
+      <line x1="37" y1="22" x2="58" y2="37" stroke="#e06aa6" stroke-width="2.5"/>
+      <line x1="37" y1="52" x2="58" y2="37" stroke="#e06aa6" stroke-width="2.5"/>
+      <circle cx="16" cy="37" r="6.5" fill="#ff7fbf"/>
+      <circle cx="37" cy="22" r="6.5" fill="#ff7fbf"/>
+      <circle cx="37" cy="52" r="6.5" fill="#ff7fbf"/>
+      <circle cx="58" cy="37" r="6.5" fill="#ff7fbf"/>
+      <text x="37" y="66" fill="#e7c6dd" font-size="13" text-anchor="middle" font-weight="600">n8n</text>
+    </g>
+
+    <!-- Evolution API drawing: WhatsApp-style chat bubble + phone -->
+    <g transform="translate(1410,420)">
+      <rect x="0" y="0" width="74" height="74" rx="14" fill="#0f2418" stroke="#2f9e5e" stroke-width="1.5"/>
+      <!-- speech bubble -->
+      <path d="M19 16 H55 Q61 16 61 22 V40 Q61 46 55 46 H34 L24 54 L26 46 H19 Q13 46 13 40 V22 Q13 16 19 16 Z" fill="#25d366"/>
+      <!-- phone handset glyph inside bubble -->
+      <path d="M30 26 q-3 0 -3 3 q0 9 9 14 q3 0 3 -3 l-0.5 -3 q-0.3 -2 -2.3 -1.5 l-2 0.5 q-2.5 -2 -3.5 -4.5 l0.8 -1.6 q1 -1.7 -0.6 -2.6 l-2.4 -1.2 Z" fill="#0f2418"/>
+      <text x="37" y="66" fill="#bfe9cf" font-size="11.5" text-anchor="middle" font-weight="600">Evolution</text>
+    </g>
+
+    <!-- arrows between nodes -->
+    <line x1="1244" y1="457" x2="1288" y2="457" stroke="#9fbf8c" stroke-width="2.5" marker-end="url(#arrowp)"/>
+    <line x1="1364" y1="457" x2="1408" y2="457" stroke="#9fbf8c" stroke-width="2.5" marker-end="url(#arrowp)"/>
+
+    <text x="1340" y="540" fill="#8fb27e" font-size="14" text-anchor="middle">Convex → n8n → Evolution API → WhatsApp</text>
+    <text x="1340" y="566" fill="#6f9a5e" font-size="13" text-anchor="middle">OTP · meeting · status-change alerts</text>
   </g>
 
-  <g filter="url(#shadow)">
-    <rect x="1140" y="466" width="400" height="120" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <text x="1164" y="506" fill="#dfe9d8" font-size="19" font-weight="600">🗄️ Convex Storage &amp; Crons</text>
-    <text x="1164" y="538" fill="#9fbf8c" font-size="15">file uploads · scheduled jobs</text>
-    <text x="1164" y="562" fill="#9fbf8c" font-size="15">activity logs · outbox pattern</text>
-  </g>
-
-  <!-- connectors to runtime -->
-  <line x1="1090" y1="711" x2="1300" y2="590" stroke="#6fae4f" stroke-width="2.5" stroke-dasharray="6 6" marker-end="url(#arrow)"/>
-
+  <!-- Storage & crons (bottom-left of right column moved under stack) -->
   <!-- Bottom band: stack chips -->
-  <rect x="1140" y="636" width="400" height="150" rx="16" fill="#0a1812" stroke="#234430" stroke-width="1.5"/>
-  <text x="1164" y="676" fill="#9fbf8c" font-size="16" font-weight="700" letter-spacing="2">STACK</text>
+  <rect x="1140" y="606" width="400" height="180" rx="16" fill="#0a1812" stroke="#234430" stroke-width="1.5"/>
+  <text x="1164" y="644" fill="#9fbf8c" font-size="16" font-weight="700" letter-spacing="2">STACK</text>
   <g font-size="14" fill="#cfe0c4">
-    <rect x="1164" y="692" width="110" height="30" rx="15" fill="#16301f"/><text x="1219" y="712" text-anchor="middle">Next.js 16</text>
-    <rect x="1284" y="692" width="90" height="30" rx="15" fill="#16301f"/><text x="1329" y="712" text-anchor="middle">Convex</text>
-    <rect x="1384" y="692" width="80" height="30" rx="15" fill="#16301f"/><text x="1424" y="712" text-anchor="middle">Clerk</text>
-    <rect x="1474" y="692" width="56" height="30" rx="15" fill="#16301f"/><text x="1502" y="712" text-anchor="middle">n8n</text>
-    <rect x="1164" y="732" width="120" height="30" rx="15" fill="#16301f"/><text x="1224" y="752" text-anchor="middle">TypeScript</text>
-    <rect x="1294" y="732" width="100" height="30" rx="15" fill="#16301f"/><text x="1344" y="752" text-anchor="middle">Tailwind</text>
-    <rect x="1404" y="732" width="80" height="30" rx="15" fill="#16301f"/><text x="1444" y="752" text-anchor="middle">HeroUI</text>
+    <rect x="1164" y="660" width="110" height="30" rx="15" fill="#16301f"/><text x="1219" y="680" text-anchor="middle">Next.js 16</text>
+    <rect x="1284" y="660" width="90" height="30" rx="15" fill="#16301f"/><text x="1329" y="680" text-anchor="middle">Convex</text>
+    <rect x="1384" y="660" width="80" height="30" rx="15" fill="#16301f"/><text x="1424" y="680" text-anchor="middle">Clerk</text>
+    <rect x="1474" y="660" width="56" height="30" rx="15" fill="#16301f"/><text x="1502" y="680" text-anchor="middle">n8n</text>
+    <rect x="1164" y="700" width="120" height="30" rx="15" fill="#16301f"/><text x="1224" y="720" text-anchor="middle">TypeScript</text>
+    <rect x="1294" y="700" width="100" height="30" rx="15" fill="#16301f"/><text x="1344" y="720" text-anchor="middle">Tailwind</text>
+    <rect x="1404" y="700" width="80" height="30" rx="15" fill="#16301f"/><text x="1444" y="720" text-anchor="middle">HeroUI</text>
+    <rect x="1164" y="740" width="110" height="30" rx="15" fill="#16301f"/><text x="1219" y="760" text-anchor="middle">Coolify</text>
+    <rect x="1284" y="740" width="120" height="30" rx="15" fill="#16301f"/><text x="1344" y="760" text-anchor="middle">Evolution API</text>
   </g>
 
   <!-- footer -->
-  <text x="60" y="858" fill="#5e7a52" font-size="15">pnpm workspaces monorepo · web + convex + core · Arabic-first (RTL) · WCAG 2.2 AA</text>
+  <text x="60" y="858" fill="#5e7a52" font-size="15">pnpm workspaces monorepo · web + convex + core · end-to-end type safety · WCAG 2.2 AA</text>
 </svg>
