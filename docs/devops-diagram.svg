@@ -1,176 +1,133 @@
-<svg width="1600" height="900" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" font-family="'Liberation Sans', 'DejaVu Sans', Arial, sans-serif">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0b1f17"/><stop offset="100%" stop-color="#06120d"/>
-    </linearGradient>
-    <linearGradient id="cardg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#13261c"/><stop offset="100%" stop-color="#0e1f16"/>
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.45"/>
-    </filter>
-    <filter id="logoZShadow" x="-15%" y="-10%" width="130%" height="135%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4"/><feOffset dx="0" dy="3.5" result="off"/>
-      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M2,2 L10,6 L2,10 Z" fill="#6fae4f"/></marker>
-    <marker id="arrowg" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M2,2 L10,6 L2,10 Z" fill="#c79a2e"/></marker>
-    <marker id="arrowp" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M2,2 L10,6 L2,10 Z" fill="#9fbf8c"/></marker>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="4" stdDeviation="9" flood-color="#6b5e36" flood-opacity="0.18"/></filter>
+    <filter id="zsh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#1c5a2e" flood-opacity="0.30"/></filter>
   </defs>
 
-  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="#ece6d2"/>
 
-  <!-- Header with ZUJ platform logo -->
-  <g transform="translate(60,30) scale(0.62)">
-    <path filter="url(#logoZShadow)" fill="#6fae4f" fill-rule="evenodd"
-      d="M 16 18 H 104 Q 110 18, 110 24 Q 110 30, 106 35 L 40 95 H 104 Q 110 95, 110 101 V 108 Q 110 114, 104 114 H 16 Q 10 114, 10 108 Q 10 102, 14 97 L 80 37 H 16 Q 10 37, 10 31 V 24 Q 10 18, 16 18 Z M 32 38 H 88 Q 91 38, 91 41 Q 91 44, 89 46 L 48 84 H 88 Q 91 84, 91 87 V 91 Q 91 94, 88 94 H 32 Q 29 94, 29 91 Q 29 88, 31 86 L 72 48 H 32 Q 29 48, 29 45 V 41 Q 29 38, 32 38 Z"/>
-  </g>
-  <text x="155" y="72" fill="#f3f6f1" font-size="40" font-weight="700">ZUJ Incubator — DevOps &amp; Delivery Pipeline</text>
-  <text x="155" y="108" fill="#9fbf8c" font-size="21">From commit to production across two parallel environments</text>
-  <line x1="60" y1="132" x2="1540" y2="132" stroke="#234430" stroke-width="2"/>
+  <!-- frame -->
+  <rect x="34" y="34" width="1852" height="1012" fill="none" stroke="#b0432a" stroke-opacity="0.55" stroke-width="1.5"/>
+  <rect x="27" y="27" width="14" height="14" transform="rotate(45 34 34)" fill="#b0432a"/> <rect x="1879" y="27" width="14" height="14" transform="rotate(45 1886 34)" fill="#b0432a"/> <rect x="27" y="1039" width="14" height="14" transform="rotate(45 34 1046)" fill="#b0432a"/> <rect x="1879" y="1039" width="14" height="14" transform="rotate(45 1886 1046)" fill="#b0432a"/>
+  <rect x="953" y="27" width="14" height="14" transform="rotate(45 960 34)" fill="#b0432a"/> <rect x="953" y="1039" width="14" height="14" transform="rotate(45 960 1046)" fill="#b0432a"/>
 
-  <!-- LANE 1 -->
-  <text x="60" y="186" fill="#6fae4f" font-size="20" font-weight="700" letter-spacing="2">1 · SOURCE &amp; CI</text>
-  <g filter="url(#shadow)">
-    <rect x="60" y="206" width="200" height="120" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <text x="160" y="252" font-size="40" text-anchor="middle">👨‍💻</text>
-    <text x="160" y="296" fill="#dfe9d8" font-size="20" font-weight="600" text-anchor="middle">Developer</text>
-  </g>
-  <g filter="url(#shadow)">
-    <rect x="330" y="206" width="220" height="120" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <svg x="408" y="224" width="44" height="44" viewBox="0 0 24 24"><path fill="#f3f6f1" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-    <text x="440" y="298" fill="#dfe9d8" font-size="20" font-weight="600" text-anchor="middle">GitHub</text>
-    <text x="440" y="318" fill="#8fb27e" font-size="13" text-anchor="middle">monorepo · pnpm</text>
-  </g>
-  <g filter="url(#shadow)">
-    <rect x="620" y="206" width="280" height="120" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <text x="760" y="244" fill="#dfe9d8" font-size="19" font-weight="600" text-anchor="middle">CI Quality Gates</text>
-    <svg x="648" y="264" width="30" height="30" viewBox="0 0 24 24"><path fill="#3178C6" d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/></svg>
-    <svg x="826" y="264" width="30" height="30" viewBox="0 0 24 24"><path fill="#00FF74" d="M11.545 23.3a.613.613 0 0 1-.895.197L.252 15.936A.61.61 0 0 1 0 15.439V6.325c0-.502.569-.792.975-.497l6.358 4.624c.594.433 1.432.25 1.793-.39L14.393.7a.62.62 0 0 1 .535-.314h8.455a.613.613 0 0 1 .537.916z"/></svg>
-    <text x="760" y="288" fill="#9fbf8c" font-size="15" text-anchor="middle">lint · tsc · Vitest</text>
-    <text x="760" y="310" fill="#8fb27e" font-size="13" text-anchor="middle">unit + convex-test</text>
-  </g>
-  <line x1="260" y1="266" x2="324" y2="266" stroke="#6fae4f" stroke-width="3" marker-end="url(#arrow)"/>
-  <line x1="550" y1="266" x2="614" y2="266" stroke="#6fae4f" stroke-width="3" marker-end="url(#arrow)"/>
+  <!-- header: logo -->
+  <g filter="url(#zsh)"><g transform="translate(96,52) scale(0.45)"><path fill="#1c5a2e" fill-rule="evenodd" d="M 16 18 H 104 Q 110 18, 110 24 Q 110 30, 106 35 L 40 95 H 104 Q 110 95, 110 101 V 108 Q 110 114, 104 114 H 16 Q 10 114, 10 108 Q 10 102, 14 97 L 80 37 H 16 Q 10 37, 10 31 V 24 Q 10 18, 16 18 Z M 32 38 H 88 Q 91 38, 91 41 Q 91 44, 89 46 L 48 84 H 88 Q 91 84, 91 87 V 91 Q 91 94, 88 94 H 32 Q 29 94, 29 91 Q 29 88, 31 86 L 72 48 H 32 Q 29 48, 29 45 V 41 Q 29 38, 32 38 Z"/></g></g>
+  <text x="170" y="78" fill="#1c5a2e" font-size="24" font-weight="700" letter-spacing="3">ZUJ INCUBATOR</text>
+  <text x="170" y="104" fill="#7a7d6a" font-size="15" letter-spacing="4">IT · AL-ZAYTOONAH UNIVERSITY</text>
 
-  <!-- LANE 2 -->
-  <text x="60" y="396" fill="#6fae4f" font-size="20" font-weight="700" letter-spacing="2">2 · BUILD</text>
-  <g filter="url(#shadow)">
-    <rect x="60" y="416" width="380" height="130" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <svg x="80" y="446" width="56" height="56" viewBox="0 0 24 24"><path fill="#f3f6f1" d="M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z"/></svg>
-    <text x="152" y="466" fill="#dfe9d8" font-size="20" font-weight="600">Web · Next.js 16</text>
-    <text x="152" y="494" fill="#9fbf8c" font-size="15">App Router · Turbopack</text>
-    <svg x="152" y="506" width="24" height="24" viewBox="0 0 24 24"><path fill="#06B6D4" d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/></svg>
-    <text x="186" y="524" fill="#9fbf8c" font-size="15">Tailwind + HeroUI</text>
-  </g>
-  <g filter="url(#shadow)">
-    <rect x="480" y="416" width="380" height="130" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <svg x="500" y="446" width="52" height="52" viewBox="0 0 367 370">
-    <g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
-      <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
-      <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
-      <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
-    </g></g></svg>
-    <text x="568" y="466" fill="#dfe9d8" font-size="20" font-weight="600">Backend · Convex</text>
-    <text x="568" y="494" fill="#9fbf8c" font-size="15">queries · mutations · actions</text>
-    <text x="568" y="520" fill="#9fbf8c" font-size="15">crons · file storage · codegen</text>
-  </g>
-  <line x1="760" y1="326" x2="700" y2="412" stroke="#6fae4f" stroke-width="3" marker-end="url(#arrow)"/>
-  <line x1="700" y1="326" x2="320" y2="412" stroke="#6fae4f" stroke-width="3" marker-end="url(#arrow)"/>
+  <!-- header: graduation project -->
+  <text x="1690" y="78" fill="#b0432a" font-size="30" font-style="italic" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif" font-weight="700" text-anchor="end">'26</text>
+  <text x="1824" y="70" fill="#1c5a2e" font-size="22" font-weight="700" letter-spacing="6" text-anchor="end">GRADUATION</text>
+  <text x="1824" y="100" fill="#1c5a2e" font-size="22" font-weight="700" letter-spacing="6" text-anchor="end">PROJECT</text>
 
-  <!-- LANE 3 -->
-  <text x="60" y="616" fill="#c79a2e" font-size="20" font-weight="700" letter-spacing="2">3 · DEPLOY · TWO PARALLEL ENVIRONMENTS</text>
-  <g filter="url(#shadow)">
-    <rect x="60" y="636" width="380" height="150" rx="16" fill="url(#cardg)" stroke="#7a611f" stroke-width="1.5"/>
-    <svg x="84" y="656" width="34" height="34" viewBox="0 0 24 24"><path fill="#a06cff" d="M4.364 4.364V0h17.454v4.364zm0 13.09H0V4.365h4.364zm0 0h17.454v4.364H4.364ZM6.545 6.546v-1.7H22.3V2.182H24v4.363zm0 0v10.4h-1.7v-10.4ZM3.882 17.936v1.7h-1.7v-1.7ZM24 24H6.545v-1.7H22.3v-2.664H24Z"/></svg>
-    <text x="128" y="680" fill="#f0d98a" font-size="20" font-weight="700">Coolify (Self-hosted)</text>
-    <text x="84" y="716" fill="#cbb878" font-size="15">Web auto-deploy on main</text>
-    <text x="84" y="742" fill="#9fbf8c" font-size="14">pnpm build → container</text>
-  </g>
-  <g filter="url(#shadow)">
-    <rect x="480" y="636" width="290" height="150" rx="16" fill="url(#cardg)" stroke="#7a611f" stroke-width="1.5"/>
-    <svg x="504" y="656" width="30" height="30" viewBox="0 0 367 370">
-    <g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
-      <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
-      <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
-      <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
-    </g></g></svg>
-    <text x="544" y="678" fill="#f0d98a" font-size="19" font-weight="700">Convex Cloud</text>
-    <text x="504" y="712" fill="#cbb878" font-size="14">managed hosting</text>
-    <text x="504" y="738" fill="#9fbf8c" font-size="14">convex deploy</text>
-  </g>
-  <g filter="url(#shadow)">
-    <rect x="800" y="636" width="290" height="150" rx="16" fill="url(#cardg)" stroke="#7a611f" stroke-width="1.5"/>
-    <svg x="824" y="656" width="30" height="30" viewBox="0 0 367 370">
-    <g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
-      <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
-      <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
-      <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
-    </g></g></svg>
-    <text x="864" y="678" fill="#f0d98a" font-size="19" font-weight="700">Convex Self-hosted</text>
-    <text x="824" y="712" fill="#cbb878" font-size="14">runs on own server</text>
-    <text x="824" y="738" fill="#9fbf8c" font-size="14">deploy.sh → both envs</text>
-  </g>
-  <line x1="250" y1="546" x2="250" y2="632" stroke="#c79a2e" stroke-width="3" marker-end="url(#arrowg)"/>
-  <line x1="650" y1="546" x2="620" y2="632" stroke="#c79a2e" stroke-width="3" marker-end="url(#arrowg)"/>
-  <line x1="700" y1="546" x2="930" y2="632" stroke="#c79a2e" stroke-width="3" marker-end="url(#arrowg)"/>
+  <!-- title -->
+  <text x="96" y="218" fill="#2f7a44" font-size="34" font-style="italic" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">The engineering behind</text>
+  <text x="94" y="296" fill="#1c5a2e" font-size="78" font-weight="700" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">DevOps &amp; Delivery</text>
+  <text x="98" y="338" fill="#4a5446" font-size="22">From a single commit to production across two parallel environments.</text>
 
-  <!-- RIGHT: RUNTIME SERVICES -->
-  <text x="1140" y="186" fill="#6fae4f" font-size="20" font-weight="700" letter-spacing="2">RUNTIME SERVICES</text>
-  <g filter="url(#shadow)">
-    <rect x="1140" y="206" width="400" height="92" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <svg x="1162" y="228" width="40" height="40" viewBox="0 0 24 24"><path fill="#8a6cff" d="m21.47 20.829-2.881-2.881a.572.572 0 0 0-.7-.084 6.854 6.854 0 0 1-7.081 0 .576.576 0 0 0-.7.084l-2.881 2.881a.576.576 0 0 0-.103.69.57.57 0 0 0 .166.186 12 12 0 0 0 14.113 0 .58.58 0 0 0 .239-.423.576.576 0 0 0-.172-.453Zm.002-17.668-2.88 2.88a.569.569 0 0 1-.701.084A6.857 6.857 0 0 0 8.724 8.08a6.862 6.862 0 0 0-1.222 3.692 6.86 6.86 0 0 0 .978 3.764.573.573 0 0 1-.083.699l-2.881 2.88a.567.567 0 0 1-.864-.063A11.993 11.993 0 0 1 6.771 2.7a11.99 11.99 0 0 1 14.637-.405.566.566 0 0 1 .232.418.57.57 0 0 1-.168.448Zm-7.118 12.261a3.427 3.427 0 1 0 0-6.854 3.427 3.427 0 0 0 0 6.854Z"/></svg>
-    <text x="1214" y="246" fill="#dfe9d8" font-size="19" font-weight="600">Clerk — Auth</text>
-    <text x="1214" y="276" fill="#9fbf8c" font-size="15">JWT → Convex · webhooks</text>
-  </g>
+  <!-- ===== three stage cards ===== -->
+  <rect x="96" y="388" width="540" height="300" rx="18" fill="#f6f2e4" stroke="#1c5a2e" stroke-opacity="0.22" stroke-width="1.5" filter="url(#soft)"/>
+  <rect x="690" y="388" width="540" height="300" rx="18" fill="#f6f2e4" stroke="#1c5a2e" stroke-opacity="0.22" stroke-width="1.5" filter="url(#soft)"/>
+  <rect x="1284" y="388" width="540" height="300" rx="18" fill="#f6f2e4" stroke="#1c5a2e" stroke-opacity="0.22" stroke-width="1.5" filter="url(#soft)"/>
+  <path d="M652 528 L664 538 L652 548" fill="none" stroke="#c2a262" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> <path d="M1246 528 L1258 538 L1246 548" fill="none" stroke="#c2a262" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- WhatsApp pipeline with official logos -->
-  <g filter="url(#shadow)">
-    <rect x="1140" y="318" width="400" height="268" rx="16" fill="url(#cardg)" stroke="#2c543c" stroke-width="1.5"/>
-    <svg x="1162" y="332" width="30" height="30" viewBox="0 0 24 24"><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-    <text x="1202" y="356" fill="#dfe9d8" font-size="19" font-weight="600">WhatsApp Pipeline</text>
-    <text x="1164" y="384" fill="#9fbf8c" font-size="14">HMAC-signed outbound webhooks</text>
+  <!-- Stage 01 SOURCE & CI -->
+  <circle cx="138" cy="430" r="20" fill="#b0432a"/><text x="138" y="437" fill="#fff" font-size="18" font-weight="700" text-anchor="middle" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">1</text>
+  <text x="176" y="437" fill="#1c5a2e" font-size="26" font-weight="700" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">Source &amp; CI</text>
+  <line x1="124" y1="460" x2="608" y2="460" stroke="#c2a262" stroke-opacity="0.5" stroke-width="1"/>
+  <svg x="128" y="486" width="40" height="40" viewBox="0 0 24 24"><path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+  <text x="182" y="504" fill="#4a5446" font-size="20" font-weight="600">GitHub</text>
+  <text x="182" y="528" fill="#7a7d6a" font-size="16">pnpm monorepo · web · convex · core</text>
+  <svg x="128" y="566" width="34" height="34" viewBox="0 0 24 24"><path fill="#3178C6" d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/></svg> <svg x="172" y="566" width="34" height="34" viewBox="0 0 24 24"><path fill="#00FF74" d="M11.545 23.3a.613.613 0 0 1-.895.197L.252 15.936A.61.61 0 0 1 0 15.439V6.325c0-.502.569-.792.975-.497l6.358 4.624c.594.433 1.432.25 1.793-.39L14.393.7a.62.62 0 0 1 .535-.314h8.455a.613.613 0 0 1 .537.916z"/></svg>
+  <text x="220" y="582" fill="#4a5446" font-size="20" font-weight="600">CI Quality Gates</text>
+  <text x="220" y="606" fill="#7a7d6a" font-size="16">lint · tsc --noEmit · Vitest</text>
+  <text x="128" y="652" fill="#7a7d6a" font-size="15">unit + convex-test integration</text>
 
-    <!-- Convex node -->
-    <g><rect x="1170" y="420" width="74" height="74" rx="14" fill="#16301f" stroke="#3a6b48" stroke-width="1.5"/>
-      <svg x="1185" y="432" width="44" height="44" viewBox="0 0 367 370">
-    <g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
-      <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
-      <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
-      <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
-    </g></g></svg>
-      <text x="1207" y="486" fill="#cfe0c4" font-size="13" text-anchor="middle" font-weight="600">Convex</text></g>
-    <!-- n8n node -->
-    <g><rect x="1290" y="420" width="74" height="74" rx="14" fill="#2a1620" stroke="#a23b6b" stroke-width="1.5"/>
-      <svg x="1305" y="432" width="44" height="44" viewBox="0 0 24 24"><path fill="#EA4B71" d="M21.4737 5.6842c-1.1772 0-2.1663.8051-2.4468 1.8947h-2.8955c-1.235 0-2.289.893-2.492 2.111l-.1038.623a1.263 1.263 0 0 1-1.246 1.0555H11.289c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947s-2.1663.8051-2.4467 1.8947H4.973c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947C1.1311 9.4737 0 10.6047 0 12s1.131 2.5263 2.5263 2.5263c1.1772 0 2.1663-.8051 2.4468-1.8947h1.4223c.2804 1.0896 1.2696 1.8947 2.4467 1.8947 1.1772 0 2.1663-.8051 2.4468-1.8947h1.0008a1.263 1.263 0 0 1 1.2459 1.0555l.1038.623c.203 1.218 1.257 2.111 2.492 2.111h.3692c.2804 1.0895 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263c-1.1772 0-2.1664.805-2.4468 1.8947h-.3692a1.263 1.263 0 0 1-1.246-1.0555l-.1037-.623A2.52 2.52 0 0 0 13.9607 12a2.52 2.52 0 0 0 .821-1.4794l.1038-.623a1.263 1.263 0 0 1 1.2459-1.0555h2.8955c.2805 1.0896 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263m0 1.2632a1.263 1.263 0 0 1 1.2631 1.2631 1.263 1.263 0 0 1-1.2631 1.2632 1.263 1.263 0 0 1-1.2632-1.2632 1.263 1.263 0 0 1 1.2632-1.2631M2.5263 10.7368A1.263 1.263 0 0 1 3.7895 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 1.2632 12a1.263 1.263 0 0 1 1.2631-1.2632m6.3158 0A1.263 1.263 0 0 1 10.1053 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 7.579 12a1.263 1.263 0 0 1 1.2632-1.2632m10.1053 3.7895a1.263 1.263 0 0 1 1.2631 1.2632 1.263 1.263 0 0 1-1.2631 1.2631 1.263 1.263 0 0 1-1.2632-1.2631 1.263 1.263 0 0 1 1.2632-1.2632"/></svg>
-      <text x="1327" y="486" fill="#f0c2d8" font-size="13" text-anchor="middle" font-weight="600">n8n</text></g>
-    <!-- Evolution / WhatsApp node -->
-    <g><rect x="1410" y="420" width="74" height="74" rx="14" fill="#0f2418" stroke="#2f9e5e" stroke-width="1.5"/>
-      <svg x="1425" y="432" width="44" height="44" viewBox="0 0 24 24"><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-      <text x="1447" y="486" fill="#bfe9cf" font-size="11.5" text-anchor="middle" font-weight="600">Evolution</text></g>
+  <!-- Stage 02 BUILD -->
+  <circle cx="732" cy="430" r="20" fill="#b0432a"/><text x="732" y="437" fill="#fff" font-size="18" font-weight="700" text-anchor="middle" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">2</text>
+  <text x="770" y="437" fill="#1c5a2e" font-size="26" font-weight="700" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">Build</text>
+  <line x1="718" y1="460" x2="1202" y2="460" stroke="#c2a262" stroke-opacity="0.5" stroke-width="1"/>
+  <svg x="722" y="484" width="44" height="44" viewBox="0 0 24 24"><path fill="#181717" d="M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z"/></svg>
+  <text x="780" y="504" fill="#4a5446" font-size="20" font-weight="600">Web · Next.js 16</text>
+  <text x="780" y="528" fill="#7a7d6a" font-size="16">App Router · Turbopack</text>
+  <svg x="722" y="548" width="26" height="26" viewBox="0 0 24 24"><path fill="#06B6D4" d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/></svg>
+  <text x="758" y="566" fill="#7a7d6a" font-size="16">Tailwind + HeroUI · TypeScript</text>
+  <svg x="722" y="596" width="40" height="40" viewBox="0 0 367 370"><g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
+    <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
+    <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
+    <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
+  </g></g></svg>
+  <text x="780" y="616" fill="#4a5446" font-size="20" font-weight="600">Backend · Convex</text>
+  <text x="780" y="640" fill="#7a7d6a" font-size="16">queries · mutations · actions · crons</text>
 
-    <line x1="1244" y1="457" x2="1288" y2="457" stroke="#9fbf8c" stroke-width="2.5" marker-end="url(#arrowp)"/>
-    <line x1="1364" y1="457" x2="1408" y2="457" stroke="#9fbf8c" stroke-width="2.5" marker-end="url(#arrowp)"/>
+  <!-- Stage 03 DEPLOY -->
+  <circle cx="1326" cy="430" r="20" fill="#b0432a"/><text x="1326" y="437" fill="#fff" font-size="18" font-weight="700" text-anchor="middle" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">3</text>
+  <text x="1364" y="437" fill="#1c5a2e" font-size="26" font-weight="700" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">Deploy · two environments</text>
+  <line x1="1312" y1="460" x2="1796" y2="460" stroke="#c2a262" stroke-opacity="0.5" stroke-width="1"/>
+  <svg x="1316" y="484" width="38" height="38" viewBox="0 0 24 24"><path fill="#6b16ed" d="M4.364 4.364V0h17.454v4.364zm0 13.09H0V4.365h4.364zm0 0h17.454v4.364H4.364ZM6.545 6.546v-1.7H22.3V2.182H24v4.363zm0 0v10.4h-1.7v-10.4ZM3.882 17.936v1.7h-1.7v-1.7ZM24 24H6.545v-1.7H22.3v-2.664H24Z"/></svg>
+  <text x="1366" y="504" fill="#4a5446" font-size="20" font-weight="600">Coolify (self-hosted)</text>
+  <text x="1366" y="528" fill="#7a7d6a" font-size="16">web auto-deploy on main</text>
+  <svg x="1316" y="552" width="34" height="34" viewBox="0 0 367 370"><g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
+    <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
+    <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
+    <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
+  </g></g></svg>
+  <text x="1360" y="572" fill="#4a5446" font-size="20" font-weight="600">Convex Cloud</text>
+  <svg x="1316" y="596" width="34" height="34" viewBox="0 0 367 370"><g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
+    <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
+    <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
+    <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
+  </g></g></svg>
+  <text x="1360" y="616" fill="#4a5446" font-size="20" font-weight="600">Convex Self-hosted</text>
+  <text x="1316" y="656" fill="#7a7d6a" font-size="15">deploy.sh → pushes to both envs</text>
 
-    <text x="1340" y="540" fill="#8fb27e" font-size="14" text-anchor="middle">Convex → n8n → Evolution API → WhatsApp</text>
-    <text x="1340" y="566" fill="#6f9a5e" font-size="13" text-anchor="middle">OTP · meeting · status-change alerts</text>
-  </g>
+  <!-- ===== runtime services strip ===== -->
+  <rect x="96" y="720" width="1138" height="232" rx="18" fill="#f6f2e4" stroke="#1c5a2e" stroke-opacity="0.22" stroke-width="1.5" filter="url(#soft)"/>
+  <text x="128" y="762" fill="#1c5a2e" font-size="26" font-weight="700" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">Runtime services</text>
+  <line x1="124" y1="780" x2="1206" y2="780" stroke="#c2a262" stroke-opacity="0.5" stroke-width="1"/>
 
-  <!-- STACK -->
-  <rect x="1140" y="606" width="400" height="180" rx="16" fill="#0a1812" stroke="#234430" stroke-width="1.5"/>
-  <text x="1164" y="644" fill="#9fbf8c" font-size="16" font-weight="700" letter-spacing="2">STACK</text>
-  <g font-size="14" fill="#cfe0c4">
-    <rect x="1164" y="660" width="110" height="30" rx="15" fill="#16301f"/><text x="1219" y="680" text-anchor="middle">Next.js 16</text>
-    <rect x="1284" y="660" width="90" height="30" rx="15" fill="#16301f"/><text x="1329" y="680" text-anchor="middle">Convex</text>
-    <rect x="1384" y="660" width="80" height="30" rx="15" fill="#16301f"/><text x="1424" y="680" text-anchor="middle">Clerk</text>
-    <rect x="1474" y="660" width="56" height="30" rx="15" fill="#16301f"/><text x="1502" y="680" text-anchor="middle">n8n</text>
-    <rect x="1164" y="700" width="120" height="30" rx="15" fill="#16301f"/><text x="1224" y="720" text-anchor="middle">TypeScript</text>
-    <rect x="1294" y="700" width="100" height="30" rx="15" fill="#16301f"/><text x="1344" y="720" text-anchor="middle">Tailwind</text>
-    <rect x="1404" y="700" width="80" height="30" rx="15" fill="#16301f"/><text x="1444" y="720" text-anchor="middle">HeroUI</text>
-    <rect x="1164" y="740" width="120" height="30" rx="15" fill="#16301f"/><svg x="1172" y="745" width="20" height="20" viewBox="0 0 24 24"><path fill="#a06cff" d="M4.364 4.364V0h17.454v4.364zm0 13.09H0V4.365h4.364zm0 0h17.454v4.364H4.364ZM6.545 6.546v-1.7H22.3V2.182H24v4.363zm0 0v10.4h-1.7v-10.4ZM3.882 17.936v1.7h-1.7v-1.7ZM24 24H6.545v-1.7H22.3v-2.664H24Z"/></svg><text x="1230" y="760" text-anchor="middle">Coolify</text>
-    <rect x="1284" y="740" width="120" height="30" rx="15" fill="#16301f"/><text x="1344" y="760" text-anchor="middle">Evolution API</text>
-  </g>
+  <!-- Clerk -->
+  <svg x="130" y="812" width="40" height="40" viewBox="0 0 24 24"><path fill="#6c47ff" d="m21.47 20.829-2.881-2.881a.572.572 0 0 0-.7-.084 6.854 6.854 0 0 1-7.081 0 .576.576 0 0 0-.7.084l-2.881 2.881a.576.576 0 0 0-.103.69.57.57 0 0 0 .166.186 12 12 0 0 0 14.113 0 .58.58 0 0 0 .239-.423.576.576 0 0 0-.172-.453Zm.002-17.668-2.88 2.88a.569.569 0 0 1-.701.084A6.857 6.857 0 0 0 8.724 8.08a6.862 6.862 0 0 0-1.222 3.692 6.86 6.86 0 0 0 .978 3.764.573.573 0 0 1-.083.699l-2.881 2.88a.567.567 0 0 1-.864-.063A11.993 11.993 0 0 1 6.771 2.7a11.99 11.99 0 0 1 14.637-.405.566.566 0 0 1 .232.418.57.57 0 0 1-.168.448Zm-7.118 12.261a3.427 3.427 0 1 0 0-6.854 3.427 3.427 0 0 0 0 6.854Z"/></svg>
+  <text x="184" y="832" fill="#4a5446" font-size="20" font-weight="600">Clerk — Authentication</text>
+  <text x="184" y="858" fill="#7a7d6a" font-size="16">JWT forwarded to Convex · svix webhooks</text>
+  <text x="130" y="908" fill="#7a7d6a" font-size="16">End-to-end type safety · role-aware access</text>
 
-  <text x="60" y="858" fill="#5e7a52" font-size="15">pnpm workspaces monorepo · web + convex + core · end-to-end type safety · WCAG 2.2 AA</text>
+  <!-- WhatsApp pipeline -->
+  <svg x="690" y="812" width="34" height="34" viewBox="0 0 24 24"><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  <text x="734" y="832" fill="#4a5446" font-size="20" font-weight="600">WhatsApp notification pipeline</text>
+  <!-- nodes -->
+  <svg x="700" y="858" width="34" height="34" viewBox="0 0 367 370"><g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
+    <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
+    <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
+    <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
+  </g></g></svg>
+  <text x="717" y="912" fill="#7a7d6a" font-size="14" text-anchor="middle">Convex</text>
+  <path d="M762 865 L774 875 L762 885" fill="none" stroke="#c2a262" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <svg x="790" y="858" width="34" height="34" viewBox="0 0 24 24"><path fill="#EA4B71" d="M21.4737 5.6842c-1.1772 0-2.1663.8051-2.4468 1.8947h-2.8955c-1.235 0-2.289.893-2.492 2.111l-.1038.623a1.263 1.263 0 0 1-1.246 1.0555H11.289c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947s-2.1663.8051-2.4467 1.8947H4.973c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947C1.1311 9.4737 0 10.6047 0 12s1.131 2.5263 2.5263 2.5263c1.1772 0 2.1663-.8051 2.4468-1.8947h1.4223c.2804 1.0896 1.2696 1.8947 2.4467 1.8947 1.1772 0 2.1663-.8051 2.4468-1.8947h1.0008a1.263 1.263 0 0 1 1.2459 1.0555l.1038.623c.203 1.218 1.257 2.111 2.492 2.111h.3692c.2804 1.0895 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263c-1.1772 0-2.1664.805-2.4468 1.8947h-.3692a1.263 1.263 0 0 1-1.246-1.0555l-.1037-.623A2.52 2.52 0 0 0 13.9607 12a2.52 2.52 0 0 0 .821-1.4794l.1038-.623a1.263 1.263 0 0 1 1.2459-1.0555h2.8955c.2805 1.0896 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263m0 1.2632a1.263 1.263 0 0 1 1.2631 1.2631 1.263 1.263 0 0 1-1.2631 1.2632 1.263 1.263 0 0 1-1.2632-1.2632 1.263 1.263 0 0 1 1.2632-1.2631M2.5263 10.7368A1.263 1.263 0 0 1 3.7895 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 1.2632 12a1.263 1.263 0 0 1 1.2631-1.2632m6.3158 0A1.263 1.263 0 0 1 10.1053 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 7.579 12a1.263 1.263 0 0 1 1.2632-1.2632m10.1053 3.7895a1.263 1.263 0 0 1 1.2631 1.2632 1.263 1.263 0 0 1-1.2631 1.2631 1.263 1.263 0 0 1-1.2632-1.2631 1.263 1.263 0 0 1 1.2632-1.2632"/></svg>
+  <text x="807" y="912" fill="#7a7d6a" font-size="14" text-anchor="middle">n8n</text>
+  <path d="M852 865 L864 875 L852 885" fill="none" stroke="#c2a262" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <svg x="880" y="858" width="34" height="34" viewBox="0 0 24 24"><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  <text x="897" y="912" fill="#7a7d6a" font-size="14" text-anchor="middle">Evolution</text>
+  <text x="960" y="878" fill="#7a7d6a" font-size="16">HMAC-signed webhooks</text>
+  <text x="960" y="902" fill="#7a7d6a" font-size="16">OTP · meeting · status alerts</text>
+
+  <!-- ===== stack panel (right of runtime) ===== -->
+  <rect x="1284" y="720" width="540" height="232" rx="18" fill="#f6f2e4" stroke="#1c5a2e" stroke-opacity="0.22" stroke-width="1.5" filter="url(#soft)"/>
+  <text x="1316" y="762" fill="#1c5a2e" font-size="26" font-weight="700" font-family="'Liberation Serif', 'DejaVu Serif', Georgia, serif">Stack</text>
+  <line x1="1312" y1="780" x2="1796" y2="780" stroke="#c2a262" stroke-opacity="0.5" stroke-width="1"/>
+  <rect x="1320" y="800" width="156" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><svg x="1332" y="808" width="24" height="24" viewBox="0 0 24 24"><path fill="#181717" d="M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z"/></svg><text x="1366" y="826" fill="#4a5446" font-size="16">Next.js</text><rect x="1488" y="800" width="156" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><svg x="1500" y="808" width="24" height="24" viewBox="0 0 24 24"><path fill="#3178C6" d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/></svg><text x="1534" y="826" fill="#4a5446" font-size="16">TypeScript</text><rect x="1656" y="800" width="156" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><svg x="1668" y="808" width="24" height="24" viewBox="0 0 24 24"><path fill="#06B6D4" d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/></svg><text x="1702" y="826" fill="#4a5446" font-size="16">Tailwind</text>
+  <rect x="1320" y="852" width="156" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><svg x="1332" y="860" width="24" height="24" viewBox="0 0 24 24"><path fill="#EA4B71" d="M21.4737 5.6842c-1.1772 0-2.1663.8051-2.4468 1.8947h-2.8955c-1.235 0-2.289.893-2.492 2.111l-.1038.623a1.263 1.263 0 0 1-1.246 1.0555H11.289c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947s-2.1663.8051-2.4467 1.8947H4.973c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947C1.1311 9.4737 0 10.6047 0 12s1.131 2.5263 2.5263 2.5263c1.1772 0 2.1663-.8051 2.4468-1.8947h1.4223c.2804 1.0896 1.2696 1.8947 2.4467 1.8947 1.1772 0 2.1663-.8051 2.4468-1.8947h1.0008a1.263 1.263 0 0 1 1.2459 1.0555l.1038.623c.203 1.218 1.257 2.111 2.492 2.111h.3692c.2804 1.0895 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263c-1.1772 0-2.1664.805-2.4468 1.8947h-.3692a1.263 1.263 0 0 1-1.246-1.0555l-.1037-.623A2.52 2.52 0 0 0 13.9607 12a2.52 2.52 0 0 0 .821-1.4794l.1038-.623a1.263 1.263 0 0 1 1.2459-1.0555h2.8955c.2805 1.0896 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263m0 1.2632a1.263 1.263 0 0 1 1.2631 1.2631 1.263 1.263 0 0 1-1.2631 1.2632 1.263 1.263 0 0 1-1.2632-1.2632 1.263 1.263 0 0 1 1.2632-1.2631M2.5263 10.7368A1.263 1.263 0 0 1 3.7895 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 1.2632 12a1.263 1.263 0 0 1 1.2631-1.2632m6.3158 0A1.263 1.263 0 0 1 10.1053 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 7.579 12a1.263 1.263 0 0 1 1.2632-1.2632m10.1053 3.7895a1.263 1.263 0 0 1 1.2631 1.2632 1.263 1.263 0 0 1-1.2631 1.2631 1.263 1.263 0 0 1-1.2632-1.2631 1.263 1.263 0 0 1 1.2632-1.2632"/></svg><text x="1366" y="878" fill="#4a5446" font-size="16">n8n</text><rect x="1488" y="852" width="156" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><svg x="1500" y="860" width="24" height="24" viewBox="0 0 24 24"><path fill="#6c47ff" d="m21.47 20.829-2.881-2.881a.572.572 0 0 0-.7-.084 6.854 6.854 0 0 1-7.081 0 .576.576 0 0 0-.7.084l-2.881 2.881a.576.576 0 0 0-.103.69.57.57 0 0 0 .166.186 12 12 0 0 0 14.113 0 .58.58 0 0 0 .239-.423.576.576 0 0 0-.172-.453Zm.002-17.668-2.88 2.88a.569.569 0 0 1-.701.084A6.857 6.857 0 0 0 8.724 8.08a6.862 6.862 0 0 0-1.222 3.692 6.86 6.86 0 0 0 .978 3.764.573.573 0 0 1-.083.699l-2.881 2.88a.567.567 0 0 1-.864-.063A11.993 11.993 0 0 1 6.771 2.7a11.99 11.99 0 0 1 14.637-.405.566.566 0 0 1 .232.418.57.57 0 0 1-.168.448Zm-7.118 12.261a3.427 3.427 0 1 0 0-6.854 3.427 3.427 0 0 0 0 6.854Z"/></svg><text x="1534" y="878" fill="#4a5446" font-size="16">Clerk</text><rect x="1656" y="852" width="156" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><svg x="1668" y="860" width="24" height="24" viewBox="0 0 24 24"><path fill="#6b16ed" d="M4.364 4.364V0h17.454v4.364zm0 13.09H0V4.365h4.364zm0 0h17.454v4.364H4.364ZM6.545 6.546v-1.7H22.3V2.182H24v4.363zm0 0v10.4h-1.7v-10.4ZM3.882 17.936v1.7h-1.7v-1.7ZM24 24H6.545v-1.7H22.3v-2.664H24Z"/></svg><text x="1702" y="878" fill="#4a5446" font-size="16">Coolify</text>
+  <g><rect x="1320" y="904" width="156" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><svg x="1330" y="910" width="26" height="26" viewBox="0 0 367 370"><g transform="translate(-129.225,-127.948)"><g transform="matrix(4.16667,0,0,4.16667,0,0)">
+    <path transform="translate(86.6099,107.074)" d="M0,-6.544C13.098,-7.973 25.449,-14.834 32.255,-26.287C29.037,2.033 -2.48,19.936 -28.196,8.94C-30.569,7.925 -32.605,6.254 -34.008,4.088C-39.789,-4.83 -41.69,-16.18 -38.963,-26.48C-31.158,-13.247 -15.3,-5.131 0,-6.544" style="fill:rgb(245,176,26)"/>
+    <path transform="translate(47.1708,74.7779)" d="M0,-2.489C-5.312,9.568 -5.545,23.695 0.971,35.316C-21.946,18.37 -21.692,-17.876 0.689,-34.65C2.754,-36.197 5.219,-37.124 7.797,-37.257C18.41,-37.805 29.19,-33.775 36.747,-26.264C21.384,-26.121 6.427,-16.446 0,-2.489" style="fill:rgb(141,37,118)"/>
+    <path transform="translate(91.325,66.4152)" d="M0,-14.199C-7.749,-24.821 -19.884,-32.044 -33.173,-32.264C-7.482,-43.726 24.112,-25.143 27.557,2.322C27.877,4.876 27.458,7.469 26.305,9.769C21.503,19.345 12.602,26.776 2.203,29.527C9.838,15.64 8.889,-1.328 0,-14.199" style="fill:rgb(238,52,47)"/>
+  </g></g></svg><text x="1366" y="930" fill="#4a5446" font-size="16">Convex</text></g>
+  <g><rect x="1488" y="904" width="156" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><svg x="1500" y="912" width="24" height="24" viewBox="0 0 24 24"><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><text x="1534" y="930" fill="#4a5446" font-size="16">WhatsApp</text></g>
+  <g><rect x="1656" y="904" width="140" height="40" rx="20" fill="#efe9d8" stroke="#1c5a2e" stroke-opacity="0.18"/><text x="1726" y="930" fill="#4a5446" font-size="16" text-anchor="middle">HeroUI</text></g>
+
+  <!-- footer -->
+  <text x="96" y="1016" fill="#7a7d6a" font-size="18" letter-spacing="3" font-family="'Liberation Sans', 'DejaVu Sans', Arial, sans-serif">ZUJ INCUBATOR © 2026</text>
+  <circle cx="1810" cy="1008" r="26" fill="none" stroke="#1c5a2e" stroke-opacity="0.4" stroke-width="1.5"/>
+  <text x="1810" y="1015" fill="#1c5a2e" font-size="16" font-weight="700" text-anchor="middle" letter-spacing="1">02</text>
 </svg>
