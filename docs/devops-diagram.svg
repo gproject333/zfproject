@@ -83,9 +83,10 @@
   <text x="60" y="616" fill="#c79a2e" font-size="20" font-weight="700" letter-spacing="2">3 · DEPLOY · TWO PARALLEL ENVIRONMENTS</text>
   <g filter="url(#shadow)">
     <rect x="60" y="636" width="380" height="150" rx="16" fill="url(#cardg)" stroke="#7a611f" stroke-width="1.5"/>
-    <text x="84" y="678" fill="#f0d98a" font-size="20" font-weight="700">🚀 Coolify (Self-hosted)</text>
-    <text x="84" y="710" fill="#cbb878" font-size="15">Web auto-deploy on main</text>
-    <text x="84" y="736" fill="#9fbf8c" font-size="14">pnpm build → container</text>
+    <svg x="84" y="656" width="34" height="34" viewBox="0 0 24 24"><path fill="#a06cff" d="M4.364 4.364V0h17.454v4.364zm0 13.09H0V4.365h4.364zm0 0h17.454v4.364H4.364ZM6.545 6.546v-1.7H22.3V2.182H24v4.363zm0 0v10.4h-1.7v-10.4ZM3.882 17.936v1.7h-1.7v-1.7ZM24 24H6.545v-1.7H22.3v-2.664H24Z"/></svg>
+    <text x="128" y="680" fill="#f0d98a" font-size="20" font-weight="700">Coolify (Self-hosted)</text>
+    <text x="84" y="716" fill="#cbb878" font-size="15">Web auto-deploy on main</text>
+    <text x="84" y="742" fill="#9fbf8c" font-size="14">pnpm build → container</text>
   </g>
   <g filter="url(#shadow)">
     <rect x="480" y="636" width="290" height="150" rx="16" fill="url(#cardg)" stroke="#7a611f" stroke-width="1.5"/>
@@ -167,7 +168,7 @@
     <rect x="1164" y="700" width="120" height="30" rx="15" fill="#16301f"/><text x="1224" y="720" text-anchor="middle">TypeScript</text>
     <rect x="1294" y="700" width="100" height="30" rx="15" fill="#16301f"/><text x="1344" y="720" text-anchor="middle">Tailwind</text>
     <rect x="1404" y="700" width="80" height="30" rx="15" fill="#16301f"/><text x="1444" y="720" text-anchor="middle">HeroUI</text>
-    <rect x="1164" y="740" width="110" height="30" rx="15" fill="#16301f"/><text x="1219" y="760" text-anchor="middle">Coolify</text>
+    <rect x="1164" y="740" width="120" height="30" rx="15" fill="#16301f"/><svg x="1172" y="745" width="20" height="20" viewBox="0 0 24 24"><path fill="#a06cff" d="M4.364 4.364V0h17.454v4.364zm0 13.09H0V4.365h4.364zm0 0h17.454v4.364H4.364ZM6.545 6.546v-1.7H22.3V2.182H24v4.363zm0 0v10.4h-1.7v-10.4ZM3.882 17.936v1.7h-1.7v-1.7ZM24 24H6.545v-1.7H22.3v-2.664H24Z"/></svg><text x="1230" y="760" text-anchor="middle">Coolify</text>
     <rect x="1284" y="740" width="120" height="30" rx="15" fill="#16301f"/><text x="1344" y="760" text-anchor="middle">Evolution API</text>
   </g>
 
